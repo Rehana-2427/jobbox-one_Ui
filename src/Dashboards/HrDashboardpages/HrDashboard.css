@@ -1,0 +1,1272 @@
+/* removing scrollbars  */
+
+.form-container {
+  width: 400px;
+  padding: 20px;
+  border: 1px solid white;
+  border-radius: 5px;
+  background-color: white;
+
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+
+}
+
+.form-group input,
+.form-group input[type='text'] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+}
+
+.error-message {
+  color: red;
+}
+
+
+
+
+#logo img {
+  height: 100px;
+  width: 200px;
+  border-radius: 60px;
+}
+
+section {
+  padding: 12px;
+}
+
+.box-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  grid-template-rows: auto auto;
+
+  gap: 15px;
+
+  margin: 20px;
+}
+
+
+
+
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  /* Adjust as needed */
+}
+
+.small-box {
+  width: calc(33.33% - 20px);
+  /* Adjust the width as needed */
+  margin-right: 20px;
+  /* Set margin between boxes */
+  display: inline-block;
+  vertical-align: top;
+  background-color: #f0f0f0;
+  /* Set background color */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+
+
+.application-div {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter {
+
+  margin-top: 10px;
+  /* Adjust margins as needed */
+}
+
+#status {
+  padding: 5px;
+  border-radius: 5px;
+}
+
+#application {
+  margin-top: 80px;
+  margin-left: 12px;
+  margin-right: 24px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#application th {
+  background-color: rgb(188, 250, 229);
+}
+
+#application th,
+#application td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+/* #application th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+} */
+
+#application tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#application tr:hover {
+  background-color: #ddd;
+}
+
+.download {
+  padding: 5px 10px;
+  background-color: #eaf0ea;
+  color: rgb(5, 5, 5);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.download:hover {
+  background-color: #1fd428;
+}
+
+.select {
+  margin-top: 25px;
+  margin-right: 5px;
+  padding: 5px 10px;
+  background-color: #f1f5f1;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.select:hover {
+  background-color: #0bec30;
+}
+
+.reject {
+  margin-left: 5px;
+  padding: 5px 10px;
+  background-color: #f5efee;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.reject:hover {
+  background-color: #da190b;
+}
+
+.hr-profile {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+
+.profile_row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+}
+
+.boxp {
+  flex-basis: calc(33.33% - 20px);
+  /* Adjust the width of each box */
+  height: 55%;
+  width: 40%;
+  border-radius: 8px;
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.63); */
+  text-align: center;
+  margin: 9px;
+
+}
+
+.boxp h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.boxp p {
+  font-size: 14px;
+
+  margin-bottom: 15px;
+}
+
+.boxp a {
+  display: block;
+  text-decoration: none;
+  color: #0366d6;
+  /* Link color */
+}
+
+
+
+
+/* hr jobs*/
+
+.job-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 20px;
+}
+
+.job-details label {
+  flex-basis: 30%;
+  text-align: left;
+
+}
+
+.job-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.job-button button {
+  height: 30px;
+  width: 100px;
+  background-color: skyblue;
+  font-size: 15px;
+}
+
+/*tables rights*/
+/* #jobTable1 {
+  width: 95%;
+  border-collapse: collapse;
+  margin-left: 30px;
+  margin-right: 20px;
+}
+
+#jobTable1 th {
+  background-color: rgb(188, 250, 229);
+}
+
+#jobTable1 th,
+#jobTable1 td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+
+#jobTable1 tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#jobTable1 tr:hover {
+  background-color: #ddd;
+} */
+
+
+.not-yet {
+  background-color: #b5e2e0;
+  padding: 20px;
+  margin-left: 240px;
+  margin-right: 240px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0px 0px 10px rgba(5, 5, 5, 0.1);
+  animation: bounce 1s ease infinite alternate;
+}
+
+.not-yet h2 {
+  color: #c91a1a;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(-5px);
+  }
+
+  100% {
+    transform: translateY(5px);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+.job-titles-container,
+.requirements-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  /* Adjust the gap between input boxes */
+
+}
+
+.job-titles-container span,
+.requirements-container span {
+  width: 15%;
+  /* Adjust the width for 3 items per row */
+  margin: 10px;
+  /* Adjust the bottom margin for spacing */
+}
+
+.job-titles-container input,
+.requirements-container input {
+  width: 100%;
+  padding: 5px;
+  box-sizing: border-box;
+  text-align: center;
+  border-radius: 12%;
+  border: 2px solid #e5e7eb;
+  box-sizing: border-box;
+}
+
+
+.add-job-button {
+  padding: 10px 20px;
+  margin-top: 50px;
+  margin-left: 465px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+  /* Remove underline */
+}
+
+.add-job-button:hover {
+  background-color: #0056b3;
+}
+
+.add-job-button>a {
+  color: #fff;
+  /* Set link text color */
+  text-decoration: none;
+  /* Remove underline */
+}
+@media screen and (max-width: 768px) {
+  .add-job-button{
+    padding: 8px 15px;
+    margin-top: 50px;
+    margin-left: 300px;
+  }
+}
+
+@media screen and (max-width: 630px) {
+  .add-job-button{
+    padding: 8px 15px;
+    margin-top: 50px;
+    margin-left: 200px;
+  }
+}
+@media screen and (max-width: 510px) {
+  .add-job-button{
+    padding: 8px 15px;
+    margin-top: 50px;
+    margin-left: 100px;
+  }
+}
+
+@media screen and (max-width: 410px) {
+  .add-job-button{
+    padding: 5px 10px;
+    margin-top: 50px;
+    margin-left: 50px;
+  }
+}
+.job-posting-form,
+.job-details-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+}
+
+.job-form-group-button button {
+
+  font-size: 18px;
+  background-color: skyblue;
+  text-align: center;
+}
+
+.job-form-group-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.personal-details-row .form-group,
+.job-details-row .form-group {
+  padding: 8px;
+}
+
+.job-form-group input[type="text"],
+.job-form-group input[type="date"],
+.job-form-group input[type="password"],
+.job-form-group input[type="number"] {
+  /* Increased padding for more comfortable typing */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 20px;
+  /* Larger font size for improved readability */
+  width: 40%;
+  padding: 3px;
+  margin-left: 300px;
+
+
+}
+
+.job-form-group {
+  margin: 12px;
+  width: 100%;
+}
+
+.job-form-group label {
+  display: block;
+  font-weight: bold;
+  color: #333;
+  /* Darker label color for better contrast */
+  margin-left: 300px;
+}
+
+.job-form-group textarea {
+  height: 100px;
+  width: 940px;
+}
+
+.fullWidthTextarea {
+  width: 100%;
+  height: 40%;
+}
+
+.job-save-edit-buttons {
+  display: flex;
+  justify-content: end;
+  align-items: end;
+}
+
+.job-save-edit-buttons button {
+  margin-left: 10px;
+}
+
+.jobAddedSuccess {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.jobAddedSuccess h2,
+.jobAddedSuccess p,
+.jobAddedSuccess a {
+  margin: 10px;
+  /* Add spacing around elements */
+}
+
+.job-save-edit-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+}
+
+
+.job-description-container {
+  max-width: 100%;
+  overflow-wrap: break-word;
+
+}
+
+.job-description-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.job-description-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 65%;
+}
+
+
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+
+.modal-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.application-div {
+  margin-left: 8px;
+  margin-right: 8px;
+
+}
+
+
+
+.job-posting-container {
+  padding: 20px;
+  overflow-y: auto;
+  /* Only vertical scrolling */
+}
+
+.job-posting-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.job-details-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.job-form-group {
+  flex: 1;
+  margin: 10px;
+}
+
+.fullWidthTextarea {
+  width: 100%;
+  height: 100px;
+}
+
+.job-form-group-button {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.post {
+  background-color: skyblue;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+}
+
+.dots {
+  display: block;
+  padding: 8px 12px;
+  color: #333;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+
+
+
+/* Modal container */
+.modal-summary {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: auto;
+}
+
+/* Modal content */
+.modal-content-summary {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 95%;
+  max-width: fit-content;
+  border-radius: 5px;
+  position: relative;
+}
+
+/* Close button */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+.candidate-search {
+  margin-left: 10px;
+}
+
+
+.profile-container {
+  background-color: #f7f7f7;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.profile-label {
+  font-weight: bold;
+}
+
+.profile-value {
+  margin-left: 10px;
+  color: #333;
+}
+
+.letter-filter {
+  margin: 12px;
+}
+
+
+
+.company-overview {
+  /* Adjust the max-height as needed */
+  /* overflow-y: scroll; Enable vertical scrolling */
+  padding-right: 15px;
+  /* Ensure content does not get hidden by scrollbar */
+}
+
+.company-job {
+  /* Adjust the max-height as needed */
+  padding-right: 15px;
+  /* Ensure content does not get hidden by scrollbar */
+}
+
+.key-stats {
+  height: 100%;
+  /* Set height to 100% */
+  margin-top: 8px;
+  /* Top margin of 8px */
+  margin-right: 20px;
+  /* Right margin of 20px */
+  margin-left: 5px;
+}
+
+.custom-col {
+  margin: 15px;
+  /* Adjust the value as needed */
+}
+
+
+
+.custom-modal .modal-dialog {
+  position: fixed;
+  right: 3px;
+  /* 20px from the left edge of the viewport */
+  top: 100px;
+  /* 20px from the top edge of the viewport */
+  /* 20px from the top edge of the viewport */
+}
+
+
+.custom-modal .modal-content {
+  border-radius: 8px;
+}
+
+.hr {
+  overflow-y: scroll;
+}
+
+
+.hamburger-icon {
+  display: none;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .left-side {
+    display: none;
+  }
+
+  .hamburger-icon {
+    display: block;
+  }
+
+  .left-side.visible {
+    display: block;
+    position: absolute;
+    top: 15px;
+    left: 0;
+    height: 100%;
+    z-index: 100;
+    width: 250px;
+  }
+
+  .right-side {
+    margin-left: 0;
+    padding-top: 60px;
+    overflow-y: auto;
+    /* Allow vertical scrolling */
+    overflow-x: scroll;
+    /* Allow horizontal scrolling */
+    height: calc(100vh - 60px);
+    /* Make the right side take the full height minus the padding */
+    white-space: nowrap;
+    /* Ensure content doesn't wrap and triggers horizontal scrolling */
+  }
+
+  /* Custom scrollbar styling for WebKit browsers */
+  .right-side::-webkit-scrollbar {
+    height: 12px;
+    /* Height for horizontal scrollbar */
+    width: 8px;
+    /* Width for vertical scrollbar */
+    background-color: #f1f1f1;
+    /* Background color of the scrollbar track */
+  }
+
+  .right-side::-webkit-scrollbar-thumb {
+    background-color: grey;
+    /* Scrollbar thumb color */
+    border-radius: 10px;
+    /* Rounded scrollbar edges */
+  }
+
+  /* Optional: Style the scrollbar corner where vertical and horizontal meet */
+  .right-side::-webkit-scrollbar-corner {
+    background-color: grey;
+    /* Corner area color */
+  }
+
+
+}
+
+/* Hide the close button on large screens */
+.close-btn {
+  display: none;
+}
+
+/* Show the close button on small screens */
+@media (max-width: 900px) {
+  .close-btn {
+    display: block;
+  }
+}
+
+
+/* Ensure table can scroll fully */
+.table-wrapper table {
+  width: 100%;
+  min-width: 400px;
+  /* Adjust this based on your content */
+  table-layout: auto;
+  /* Allow table to resize based on content */
+}
+
+/* Scrollbar styling for WebKit browsers */
+.table-wrapper::-webkit-scrollbar {
+  height: 8px;
+  /* Horizontal scrollbar height */
+  display: none;
+  /* Hide by default */
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Scrollbar styling for Firefox */
+.table-wrapper {
+  scrollbar-width: none;
+  /* Hide scrollbar by default */
+}
+
+/* Media Queries to show scrollbar on smaller screens */
+@media (max-width: 900px) {
+  .table-wrapper {
+    overflow-x: auto;
+    /* Show horizontal scrollbar on small screens */
+  }
+
+  .table-wrapper::-webkit-scrollbar {
+    display: block;
+    /* Show scrollbar */
+  }
+
+  .table-wrapper {
+    scrollbar-width: thin;
+    /* Thin scrollbar for Firefox */
+    scrollbar-color: #888 #fff;
+    /* Scrollbar color for Firefox */
+  }
+
+  .table-wrapper table {
+    min-width: 200px;
+    /* Adjust based on your content */
+  }
+}
+
+@media (max-width: 900px) {
+  .table-wrapper {
+    overflow-x: auto;
+    /* Show horizontal scrollbar on very small screens */
+  }
+
+  .table-wrapper::-webkit-scrollbar {
+    display: block;
+    /* Show scrollbar */
+  }
+
+  .table-wrapper {
+    scrollbar-width: thin;
+    /* Thin scrollbar for Firefox */
+    scrollbar-color: #888 #fff;
+    /* Scrollbar color for Firefox */
+  }
+
+  .table-wrapper table {
+    min-width: 200px;
+    /* Adjust based on your content */
+  }
+}
+
+
+/* /summary/ */
+/* Base styling for the modal */
+.modal-summary {
+  /* Modal container styling */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent background */
+  z-index: 1000;
+  /* Ensure the modal is on top */
+}
+
+.modal-content-summary {
+  /* Modal content styling */
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 90%;
+  max-height: 80%;
+  overflow: auto;
+  position: relative;
+}
+
+/* Close button styling */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Base styling for the job summary text */
+.job-summary h3 {
+  font-size: 1.5em;
+  /* Adjust base font size */
+  margin-bottom: 10px;
+}
+
+.job-details-text {
+  font-size: 1em;
+  /* Adjust base font size */
+  line-height: 1.5;
+  white-space: pre-wrap;
+  /* Preserve whitespace and line breaks */
+}
+
+/* Responsive font sizes */
+@media (max-width: 1200px) {
+  .job-summary h3 {
+    font-size: 1.2em;
+    /* Slightly smaller for medium screens */
+  }
+
+  .job-details-text {
+    font-size: 0.9em;
+    /* Slightly smaller for medium screens */
+  }
+
+  .job-details-text strong {
+    font-size: 1.3em; /* Slightly smaller for medium screens */
+  }
+}
+
+@media (max-width: 992px) {
+
+  .job-summary h3,
+  .nav-links {
+    font-size: 1.1em;
+    /* Smaller for smaller screens */
+  }
+
+  .job-details-text {
+    font-size: 0.9em;
+    /* Smaller for smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .modal-content-summary {
+    padding: 10px;
+    /* Adjust padding for smaller screens */
+  }
+
+  .job-summary h3 {
+    font-size: 1.1em;
+    /* Smaller for small screens */
+  }
+
+  .job-details-text {
+    font-size: 0.9em;
+    /* Smaller for small screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content-summary {
+    padding: 5px;
+    /* Adjust padding for very small screens */
+  }
+
+  .job-summary h3 {
+    font-size: 0.5em;
+    /* Smaller for very small screens */
+  }
+
+  .job-details-text {
+    font-size: 0.5em;
+    /* Smaller for very small screens */
+  }
+}
+
+
+/* Base styles for navigation links */
+.nav-links {
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+.nav-links li {
+  margin: 0;
+}
+
+.tab-link {
+  padding-left: 2vw;
+  /* Adjust padding as needed */
+  font-size: 2vw;
+  /* Adjust font size relative to viewport width */
+  color: gray;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  /* Smooth color transition */
+}
+
+/* Active tab styling */
+.tab-link.active {
+  color: purple;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .tab-link {
+    font-size: 2vw;
+    padding-left: 1.5vw;
+  }
+}
+
+@media (max-width: 992px) {
+  .tab-link {
+    font-size: 20px;
+    padding-left: 1vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .tab-link {
+    font-size: 1.5em;
+    padding-left: 0.8vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .tab-link {
+    font-size: 1.5em;
+    padding-left: 0.5vw;
+  }
+}
+
+@media (max-width: 1200px) {
+  .logo-image {
+    position: relative;
+    left: 8%; /* Adjust for larger screens */
+    transform: translate(10%, 20%); /* Combine translateX and translateY */
+    width: 150px; /* Set width for screens up to 1200px */
+    height: 100px; /* Set height for screens up to 1200px */
+  }
+  .logo-edit-icon {
+    position: relative; /* Ensure absolute positioning */
+    transform: translate(180%, 50%); /* Combine translateX and translateY */
+  }
+}
+
+@media (max-width: 992px) {
+  .logo-image {
+    position: relative;
+    left: 5%; /* Adjust for medium screens */
+    top: 20%; /* Move the image down for medium screens */
+    transform: translate(7%, 20%); /* Combine translateX and translateY */
+    width: 120px; /* Set width for screens up to 992px */
+    height: 80px; /* Set height for screens up to 992px */
+  }
+  .logo-edit-icon{
+    position: relative; /* Ensure absolute positioning */
+    transform: translate(120%, 40%); /* Combine translateX and translateY */
+  }
+}
+
+@media (max-width: 768px) {
+  .logo-image {
+    position: relative;
+    right: 20%; /* Horizontal positioning */
+    bottom: 0; /* Adjust vertical positioning */
+    transform: translate(4%, 15%); /* Combine translateX and translateY */
+    width: 100px; /* Set width for screens up to 768px */
+    height: 70px; /* Set height for screens up to 768px */
+  }
+  .logo-edit-icon {
+    position: relative; /* Ensure absolute positioning */
+    transform: translate(70%,50%); /* Combine translateX and translateY */
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-image {
+    position: relative;
+    right: 20%; /* Horizontal positioning */
+    bottom: 0; /* Adjust vertical positioning */
+    transform: translate(4%, 15%); /* Combine translateX and translateY */
+    width: 80px; /* Set width for screens up to 480px */
+    height: 60px; /* Set height for screens up to 480px */
+  }
+  .logo-edit-icon{
+    position: relative; /* Ensure absolute positioning */
+    transform: translate(60%, 80%); /* Combine translateX and translateY */
+  }
+}
+
+
+@media (max-width: 1200px) {
+  .date-filter {
+    flex-direction: column;
+  }
+
+  .date-input-group {
+    flex: 1;
+    justify-content: space-evenly;
+  }
+
+  .date-input-group input {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .date-filter {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .date-input-group {
+    width: 80%;
+  }
+
+  .date-input-group input {
+    width: 80%;
+  }
+}
+
+@media (max-width: 480px) {
+  .date-filter {
+    flex-direction: column;
+    gap: 8px; /* Smaller gap for very small screens */
+  }
+
+  .date-input-group {
+    width: 80%;
+  }
+
+  .date-input-group input {
+    width: 80%;
+  }
+}
+@media (max-width: 767px) {
+  .filter {
+    max-width: 100% !important; /* Full width on small screens */
+    margin-bottom: 15px; /* Add spacing between stacked columns */
+  }
+
+  .date-filter .date-input-group {
+    flex-direction: column; /* Stack date inputs vertically on small screens */
+    gap: 0.5rem;
+  }
+
+  .date-filter {
+    gap: 1rem; /* Add space between From and To inputs */
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .filter {
+    max-width: 48% !important; /* 48% width on medium screens to allow spacing */
+    margin-bottom: 10px; /* Smaller spacing */
+  }
+
+  .ms-md-3 {
+    margin-left: 2% !important; /* Adjust the spacing between columns */
+  }
+}
+
+@media (min-width: 992px) {
+  .filter {
+    max-width: 30% !important; /* 30% width on large screens */
+  }
+
+  .ms-lg-3 {
+    margin-left: 1% !important; /* Adjust the spacing between columns */
+  }
+}
+
+
+.circle {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.gray {
+  background-color: gainsboro;
+}
+
+.red {
+  background-color: red;
+}
+
+.green {
+  background-color: green;
+}
+
+/* Media query for smaller devices (e.g., tablets, phones) */
+@media (max-width: 768px) {
+  .subtitle-responsive {
+    font-size: 11px; /* Increase for smaller screens */
+  }
+  
+  .title-responsive {
+    font-size: 12px; /* Adjust larger titles for smaller screens */
+  }
+}
+
+/* Media query for very small screens (e.g., phones) */
+@media (max-width: 576px) {
+  .subtitle-responsive {
+    font-size: 11px; /* Further increase for small screens */
+  }
+
+  .title-responsive {
+    font-size: 12px; /* Adjust as per need for title text */
+  }
+}

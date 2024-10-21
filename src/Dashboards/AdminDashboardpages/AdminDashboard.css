@@ -1,0 +1,309 @@
+
+
+
+
+.nav-box {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .nav-link {   
+    color: black;
+    text-decoration: none;
+    font-size: 1.2rem;
+  }
+  
+  .nav-link:hover {
+    /* Example hover effect */
+    color: blue;
+  }
+
+.admin-right-action{
+  overflow: scroll;
+}
+
+
+
+.admin-details{
+    height: 400px;
+    width: 230px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#logo img{
+    height: 100px;
+    width: 100px;
+    border-radius: 60px;
+}
+.admin-details{
+    height: 400px;
+    width: 230px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#dashdoard{
+    letter-spacing: 1px;
+}
+.help{
+
+    text-align: center;
+   
+}
+
+.search i{
+    font-size: 25px;
+}
+a{
+    text-decoration: none;
+    
+}
+
+
+
+.applyforValidation{
+    text-align: center;
+    margin-top: 10px;
+}
+
+
+
+
+
+/* Admin-action */
+
+
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+}
+
+main {
+    padding: 2rem;
+}
+
+.request {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.approve-btn, .reject-btn {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    margin-right: 1rem;
+}
+.approve-btn {
+    background-color:  #4CAF50;
+}
+
+.reject-btn {
+    background-color: #FF5733;
+}
+
+
+/* user validation */
+/* company validation */
+/* Allowing access */
+
+
+
+  /* block accounts */
+
+  .blockedAccount{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 50px;
+}
+
+.blockedAccount h2{
+    color: red;
+}
+
+
+/* myprofile */
+
+.details{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    margin-top: 100px;
+}
+
+.details span label{
+    color: blue;
+}
+.details span h3{
+    color: rgb(26, 39, 6);
+}
+
+
+h2{
+    text-align: center;
+    font-size: 30px;
+}
+
+/* 
+company-details */
+
+.addDetails{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 50px;
+}
+
+/* 
+company details by admin */
+
+.company-admin-container{
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.company-admin-form-group{
+    margin-bottom: 20px;
+}
+
+.company-admin-form-group label{
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.company-admin-form-group input[type="text"]{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.company-admin-form-group textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.company-admin-button{
+    background-color: #115eb1;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 3px;
+    cursor: pointer;       
+
+}
+
+
+/* msg */
+.company-add-msg-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    height: 100vh; /* Set the height of the container to full viewport height */
+  }
+  
+  .company-add-msg-container h1,
+  .company-add-msg-container p {
+    text-align: center; /* Center text inside the container */
+  }
+  
+.company-admin-form-group label{
+    text-align: right;
+}
+  .addDetails{
+    justify-content: center;
+  }
+
+
+
+
+
+  /* Admin action*/
+
+   /* Header */
+   .admin-header {
+    text-align: center;
+    margin-bottom: 20px;
+    color: wheat;
+    margin-right: 20px;
+    margin-left: 12px;
+  }
+  
+  /* HR Request container */
+  .request-container {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  /* HR Details */
+  .hr-details {
+    margin-bottom: 10px;
+  }
+  
+  /* Button Container */
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  /* Approve Button */
+  .approve-btn-adminAction {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    cursor: pointer;
+  }
+  
+  /* Reject Button */
+  .reject-btn-adminAction {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    cursor: pointer;
+  }
+  
+  /* Approval Message */
+  .approval-message {
+    margin-top: 10px;
+    color: #28a745;
+  }
+
+  .reject-message {
+    margin-top: 10px;
+    color:rgb(194, 27, 27);
+  }
+  
+  /* Error Message */
+  .error-message {
+    margin-top: 10px;
+    color: #dc3545;
+  }
+  
+ .company-overview-by-admin{
+  max-height: 200px; /* Adjust the max-height as needed */
+  overflow-y: scroll; /* Enable vertical scrolling */
+  padding-right: 15px; /* Ensure content does not get hidden by scrollbar */
+ }
+

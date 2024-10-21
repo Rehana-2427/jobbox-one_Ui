@@ -1,0 +1,54 @@
+@mixin responsive ($breakpoint){
+  @if $breakpoint == phone {
+      @media (max-width: 767) { @content };
+  } 
+  @if $breakpoint == tab-port {
+       @media (max-width: 991px) { @content };
+   } 
+   @if $breakpoint == tab-land {
+       @media (max-width: 1024px) { @content };
+   } 
+   @if $breakpoint == desktop {
+       @media (min-width: 1200) { @content };
+   } 
+}
+
+
+.dashboard-container {
+    .left-side {
+      @include responsive(phone) {
+        display: none;
+      }
+    }
+  
+    .hamburger-icon {
+      display: none;
+      @include responsive(phone) {
+        display: block;
+        cursor: pointer;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        font-size: 24px;
+        z-index: 1000; /* Ensure the hamburger icon is above other elements */
+      }
+    }
+  
+    .right-side {
+      @include responsive(phone) {
+        margin-left: 0;
+      }
+    }
+  
+    .left-side.show {
+      display: block; /* Ensure the left side shows when the hamburger icon is clicked */
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: white;
+      z-index: 999;
+      width: 250px; /* Adjust width as needed */
+    }
+  }
+  

@@ -1,0 +1,321 @@
+.jobs-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin: 20px 0;
+}
+
+.jobs-row {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 10px;
+    padding: 10px;
+    margin: 0 24px;
+    /* Adjust margin for better fit */
+    width: calc(100% - 48px);
+    /* Adjust the width to fit the buttons */
+}
+
+.scroll-btn-left,
+.scroll-btn-right {
+    background-color: #c9d1da;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.scroll-btn-left {
+    left: 0;
+}
+
+.scroll-btn-right {
+    right: 0;
+}
+
+.scroll-btn-left:hover,
+.scroll-btn-right:hover {
+    background-color: #8f00b3;
+    /* Darker color on hover */
+}
+
+/* Adjust button size and appearance if needed */
+.scroll-btn-left,
+.scroll-btn-right {
+    width: 40px;
+    /* Button width */
+    height: 40px;
+    /* Button height */
+    border-radius: 50%;
+    /* Make the buttons circular */
+}
+
+.browse-job-card {
+    transition: box-shadow 0.3s ease-in-out;
+    border-radius: 10px;
+    /* Optional: To make the card edges rounded */
+}
+
+.browse-job-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Add shadow on hover */
+    border: 1px solid #ccc;
+    /* Optional: You can change the border color on hover */
+}
+
+@media (max-width: 1200px) {
+    .browse-job-card {
+        width: 250px;
+    }
+
+    .browse-job-card-img {
+        width: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .browse-job-card {
+        width: 900px;
+        height: 500px;
+    }
+
+    .browse-job-card-img {
+        width: 900px;
+        height: 900px;
+    }
+
+    .browse-job-card .card-title {
+        font-size: 1em;
+    }
+
+    .browse-job-card .card-subtitle,
+    .browse-job-card .card-text {
+        font-size: 0.85em;
+    }
+}
+
+@media (max-width: 576px) {
+    .browse-job-card {
+        width: 500px;
+        height: 300px;
+    }
+
+    .browse-job-card-img {
+        width: 500px;
+        height: 400px;
+    }
+
+    .browse-job-card .card-title {
+        font-size: 0.9em;
+    }
+
+    .browse-job-card .card-subtitle,
+    .browse-job-card .card-text {
+        font-size: 0.75em;
+    }
+}
+
+
+
+.cta-container1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.button-container {
+    margin-top: 20px;
+}
+.cta-accent2-bg {
+  
+    padding: 20px;
+  }
+  
+  .cta-accent1-bg {
+   
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .cta-container1 {
+    display: flex;
+    flex-direction: column; /* Stack the content vertically */
+    align-items: center; /* Center the content horizontally */
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .cta-content {
+    margin-bottom: 20px; /* Space between the content and the button */
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ensure the container takes the full width */
+  }
+  
+  .thq-button-filled.cta-button {
+    font-size: 16px;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+    max-width: 500px;
+    width: 100%; /* Make the button responsive */
+  }
+  
+  /* Responsive styles for tablet screens */
+  @media screen and (max-width: 768px) {
+    .thq-button-filled.cta-button {
+      font-size: 12px;
+      padding: 8px 16px;
+    }
+  }
+  @media screen and (max-width: 570px) {
+    .thq-button-filled.cta-button {
+      font-size: 10px;
+      padding: 3px 10px;
+      max-width: 300px;
+    }
+  }
+  @media screen and (max-width: 525px) {
+    .thq-button-filled.cta-button {
+      font-size: 8px;
+      padding: 3px 10px;
+      max-width: 300px;
+    }
+  }
+  /* Responsive styles for mobile screens */
+  @media screen and (max-width: 480px) {
+    .cta-container1 {
+      padding: 10px;
+    }
+  
+    .thq-button-filled.cta-button {
+      font-size: 8px;
+      padding: 2px 8px;
+      margin-right: 0;
+      max-width: 250px;
+    }
+  }
+  
+
+.responsive-button {
+    width: 100%;
+    /* Full width on smaller screens */
+    max-width: 400px;
+    /* Limit the button's max width */
+}
+
+/* Media queries to adjust the button width based on screen size */
+@media (min-width: 768px) {
+    .responsive-button {
+        width: 80%;
+        /* 80% width on medium screens */
+    }
+}
+
+@media (min-width: 1024px) {
+    .responsive-button {
+        width: 60%;
+        /* 60% width on larger screens */
+    }
+}
+.home-search-bar {
+    position: relative;
+    width: 50%;
+    left: 300px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-input-bar {
+    width: 100%;
+    height: 50px;
+    padding: 10px 20px;
+    padding-right: 200px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+  
+  .search-input-bar::placeholder {
+    color: #aaa;
+  }
+  
+  .search-button {
+    height: 40px;
+    width: 130px;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    margin-right: 5px;
+  }
+  
+  .fa-search-icon {
+    position: absolute;
+    top: 12px;
+    right: 150px;
+    transition: all 0.3s ease;
+  }
+  
+  /* Responsive styles */
+  @media screen and (max-width: 768px) {
+    .home-search-bar {
+      width: 80%;
+      left: 0;
+      margin: 0 auto;
+    }
+  
+    .search-input-bar {
+      height: 45px;
+      font-size: 14px;
+      padding-right: 130px;
+    }
+  
+    .fa-search-icon {
+      top: 10px;
+      right: 110px;
+      font-size: 16px;
+    }
+  
+    .search-button {
+      width: 100px;
+      height: 28px;
+      font-size: 16px;
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .home-search-bar {
+      width: 100%;
+      left: 0;
+      margin: 0 auto;
+    }
+  
+    .search-input-bar {
+      height: 45px;
+      font-size: 12px;
+      padding-right: 100px;
+    }
+  
+    .fa-search-icon {
+      top: 8px;
+      right: 80px;
+      font-size: 14px;
+    }
+  
+    .search-button {
+      width: 80px;
+      height: 28px;
+      font-size: 14px;
+    }
+  }
+  

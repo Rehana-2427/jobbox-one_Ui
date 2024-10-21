@@ -1,0 +1,1104 @@
+* {
+  -ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+#logo img {
+  height: 100px;
+  width: 200px;
+  border-radius: 60px;
+}
+
+/* candidate dashboard and payment */
+section {
+  padding: 12px;
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.data {
+  height: 150px;
+  width: 150px;
+  border: 3px solid gray;
+  text-align: center;
+  border-radius: 10px;
+}
+
+span {
+  font-size: 13px;
+}
+
+.candidate-search {
+  position: relative;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding: 10px;
+  margin-left: 250px;
+  margin-top: 5px;
+}
+
+.candidate-search input[type="text"] {
+  width: 10%;
+}
+
+.candidate-search button {
+  height: 35px;
+  margin-left: 10px;
+  /* Adjust as needed */
+}
+
+#user {
+  height: 35px;
+  margin-left: 10px;
+  margin-top: 0px;
+  color: rgb(90, 90, 182);
+}
+
+#user:hover {
+  color: rgb(88, 2, 23);
+}
+
+a {
+  text-decoration: none;
+}
+
+.search {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}
+
+.search i {
+  font-size: 25px;
+}
+
+.search .icon {
+  height: 24px;
+  width: 100px;
+  border-radius: 10px;
+  border: none;
+  position: fixed;
+  top: 5px;
+  right: 20px;
+}
+
+#user {
+  margin-left: 10px;
+  margin-top: 5px;
+  color: white;
+  height: 30px;
+  width: 30px;
+}
+
+.dream {
+  width: 98%;
+  margin-left: 12px;
+}
+
+.dream p {
+  text-align: center
+}
+
+.apply b {
+  background-color: orangered;
+  color: white;
+  font-size: 18px;
+  padding: 5px;
+}
+
+/* dream-company-form */
+.apply-dream-company {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: white
+}
+
+.centered-container {
+  text-align: center;
+}
+
+.success-message {
+  text-align: center;
+  color: green;
+}
+
+.span {
+  border: 10px solid rgb(154, 184, 204);
+  padding: 12px;
+  margin: 12px;
+}
+
+.resume {
+  height: 100px;
+  width: 100px;
+  border: 3px solid gray;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.resume h3 {
+  margin: 15px;
+  padding: 2px;
+  text-align: center;
+}
+
+.span {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+}
+
+.adding-resumes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.adding-resumes input {
+  padding: 6px;
+  margin: 10px;
+}
+
+/* profile */
+.candidate-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+}
+
+.candidate-details label {
+  text-align: left;
+  margin: 12px;
+}
+
+.candidate-details button {
+  margin: 12px;
+}
+
+.next-back {
+  text-align: center;
+}
+
+.next-back button {
+  margin: 12px;
+}
+
+.companyJob {
+  text-align: center;
+}
+
+.company-card-job {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 10px;
+  width: 300px;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  flex: 1 0 300px;
+  margin: 12px;
+  word-wrap: break-word;    /* Ensure long words wrap */
+  overflow-wrap: break-word; 
+}
+
+.company-card-job .card-text {
+  white-space: normal;      /* Allow text to wrap */
+  overflow: hidden;         /* Hide overflow */
+  text-overflow: ellipsis;  /* Show ellipsis (...) if text overflows */
+  display: block;           /* Ensure block layout */
+}
+
+/* Media Query for small screens */
+@media (max-width: 600px) {
+  .company-card-job {
+      max-width: 100%;      /* Make the card full width on small screens */
+      flex: 1 0 100%;
+  }
+}
+
+
+.company-name {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+button.com {
+  background-color: skyblue;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.com:hover {
+  background-color: lightblue;
+}
+
+#settings-container {
+  width: 150px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-left: 85%;
+}
+
+#settings-container ul {
+  list-style: none;
+  padding: 0;
+}
+
+#settings-container li {
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+#settings-container li:last-child {
+  border-bottom: none;
+}
+
+#settings-container li a {
+  color: #333333;
+  text-decoration: none;
+}
+
+#settings-container li a:hover {
+  color: #007bff;
+}
+
+#settings-container li svg {
+  margin-right: 10px;
+}
+
+.close {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.payment-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 50px auto;
+  max-width: 800px;
+}
+
+.payment-container>div {
+  flex: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.payment-container h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.payment-options {
+  margin-top: 20px;
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.payment-option svg {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.payment-history {
+  margin-top: 20px;
+}
+
+.payment-history p {
+  text-align: center;
+  color: #666;
+}
+
+.payment-div {
+  display: flex;
+  justify-content: end;
+}
+
+/* companyPage css*/
+.companyPage {
+  background-color: #fff;
+  width: 100%;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.companyPage:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.companyPage h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.companyPage p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+
+/*  Candidate search*/
+.candidate-search input[type='text'] {
+  padding: 8px 12px;
+  width: 100px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.candidate-search input[type='text']:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.candidate-search button {
+  background-color: transparent;
+  border: 1px solid rgb(158, 158, 248);
+  cursor: pointer;
+}
+
+.candidate-search button .button {
+  font-size: 16px;
+}
+
+.pagination {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+}
+
+.pagination .page-item {
+  margin: 0 2px;
+}
+
+.pagination .page-link {
+  display: block;
+  padding: 5px 10px;
+  text-decoration: none;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.page-button,
+.page-link {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  margin: 0 3px;
+}
+
+.page-button:hover {
+  background-color: #e0e0e0;
+}
+
+.active .page-link {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.page-button:disabled,
+.page-link:disabled {
+  cursor: not-allowed;
+  border-color: #ccc;
+  color: #999;
+}
+
+
+
+/*My Profile css*/
+.profile-container {
+  background-color: #f7f7f7;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 20px;
+}
+
+.profile-item {
+  margin-bottom: 10px;
+}
+
+.profile-label {
+  font-weight: bold;
+}
+
+.profile-value {
+  margin-left: 10px;
+  color: #333;
+}
+
+.profile-button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.profile-button:hover {
+  background-color: #0056b3;
+}
+
+/* Add Resume Page*/
+.resume-page {
+  max-width: 600px;
+  height: fit-content;
+  margin: 100px auto;
+  padding: 40px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.resume-page h2 {
+  margin-bottom: 30px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.resume-Add {
+  display: flex;
+  flex-direction: column;
+}
+
+.select-type,
+.select,
+.message-type {
+  margin-bottom: 30px;
+}
+
+.label {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.select select,
+.input input,
+.message textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+  transition: border-color 0.3s ease;
+}
+
+.select-file select:focus,
+.input input:focus,
+.message textarea:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.uploadResume button {
+  padding: 12px 20px;
+  height: 20px;
+  width: 100px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+/* get Resume*/
+.resume-div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.resume-box {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  height: 120px;
+  padding: 20px;
+  margin: 5px;
+  width: 200px;
+  text-align: center;
+  background-color: #f9f9f9;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.resume-box p {
+  margin: 0;
+}
+
+.download button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 20px;
+  margin: 5px;
+  border-radius: 8px;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.download-button:hover {
+  background-color: #0056b3;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* popup model*/
+/* CSS for modal */
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+
+
+.close {
+  color: #666;
+  cursor: pointer;
+  font-size: 24px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.close:hover {
+  color: #333;
+}
+
+.close:focus {
+  outline: none;
+}
+
+/* popup*/
+.resume-selection-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  max-width: 400px;
+  width: 80%;
+  height: fit-content;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 9999;
+}
+
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px; /* Adjust max-width as needed */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #666;
+  font-size: 24px;
+}
+
+#resumeSelect {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #fff;
+  color: #333;
+}
+
+#resumeSelect:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+.close:hover {
+  color: #333;
+}
+
+.close:focus {
+  outline: none;
+}
+
+.ok {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 20px;
+  margin-left: 50px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.ok:hover {
+  background-color: #45a049;
+}
+/* Media Queries for responsive design */
+@media (max-width: 768px) {
+  .popup-content {
+      width: 95%;
+      padding: 15px;
+  }
+  
+  button.ok {
+      width: 15%;
+      padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .popup-content {
+      width: 100%;
+      padding: 10px;
+  }
+  
+  button.ok {
+      padding: 10px;
+      font-size: 14px;
+  }
+}
+
+/* popuo singout*/
+/* Style for the overlay */
+#modal-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  margin-top: 80px;
+  margin-right: 30px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  z-index: 1000;
+}
+
+
+/* Style for the modal */
+#settings-modal {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Style for the list inside the modal */
+#settings-modal ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Style for the list items inside the modal */
+#settings-modal li {
+  margin-bottom: 10px;
+}
+
+/* Style for the close button */
+#settings-modal button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Style for the close button on hover */
+#settings-modal button:hover {
+  background-color: #0056b3;
+}
+
+/* Modal container */
+.modal-summary {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: auto;
+}
+
+/* Modal content */
+.modal-content-summary {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 95%;
+  max-width: fit-content;
+  border-radius: 5px;
+  position: relative;
+}
+
+/* Close button */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+}
+
+/* Header */
+.modal-content-summary h2 {
+  margin-top: 0;
+}
+
+/* Job summary */
+.modal-content-summary pre {
+  margin: 10px;
+}
+
+.custom-modal .modal-content {
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  height: 400px;
+}
+
+.custom-modal .modal-body {
+  height: 90vh;
+  max-height: calc(100vh - 200px);
+  overflow-y: scroll;
+  padding: 10px;
+}
+
+.chat-message {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1px;
+}
+
+.message-right {
+  background-color: #d1ecf1;
+  margin-right: auto;
+}
+
+.message-left {
+  background-color: #e2e3e5;
+  margin-left: auto;
+}
+
+.message-time {
+  align-self: flex-end;
+  font-size: 0.5rem;
+  color: #666;
+}
+
+.message-date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.note-container {
+  margin-top: 20px;
+  background-color: #f8f9fa;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.note-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #a00707;
+}
+
+.chart-card {
+  width: 400px;
+}
+
+.resume-card {
+  width: 200px;
+  margin: 12px;
+}
+
+.center-container-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: fit-content;
+  width: 100%;
+  padding: 30px;
+  margin: 180px
+}
+
+.job-details-text {
+  font-family: nunito, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.skill-box {
+  display: flex;
+  align-items: center;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 5px;
+  font-size: 14px;
+}
+
+.skill-box .close-icon {
+  margin-left: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.skill-box .close-icon:hover {
+  color: red;
+}
+
+.candidate-profile-details{
+  padding: 20px;
+  margin-top: 12px;
+}
+
+
+
+.hamburger-icon {
+  display: none;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .left-side {
+    display: none;
+  }
+
+  .hamburger-icon {
+    display: block;
+  }
+  .jobboxlogo{
+    display: block;
+  }
+
+
+  .left-side.visible {
+    display: block;
+    position: absolute;
+    top: 15px;
+    left: 0;
+    height: 100%;
+    z-index: 100;
+    width: 250px;
+  }
+
+  .right-side {
+    margin-left: 0;
+    padding-top: 60px; /* Adjust padding to ensure content is not hidden by the hamburger icon */
+  }
+  
+}
+/* Hide the close button on large screens */
+.close-btn{
+  display: none;
+}
+
+/* Show the close button on small screens */
+@media (max-width: 900px) {
+  .close-btn {
+    display: block;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .responsive-text {
+    font-size: 12px; /* Smaller font for small screens */
+  }
+}
+
+
+@media (max-width: 510px) {
+  .responsive-text {
+    font-size: 10px; /* Smaller font for small screens */
+  }
+}
+@media (max-width:433px) {
+  .responsive-text {
+    font-size: 8px; /* Smaller font for small screens */
+  }
+}
+@media (min-width: 769px) {
+  .responsive-text {
+    font-size: 12px; /* Larger font for medium and larger screens */
+  }
+}
+.company-name {
+  position: absolute;
+  top: 70%;
+  right: 100px;
+}
+.candi-company-logo {
+  width: 200px; /* Fixed width */
+  height: 120px; /* Fixed height */
+  cursor: pointer;
+  clip-path: ellipse(50% 50% at 50% 50%); /* Creates a horizontal oval */
+  object-fit: cover; /* Ensures the image covers the dimensions without distortion */
+}
+
+@media (max-width: 900px) {
+  .company-name {
+    position: absolute !important;
+    top: 75% !important;
+    right: 100px !important;
+  }
+  .social-media-links{
+    position: absolute !important;
+    top: 85% !important;
+    right: 30px !important;
+  }
+  .candi-company-logo {
+    width: 178px;
+    height: 80px;
+    cursor: pointer;
+    clip-path: ellipse(50% 50% at 50% 50%);
+    object-fit: cover;
+    position: relative;
+    top: 40px;
+
+  }
+}
+
+@media (max-width: 410px) {
+  .company-name {
+    position: absolute !important;
+    top: 80% !important;
+    right: 100px !important;
+    font-size: 15px;
+  }
+  .social-media-links{
+    position: absolute !important;
+    top: 85% !important;
+    right: 30px !important;
+    font-size: 5px;
+  }
+  .candi-company-logo {
+    width: 100px;
+    height: 80px;
+    cursor: pointer;
+    clip-path: ellipse(50% 50% at 50% 50%);
+    object-fit: cover;
+    position: relative;
+    top: 40px;
+}
+
+}

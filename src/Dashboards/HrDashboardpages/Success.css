@@ -1,0 +1,30 @@
+.sucess-msg-container {
+    text-align: center;
+    margin-top: 50px; /* Adjust the margin as needed */
+  }
+  
+  .sucess-msg-container h2 {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 10px; /* Adjust the margin as needed */
+  }
+  
+  .sucess-msg-container p {
+    font-size: 20px;
+    color: #666;
+    margin-bottom: 20px; /* Adjust the margin as needed */
+  }
+  
+  .sucess-msg-container a {
+    display: inline-block;
+    font-size: 18px;
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .sucess-msg-container a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+  

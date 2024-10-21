@@ -1,0 +1,111 @@
+
+  .form-container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .heading {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .user-registration-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .radio-group {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 1rem;
+    gap: 15px;
+  }
+  
+  .radio-group .form-check {
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+  }
+  
+  .radio-group .form-check-label {
+    margin-left: 0.5rem;
+  }
+  
+  .user-signin-column2{
+    position:absolute;
+    right: 200px;
+    bottom: 350px;
+  }
+  .info-wrapper {
+    width: 53%;
+}
+.hdn,.info-wrapper {
+  color: #091e42;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  text-align: left;
+}
+.info-list {
+  font-weight: 300;
+}
+
+.hr-form-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* Prevent scrolling */
+}
+
+@media (max-width: 1200px) {
+  .hr-form-card {
+    width: 100%;
+    position: relative;
+    left: 100px;
+    overflow-y: auto;
+    top: 2px;
+  }
+  .hr-form{
+    position: relative;
+    top: 100px;
+    max-height: 80vh; /* Sets a maximum height relative to the viewport height */
+    overflow-y: auto; /* Enables vertical scrolling */
+  }
+}
+/* Medium screens (e.g., tablets) */
+@media (max-width: 960px) {
+  .hr-form-card {
+    width: 90%;
+    position: relative;
+    left: 100px;
+    overflow-y: auto;
+    padding-left: 12px;
+  }
+  .hr-form{
+    position: relative;
+    top: 100px;
+    max-height: 80vh; /* Sets a maximum height relative to the viewport height */
+    overflow-y: auto; /* Enables vertical scrolling */
+  }
+}
+
+/* Small screens (e.g., mobile) */
+@media (max-width: 600px) {
+  .hr-form-card {
+    width: 70%;
+    position: relative;
+    right: 200px;
+    padding-left: 12px;
+  }
+  .hr-form{
+    position: relative;
+    top: 100px;
+    max-height: 80vh; /* Sets a maximum height relative to the viewport height */
+    overflow-y: auto; /* Enables vertical scrolling */
+  }
+}
+

@@ -1,0 +1,165 @@
+
+* {
+    -ms-overflow-style: none;
+  }
+  
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+
+.dashboard-container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.left-side {
+    height: 100vh;
+    width: 200px;
+
+  }
+.left-side section link{
+    text-decoration-color: rgb(16, 15, 15);
+}
+
+.right-side {
+    height: 100vh;
+    width: 100vw;
+    background-color: rgb(252, 253, 253);
+    overflow-y: scroll;
+  }
+
+  .i-Full-Screen{
+    font-size: 20px;
+    margin-right:5px;
+  }
+  
+  /* dropdownStyles.css */
+.initials-placeholder{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  margin-right:20px;
+}
+.admin-icon{
+  width: 30px;
+  height: 30px;
+  font-weight: bold;
+  margin-right:24px;
+  color: black;
+}
+.toggle-hidden {
+  cursor: pointer;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
+.i-Data-Settings {
+  margin-right: 0.25rem;
+}
+
+.i-Lock-2 {
+  margin-right: 0.25rem;
+}
+
+
+
+ 
+  /* dropdownNotificationStyles.css */
+.badge-top-container {
+  position: relative;
+  margin-right: 5px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-size: 75%;
+  font-weight: 200;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+}
+
+.bg-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.header-icon {
+  font-size: 22px;
+}
+
+.text-muted {
+  color: #6c757d !important;
+}
+
+.unread-notification {
+  font-weight: bold;
+}
+
+.read-notification {
+  font-weight: normal;
+}
+
+  .dashboard-container-boxes{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+
+
+.dashboard-container-boxes span{
+    height: 150px;
+    width: 150px;
+    border: 2px solid black;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 5px;
+}
+.dashboard-container-boxes span h4{
+  text-align: center;
+}
+.status-info{
+  background-color: gainsboro;
+  margin: 12px;
+  color: black;
+  text-align: center;
+}
+
+
+/* centered-form */
+.centered-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  background-color: #f5f5f5;
+  font-size: 18px;
+}
+
+
+.table-details-list{
+  margin-right: 20px;
+  margin-left: 12px;
+ }

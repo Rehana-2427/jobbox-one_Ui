@@ -1,0 +1,62 @@
+
+  .form-container {
+    background-color: #fff; /* Form background color */
+    padding: 40px; /* Increased padding for more breathing room */
+    border-radius: 10px; /* Larger rounded corners for a softer look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* More prominent box-shadow */
+    max-width: 450px; /* Slightly narrower form for better readability on smaller screens */
+    margin: 0 auto;
+  }
+  
+  .form-container h2 {
+    text-align: center;
+    margin-bottom: 25px; /* Slightly larger margin for title */
+    font-size: 2em; /* Larger heading size */
+    color: #333; /* Darker heading color */
+  }
+  
+  .form-group {
+    margin-bottom: 20px; /* Consistent spacing between form groups */
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333; /* Darker label color for better contrast */
+  }
+  
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group input[type="tel"],
+  .form-group input[type="date"],
+  .form-group input[type="password"],
+  .form-group input[type="number"] {
+    width: 100%;
+    padding: 15px; /* Increased padding for more comfortable typing */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px; /* Larger font size for improved readability */
+  }
+  
+  .form-group input[type="submit"] {
+    background-color: #4CAF50; /* Primary button color */
+
+    width: 400px;
+    color: white;
+    padding: 12px 25px; /* Adjusted padding for better button proportions */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for background color and text color */
+    font-size: 16px; /* Adjusted font size */
+  }
+  
+  .form-group input[type="submit"]:hover {
+    background-color: #45a049; /* Darker shade on hover */
+  }
+  
+  
+  
+  

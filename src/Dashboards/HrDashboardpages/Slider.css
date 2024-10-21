@@ -1,0 +1,47 @@
+.slider-container {
+    width: 70px; /* Reduced width */
+    height: 20px; /* Reduced height */
+    border-radius: 12.5px;
+    background-color: #ccc; /* Default gray color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s; /* Smooth transition */
+  }
+  
+  .slider-container.shortlisted {
+    background-color: green; /* Turn green when shortlisted */
+  }
+  .slider-container.not-shortlisted {
+    background-color: red; /* Turn red when not shortlisted */
+  }
+  
+  .slider {
+    -webkit-appearance: none; /* For WebKit browsers */
+    appearance: none; /* Standard property for other browsers */
+    width: 100%;
+    height: 25px;
+    background: transparent;
+    outline: none;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px; /* Reduced thumb size */
+    height: 25px; /* Reduced thumb size */
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 25px; /* Reduced thumb size */
+    height: 25px; /* Reduced thumb size */
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+  
