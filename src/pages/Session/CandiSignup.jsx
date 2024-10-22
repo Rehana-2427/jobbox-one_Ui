@@ -315,7 +315,7 @@ const CandiSignup = () => {
             confirmButtonText: 'OK',
           }).then((result) => {
             if (result.isConfirmed) {
-              navigate('/forgetpassword', { state: { userRole: 'Candidate' } });
+              navigate('/candidate-dashboard', { state: { userRole: 'Candidate', userId: saveResponse.data.userId } });
             }
           });
         }
