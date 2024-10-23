@@ -112,6 +112,13 @@ const DrawerComp = () => {
                 anchor="left"
                 open={openDrawer}
                 onClose={() => setOpenDrawer(false)}
+                sx={{
+                    '& .MuiDrawer-paper': {
+                        height: '100vh', // Set the height to full viewport height
+                        boxSizing: 'border-box', // Ensure padding and border are included in the height
+                        overflow: 'hidden', // Disable scrolling
+                    }
+                }}
             >
                 <Box sx={{ width: 250, padding: 2 }}>
                     {/* Image */}
@@ -196,6 +203,7 @@ const DrawerComp = () => {
                             width: '100%',  // Make it full width if needed
                             maxWidth: '400px',  // Optional: limit width
                             padding: '10px',// Optional: add padding
+                            overflow:'hidden'
 
                         }}
                     >

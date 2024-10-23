@@ -5,7 +5,7 @@ import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import ResumeSelectionPopup from '../../Dashboards/CandidateDashboardpages/ResumeSelectionPopup';
-import Footer from '../Footer';
+import HomeFooter from '../HomeFooter';
 import CompanyJobs from './CompanyJobs';
 import CompanyOverView from './CompanyOverView';
 
@@ -253,29 +253,34 @@ const EachCompanyPage = () => {
   }, []);
   console.log("User ID:", userId); // Example of using userId
   const [showResumePopup, setShowResumePopup] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
   const [resumes, setResumes] = useState([]);
   const [hasDreamApplied, setHasDreamApplied] = useState(false);
 
-  const handleApplyButtonClick = () => {
-    setErrorMessage(''); // Clear any previous error message
-    setShowResumePopup(true);
-  };
-
+ 
   useEffect(() => {
-    // Fetch resumes data from the backend
-    axios.get(`${BASE_API_URL}/getResume?userId=${userId}`)
-      .then(response => {
-        setResumes(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching resumes:', error);
-      });
+    if (userId) { // Only fetch resumes if the user is logged in
+      axios.get(`${BASE_API_URL}/getResume?userId=${userId}`)
+        .then(response => {
+          setResumes(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching resumes:', error);
+        });
+    }
   }, [userId]);
-
+  
   const applyJob = async (resumeId) => {
+    if (!userId) { // If user is not logged in, do not proceed
+      Swal.fire({
+        icon: 'error',
+        title: 'Login Required',
+        text: 'Please login to apply for a job.',
+      });
+      return;
+    }
+  
     let loadingPopup;
-
+  
     try {
       // Show loading message using SweetAlert
       loadingPopup = Swal.fire({
@@ -285,38 +290,38 @@ const EachCompanyPage = () => {
           Swal.showLoading();
         }
       });
-
+  
       const appliedOn = new Date();
       const year = appliedOn.getFullYear();
       const month = String(appliedOn.getMonth() + 1).padStart(2, '0');
       const day = String(appliedOn.getDate()).padStart(2, '0');
       const formattedDate = `${year}-${month}-${day}`;
-
+  
       // Call the backend to apply for the job
       const response = await axios.put(`${BASE_API_URL}/applyDreamCompany?userId=${userId}&companyName=${companyName}&formattedDate=${formattedDate}&resumeId=${resumeId}`);
-
+  
       if (response.data) {
         Swal.close();
-
+  
         // Show success message
         await Swal.fire({
           icon: "success",
           title: "Apply Successful!",
           text: "You have successfully applied for this job."
         });
-
+  
         // Set hasDreamApplied to true after successful application
         setHasDreamApplied(true);
-
+  
         setCompanyName(''); // Reset company name
       }
     } catch (error) {
       console.error('Error applying for job:', error);
-
+  
       if (loadingPopup) {
         Swal.close();
       }
-
+  
       // Show error message
       Swal.fire({
         icon: 'error',
@@ -329,21 +334,29 @@ const EachCompanyPage = () => {
       }
     }
   };
-
+  
   useEffect(() => {
-    checkHasUserDreamApplied();
+    if (userId && companyName) { // Check application only if user is logged in and company name is available
+      checkHasUserDreamApplied();
+    }
   }, [companyName, userId]);
-
+  
   const checkHasUserDreamApplied = async () => {
     try {
+      if (!userId || !companyName) return; // Ensure both userId and companyName are present
+  
       const response = await axios.get(`${BASE_API_URL}/applicationDreamAplied`, {
-        params: { userId, companyName: companyName }
+        params: { userId: userId, companyName: companyName }
       });
+  
       setHasDreamApplied(response.data); // Set the result (true or false)
     } catch (error) {
       console.error('Error checking application:', error);
     }
   };
+  
+  
+  console.log(userId)
 
   const handleApplyCompany = () => {
     setShowResumePopup(true);
@@ -569,7 +582,7 @@ const EachCompanyPage = () => {
               </Card>
             </Col>
             <Row>
-              <Footer />
+            <HomeFooter />
             </Row>
 
           </Row>

@@ -229,7 +229,7 @@ const Applications = () => {
           </div>
         ) : jobs.length > 0 ? (
           <>
-            <div className='job-list'>
+            <div className='table-details-list  table-wrapper '>
               <Table hover className='text-center'>
                 <thead className="table-light">
                   <tr>

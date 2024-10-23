@@ -233,9 +233,6 @@ const BrowseJobs = () => {
                 {!isSearching && (
                     <>
                         <h2 style={{ paddingTop: '40px' }}>Newly Posted Jobs</h2>
-                        {/* <Carousel indicators={false}>
-                            {jobChunks.map((chunk, index) => (
-                                <Carousel.Item key={index}> */}
                         <div className="d-flex justify-content-center">
                             {jobs.map(job => {
                                 const daysAgoText = calculateDaysAgo(job.postingDate);
@@ -273,9 +270,6 @@ const BrowseJobs = () => {
                             pageSize={pageSize}
                             isPageSizeDisabled={isPageSizeDisabled}
                         />
-                        {/* </Carousel.Item>
-                            ))}
-                        </Carousel> */}
                     </>
                 )}
 
@@ -306,8 +300,6 @@ const BrowseJobs = () => {
                                             <Card.Text>{daysAgoText}</Card.Text>
                                         </Card.Body>
                                     </Card>
-
-
                                 );
                             })}
                         </div>
@@ -322,8 +314,7 @@ const BrowseJobs = () => {
                     </>
 
                 )}
-                {jobs.length === 0 && <h1>No jobs found.</h1>}
-
+                {jobs.length === 0 && <h1 className='text-center' style={{color:'red'}}>"No jobs found"</h1>}
             </div>
 
             <div className="thq-section-padding">

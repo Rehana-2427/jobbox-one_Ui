@@ -3,6 +3,10 @@
     position: relative;
     width: 100%; /* Full width of the container */
     height: 200px; /* Set a fixed height for the container */
+    overflow: hidden;
+    /* border: 1px solid black; */
+    padding-top: 12px;
+    padding-bottom: 12px;
 }
 
 .image-slider {
@@ -38,69 +42,17 @@
         transform: translateX(0); /* Move left */
     }
 }
-
-
-@media(max-width: 900px){ 
-    .image-slider  {
+@media(max-width: 767px){ 
+    .image-slider-container {
+        display: flex;
         position: relative;
-        top:50px;
+        bottom: 80px;
     }
 }
-@media(max-width: 898px){ 
-    .image-slider  {
+@media(max-width: 575px){ 
+    .image-slider-container {
+        display: flex;
         position: relative;
-        top:20px;
+        top: 5px;
     }
 }
-@media(max-width: 700px){ 
-    .image-slider  {
-        position: relative;
-        top:50px;
-    }
-}
-@media(max-width: 658px){ 
-    .image-slider  {
-        position: relative;
-        top:50px;
-    }
-}
-@media(max-width: 590px){ 
-    .image-slider  {
-        position: relative;
-        top:50px;
-    }
-
-}
-@media(max-width: 576px){ 
-    .image-slider  {
-        position: relative;
-        top:50px;
-    }
-}
-@media(max-width: 534px){ 
-    .image-slider  {
-        position: relative;
-        top:50px;
-    }
-}
-@media(max-width: 480px){ 
-    .image-slider  {
-        position: relative;
-        top:50px;
-    }
-    
-}
-@media(max-width: 440px){ 
-    .image-slider  {
-        position: relative;
-        top:50px;
-    }
-    
-}
-  
-  @media (max-width: 435px) {
-    .image-slider {
-        position: relative;
-        top:50px;
-    }
-  }

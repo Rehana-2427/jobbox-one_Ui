@@ -523,23 +523,8 @@
   justify-content: center;
 }
 
-/* Mobile styles */
-@media only screen and (max-width: 650px) {
-  .home-contact {
-    flex-direction: column;
-    /* Stack elements vertically */
-    padding: 10px;
-    /* Add padding for mobile view */
-    /* Additional mobile-specific styles */
-    font-size: 14px;
-    /* Smaller font size */
-    position: absolute;
-    top: 50px;
-  }
-}
 
-
-@media(max-width: 700px) {
+@media(max-width: 767px) {
   .home-contact {
     flex-direction: column;
     /* Stack elements vertically */
@@ -548,11 +533,11 @@
     font-size: 14px;
     /* Smaller font size */
     position: relative;
-    top: 50px;
+    bottom:140px;
   }
 }
 
-@media(max-width: 658px) {
+@media(max-width: 575px) {
   .home-contact {
     flex-direction: column;
     /* Stack elements vertically */
@@ -561,50 +546,15 @@
     font-size: 14px;
     /* Smaller font size */
     position: relative;
-    top: 50px;
+    top:10px;
   }
 }
 
-@media(max-width: 590px) {
-  .home-contact {
-    flex-direction: column;
-    /* Stack elements vertically */
-    padding: 10px;
-    /* Add padding for mobile view */
-    font-size: 14px;
-    /* Smaller font size */
-    position: relative;
-    top: 50px;
+@media(max-width: 472px) {
+  .contact-body-small{
+    padding-left: 50px;
   }
 }
-
-@media(max-width: 534px) {
-  .home-contact {
-    flex-direction: column;
-    /* Stack elements vertically */
-    padding: 10px;
-    /* Add padding for mobile view */
-    font-size: 14px;
-    /* Smaller font size */
-    position: relative;
-    top: 50px;
-  }
-}
-
-@media(max-width: 440px) {
-  .home-contact {
-    flex-direction: column;
-    /* Stack elements vertically */
-    padding: 10px;
-    /* Add padding for mobile view */
-    font-size: 14px;
-    /* Smaller font size */
-    position: relative;
-    top: 50px;
-  }
-
-}
-
 .contact-contact20 {
   display: flex;
   overflow: hidden;
@@ -636,7 +586,6 @@
 
 .contact-body-small {
   font-size: 16px;
-
   line-height: 1.5;
 }
 
@@ -670,13 +619,16 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 20px;
+  flex-wrap: wrap; /* Allow items to wrap */
 }
 
 .contact-column {
   flex: 1;
   padding: 20px;
 }
-
+.contact-info {
+  word-wrap: break-word; /* Ensure long words break */
+}
 .contact-content {
   display: flex;
   align-items: center;
@@ -797,6 +749,7 @@
   flex: 1;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .footer-column {
@@ -823,29 +776,13 @@
 .footer-link:hover {
   text-decoration: underline;
 }
-
-.footer-social-links {
-  display: flex;
-  flex-direction: column;
-}
-
-.footer-social-link {
-  display: flex;
-  align-items: center;
-  margin-bottom: 5px;
-}
-
 .footer-icon {
   margin-right: 10px;
   font-size: 18px;
 }
 
-.footer-social-text {
-  font-size: 14px;
-}
-
 .footer-row {
-  gap: 64px;
+  gap: 30px;
   display: flex;
   align-self: stretch;
   align-items: flex-start;

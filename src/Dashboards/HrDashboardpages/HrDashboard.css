@@ -715,6 +715,53 @@ section {
   /* Adjust the value as needed */
 }
 
+.custom-modal .chat-messages {
+  max-height: 400px; /* Set a max height for scrolling */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.chat-message {
+  margin-bottom: 10px; /* Space between messages */
+}
+
+.message-right {
+  text-align: right; /* Align candidate messages to the right */
+  background-color: #e1ffc7; /* Example background color for candidate messages */
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px; /* Padding for better spacing */
+}
+
+.message-left {
+  text-align: left; /* Align HR messages to the left */
+  background-color: #f1f1f1; /* Example background color for HR messages */
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px; /* Padding for better spacing */
+}
+
+.message-time {
+  font-size: 0.8em; /* Smaller font for timestamps */
+  color: gray; /* Grey color for timestamps */
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 576px) {
+  .custom-modal {
+    width: 90%; /* Adjust modal width on small screens */
+  }
+
+  .chat-messages {
+    max-height: 300px; /* Adjust max height on small screens */
+  }
+
+  .message-right,
+  .message-left {
+    font-size: 0.9em; /* Slightly smaller font size */
+  }
+
+  .message-time {
+    font-size: 0.7em; /* Even smaller timestamps */
+  }
+}
 
 
 .custom-modal .modal-dialog {
@@ -1086,64 +1133,63 @@ section {
   }
 }
 
-@media (max-width: 1200px) {
+/* @media (max-width: 1200px) {
   .logo-image {
     position: relative;
-    left: 8%; /* Adjust for larger screens */
-    transform: translate(10%, 20%); /* Combine translateX and translateY */
-    width: 150px; /* Set width for screens up to 1200px */
-    height: 100px; /* Set height for screens up to 1200px */
+    left: 8%; 
+    transform: translate(10%, 20%); 
+    width: 150px; 
+    height: 100px;
   }
   .logo-edit-icon {
-    position: relative; /* Ensure absolute positioning */
-    transform: translate(180%, 50%); /* Combine translateX and translateY */
+    position: relative; 
+    transform: translate(180%, 50%);
   }
-}
+} */
 
-@media (max-width: 992px) {
+/* @media (max-width: 992px) {
   .logo-image {
     position: relative;
-    left: 5%; /* Adjust for medium screens */
-    top: 20%; /* Move the image down for medium screens */
-    transform: translate(7%, 20%); /* Combine translateX and translateY */
-    width: 120px; /* Set width for screens up to 992px */
-    height: 80px; /* Set height for screens up to 992px */
+    left: 5%; 
+    top: 20%; 
+    transform: translate(7%, 20%); 
+    width: 120px; 
+    height: 80px; 
   }
   .logo-edit-icon{
-    position: relative; /* Ensure absolute positioning */
-    transform: translate(120%, 40%); /* Combine translateX and translateY */
+    position: relative; 
+    transform: translate(120%, 40%);
   }
-}
+} */
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .logo-image {
     position: relative;
-    right: 20%; /* Horizontal positioning */
-    bottom: 0; /* Adjust vertical positioning */
-    transform: translate(4%, 15%); /* Combine translateX and translateY */
-    width: 100px; /* Set width for screens up to 768px */
-    height: 70px; /* Set height for screens up to 768px */
+    right: 20%; 
+    bottom: 0; 
+    transform: translate(4%, 15%); 
+    width: 100px; 
+    height: 70px; 
   }
   .logo-edit-icon {
-    position: relative; /* Ensure absolute positioning */
-    transform: translate(70%,50%); /* Combine translateX and translateY */
+    position: relative; 
+    transform: translate(70%,50%); 
   }
-}
+} */
 
-@media (max-width: 480px) {
+/* @media (max-width: 480px) {
   .logo-image {
     position: relative;
-    right: 20%; /* Horizontal positioning */
-    bottom: 0; /* Adjust vertical positioning */
-    transform: translate(4%, 15%); /* Combine translateX and translateY */
-    width: 80px; /* Set width for screens up to 480px */
-    height: 60px; /* Set height for screens up to 480px */
+    right: 20%; 
+    bottom: 0; 
+    transform: translate(4%, 15%); 
+    width: 80px; 
+    height: 60px;
   }
   .logo-edit-icon{
-    position: relative; /* Ensure absolute positioning */
-    transform: translate(60%, 80%); /* Combine translateX and translateY */
-  }
-}
+    position: relative; 
+    transform: translate(60%, 80%); 
+} */
 
 
 @media (max-width: 1200px) {
@@ -1268,5 +1314,47 @@ section {
 
   .title-responsive {
     font-size: 12px; /* Adjust as per need for title text */
+  }
+}
+
+
+
+.hr-company-page-name{
+  font-size: 20px;
+  margin-bottom: 10px;
+  position: absolute;
+  top: 70%;
+  right: 100px;
+}
+.hr-company-page-icons{
+  position: absolute;
+  top: 80%;
+  right: 60px;
+  z-index: 10;
+}
+@media (max-width: 470px) {
+  .hr-company-page-name{
+    font-size: 14px;
+    position: absolute;
+    top: 70%;
+    right: 50px;
+  }
+  .hr-company-page-icons button {
+    font-size: 0.8rem; /* Adjust the button size */
+    padding: 5px 10px; /* Optional: adjust padding */
+    position: absolute;
+    left: 40px;
+    bottom: 25px;
+    height: 30px;
+  }
+
+  .hr-company-page-icons a {
+    margin: 0 3px; /* Adjust icon margin */
+  }
+
+  .hr-company-page-icons a svg {
+    width: 20px; /* Smaller icon size */
+    height: 20px; /* Maintain aspect ratio */
+ 
   }
 }

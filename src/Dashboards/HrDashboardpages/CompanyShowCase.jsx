@@ -296,7 +296,7 @@ const CompanyShowCase = () => {
               <img
                 src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
                 alt="Company Logo"
-                className="logo-image"
+                className="logo-image candi-company-logo"
                 style={{
                   width: '200px',
                   height: '120px',
@@ -325,8 +325,8 @@ const CompanyShowCase = () => {
               />
             </div>
             <div>
-              <h1 className='company-name'>{userData.companyName}</h1>
-              <div className='social-icons-company' style={{ position: 'absolute', top: '80%', right: '60px', zIndex: 10 }}>
+              <h1 className='hr-company-page-name'>{userData.companyName}</h1>
+              <div className='social-icons-company hr-company-page-icons'>
                 <Button variant="primary" onClick={setShowModal}>Add Social Media Links</Button>
                 <br />
                 {socialMediaLinks.facebookLink && (

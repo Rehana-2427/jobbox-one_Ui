@@ -45,11 +45,11 @@ const HomeFooter = () => {
         }
     };
     return (
-        <div className="home-contact app-container">
+        <div className="home-contact app-container text-wrap">
             <div className='contact-contact20 contact-section-padding content'>
                 <div className='contact-max-width .contact-section-max-width'>
                     <div className='contact-section-title' >
-                        <span className='contact-body-small'>Our team is here to assist you with any inquiries.</span>
+                        <span className='contact-body-small text-center'>Our team is here to assist you with any inquiries.</span>
                         <div className='contact-content'>
                             <h2 className='contact-heading-2'>Contact Us</h2>
                             <p className='contact-text2 contact-body-large'>Have a question or need support? Reach out to us!</p>
@@ -192,18 +192,18 @@ const HomeFooter = () => {
                                             </div>
                                         </div>
                                         <div className="footer-column">
-                                            <strong className="footer-column-title">Follow Us</strong>
-                                            <div className="footer-social-links">
-                                                <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="text-decoration-none mx-2">
+                                            <strong className="footer-column-title ">Follow Us</strong>
+                                            <div className="footer-links">
+                                                <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="text-decoration-none mx-2 footer-link">
                                                     <FaInstagram size={30} className="social-icon instagram-icon" /> Instagram
                                                 </a>
-                                                <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="text-decoration-none mx-2">
+                                                <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="text-decoration-none mx-2 footer-link">
                                                     <FaFacebook size={30} className="social-icon facebook-icon" /> Facebook
                                                 </a>
-                                                <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer" className="text-decoration-none mx-2">
+                                                <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer" className="text-decoration-none mx-2 footer-link">
                                                     <FaTwitter size={30} className="social-icon twitter-icon" /> Twitter
                                                 </a>
-                                                <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="text-decoration-none mx-2">
+                                                <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="text-decoration-none mx-2 footer-link">
                                                     <FaLinkedin size={30} className="social-icon linkedin-icon" /> Linkedin
                                                 </a>
                                             </div>
