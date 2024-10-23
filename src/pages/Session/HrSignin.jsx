@@ -54,55 +54,57 @@ const HrSignin = () => {
             <div className="login-layout">
                 <div className="login-content user_regi_signin">
                     <Card className="hr-form-card o-hidden">
-                        <Col md={10}>
-                            <div className="p-4">
-                                <h1 className="mb-3 text-20"><b>Login Form for employee</b></h1>
-                                <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-                                    {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
-                                        <form onSubmit={handleSubmit}>
-                                            <TextField
-                                                type="email"
-                                                name="userEmail"
-                                                label="Enter your company email"
-                                                onBlur={handleBlur}
-                                                value={values.userEmail}
-                                                onChange={handleChange}
-                                                helperText={errors.userEmail}
-                                                error={errors.userEmail && touched.userEmail}
-                                            />
-                                            <TextField
-                                                type="password"
-                                                name="password"
-                                                label="Password"
-                                                onBlur={handleBlur}
-                                                value={values.password}
-                                                onChange={handleChange}
-                                                helperText={errors.password}
-                                                error={errors.password && touched.password}
-                                            />
-                                            <button
-                                                type="submit"
-                                                className="btn btn-rounded btn-primary  my-1 mt-2"
-                                                disabled={isSubmitting}
-                                            >
-                                                {isSubmitting ? 'Signing In...' : 'Login'}
-                                            </button>
-                                        </form>
-                                    )}
-                                </Formik>
-                                {errorMessage && <div className="text-danger mt-2">{errorMessage}</div>}
-                                <div className="mt-3 text-center">
-                                    <Link to="/forgetpassword" className="text-muted">Forgot Password?</Link>
-                                </div>
-                                <div>
-                                    <hr />
-                                    <Nav.Link as={Link} to="/hr-signup" className="nav-link-custom">
-                                        <Button variant='secondary' style={{ width: '140px' }}>Register For Free</Button>
-                                    </Nav.Link>
-                                </div>
+                        <Col md={10} className="p-4 d-flex flex-column align-items-center justify-content-center">
+                            <h1 className="mb-4 text-center text-primary"><b>Employee Login</b></h1>
+                            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+                                {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+                                    <form onSubmit={handleSubmit} className="w-100">
+                                        <TextField
+                                            type="email"
+                                            name="userEmail"
+                                            label="Enter your company email"
+                                            onBlur={handleBlur}
+                                            value={values.userEmail}
+                                            onChange={handleChange}
+                                            helperText={errors.userEmail}
+                                            error={errors.userEmail && touched.userEmail}
+                                            fullWidth
+                                        />
+                                        <TextField
+                                            type="password"
+                                            name="password"
+                                            label="Password"
+                                            onBlur={handleBlur}
+                                            value={values.password}
+                                            onChange={handleChange}
+                                            helperText={errors.password}
+                                            error={errors.password && touched.password}
+                                            fullWidth
+                                        />
+                                        <Button
+                                            type="submit"
+                                            className="btn btn-rounded btn-primary my-1 mt-2"
+                                            disabled={isSubmitting}
+                                            fullWidth
+                                        >
+                                            {isSubmitting ? 'Signing In...' : 'Login'}
+                                        </Button>
+                                    </form>
+                                )}
+                            </Formik>
+                            {errorMessage && <div className="text-danger mt-2">{errorMessage}</div>}
+                            <div className="mt-3 text-center">
+                                <Link to="/forgetpassword" className="text-muted">Forgot Password?</Link>
+                            </div>
+                            <div>
+                                <hr />
+                                <Nav.Link as={Link} to="/hr-signup" className="nav-link-custom">
+                                    <Button variant='secondary' style={{ width: '140px' }}>Register For Free</Button>
+                                </Nav.Link>
                             </div>
                         </Col>
                     </Card>
+
                 </div>
             </div>
         </div>
