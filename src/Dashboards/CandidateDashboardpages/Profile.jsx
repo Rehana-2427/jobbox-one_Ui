@@ -240,12 +240,19 @@ const Profile = () => {
           {dropdowns.skills && (
             <>
               <p className='text-danger mb-3'>(Note: Add at least 5 skills)</p>
-              <div className='mb-3'>
+              <div className='mb-3 d-flex flex-wrap'>
                 {skills.map((skill, index) => (
                   <span
                     key={index}
-                    className='badge bg-light text-dark me-2 position-relative d-inline-flex align-items-center'
-                    style={{ fontSize: '1.25rem', padding: '0.5rem 1rem', borderRadius: '0.25rem' }}
+                    className='badge bg-light text-dark me-2 mb-2 position-relative d-inline-flex align-items-center'
+                    style={{
+                      fontSize: '1.25rem',
+                      padding: '0.5rem 1rem',
+                      borderRadius: '0.25rem',
+                      flex: '1 0 150px', // Adjusts the flex-basis to make the badges responsive
+                      minWidth: '100px',  // Ensures badges don’t get too small
+                      maxWidth: '100px',
+                    }}
                   >
                     {skill}
                     <i
@@ -265,6 +272,7 @@ const Profile = () => {
                   </span>
                 ))}
               </div>
+
               <div className='d-flex align-items-center'>
                 <input
                   type='text'
@@ -381,30 +389,30 @@ const Profile = () => {
                 <label htmlFor='experience'>
                   <b>How many years of experience do you have?</b>
                 </label>
-             
-              <div className='row'>
-                <div className='col-md-6 col-lg-4'>
-                  <input
-                    id='experience'
-                    type='text'
-                    className='form-control form-control-sm'
-                    name='experience'
-                    value={experience}
-                    onChange={handleExperienceChange}
-                    placeholder='Your experience'
-                  />
+
+                <div className='row'>
+                  <div className='col-md-6 col-lg-4'>
+                    <input
+                      id='experience'
+                      type='text'
+                      className='form-control form-control-sm'
+                      name='experience'
+                      value={experience}
+                      onChange={handleExperienceChange}
+                      placeholder='Your experience'
+                    />
+                  </div>
                 </div>
-              </div>
 
               </div>
             </div>
           )}
         </div>
         <div className='d-flex justify-content-center mt-3'>
-        <Button variant='primary' onClick={handleSave}>
-          Save
-        </Button>
-      </div>
+          <Button variant='primary' onClick={handleSave}>
+            Save
+          </Button>
+        </div>
       </div>
       <div>
         {/* Your application components */}

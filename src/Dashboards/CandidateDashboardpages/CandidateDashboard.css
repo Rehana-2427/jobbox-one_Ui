@@ -846,19 +846,46 @@ button.com:hover {
   margin: 10px;
 }
 
+
+
 .custom-modal .modal-content {
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   height: 400px;
+  width: 100%;
+  box-sizing: border-box;
+
+  /* Add responsive styles */
+  max-width: 100%; /* Ensures it doesn't exceed the screen width */
+  margin: 0 auto; /* Centers the modal if there is any width limitation */
 }
 
-.custom-modal .modal-body {
+/* .custom-modal .modal-body {
   height: 90vh;
   max-height: calc(100vh - 200px);
   overflow-y: scroll;
   padding: 10px;
+} */
+.custom-modal .modal-body {
+  height: 90vh;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto; /* Change to 'auto' for better mobile scrolling */
+  padding: 10px;
+ 
 }
+
+/* Optional: Add media query for further adjustments on smaller screens */
+@media (max-width: 768px) {
+  .custom-modal{
+    padding: 5px; /* Reduce padding for smaller screens */
+  }
+  .custom-modal .modal-content {
+    padding: 5px; /* Reduce padding for smaller screens */
+    font-size: 14px; /* Adjust font size if necessary */
+  }
+}
+
 
 .chat-message {
   display: flex;
@@ -892,17 +919,20 @@ button.com:hover {
 }
 
 .note-container {
-  margin-top: 20px;
-  background-color: #f8f9fa;
-  text-align: center;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;        /* Prevents overflow */
+  word-wrap: break-word;  /* Allows long words to break */
+  white-space: normal;     /* Allows text to wrap */
+  padding: 10px;          /* Adds some padding */
+  /* border: 1px solid #ccc;  Optional: Adds a border to visualize the card 
+  border-radius: 5px;     Optional: Adds rounded corners */
+  max-width: 100%;       /* Set a max-width for the card */
 }
 
+
 .note-text {
-  font-size: 14px;
-  line-height: 1.5;
-  color: #a00707;
+  font-size: 0.8rem;        /* Adjust font size as needed */
+  color: #ea0d0d;            /* Text color */
+  line-height: 1.5;       /* Line height for better readability */
 }
 
 .chart-card {

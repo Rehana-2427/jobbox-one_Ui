@@ -155,10 +155,9 @@ const DreamJob = () => {
                                 onClose={() => setShowResumePopup(false)}
                             />
                         )}
-
-                        <Card className="center-container-card p-4">
+                        <Card className="center-container-card" >
                             <Form onSubmit={handleSubmit} className="center-form-card">
-                                <Form.Group className="mb-3">
+                                <Form.Group>
                                     <Form.Label htmlFor="jobRole">Job Title:</Form.Label>
                                     <Form.Control
                                         type="text"
@@ -169,7 +168,7 @@ const DreamJob = () => {
                                         required
                                     />
                                 </Form.Group>
-                                <Form.Group className="mb-3">
+                                <Form.Group>
                                     <Form.Label htmlFor="companies">Companies:</Form.Label>
                                     <InputGroup>
                                         <FormControl
@@ -186,12 +185,14 @@ const DreamJob = () => {
                                             Add
                                         </Button>
                                     </InputGroup>
-                                    <Form.Text className="text-muted">
+                                    <Form.Text className="text-muted text-wrap">
                                         Enter company names one by one. Click "Add" to include each company in the list.
                                     </Form.Text>
 
 
-                                    <div className="mt-3">
+
+                                    {/* className="mt-3" */}
+                                    <div >
                                         {companies.map((company, index) => (
                                             <span
                                                 key={index}
@@ -225,13 +226,15 @@ const DreamJob = () => {
                                         ))}
                                     </div>
                                 </Form.Group>
-                                <Form.Group className="mb-3">
+                                <Form.Group>
                                     <Form.Label htmlFor="resume">Resume:</Form.Label>
                                     <Button onClick={handleApplyButtonClick}>Select Resume</Button>
                                 </Form.Group>
                             </Form>
                             {errorMessage && <p className="text-danger mt-3">{errorMessage}</p>}
                         </Card>
+
+
                     </div>
                 </Container>
             </div>
