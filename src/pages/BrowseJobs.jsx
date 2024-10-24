@@ -193,7 +193,7 @@ const BrowseJobs = () => {
     return (
         <div>
             <CustomNavbar />
-            <div className='browse-jobs home-card-one'>
+            <div className='browse-jobs home-card-one text-wrapper'>
                 <h1 className='text-center'>Find Your Dream Job & Apply for it</h1>
                 <p className='text-center' style={{ fontSize: '20px' }}>Jobs for you to explore</p>
                 <div className='home-search-bar'>
