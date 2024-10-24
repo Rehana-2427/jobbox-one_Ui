@@ -256,7 +256,7 @@ const EachCompanyPage = () => {
   const [resumes, setResumes] = useState([]);
   const [hasDreamApplied, setHasDreamApplied] = useState(false);
 
- 
+
   useEffect(() => {
     if (userId) { // Only fetch resumes if the user is logged in
       axios.get(`${BASE_API_URL}/getResume?userId=${userId}`)
@@ -268,7 +268,7 @@ const EachCompanyPage = () => {
         });
     }
   }, [userId]);
-  
+
   const applyJob = async (resumeId) => {
     if (!userId) { // If user is not logged in, do not proceed
       Swal.fire({
@@ -278,9 +278,9 @@ const EachCompanyPage = () => {
       });
       return;
     }
-  
+
     let loadingPopup;
-  
+
     try {
       // Show loading message using SweetAlert
       loadingPopup = Swal.fire({
@@ -290,38 +290,38 @@ const EachCompanyPage = () => {
           Swal.showLoading();
         }
       });
-  
+
       const appliedOn = new Date();
       const year = appliedOn.getFullYear();
       const month = String(appliedOn.getMonth() + 1).padStart(2, '0');
       const day = String(appliedOn.getDate()).padStart(2, '0');
       const formattedDate = `${year}-${month}-${day}`;
-  
+
       // Call the backend to apply for the job
       const response = await axios.put(`${BASE_API_URL}/applyDreamCompany?userId=${userId}&companyName=${companyName}&formattedDate=${formattedDate}&resumeId=${resumeId}`);
-  
+
       if (response.data) {
         Swal.close();
-  
+
         // Show success message
         await Swal.fire({
           icon: "success",
           title: "Apply Successful!",
           text: "You have successfully applied for this job."
         });
-  
+
         // Set hasDreamApplied to true after successful application
         setHasDreamApplied(true);
-  
+
         setCompanyName(''); // Reset company name
       }
     } catch (error) {
       console.error('Error applying for job:', error);
-  
+
       if (loadingPopup) {
         Swal.close();
       }
-  
+
       // Show error message
       Swal.fire({
         icon: 'error',
@@ -334,28 +334,28 @@ const EachCompanyPage = () => {
       }
     }
   };
-  
+
   useEffect(() => {
     if (userId && companyName) { // Check application only if user is logged in and company name is available
       checkHasUserDreamApplied();
     }
   }, [companyName, userId]);
-  
+
   const checkHasUserDreamApplied = async () => {
     try {
       if (!userId || !companyName) return; // Ensure both userId and companyName are present
-  
+
       const response = await axios.get(`${BASE_API_URL}/applicationDreamAplied`, {
         params: { userId: userId, companyName: companyName }
       });
-  
+
       setHasDreamApplied(response.data); // Set the result (true or false)
     } catch (error) {
       console.error('Error checking application:', error);
     }
   };
-  
-  
+
+
   console.log(userId)
 
   const handleApplyCompany = () => {
@@ -543,7 +543,7 @@ const EachCompanyPage = () => {
                           <Button variant="primary" onClick={handleHRClick}  >
                             Claim/Login
                           </Button>
-                          <Button variant="success" onClick={handleCandidateClick} style={{marginLeft:'12px'}}>
+                          <Button variant="success" onClick={handleCandidateClick} style={{ marginLeft: '12px' }}>
                             Login to Apply
                           </Button>
                         </>
@@ -581,12 +581,13 @@ const EachCompanyPage = () => {
                 </Card.Body>
               </Card>
             </Col>
-            <Row>
-            <HomeFooter />
+
+            <Row >
+              <HomeFooter />
             </Row>
 
           </Row>
-      
+
         </Col>
 
         {showResumePopup && (

@@ -343,7 +343,9 @@ const Home = () => {
         {jobs.length === 0 && <h1>No jobs found.</h1>}
       </div> */}
 
-      <div className="thq-section-padding home-card-one">
+
+
+      {/* <div className="thq-section-padding home-card-one video-card">
         <div className='thq-section-max-width'>
           <div className='cta-accent2-bg'>
             <div className='cta-accent1-bg'>
@@ -364,6 +366,38 @@ const Home = () => {
                   </a>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div> */}
+
+<div> <img src="/jobbox-one-logo.png" alt="JobBox Logo" className="job-box-one-logo" /></div>
+      <div className="home-video-card">
+       
+        <div className="column">
+          <video width="100%"  autoPlay muted loop>
+            <source src="\jobbox-one-video.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
+        <div className="steps-container column ">
+          <div className='cta-accent2-bg'>
+            <div className='cta-accent1-bg'>
+              <div className='cta-content'>
+                <span className='thq-heading-2'>Find Your Dream Job</span>
+                <p className='thq-body-large'>
+                  "Discover job opportunities and advance your career with JobBox. We connect you with top employers and help you find roles that match your skills and interests. Start your journey today and unlock your potential!"
+                </p>
+                <div className='cta-actions'>
+                  <a href="/#/browse-jobs" target="_blank" rel="noopener noreferrer">
+                    <button type="button" className="thq-button-filled cta-button">
+                      Browse Jobs
+                    </button>
+                  </a>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>

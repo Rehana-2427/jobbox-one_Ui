@@ -106,10 +106,106 @@ h3 {
         flex-direction: column; /* Use flex-direction instead */
         justify-content: center; /* Change to a valid value */
         padding: 20px;
+        margin-top: 200px;
+    }
+    .thq-card {
+        height: 200px;
+    }
+}
+@media (max-width: 850px) { 
+    .jobbox-container {
+        display: flex;
+        flex-direction: column; /* Use flex-direction instead */
+        justify-content: center; /* Change to a valid value */
+        padding: 20px;
+        margin-top: 180px;
+    }
+    .thq-card {
+        height: 200px;
+    }
+}
+@media (max-width: 750px) { 
+    .jobbox-container {
+        display: flex;
+        flex-direction: column; /* Use flex-direction instead */
+        justify-content: center; /* Change to a valid value */
+        padding: 20px;
+        margin-top: 150px;
+    }
+    .thq-card {
+        height: 200px;
+    }
+}
+@media (max-width: 680px) { 
+    .jobbox-container {
+        display: flex;
+        flex-direction: column; /* Use flex-direction instead */
+        justify-content: center; /* Change to a valid value */
+        padding: 20px;
+        margin-top: 130px;
+    }
+    .thq-card {
+        height: 200px;
+    }
+}
+@media (max-width: 620px) { 
+    .jobbox-container {
+        display: flex;
+        flex-direction: column; /* Use flex-direction instead */
+        justify-content: center; /* Change to a valid value */
+        padding: 20px;
+        margin-top: 100px;
+    }
+    .thq-card {
+        height: 200px;
+    }
+}
+@media (max-width: 530px) { 
+    .jobbox-container {
+        display: flex;
+        flex-direction: column; /* Use flex-direction instead */
+        justify-content: center; /* Change to a valid value */
+        padding: 20px;
+        margin-top: 80px;
+    }
+    .thq-card {
+        height: 200px;
+    }
+}
+@media (max-width: 369px) { 
+    .jobbox-container {
+        display: flex;
+        flex-direction: column; /* Use flex-direction instead */
+        justify-content: center; /* Change to a valid value */
+        padding: 20px;
+        margin-top: 50px;
     }
     .thq-card {
         height: 200px;
     }
 }
 
-
+@media (max-width: 323px) { 
+    .jobbox-container {
+        display: flex;
+        flex-direction: column; /* Use flex-direction instead */
+        justify-content: center; /* Change to a valid value */
+        padding: 20px;
+        margin-top: 100px;
+    }
+    .thq-card {
+        height: 200px;
+    }
+}
+@media (max-width: 303px) { 
+    .jobbox-container {
+        display: flex;
+        flex-direction: column; /* Use flex-direction instead */
+        justify-content: center; /* Change to a valid value */
+        padding: 20px;
+        margin-top: 120px;
+    }
+    .thq-card {
+        height: 200px;
+    }
+}
