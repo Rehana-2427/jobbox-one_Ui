@@ -34,6 +34,7 @@ const MyApplication = () => {
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value);
+    setPage(0);
   };
 
   const handlePageClick = (data) => {

@@ -7,6 +7,7 @@ import CustomNavbar from './CustomNavbar';
 import HomeFooter from './HomeFooter';
 import Jobboxcard from './Jobboxcard';
 import './PagesStyle/Pages.css';
+import DreamCard from './DreamCard';
 
 const Home = () => {
   // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
@@ -370,6 +371,9 @@ const Home = () => {
 
       <div>
         <Jobboxcard />
+      </div>
+      <div>
+      <DreamCard/>
       </div>
       <div style={{ paddingTop: `${padding}px`, paddingBottom: `${padding}px` }}>
         <CircularImageSlider />

@@ -228,13 +228,20 @@
         /* 60% width on larger screens */
     }
 }
+.parent-container {
+  display: flex;
+  justify-content: center; /* Center the content horizontally */
+  align-items: center; /* Optional: Center the content vertically */
+
+}
+
 .home-search-bar {
-    position: relative;
-    width: 50%;
-    left: 300px;
-    display: flex;
-    align-items: center;
-  }
+  position: relative;
+  width: 40%;
+  display: flex;
+  align-items: center;
+}
+
   
   .search-input-bar {
     width: 100%;

@@ -21,19 +21,19 @@ const BrowseJobs = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [sortedColumn, setSortedColumn] = useState(null);
     const [sortOrder, setSortOrder] = useState('asc');
-    const [isSearching, setIsSearching] = useState(false); // Track if searching is active
+    // const [isSearching, setIsSearching] = useState(false); // Track if searching is active
     const isLastPage = page === totalPages - 1;
     const isPageSizeDisabled = isLastPage;
     const [showModal, setShowModal] = useState(false); // State to manage modal visibility
     useEffect(() => {
         // Fetch latest jobs or jobs based on search only when the search button is clicked
-        if (isSearching) {
+        if (search) {
             fetchJobBySearch();
         }
         else {
             fetchData();
         }
-    }, [page, pageSize, isSearching, sortOrder, sortedColumn]);
+    }, [page, pageSize, search, sortOrder, sortedColumn]);
 
     // Fetch latest jobs
     const fetchData = useCallback(async () => {
@@ -108,22 +108,23 @@ const BrowseJobs = () => {
     const handleInputChange = (event) => {
         const inputValue = event.target.value;
         setSearch(inputValue);
-
-        if (inputValue.trim() === '') {
-            setIsSearching(false); // Reset to latest jobs if input is cleared
-            setShowWarning(false); // Hide warning when input changes
-        }
+        setPage(0);
+        // if (inputValue.trim() === '') {
+        //     setIsSearching(false); // Reset to latest jobs if input is cleared
+        //     setShowWarning(false); // Hide warning when input changes
+        // } else
+        //   setIsSearching(true); // set to search jobs 
     };
 
-    // Handle search button click
-    const handleSearchClick = () => {
-        if (search.trim() === '') {
-            setShowWarning(true); // Show warning if search is empty
-        } else {
-            setIsSearching(true); // Trigger search only when input is not empty
-            setShowWarning(false); // Hide warning on valid search
-        }
-    };
+    // // Handle search button click
+    // const handleSearchClick = () => {
+    //     if (search.trim() === '') {
+    //         setShowWarning(true); // Show warning if search is empty
+    //     } else {
+    //         setIsSearching(true); // Trigger search only when input is not empty
+    //         setShowWarning(false); // Hide warning on valid search
+    //     }
+    // };
 
     // Handle page change for pagination
     const handlePageClick = (data) => {
@@ -144,7 +145,7 @@ const BrowseJobs = () => {
         if (daysAgo < 0) return 'Invalid date';
         if (daysAgo === 0) return 'Posted today';
         if (daysAgo === 1) return '1 day ago';
-        if (daysAgo <= 7) return `${daysAgo} days ago`;
+        if (daysAgo >= 2) return `${daysAgo} days ago`;
         return null;
     };
 
@@ -196,23 +197,25 @@ const BrowseJobs = () => {
             <div className='browse-jobs home-card-one'>
                 <h1 className='text-center'>Find Your Dream Job & Apply for it</h1>
                 <p className='text-center' style={{ fontSize: '20px' }}>Jobs for you to explore</p>
-                <div className='home-search-bar'>
-                    <input
-                        type="text"
-                        placeholder="Search by jobTitle/CompanyName/Skills/Location"
-                        value={search}
-                        className='search-input-bar'
-                        onChange={handleInputChange}
-                      
-                    />
+                <div class="parent-container">
+                    <div className='home-search-bar'>
+                        <input
+                            type="text"
+                            placeholder="Search by jobTitle/CompanyName/Skills/Location"
+                            value={search}
+                            className='search-input-bar'
+                            onChange={handleInputChange}
 
-                    <FaSearch fontSize={20} style={{
-                        position: 'absolute',
-                        top: '12px',
-                        right: '150px', // Adjust as needed to position it correctly
-                    }} />
 
-                    <Button
+                        />
+
+                        <FaSearch fontSize={20} style={{
+                            position: 'absolute',
+                            top: '12px',
+                            right: '50px', // Adjust as needed to position it correctly
+                        }} />
+
+                        {/* <Button
                         className="search-button"
                         onClick={handleSearchClick}
                         style={{
@@ -225,69 +228,82 @@ const BrowseJobs = () => {
                         }}
                     >
                         <b style={{ fontSize: '18px' }}>Search</b>
-                    </Button>
+                    </Button> */}
+                    </div>
                 </div>
 
 
 
-                {!isSearching && (
+                {jobs.length > 0 && (
                     <>
                         <h2 style={{ paddingTop: '40px' }}>Newly Posted Jobs</h2>
                         <div className="d-flex justify-content-center">
                             {jobs.map(job => {
                                 const daysAgoText = calculateDaysAgo(job.postingDate);
                                 return (
-                                    daysAgoText && (
-                                        <Card key={job.id} className='browse-job-card' style={{ maxWidth: '300px', margin: '10px', padding: '10px', position: 'relative' }}
-                                            onClick={() => {
-                                                const url = new URL('/#/browse-jobs/job-details', window.location.origin);
-                                                url.searchParams.append('companyName', encodeURIComponent(job.companyName));
-                                                url.searchParams.append('jobId', encodeURIComponent(job.jobId)); // Use job.id
-                                                window.open(url.toString(), '_blank', 'noopener,noreferrer'); // Open in a new tab
-                                            }}
-                                        >
-                                            <Card.Body style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                                                <img
-                                                    src={companyLogos[job.companyName] || "/path/to/default_logo.png"}
-                                                    alt={`${job.companyName} logo`}
-                                                    style={{ width: '30%', height: '30%', position: 'absolute', top: '5px', right: '10px' }}
-                                                />
 
-                                                <Card.Title style={{ marginTop: '40px' }}>{job.jobTitle}</Card.Title>
-                                                <Card.Subtitle className="mb-2 text-muted">{job.companyName}</Card.Subtitle>
-                                                <Card.Text>{daysAgoText}</Card.Text>
-                                            </Card.Body>
-                                        </Card>
-                                    )
+                                    <Card key={job.id} className='browse-job-card' style={{ maxWidth: '300px', margin: '10px', padding: '10px', position: 'relative' }}
+                                        onClick={() => {
+                                            const url = new URL('/#/browse-jobs/job-details', window.location.origin);
+                                            url.searchParams.append('companyName', encodeURIComponent(job.companyName));
+                                            url.searchParams.append('jobId', encodeURIComponent(job.jobId)); // Use job.id
+                                            window.open(url.toString(), '_blank', 'noopener,noreferrer'); // Open in a new tab
+                                        }}
+                                    >
+                                        <Card.Body style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                                            <img
+                                                src={companyLogos[job.companyName] || "/path/to/default_logo.png"}
+                                                alt={`${job.companyName} logo`}
+                                                style={{ width: '30%', height: '30%', position: 'absolute', top: '5px', right: '10px' }}
+                                            />
+
+                                            <Card.Title style={{ marginTop: '40px' }}>{job.jobTitle}</Card.Title>
+                                            <Card.Subtitle className="mb-2 text-muted">{job.companyName}</Card.Subtitle>
+                                            <Card.Text>{daysAgoText}</Card.Text>
+                                        </Card.Body>
+                                    </Card>
+
                                 );
                             })}
+
+
                         </div>
-                        <Pagination
+                        {/* <Pagination
                             currentPage={page}
                             totalPages={totalPages}
                             handlePageClick={handlePageClick}
                             handlePageSizeChange={handlePageSizeChange}
                             pageSize={pageSize}
                             isPageSizeDisabled={isPageSizeDisabled}
+                        /> */}
+                        <Pagination
+                            page={page}
+                            pageSize={pageSize}
+                            totalPages={totalPages}
+                            handlePageSizeChange={handlePageSizeChange}
+                            isPageSizeDisabled={isPageSizeDisabled}
+                            handlePageClick={handlePageClick}
                         />
                     </>
                 )}
 
-                {isSearching && (
+                {/* {isSearching && jobs.length > 0 && (
                     <>
                         <h2>Search Results</h2>
                         <div className="d-flex flex-wrap justify-content-center">
                             {jobs.map(job => {
                                 const daysAgoText = calculateDaysAgo(job.postingDate);
                                 return (
-
-
-                                    <Card key={job.id} className='browse-job-card' style={{ maxWidth: '300px', margin: '10px', padding: '10px', position: 'relative' }} onClick={() => {
-                                        const url = new URL('/#/browse-jobs/job-details', window.location.origin);
-                                        url.searchParams.append('companyName', encodeURIComponent(job.companyName));
-                                        url.searchParams.append('jobId', encodeURIComponent(job.jobId)); // Use job.id
-                                        window.open(url.toString(), '_blank', 'noopener,noreferrer'); // Open in a new tab
-                                    }}
+                                    <Card
+                                        key={job.id}
+                                        className='browse-job-card'
+                                        style={{ maxWidth: '300px', margin: '10px', padding: '10px', position: 'relative' }}
+                                        onClick={() => {
+                                            const url = new URL('/#/browse-jobs/job-details', window.location.origin);
+                                            url.searchParams.append('companyName', encodeURIComponent(job.companyName));
+                                            url.searchParams.append('jobId', encodeURIComponent(job.jobId)); // Use job.id
+                                            window.open(url.toString(), '_blank', 'noopener,noreferrer'); // Open in a new tab
+                                        }}
                                     >
                                         <Card.Body style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                                             <img
@@ -302,19 +318,19 @@ const BrowseJobs = () => {
                                     </Card>
                                 );
                             })}
+                            <Pagination
+                                currentPage={page}
+                                totalPages={totalPages}
+                                handlePageClick={handlePageClick}
+                                handlePageSizeChange={handlePageSizeChange}
+                                pageSize={pageSize}
+                                isPageSizeDisabled={isPageSizeDisabled}
+                            />
                         </div>
-                        <Pagination
-                            currentPage={page}
-                            totalPages={totalPages}
-                            handlePageClick={handlePageClick}
-                            handlePageSizeChange={handlePageSizeChange}
-                            pageSize={pageSize}
-                            isPageSizeDisabled={isPageSizeDisabled}
-                        />
                     </>
+                )} */}
 
-                )}
-                {jobs.length === 0 && <h1 className='text-center' style={{color:'red'}}>"No jobs found"</h1>}
+                {jobs.length === 0 && <h1 className='text-center' style={{ color: 'red' }}>"No jobs found"</h1>}
             </div>
 
             <div className="thq-section-padding">
@@ -334,7 +350,7 @@ const BrowseJobs = () => {
                                                 className="thq-button-filled cta-button"
                                                 variant="info"
                                                 style={{ marginRight: '10px' }}
-                                                onClick={() => navigate('/candidate-dashboard/dream-job', { state: { userId: user.userId,userName:user.userName } })}
+                                                onClick={() => navigate('/candidate-dashboard/dream-job', { state: { userId: user.userId, userName: user.userName } })}
                                             >
                                                 Apply for Your Dream Job at Your Dream Company
                                             </Button>
