@@ -12,6 +12,7 @@ import HomeFooter from './HomeFooter';
 const BrowseJobs = () => {
     const navigate = useNavigate();
     const BASE_API_URL = process.env.REACT_APP_API_URL;
+    const [latestjobs, setLatestJobs] = useState([]);
     const [jobs, setJobs] = useState([]);
     const [companyLogos, setCompanyLogos] = useState({});
     const [search, setSearch] = useState('');
@@ -43,7 +44,7 @@ const BrowseJobs = () => {
         };
         try {
             const response = await axios.get(`${BASE_API_URL}/latestJobs`, { params }); // Added { params } here
-            setJobs(response.data.content);
+            setLatestJobs(response.data.content);
             setTotalPages(response.data.totalPages);
             await fetchImages(response.data.content); // Pass the correct job data to fetchImages
         } catch (error) {
@@ -234,9 +235,9 @@ const BrowseJobs = () => {
 
 
 
-                {jobs.length > 0 && (
+                {jobs.length > 0 && search && (
                     <>
-                        <h2 style={{ paddingTop: '40px' }}>Newly Posted Jobs</h2>
+                        <h2>Search Results</h2>
                         <div className="d-flex justify-content-center">
                             {jobs.map(job => {
                                 const daysAgoText = calculateDaysAgo(job.postingDate);
@@ -287,50 +288,66 @@ const BrowseJobs = () => {
                     </>
                 )}
 
-                {/* {isSearching && jobs.length > 0 && (
+                {!search && latestjobs.length > 0 && (
                     <>
-                        <h2>Search Results</h2>
-                        <div className="d-flex flex-wrap justify-content-center">
-                            {jobs.map(job => {
+
+                        <h2 style={{ paddingTop: '40px' }}>Newly Posted Jobs</h2>
+                        {/* <div className="d-flex flex-wrap justify-content-center"> */}
+                        <div className="image-slider-container">
+                        <div className="image-slider">
+
+                            {latestjobs.map(job => {
                                 const daysAgoText = calculateDaysAgo(job.postingDate);
                                 return (
-                                    <Card
-                                        key={job.id}
-                                        className='browse-job-card'
-                                        style={{ maxWidth: '300px', margin: '10px', padding: '10px', position: 'relative' }}
-                                        onClick={() => {
-                                            const url = new URL('/#/browse-jobs/job-details', window.location.origin);
-                                            url.searchParams.append('companyName', encodeURIComponent(job.companyName));
-                                            url.searchParams.append('jobId', encodeURIComponent(job.jobId)); // Use job.id
-                                            window.open(url.toString(), '_blank', 'noopener,noreferrer'); // Open in a new tab
-                                        }}
-                                    >
-                                        <Card.Body style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                                            <img
-                                                src={companyLogos[job.companyName] || "/path/to/default_logo.png"}
-                                                alt={`${job.companyName} logo`}
-                                                style={{ width: '30%', height: '30%', position: 'absolute', top: '5px', right: '10px' }} // Adjusted top value
-                                            />
-                                            <Card.Title style={{ marginTop: '40px' }}>{job.jobTitle}</Card.Title>
-                                            <Card.Subtitle className="mb-2 text-muted">{job.companyName}</Card.Subtitle>
-                                            <Card.Text>{daysAgoText}</Card.Text>
-                                        </Card.Body>
-                                    </Card>
+                                            <Card
+                                                key={job.id}
+                                                className='browse-job-card image-wrapper'
+                                                style={{ maxWidth: '300px', margin: '10px', padding: '10px', position: 'relative' }}
+                                                onClick={() => {
+                                                    const url = new URL('/#/browse-jobs/job-details', window.location.origin);
+                                                    url.searchParams.append('companyName', encodeURIComponent(job.companyName));
+                                                    url.searchParams.append('jobId', encodeURIComponent(job.jobId)); // Use job.id
+                                                    window.open(url.toString(), '_blank', 'noopener,noreferrer'); // Open in a new tab
+                                                }}
+                                            >
+                                                <Card.Body style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                                                    <img
+                                                        src={companyLogos[job.companyName] || "/path/to/default_logo.png"}
+                                                        alt={`${job.companyName} logo`}
+                                                        style={{ width: '30%', height: '30%', position: 'absolute', top: '5px', right: '10px' }} // Adjusted top value
+                                                    />
+                                                    <Card.Title style={{ marginTop: '40px' }}>{job.jobTitle}</Card.Title>
+                                                    <Card.Subtitle className="mb-2 text-muted">{job.companyName}</Card.Subtitle>
+                                                    <Card.Text>{daysAgoText}</Card.Text>
+                                                </Card.Body>
+                                            </Card>
+                                       
                                 );
                             })}
-                            <Pagination
+                            {/* <Pagination
                                 currentPage={page}
                                 totalPages={totalPages}
                                 handlePageClick={handlePageClick}
                                 handlePageSizeChange={handlePageSizeChange}
                                 pageSize={pageSize}
                                 isPageSizeDisabled={isPageSizeDisabled}
-                            />
-                        </div>
-                    </>
-                )} */}
+                            /> */}
 
-                {jobs.length === 0 && <h1 className='text-center' style={{ color: 'red' }}>"No jobs found"</h1>}
+
+                        </div>
+                        </div>
+                        {/* <Pagination
+                                page={page}
+                                pageSize={pageSize}
+                                totalPages={totalPages}
+                                handlePageSizeChange={handlePageSizeChange}
+                                isPageSizeDisabled={isPageSizeDisabled}
+                                handlePageClick={handlePageClick}
+                            /> */}
+                    </>
+                )}
+
+                {jobs.length === 0 && search && <h1 className='text-center' style={{ color: 'red' }}>"No jobs found"</h1>}
             </div>
 
             <div className="thq-section-padding">
