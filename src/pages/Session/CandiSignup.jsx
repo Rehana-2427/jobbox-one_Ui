@@ -407,7 +407,7 @@ const CandiSignup = () => {
           left: '20px'
         }}
       >
-        <img src="/jb_logo.png" alt="JobDB" />
+        {/* <img src="/jb_logo.png" alt="JobDB" /> */}
       </Box>
       <Box>
         <h2>Candidate Registration form</h2>
@@ -447,8 +447,9 @@ const CandiSignup = () => {
                     <Col md={6} className="text-center auth-cover" style={{ marginTop: '15px' }}>
                       <div className="ps-3 auth-right" >
                         <div className="w-100 h-100 justify-content-center d-flex flex-column">
+                          <p>Already have an account?Login</p>
                           <SocialButtons
-                            isLogin={false} // Set isLogin to false for registration
+                            isLogin={true} 
                             routeUrl="/signin"
                             googleHandler={signInWithGoogle}
                             facebookHandler={signInWithFacebook}

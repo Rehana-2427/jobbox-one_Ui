@@ -1,7 +1,7 @@
 .jobbox-container {
     display: flex;
     justify-content: space-between;
-    padding: 20px;
+    padding: 70px;
 }
 
 .column {

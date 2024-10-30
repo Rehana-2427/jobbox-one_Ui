@@ -10,7 +10,7 @@ const TermsAndConditions = () => {
         <CustomNavbar />
       </div>
       <div style={{
-        marginTop: '80px', // Adjust this value to the height of your navbar
+        marginTop: '100px', // Adjust this value to the height of your navbar
         height: 'calc(100vh - 60px)', // Make the content area take the remaining height
         overflowY: 'auto', // Enable vertical scrolling
         padding: '20px', // Add some padding for aesthetics

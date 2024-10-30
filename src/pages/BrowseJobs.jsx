@@ -8,6 +8,7 @@ import Pagination from '../Pagination';
 import './BrowseJobs.css';
 import CustomNavbar from './CustomNavbar';
 import HomeFooter from './HomeFooter';
+import JobListings from './JobListings';
 
 const BrowseJobs = () => {
     const navigate = useNavigate();
@@ -333,7 +334,7 @@ const BrowseJobs = () => {
                 {jobs.length === 0 && <h1 className='text-center' style={{ color: 'red' }}>"No jobs found"</h1>}
             </div>
 
-            <div className="thq-section-padding">
+            {/* <div className="thq-section-padding">
                 <div className='thq-section-max-width'>
                     <div className='cta-accent2-bg'>
                         <div className='cta-accent1-bg'>
@@ -374,8 +375,58 @@ const BrowseJobs = () => {
                     </div>
                 </div>
 
+            </div> */}
+
+            <div className="jobbox-container" style={{ height: '600px'}}>
+                <div className="column" style={{ position: 'relative', bottom: '30px' }}>
+                    <img src="dreamJob.jpeg" alt="Image 2" style={{ width: '100%', height: '100%' }} />
+                </div>
+                <div className="steps-container column" style={{height:'530px'}}>
+                    <div className='cta-accent2-bg'>
+                        <div className='cta-accent1-bg'>
+                            <div className='cta-content'>
+                                <span className='thq-heading-2'>Need to Apply to Your Dream Company and Dream Job?</span>
+                                <p className='thq-body-large'>Don't worry! At JobBox, your job search is easy—explore opportunities with just one click and connect with top employers ready for your talent!</p>
+
+                                <div className="button-container">
+                                    {isLoggedIn ? (
+                                        user?.userRole === 'Candidate' ? (
+                                            <Button
+                                                type="button"
+                                                className="thq-button-filled cta-button"
+                                                variant="info"
+                                                style={{ marginRight: '10px' }}
+                                                onClick={() => navigate('/candidate-dashboard/dream-job', { state: { userId: user.userId, userName: user.userName } })}
+                                            >
+                                                Apply for Your Dream Job at Your Dream Company
+                                            </Button>
+                                        ) : null // No button for HR or other roles
+                                    ) : (
+                                        <Button
+                                            type="button"
+                                            className="thq-button-filled cta-button"
+                                            variant="info"
+                                            style={{ marginRight: '10px' }}
+                                            onClick={handleCandidateClick} // If no user is logged in, handle login click
+                                        >
+                                            Apply for Your Dream Job at Your Dream Company
+                                        </Button>
+                                    )}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div >
+
+            <div style={{marginTop:'100px'}}>
+                <JobListings />
             </div>
-            <HomeFooter />
+            <div style={{marginTop:'100px'}}>
+                <HomeFooter />
+            </div>
 
             <Modal show={showModal} onHide={closeModal}>
                 <Modal.Header closeButton style={{ backgroundColor: '#faccc', color: 'white', borderBottom: 'none' }}>

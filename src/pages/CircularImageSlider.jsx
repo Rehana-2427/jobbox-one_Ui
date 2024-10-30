@@ -47,13 +47,22 @@ const CircularImageSlider = () => {
     };
 
     return (
-        <div className="image-slider-container">
-            <div className="image-slider">
-                {images.map((img, index) => (
-                    <div className="image-wrapper" key={index} onClick={() => handleImageClick(img.src)}>
-                        <img className="square-image" src={img.src} alt={`Company logo ${index}`} />
-                    </div>
-                ))}
+        <div className='company-images-home'>
+            <div style={{ textAlign: 'center' }}>
+                <h1 style={{ borderBottom: '2px solid purple', display: 'inline-block' }}>
+                    Top companies
+                </h1>
+            </div>
+
+            <div className="image-slider-container">
+
+                <div className="image-slider">
+                    {images.map((img, index) => (
+                        <div className="image-wrapper" key={index} onClick={() => handleImageClick(img.src)}>
+                            <img className="square-image" src={img.src} alt={`Company logo ${index}`} />
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );

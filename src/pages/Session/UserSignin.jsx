@@ -66,7 +66,7 @@ const UserSignin = () => {
             localStorage.setItem('token', token);
 
             if (user) {
-              if (user.userRole === 'Candidate') {
+                if (user.userRole === 'Candidate') {
                     navigate('/candidate-dashboard', { state: { userId: user.userId } });
                 } else {
                     setErrorMessage("Invalid login credentials or role. Please try again.");
@@ -97,7 +97,7 @@ const UserSignin = () => {
             const user = result.user;
             const userEmail = user.email;
             const response = await axios.get(`${BASE_API_URL}/checkUser?userEmail=${userEmail}`);
-            
+
             const existingUser = response.data;
             // Log existingUser to check if it's undefined
             console.log("Existing User:", existingUser);
@@ -114,13 +114,13 @@ const UserSignin = () => {
                         navigate('/candidate-dashboard', { state: { userRole: 'Candidate', userId: userId } });
                     }
                 });
-            } 
+            }
             else {
                 // User does not exist, create a new user
                 const randomPassword = Math.random().toString(36).slice(-8);
                 const newUser = {
-                    userName: user.displayName  ,// Ensure userName is set
-                    userEmail:userEmail,
+                    userName: user.displayName,// Ensure userName is set
+                    userEmail: userEmail,
                     password: randomPassword,
                     userRole: 'Candidate',
                     appliedDate: getFormattedDate(),
@@ -196,21 +196,21 @@ const UserSignin = () => {
 
     const signInWithFacebook = async () => {
         const provider = new FacebookAuthProvider();
-    
+
         try {
             // Show Facebook login popup
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
             const userEmail = user.email;
-    
+
             // Check if the user already exists in the backend
             const response = await axios.get(`${BASE_API_URL}/checkUser?userEmail=${userEmail}`);
             const existingUser = response.data;
-    
+
             if (existingUser) {
                 const userId = existingUser.userId;
                 console.log("Existing User ID:", userId);
-    
+
                 // Show SweetAlert for existing user
                 Swal.fire({
                     icon: 'success',
@@ -232,13 +232,13 @@ const UserSignin = () => {
                     userRole: 'Candidate',
                     appliedDate: getFormattedDate(),
                 };
-    
+
                 // Save new user to the backend
                 const saveResponse = await axios.post(`${BASE_API_URL}/saveUser`, newUser);
-    
+
                 // Log the entire save response to see what is returned from the backend
                 console.log("Response from saveUser:", saveResponse.data);
-    
+
                 // Check if the user is successfully created
                 if (saveResponse.data) {
                     Swal.fire({
@@ -260,7 +260,7 @@ const UserSignin = () => {
             setErrorMessage("Error signing in with Facebook. Please try again.");
         }
     };
-    
+
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
     useEffect(() => {
@@ -339,10 +339,11 @@ const UserSignin = () => {
                                         </div>
                                     </div>
                                     <SocialButtons
-                                        routeUrl="/signup/userSignup"
+                                        isLogin={false}
+                                        routeUrl="/candidate-signup"
                                         googleHandler={signInWithGoogle}
                                         facebookHandler={signInWithFacebook}
-                                        // facebookHandler={() => alert("facebook")}
+                                    // facebookHandler={() => alert("facebook")}
                                     />
                                 </div>
                             </Col>
