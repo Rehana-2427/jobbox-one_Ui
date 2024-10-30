@@ -168,13 +168,15 @@ const JobboxCompanyPage = () => {
       <div className="companyJob" style={{ marginTop: '100px' }}>
 
         <div >
+
           <div className="d-flex flex-column justify-content-between">
             {/* Filter Options Section */}
+            <h3 style={{paddingTop:'20px'}}>Filter Options</h3>
             <div className="filter-section d-flex flex-row justify-content-between" style={{ maxWidth: '100%', backgroundColor: '#f4f4f9', marginLeft: '24px', marginRight: '24px' }}>
               {/* Filter by Company Type */}
-              <div className="filter mb-3">
+              <div className="filter mb-3 filter-select-company-type" style={{width:'300px'}}>
                 <label htmlFor="companyType" className="form-label" style={{ color: '#6c5b7b', fontWeight: 'bold' }}>
-                  Filter by Company Type:
+                  Select Company Type:
                 </label>
                 <select id="companyType" className="form-select form-select-sm fs-6" style={{ borderColor: '#6c5b7b', borderRadius: '5px', padding: '8px' }} value={companyType} onChange={handleCompanyTypeChange}>
                   <option value='all'>All</option>
@@ -187,7 +189,7 @@ const JobboxCompanyPage = () => {
               {/* Filter by Industry */}
               <div className="filter mb-3">
                 <label htmlFor="industryType" className="form-label" style={{ color: '#6c5b7b', fontWeight: 'bold' }}>
-                  Filter by Industry:
+                  Select Industry:
                 </label>
                 <select id="industryType" className="form-select form-select-sm fs-6" style={{ borderColor: '#6c5b7b', borderRadius: '5px', padding: '8px' }} value={industryType} onChange={handleIndustryTypeChange}>
                   <option value='all'>All</option>
@@ -200,7 +202,7 @@ const JobboxCompanyPage = () => {
               {/* Filter by Location */}
               <div className="filter mb-3">
                 <label htmlFor="location" className="form-label" style={{ color: '#6c5b7b', fontWeight: 'bold' }}>
-                  Filter by Location:
+                 Search Location:
                 </label>
                 <input
                   type="text"

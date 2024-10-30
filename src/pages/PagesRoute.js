@@ -14,6 +14,7 @@ import PublicJobDetailsPage from './Companies/PublicJobDetailsPage';
 import Contact from './Contact';
 import CustomNavbar from './CustomNavbar';
 import DataDeletionPolicy from './DataDeletionPolicy';
+import FAQ from './FAQ';
 import Home from './Home';
 import Jobdetails from './Jobdetails';
 import PrivacyPolicy from './PrivacyPolicy';
@@ -24,6 +25,7 @@ import HrSignin from './Session/HrSignin';
 import HRSignup from './Session/HRSignup';
 import UserRoute from './Session/UserRoute';
 import UserSignin from './Session/UserSignin';
+import Settings from './Settings';
 import TermsAndConditions from './TermsAndConditions';
 
 const PagesRoute = () => {
@@ -54,6 +56,8 @@ const PagesRoute = () => {
           <Route path='/contact' element={<Contact />} />
           <Route path='/terms-and-conditions' element={<TermsAndConditions />} />
           <Route path='/privacy-and-policy' element={<PrivacyPolicy />} />
+          <Route path='/faqs' element={<FAQ />} />
+          <Route path='/settings' element={<Settings />} />
           <Route path='/hr-dashboard/*' element={<HrDashbaordRoute />} />
           <Route path='/candidate-dashboard/*' element={< CandidateDashbaordRoute />} />
           <Route path='/admin-register/*' element={<AdminRegister />} />

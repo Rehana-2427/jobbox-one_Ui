@@ -284,7 +284,7 @@ const showErrorToast = () => {
                     left: '20px'
                 }}
             >
-                <img src="/jb_logo.png" alt="JobDB" />
+                {/* <img src="/jb_logo.png" alt="JobDB" /> */}
             </Box>
             <div className='hr-form'>
                 <Box>

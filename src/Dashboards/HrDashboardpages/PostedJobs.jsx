@@ -188,7 +188,7 @@ const PostedJobs = () => {
               </div>
             </Dropdown.Toggle>
             <Dropdown.Menu className="mt-3">
-              <Dropdown.Item as={Link} to="/">
+              <Dropdown.Item as={Link} to="/settings">
                 <i className="i-Data-Settings me-1" /> Account settings
               </Dropdown.Item>
               <Dropdown.Item as="button" onClick={handleLogout}>

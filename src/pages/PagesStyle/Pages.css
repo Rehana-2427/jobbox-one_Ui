@@ -511,7 +511,7 @@
   border: 1px solid rgba(0, 0, 255, 0.233);
   border-radius: 4px;
   justify-content: center;
-  background-color: navy;
+  background-color: rgb(113, 0, 128);
 }
 
 @media (max-width: 768px) {
@@ -828,7 +828,7 @@
   align-self: stretch;
   align-items: flex-start;
   flex-shrink: 0;
-  justify-content: space-between;
+  justify-content: start;
 }
 
 .footer-footer-links2 {
@@ -864,7 +864,9 @@
 
 
 
-
+.welcome-msg {
+  padding-top: 150px;
+}
 
 .job-box-one-logo {
   display: none;
@@ -874,9 +876,15 @@
 .home-video-card {
   display: flex;
   justify-content: space-between;
-  padding-top: 150px;
-  height: 650px;
   width: 100vw;
+  padding-top: 100px;
+  height: 600px;
+}
+
+@media(max-width: 990px) {
+  .welcome-msg {
+    padding-top: 0px;
+  }
 }
 
 @media (max-width: 990px) {
@@ -1012,6 +1020,7 @@
     /* Change to a valid value */
     margin-top: 40px;
   }
+
   .job-box-one-logo {
     display: block;
     /* Show the logo on screens 990px and below */
@@ -1028,6 +1037,7 @@
     margin-top: 20px;
   }
 }
+
 @media (max-width: 408px) {
   .home-video-card {
     display: flex;
@@ -1037,6 +1047,7 @@
     /* Change to a valid value */
     margin-top: 20px;
   }
+
   .job-box-one-logo {
     display: block;
     /* Show the logo on screens 990px and below */
@@ -1053,6 +1064,7 @@
     margin-top: 20px;
   }
 }
+
 @media (max-width: 370px) {
   .home-video-card {
     display: flex;
@@ -1062,6 +1074,7 @@
     /* Change to a valid value */
     margin-top: 10px;
   }
+
   .job-box-one-logo {
     display: block;
     /* Show the logo on screens 990px and below */
@@ -1078,6 +1091,7 @@
     margin-top: 20px;
   }
 }
+
 @media (max-width: 342px) {
   .home-video-card {
     display: flex;
@@ -1087,6 +1101,7 @@
     /* Change to a valid value */
     margin-top: 5px;
   }
+
   .job-box-one-logo {
     display: block;
     /* Show the logo on screens 990px and below */
@@ -1103,6 +1118,7 @@
     margin-top: 20px;
   }
 }
+
 @media (max-width: 323px) {
   .home-video-card {
     display: flex;
@@ -1112,6 +1128,7 @@
     /* Change to a valid value */
     margin-top: 40px;
   }
+
   .job-box-one-logo {
     display: block;
     /* Show the logo on screens 990px and below */
@@ -1128,6 +1145,7 @@
     margin-top: 20px;
   }
 }
+
 @media (max-width: 303px) {
   .home-video-card {
     display: flex;
@@ -1137,6 +1155,7 @@
     /* Change to a valid value */
     margin-top: 60px;
   }
+
   .job-box-one-logo {
     display: block;
     /* Show the logo on screens 990px and below */
@@ -1153,13 +1172,60 @@
     margin-top: 20px;
   }
 }
+
 .steps-container {
   box-shadow: 0px 4px 10px rgba(241, 16, 241, 0.219);
-  /* Adds shadow */
   padding: 20px;
-  /* Adjust padding if needed */
   border-radius: 8px;
-  /* Optional for rounded corners */
   background-color: #fff;
-  /* Optional for background */
+}
+
+
+.services-card-column {
+  width: 70px;
+}
+
+.hover-effect {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  /* Smooth transition */
+}
+
+.hover-effect:hover {
+  transform: scale(1.05);
+  /* Slightly enlarge the card */
+  box-shadow: 0 4px 15px rgba(226, 11, 208, 0.521);
+  /* Add box shadow */
+}
+
+
+
+/* settings */
+
+.settings-account{
+  margin-top: 150px;
+  display: flex;
+  align-content: center;
+  justify-content: start;
+}
+.settings-Notifications{
+  display: flex;
+  align-content: center;
+  justify-content: start;
+}
+
+/* Default style for both buttons */
+.custom-toggle {
+  background-color: #ccc; 
+  color: #000; 
+  border: none; 
+  transition: background-color 0.3s;
+}
+
+.custom-toggle.active {
+  background-color: rgb(201, 61, 189); 
+  color: #fff; 
+}
+
+.custom-toggle:hover {
+  background-color: #ddd; 
 }

@@ -1,23 +1,34 @@
 import { faEnvelope, faMapMarkerAlt, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import CustomNavbar from './CustomNavbar';
 
 const Contact = () => {
-  // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
-
   const BASE_API_URL = process.env.REACT_APP_API_URL;
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     subject: '',
     message: '',
-    agreeTerms: false, // New state for terms agreement
+    agreeTerms: false,
   });
   const [isMessageSent, setIsMessageSent] = useState(false);
+
+  useEffect(() => {
+    // Check if the user is logged in
+    const loggedInUser = JSON.parse(localStorage.getItem('user')); // Assuming user data is stored in localStorage
+    if (loggedInUser) {
+      setFormData((prevData) => ({
+        ...prevData,
+        name: loggedInUser.userName || '',
+        email: loggedInUser.userEmail || '',
+      }));
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
@@ -29,33 +40,23 @@ const Contact = () => {
     }));
   };
 
-
-
-
-
   const handleSubmit = async (e) => {
-
     e.preventDefault();
     if (!formData.agreeTerms) {
       alert('Please accept the terms and conditions.');
       return;
     }
 
-
     try {
-      // Send the form data to the backend API
       const response = await axios.post(`${BASE_API_URL}/savemessage`, formData);
       if (response.status === 200) {
         setIsMessageSent(true);
-        alert("Mail sent")
+        alert("Mail sent");
       }
     } catch (error) {
       console.error('Error sending message:', error);
     }
-
   };
-
-
 
   return (
     <div>
@@ -90,6 +91,7 @@ const Contact = () => {
                       value={formData.name}
                       onChange={handleChange}
                       required
+                      disabled // Disable input for logged-in user
                     />
                   </Form.Group>
                   <Form.Group controlId="email">
@@ -100,6 +102,7 @@ const Contact = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
+                      disabled // Disable input for logged-in user
                     />
                   </Form.Group>
                   <Form.Group controlId="subject">
@@ -139,11 +142,10 @@ const Contact = () => {
               )}
             </Col>
           </Row>
-
         </Container>
       </div>
-   
     </div>
   );
 };
+
 export default Contact;

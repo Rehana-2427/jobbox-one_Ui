@@ -7,7 +7,9 @@ import CustomNavbar from './CustomNavbar';
 import HomeFooter from './HomeFooter';
 import Jobboxcard from './Jobboxcard';
 import './PagesStyle/Pages.css';
-import DreamCard from './DreamCard';
+import ServicesCard from './ServicesCard';
+import Testimonials from './Testimonials';
+import Welcome from './Welcome';
 
 const Home = () => {
   // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
@@ -116,13 +118,7 @@ const Home = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const navLinkStyle = screenWidth > 990 ? { marginRight: '40px', marginLeft: '150px' } : {};
-  const carouselImageList = [
-    "/jb_logo.png",
-    "/jb_logo.png",
-    "/jb_logo.png",
-    "/jb_logo.png"
-  ];
+
   const [groupedImages, setGroupedImages] = useState([]);
   const [imageKeys, setImageKeys] = useState({}); // To store the mapping of image URLs to keys
   const navigate = useNavigate(); // Hook for navigation
@@ -184,7 +180,7 @@ const Home = () => {
       navigate('/signup/userSignup', { state: { userType: 'Candidate' } });
     }
   };
-  const [padding, setPadding] = useState(20);
+  const [padding, setPadding] = useState(50);
 
   useEffect(() => {
     const handleResize = () => {
@@ -204,7 +200,12 @@ const Home = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
+  const rectangleStyle = {
+    width: '200px',        // Adjust width as needed
+    height: '100px',       // Adjust height as needed
+    backgroundColor: '#4CAF50',  // Change color as desired
+    borderRadius: '20px 0 0 20px',  // Only top-left and bottom-right corners are curved
+  };
   return (
     <div>
       <div>
@@ -371,48 +372,56 @@ const Home = () => {
         </div>
       </div> */}
 
-<div> <img src="/jobbox-one-logo.png" alt="JobBox Logo" className="job-box-one-logo" /></div>
+
+      <div className='welcome-msg'>
+          <Welcome />
+      </div>
       <div className="home-video-card">
-       
         <div className="column">
-          <video width="100%"  autoPlay muted loop>
+          <video width="100%" autoPlay muted loop>
             <source src="\jobbox-one-video.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
 
-        <div className="steps-container column ">
-          <div className='cta-accent2-bg'>
-            <div className='cta-accent1-bg'>
-              <div className='cta-content'>
-                <span className='thq-heading-2'>Find Your Dream Job</span>
-                <p className='thq-body-large'>
-                  "Discover job opportunities and advance your career with JobBox. We connect you with top employers and help you find roles that match your skills and interests. Start your journey today and unlock your potential!"
-                </p>
-                <div className='cta-actions'>
-                  <a href="/#/browse-jobs" target="_blank" rel="noopener noreferrer">
-                    <button type="button" className="thq-button-filled cta-button">
-                      Browse Jobs
-                    </button>
-                  </a>
-                </div>
-              </div>
-
+        <div className="steps-container column">
+          {/* <div className='cta-accent2-bg'>
+            <div className='cta-accent1-bg'> */}
+          <div className='cta-content'>
+            <span className='thq-heading-2'style={{ borderBottom: '2px solid purple', display: 'inline-block' }} >Find Your Dream Job</span>
+            <p className='thq-body-large'>
+              "Discover job opportunities and advance your career with JobBox. We connect you with top employers and help you find roles that match your skills and interests. Start your journey today and unlock your potential! Whether you're looking for your first job or the next step in your career, JobBox has something for everyone. Join us and take the first step toward a brighter future!"
+            </p>
+            <div className='cta-actions'>
+              <a href="/#/browse-jobs" target="_blank" rel="noopener noreferrer">
+                <button type="button" className="thq-button-filled cta-button">
+                  Browse Jobs
+                </button>
+              </a>
             </div>
           </div>
+
+          {/* </div>
+          </div> */}
         </div>
       </div>
 
-      <div>
+      <div className='jobbox-card'>
         <Jobboxcard />
       </div>
+      {/* <div>
+        <DreamCard />
+      </div> */}
       <div>
-      <DreamCard/>
+        <ServicesCard />
       </div>
       <div style={{ paddingTop: `${padding}px`, paddingBottom: `${padding}px` }}>
         <CircularImageSlider />
       </div>
 
+        <div>
+          <Testimonials />
+        </div>
       <div>
         <HomeFooter />
       </div>

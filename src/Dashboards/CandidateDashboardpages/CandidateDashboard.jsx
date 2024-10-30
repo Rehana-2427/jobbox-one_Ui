@@ -284,8 +284,8 @@ const CandidateDashboard = () => {
               </div>
             </Dropdown.Toggle>
             <Dropdown.Menu className="mt-3">
-              <Dropdown.Item as={Link} to="/">
-                <i className="i-Data-Settings me-1" /> Account settings
+              <Dropdown.Item as={Link} to="/settings">
+                <i className="i-Data-Settings me-1"/> Account settings
               </Dropdown.Item>
               <Dropdown.Item as="button" onClick={handleLogout}>
                 <i className="i-Lock-2 me-1" /> Logout

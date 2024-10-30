@@ -84,7 +84,7 @@ const CustomNavbar = () => {
 
         // Navigate based on user role and status
         if (user.userRole === 'HR' && user.userStatus === 'Approved') {
-            navigate('/hr-dashboard', { state: { userEmail: user.userEmail,userRole: 'HR' } });
+            navigate('/hr-dashboard', { state: { userEmail: user.userEmail, userRole: 'HR' } });
         } else if (user.userRole === 'Candidate') {
             navigate('/candidate-dashboard', {
                 state: { userId: user.userId, userRole: 'candidate' } // Pass userId and userRole
@@ -103,7 +103,7 @@ const CustomNavbar = () => {
                 <AppBar className="app-bar" style={{ backgroundColor: 'white' }}>
                     <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                            <img src="/jb_logo.png" alt="JobBox Logo" />
+                            <img src="/jb_logo.png" alt="JobBox Logo" style={{ width: '200px', height: 'auto', maxHeight: '100px' }} />
                         </Typography>
                         <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
                             <Tabs
