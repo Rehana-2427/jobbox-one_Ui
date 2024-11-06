@@ -38,6 +38,7 @@ const MyJobs = () => {
   console.log("current page from update job", currentPage, " page size", currentPageSize);
   const handleSearchChange = (event) => {
     setSearch(event.target.value);
+    setPage(0);
   };
 
 

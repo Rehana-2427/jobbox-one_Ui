@@ -82,13 +82,15 @@ const HrLeftSide = ({ user, onClose }) => {
             </div>
             <Navbar expand="lg" className="flex-column align-items-center" style={{ height: '100vh', backgroundColor: 'white', textAlign: 'center' }}>
                 <Container fluid className="flex-column">
-                    <Navbar.Brand>
-                        <img
-                            style={{ backgroundColor: 'white' }}
-                            src="/jb_logo.png"
-                            alt="jobboxlogo"
-                            className='auth-logo'
-                        />
+                <Navbar.Brand>
+                        <a href="/">
+                            <img
+                                style={{ backgroundColor: 'white' }}
+                                src="/jb_logo.png"
+                                alt="jobboxlogo"
+                                className="auth-logo"
+                            />
+                        </a>
                     </Navbar.Brand>
                     <Navbar.Text>
                         <h2 style={{ color: 'black' }}>{userName}</h2>

@@ -89,7 +89,7 @@ const HRSignup = () => {
             .matches(
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,12}$/,
                 'Invalid password match...'
-              ),
+            ),
         confirmPassword: yup.string().required('Repeat Password is required').oneOf([yup.ref('password')], 'Passwords must match'),
         agreeToTermsAndCondition: yup.bool().oneOf([true], 'You must agree to validate your email'),
     });
@@ -246,21 +246,21 @@ const HRSignup = () => {
         }
     };
 
-  // Function to show the password criteria error
-const showErrorToast = () => {
-    toast.error(
-        <div className="alert alert-info" style={{ maxWidth: '400px', margin: '20px auto', borderRadius: '5px' }}>
-            <h5>Password Guidelines</h5>
-            <ul className="list-unstyled">
-                <li>• At least one number</li>
-                <li>• One special character</li>
-                <li>• One uppercase letter</li>
-                <li>• One lowercase letter</li>
-                <li>• Between 8 to 12 characters</li>
-            </ul>
-        </div>
-    );
-};
+    // Function to show the password criteria error
+    const showErrorToast = () => {
+        toast.error(
+            <div className="alert alert-info" style={{ maxWidth: '400px', margin: '20px auto', borderRadius: '5px' }}>
+                <h5>Password Guidelines</h5>
+                <ul className="list-unstyled">
+                    <li>• At least one number</li>
+                    <li>• One special character</li>
+                    <li>• One uppercase letter</li>
+                    <li>• One lowercase letter</li>
+                    <li>• Between 8 to 12 characters</li>
+                </ul>
+            </div>
+        );
+    };
 
 
     // Effect to show the toast when the error is true
@@ -273,24 +273,14 @@ const showErrorToast = () => {
     const isSmallScreen = useMediaQuery('(max-width:600px)'); // Check for small screen
     const isMediumScreen = useMediaQuery('(max-width:960px)'); // Check for medium screen
     return (
-        <Container component="main" maxWidth="xs" className="hr-form-container">
-            <Box
-                sx={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'flex-start',
-                    marginBottom: 2,
-                    position: 'fixed',
-                    left: '20px'
-                }}
-            >
-                {/* <img src="/jb_logo.png" alt="JobDB" /> */}
-            </Box>
-            <div className='hr-form'>
-                <Box>
-                    <h2>Employee Registration form</h2>
-                </Box>
-                <Box
+        <Container component="main" maxWidth="xs" className="hr-form-container" style={{ padding: '30px' }}>
+            <div className="hr-form" style={{ maxHeight: '90vh', overflowY: 'auto' }}>
+                <div style={{ textAlign: 'center' }}>
+                    <h2 style={{ fontFamily: '"Roboto", sans-serif', color: '#333', fontWeight: '500' }}>
+                        Employee Registration Form
+                    </h2>
+                </div>
+                <div
                     sx={{
                         display: 'flex',
                         justifyContent: 'center',
@@ -298,8 +288,13 @@ const showErrorToast = () => {
                         minHeight: '100vh',
                         position: 'relative',
                         right: '70px',
-                        top:'30px'
-
+                        top: '60px',
+                        backgroundColor: '#f4f4f4', // Soft background color
+                        padding: '30px 40px',
+                        borderRadius: '10px',
+                        boxShadow: '0 10px 20px rgba(0, 0, 0, 0.1)',
+                        width: '100%',
+                        maxWidth: '850px', // Ensure it's not too wide on large screens
                     }}
                 >
                     <Formik
@@ -309,38 +304,27 @@ const showErrorToast = () => {
                         enableReinitialize
                     >
                         {({ values, errors, touched, handleChange, handleBlur, isSubmitting }) => (
-                            <Form className='form' >
-                                {/* <Card className="form-card o-hidden" style={{ width: '120%' }}> */}
-                                <Card className="hr-form-card o-hidden" style={{
-                                    width: isSmallScreen ? '80%' : isMediumScreen ? '90%' : '200%', // Default for large screens
-                                    transition: 'width 0.3s ease', position: 'relative', bottom: '50px', right: '70px'
-                                }}
+                            <Form className="form" style={{ width: '100%' }}>
+                                <Card
+                                    className="hr-form-card o-hidden"
+                                    style={{
+                                        transition: 'width 0.3s ease',
+                                        position: 'relative',
+                                        bottom: '50px',
+                                        right: '70px',
+                                        backgroundColor: '#fff',
+                                        padding: '20px 30px',
+                                        borderRadius: '10px',
+                                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                                    }}
                                 >
                                     <Row>
-                                        {/* Left Section */}
-                                        {/* <Col md={6} className="text-center auth-cover" style={{ marginTop: '15px' }}>
-                                            <div className="ps-3 auth-right" >
-                                                <div className="w-100 h-100 justify-content-center d-flex flex-column">
-                                                    <SocialButtons
-                                                        isLogin={false} // Set isLogin to false for registration
-                                                        routeUrl="/signin"
-                                                        googleHandler={() => alert("google")}
-                                                        facebookHandler={() => alert("facebook")}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </Col> */}
-
-                                        {/* Right section */}
-                                        <Col style={{paddingLeft:'50px'}}>
+                                        <Col style={{ paddingLeft: '50px' }}>
+                                            {/* Name Field */}
                                             <TextField
                                                 type="text"
                                                 name="userName"
-                                                label={
-                                                    <>
-                                                        Your name <span style={{ color: 'red' }}>*</span>
-                                                    </>
-                                                }
+                                                label="Your name"
                                                 required
                                                 placeholder="Enter your name"
                                                 value={values.userName}
@@ -348,38 +332,39 @@ const showErrorToast = () => {
                                                 onBlur={handleBlur}
                                                 helperText={errors.userName}
                                                 error={errors.userName && touched.userName}
-                                                errorMessage={touched.userName && errors.userName}
                                                 disabled={disableFormFields}
+                                                fullWidth
+                                                variant="outlined"
+                                                margin="normal"
+                                                style={{ marginBottom: '15px' }}
                                             />
+
+                                            {/* Email Field */}
                                             <TextField
                                                 type="email"
                                                 name="userEmail"
-                                                label={
-                                                    <>
-                                                        Your Official Company Email
-                                                        <span style={{ color: 'red' }}>*</span>
-                                                    </>
-                                                }
+                                                label="Your Official Company Email"
                                                 required
                                                 placeholder="Enter your email"
                                                 value={values.userEmail}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                                 helperText={errors.userEmail}
-                                                error={touched.userEmail && Boolean(errors.userEmail)} // Boolean conversion to avoid undefined issues
-                                                disabled={disableFormFields || emailExistsError} // Disable if the form is disabled or email exists
+                                                error={touched.userEmail && Boolean(errors.userEmail)}
+                                                disabled={disableFormFields || emailExistsError}
+                                                fullWidth
+                                                variant="outlined"
+                                                margin="normal"
+                                                style={{ marginBottom: '15px' }}
                                             />
 
+                                            {/* Company Name and Website */}
                                             {!companyName && (
                                                 <>
                                                     <TextField
                                                         type="text"
                                                         name="companyName"
-                                                        label={
-                                                            <>
-                                                                Company name <span style={{ color: 'red' }}>*</span>
-                                                            </>
-                                                        }
+                                                        label="Company name"
                                                         required
                                                         placeholder="Enter your company name"
                                                         value={companyName || values.companyName}
@@ -387,9 +372,13 @@ const showErrorToast = () => {
                                                         onBlur={handleBlur}
                                                         helperText={errors.companyName}
                                                         error={errors.companyName && touched.companyName}
-                                                        errorMessage={touched.companyName && errors.companyName}
                                                         disabled={disableFormFields}
+                                                        fullWidth
+                                                        variant="outlined"
+                                                        margin="normal"
+                                                        style={{ marginBottom: '15px' }}
                                                     />
+
                                                     <div className="form-group" style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', marginBottom: '5px' }}>
                                                         <label>{<><span>Company Website</span> <span className="required" style={{ color: 'red' }}>*</span></>}</label>
                                                         <div className="protocol-tld-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
@@ -438,44 +427,36 @@ const showErrorToast = () => {
                                                                     <option value=".info">.info</option>
                                                                     <option value=".in">.in</option>
                                                                 </select>
+
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </>
                                             )}
+
+                                            {/* Password and Confirm Password */}
                                             <TextField
                                                 type="password"
                                                 name="password"
-                                                label={
-                                                    <>
-                                                        Password <span style={{ color: 'red' }}>*</span>
-                                                    </>
-                                                }
+                                                label="Password"
                                                 required
                                                 placeholder="Enter your password"
                                                 value={values.password}
                                                 onChange={handleChange}
-                                                onBlur={(e) => {
-                                                    handleBlur(e);
-                                                    if (errors.password) {
-                                                        setPasswordCriteriaError(true); // Show toast if there's an error
-                                                    }
-                                                }}
+                                                onBlur={handleBlur}
                                                 helperText={errors.password}
                                                 error={errors.password && touched.password}
                                                 fullWidth
-                                                errorMessage={touched.password && errors.password}
+                                                variant="outlined"
+                                                margin="normal"
                                                 disabled={disableFormFields}
+                                                style={{ marginBottom: '15px' }}
                                             />
 
                                             <TextField
                                                 type="password"
                                                 name="confirmPassword"
-                                                label={
-                                                    <>
-                                                        Confirm Password <span style={{ color: 'red' }}>*</span>
-                                                    </>
-                                                }
+                                                label="Confirm Password"
                                                 required
                                                 placeholder="Re-enter your password"
                                                 value={values.confirmPassword}
@@ -484,16 +465,22 @@ const showErrorToast = () => {
                                                 helperText={errors.confirmPassword}
                                                 error={errors.confirmPassword && touched.confirmPassword}
                                                 fullWidth
-                                                errorMessage={touched.confirmPassword && errors.confirmPassword}
+                                                variant="outlined"
+                                                margin="normal"
                                                 disabled={disableFormFields}
+                                                style={{ marginBottom: '15px' }}
                                             />
+
+                                            {/* Password Mismatch Error */}
                                             {passwordMatchError && (
                                                 <p style={{ color: 'red', fontSize: '0.875rem', marginTop: '0.25rem' }}>
-                                                    Password did not match, plese try again...
+                                                    Passwords did not match, please try again...
                                                 </p>
                                             )}
+
+                                            {/* OTP Button */}
                                             {!otpVerified && (
-                                                <div className="d-flex justify-content-center">
+                                                <div className="d-flex justify-content-center" style={{ marginBottom: '20px' }}>
                                                     <Button
                                                         disabled={disableFormFields || otpVerified}
                                                         className="mt-2"
@@ -501,58 +488,85 @@ const showErrorToast = () => {
                                                             setDisableFormFields(true);
                                                             sendOTP(values.userEmail);
                                                         }}
+                                                        variant="contained"
+                                                        fullWidth
+                                                        // style={{ padding: '12px', borderRadius: '30px', backgroundColor:'p' }}
+                                                        color="primary"
                                                     >
                                                         Validate my email
                                                     </Button>
+
                                                 </div>
                                             )}
 
                                             {successMessage && <p className="success-message">{successMessage}</p>}
 
-                                            <div>
+                                            {/* Terms and Conditions */}
+                                            <div className="d-flex justify-content-start align-items-center" style={{ marginBottom: '15px' }}>
                                                 <Field
                                                     type="checkbox"
                                                     name="agreeToTermsAndCondition"
-                                                    // className={`form-check-input ${touched.agreeToTermsAndCondition && errors.agreeToTermsAndCondition ? 'is-invalid' : ''}`}
                                                     id="agreeToTermsAndCondition"
                                                     checked={values.agreeToTermsAndCondition}
                                                     onChange={(e) => {
                                                         handleChange(e);
                                                         setAgreeToTermsAndConditionByCheck(true);
                                                     }}
-                                                    style={{ marginRight: '10px', transform: 'scale(1)', borderColor: 'black' }}
+                                                    style={{ marginRight: '10px', transform: 'scale(1.2)' }}
                                                 />
                                                 <label>
                                                     I agree to the{' '}
-                                                    <Link to="/terms-and-conditions" target="_blank">
+                                                    <Link to="/terms-and-conditions" target="_blank" style={{ textDecoration: 'underline' }}>
                                                         Terms and Conditions
-                                                    </Link>{' '}
-                                                    of the website
+                                                    </Link>
                                                 </label>
                                                 {touched.agreeToTermsAndCondition && errors.agreeToTermsAndCondition && (
-                                                    <div className="invalid-feedback">{errors.agreeToTermsAndCondition}</div>
+                                                    <div className="invalid-feedback" style={{ color: 'red' }}>
+                                                        {errors.agreeToTermsAndCondition}
+                                                    </div>
                                                 )}
                                             </div>
+
+                                            {/* Email Exists Error */}
                                             {emailExistsError && (
-                                                <div>
+                                                <div style={{ marginBottom: '20px' }}>
                                                     <p className="error-message">
                                                         Email already exists. Please{' '}
-                                                        <Link to="/signin">click here for login</Link>
+                                                        <Link to="/signin" style={{ color: '#007bff' }}>
+                                                            click here for login
+                                                        </Link>
                                                     </p>
                                                     <p>OR</p>
-                                                    <Button onClick={() => updateUserData(values)}>Update Your Data</Button>
+                                                    <Button onClick={() => updateUserData(values)} variant="outlined" color="secondary">
+                                                        Update Your Data
+                                                    </Button>
                                                 </div>
                                             )}
 
-                                            {errorMessage && <div className="text-danger">{errorMessage}</div>}
+                                            {errorMessage && <div className="text-danger" style={{ marginBottom: '20px' }}>{errorMessage}</div>}
+
+                                            {/* Submit Button */}
                                             <div className="d-flex justify-content-center">
                                                 <Button
                                                     type="submit"
-                                                    className="btn btn-primary w-50 my-1 btn-rounded mt-3 d-flex justify-content-center align-items-center"
-                                                    disabled={!otpVerified || isSubmitting || emailExistsError || agreeToTermsAndConditionByCheck === false}
+                                                    className="btn btn-primary w-50 my-1 btn-rounded mt-3"
+                                                    disabled={
+                                                        !otpVerified ||
+                                                        isSubmitting ||
+                                                        emailExistsError ||
+                                                        agreeToTermsAndConditionByCheck === false
+                                                    }
+                                                    variant="contained"
+                                                    color="primary"
+                                                    style={{
+                                                        padding: '12px',
+                                                        borderRadius: '30px',
+                                                        fontWeight: 'bold',
+                                                        fontSize: '1rem',
+                                                        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                                                    }}
                                                 >
                                                     {isSubmitting ? 'Registering...' : 'Register'}
-
                                                 </Button>
                                             </div>
                                         </Col>
@@ -561,10 +575,11 @@ const showErrorToast = () => {
                             </Form>
                         )}
                     </Formik>
-                </Box>
+                </div>
             </div>
+
             {/* OTP Modal */}
-            <Modal show={showOTPModal} onHide={() => setShowOTPModal(false)}>
+            <Modal show={showOTPModal} onHide={() => setShowOTPModal(false)} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>OTP Verification</Modal.Title>
                 </Modal.Header>
@@ -576,6 +591,9 @@ const showErrorToast = () => {
                         placeholder="Enter OTP"
                         value={enterOtpValue}
                         onChange={(e) => setEnterOtpValue(e.target.value)}
+                        fullWidth
+                        variant="outlined"
+                        style={{ marginBottom: '20px' }}
                     />
                 </Modal.Body>
                 <Modal.Footer>
@@ -587,11 +605,11 @@ const showErrorToast = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <div>
-                {/* Your application components */}
-                <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
-            </div>
-        </Container >
+
+            {/* Toast */}
+            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
+        </Container>
+
     )
 }
 

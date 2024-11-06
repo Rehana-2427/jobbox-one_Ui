@@ -68,7 +68,8 @@ const navigate = useNavigate();
           Swal.showLoading();
         }
       });
-
+  // Iterate over companies array and apply
+  let appliedSuccessfully = false;
       const appliedOn = new Date(); // Get current date and time
       const year = appliedOn.getFullYear(); // Get the full year (e.g., 2024)
       const month = String(appliedOn.getMonth() + 1).padStart(2, '0'); // Get month (January is 0, so we add 1)
@@ -79,19 +80,31 @@ const navigate = useNavigate();
       const response = await axios.put(`${BASE_API_URL}/applyDreamCompany?userId=${userId}&companyName=${companyName}&formattedDate=${formattedDate}&resumeId=${resumeId}`);
       console.log(response.data);
 
-      if (response.data) {
+        if (response.data) {
+          Swal.close();
+          appliedSuccessfully = true;
+       
+        
+      } else {
+          await Swal.fire({
+              icon: 'error',
+              title: 'Application Failed',
+              text: `You have already applied for ${companyName}`,
+            });
+      }
 
-        Swal.close();
-
-        // Show success message
+      if (appliedSuccessfully) {
         await Swal.fire({
-          icon: "success",
-          title: "Apply Successful!",
-          text: "You have successfully applied for this job."
+          icon: 'success',
+          title: 'Apply Successful!',
+          text: 'You have successfully applied for the selected jobs.',
         });
         setCompanyName('');
         navigate(-1);
       }
+     
+      
+  
     } catch (error) {
       console.error('Error applying for job:', error);
       // Close loading popup on error

@@ -55,57 +55,114 @@
   font-weight: 300;
 }
 
+/* Main container */
 .hr-form-container {
   width: 100vw;
   height: 100vh;
   overflow: hidden; /* Prevent scrolling */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4f4f4; /* Light background for better contrast */
 }
 
-@media (max-width: 1200px) {
+
+/* Media Queries */
+
+/* Large screens (default styles) */
+@media (min-width: 1200px) {
   .hr-form-card {
-    width: 100%;
+    width: 70%;
     position: relative;
-    left: 100px;
-    overflow-y: auto;
-    top: 2px;
+    left: 50px;
+    top: 20px;
   }
-  .hr-form{
-    position: relative;
-    top: 100px;
-    max-height: 80vh; /* Sets a maximum height relative to the viewport height */
-    overflow-y: auto; /* Enables vertical scrolling */
+
+  .hr-form {
+    max-height: 70vh; /* Adjust for large screens */
+    padding: 40px;
   }
 }
+
 /* Medium screens (e.g., tablets) */
-@media (max-width: 960px) {
+@media (max-width: 1200px) {
   .hr-form-card {
     width: 90%;
     position: relative;
-    left: 100px;
-    overflow-y: auto;
-    padding-left: 12px;
+    left: 10px;
+    padding-left: 20px;
+    top: 10px;
   }
-  .hr-form{
+
+  .hr-form {
     position: relative;
-    top: 100px;
-    max-height: 80vh; /* Sets a maximum height relative to the viewport height */
-    overflow-y: auto; /* Enables vertical scrolling */
+    top: 80px;
+    max-height: 80vh;
+    padding: 20px;
   }
 }
 
 /* Small screens (e.g., mobile) */
-@media (max-width: 600px) {
+@media (max-width: 960px) {
   .hr-form-card {
-    width: 70%;
+    width: 100%;
     position: relative;
-    right: 200px;
+    left: 10px;
     padding-left: 12px;
   }
-  .hr-form{
+
+  .hr-form {
     position: relative;
-    top: 100px;
-    max-height: 80vh; /* Sets a maximum height relative to the viewport height */
-    overflow-y: auto; /* Enables vertical scrolling */
+    top: 70px;
+    max-height: 80vh;
+    padding: 15px;
   }
 }
+
+/* Extra Small screens (very small mobile screens) */
+@media (max-width: 600px) {
+  .hr-form-card {
+    width: 90%;
+    padding-left: 10px;
+    padding-right: 10px;
+    left: 0;
+    right: 0;
+  }
+
+  .hr-form {
+    position: relative;
+    top: 60px;
+    max-height: 75vh;
+    padding: 15px;
+  }
+
+  .hr-form button {
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  /* Reduce font sizes for smaller screens */
+  .hr-form input,
+  .hr-form select,
+  .hr-form button {
+    font-size: 0.875rem;
+    padding: 8px;
+  }
+}
+
+/* Ensure readability on very small screens */
+@media (max-width: 400px) {
+  .hr-form {
+    padding: 10px;
+  }
+
+  .hr-form input,
+  .hr-form select,
+  .hr-form button {
+    font-size: 0.8rem;
+    padding: 6px;
+  }
+}
+
+
 

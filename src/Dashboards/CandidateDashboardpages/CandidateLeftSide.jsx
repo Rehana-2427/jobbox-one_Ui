@@ -6,7 +6,7 @@ import { RxDashboard } from 'react-icons/rx';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 function CandidateLeftSide({ user, onClose }) {
-    
+
     const { userName, userId } = user;
     const navigate = useNavigate();
     const location = useLocation();
@@ -79,13 +79,16 @@ function CandidateLeftSide({ user, onClose }) {
                 <Container fluid className="flex-column">
 
                     <Navbar.Brand>
-                        <img
-                            style={{ backgroundColor: 'white' }}
-                            src="/jb_logo.png"
-                            alt="jobboxlogo"
-                            className='auth-logo'
-                        />
+                        <a href="/">
+                            <img
+                                style={{ backgroundColor: 'white' }}
+                                src="/jb_logo.png"
+                                alt="jobboxlogo"
+                                className="auth-logo"
+                            />
+                        </a>
                     </Navbar.Brand>
+
                     <Navbar.Text>
                         <h2 style={{ color: 'black' }}>{userName}</h2>
                     </Navbar.Text>
@@ -131,8 +134,8 @@ function CandidateLeftSide({ user, onClose }) {
                                                     color: 'black',
                                                     cursor: 'pointer',
                                                     backgroundColor: 'transparent',
-                                                    position:'relative',
-                                                    left:'20px'
+                                                    position: 'relative',
+                                                    left: '20px'
                                                 }}
                                             >
                                                 <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>

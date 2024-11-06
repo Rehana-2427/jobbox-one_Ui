@@ -103,7 +103,13 @@ const CustomNavbar = () => {
                 <AppBar className="app-bar" style={{ backgroundColor: 'white' }}>
                     <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                            <img src="/jb_logo.png" alt="JobBox Logo" style={{ width: '200px', height: 'auto', maxHeight: '100px' }} />
+                            <a href="/">
+                                <img
+                                    src="/jb_logo.png"
+                                    alt="JobBox Logo"
+                                    style={{ width: '200px', height: 'auto', maxHeight: '100px' }}
+                                />
+                            </a>
                         </Typography>
                         <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
                             <Tabs

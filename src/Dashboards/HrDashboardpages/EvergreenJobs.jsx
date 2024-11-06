@@ -78,6 +78,7 @@ const EvergreenJobs = () => {
   const handlePageSizeChange = (e) => {
     const size = parseInt(e.target.value);
     setPageSize(size);
+    setPage(0);
   };
 
   const handlePageClick = (data) => {
