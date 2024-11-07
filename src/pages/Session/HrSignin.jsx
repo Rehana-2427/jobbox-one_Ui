@@ -53,7 +53,7 @@ const HrSignin = () => {
             <CustomNavbar />
             <div className="login-layout">
                 <div className="login-content user_regi_signin">
-                    <Card className="hr-form-card o-hidden">
+                <Card className="hr-form-card o-hidden mt-4" style={{ overflow: 'hidden' }}>
                         <Col md={10} className="p-4 d-flex flex-column align-items-center justify-content-center">
                             <h1 className="mb-4 text-center text-primary"><b>Employee Login</b></h1>
                             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
@@ -104,7 +104,6 @@ const HrSignin = () => {
                             </div>
                         </Col>
                     </Card>
-
                 </div>
             </div>
         </div>

@@ -21,7 +21,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const [skills, setSkills] = useState([]);
   const [showSkillsMessage, setShowSkillsMessage] = useState(false);
-
+  const [newName, setNewName] = useState('');
   const [dropdowns, setDropdowns] = useState({
     skills: false,
     education: false,
@@ -124,6 +124,23 @@ const Profile = () => {
   const toggleSettings = () => {
     navigate('/');
   };
+  // Example function to simulate updating user data
+  const handleEditName = async () => {
+    // Here you would typically make an API call to update the user data
+    try {
+      const response = await axios.put(`${BASE_API_URL}/updateCandidate?userId=${userId}&newName=${newName}`);
+      setUserData(response.data);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
+
+  // const updateUserData = (updatedData) => {
+
+  //   console.log("Updated user data:", updatedData);
+  //   // If you're using state management, update your state here
+  // };
 
   const convertToUpperCase = (str) => String(str).toUpperCase();
 
@@ -212,7 +229,19 @@ const Profile = () => {
             <>
               <div className="profile-item">
                 <span className="profile-label">Name:</span>
-                <span className="profile-value">{userData.userName}</span>
+                <span className="profile-value">
+                  {userData.userName ? userData.userName : (
+                    <>
+                      <input
+                        type="text"
+                        value={newName}
+                        onChange={(e) => setNewName(e.target.value)}
+                        placeholder="Enter your name"
+                      />
+                      <button onClick={handleEditName}>Edit Name</button>
+                    </>
+                  )}
+                </span>
               </div>
               <div className="profile-item">
                 <span className="profile-label">Email:</span>
@@ -225,6 +254,7 @@ const Profile = () => {
             </>
           )}
         </div>
+
 
 
 
@@ -244,14 +274,14 @@ const Profile = () => {
                 {skills.map((skill, index) => (
                   <span
                     key={index}
-                    className='badge bg-light text-dark me-2 mb-2 position-relative d-inline-flex align-items-center'
+                    className="badge bg-light text-dark me-2 mb-2 position-relative d-inline-flex align-items-center"
                     style={{
                       fontSize: '1.25rem',
                       padding: '0.5rem 1rem',
                       borderRadius: '0.25rem',
-                      flex: '1 0 150px', // Adjusts the flex-basis to make the badges responsive
-                      minWidth: '100px',  // Ensures badges don’t get too small
-                      maxWidth: '100px',
+                      position: 'relative',
+                      display: 'inline-flex',
+                      alignItems: 'center',
                     }}
                   >
                     {skill}
@@ -272,6 +302,7 @@ const Profile = () => {
                   </span>
                 ))}
               </div>
+
 
               <div className='d-flex align-items-center'>
                 <input

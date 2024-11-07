@@ -44,6 +44,7 @@ const MyApplication = () => {
   const handlePageSizeChange = (e) => {
     const size = parseInt(e.target.value);
     setPageSize(size);
+    setPage(0);
   };
   const handleFilterChange = (event) => {
     setFilter(event.target.value);

@@ -239,12 +239,12 @@ const BrowseJobs = () => {
                 {jobs.length > 0 && search && (
                     <>
                         <h2>Search Results</h2>
-                        <div className="d-flex justify-content-center">
+                        <div className="d-flex flex-wrap justify-content-center">
                             {jobs.map(job => {
                                 const daysAgoText = calculateDaysAgo(job.postingDate);
                                 return (
 
-                                    <Card key={job.id} className='browse-job-card' style={{ maxWidth: '300px', margin: '10px', padding: '10px', position: 'relative' }}
+                                    <Card key={job.id} className='browse-job-card image-wrapper' style={{ maxWidth: '300px', margin: '10px', padding: '10px', position: 'relative' }}
                                         onClick={() => {
                                             const url = new URL('/#/browse-jobs/job-details', window.location.origin);
                                             url.searchParams.append('companyName', encodeURIComponent(job.companyName));
@@ -446,7 +446,7 @@ const BrowseJobs = () => {
             <div style={{marginTop:'100px'}}>
                 <HomeFooter />
             </div>
-
+ 
             <Modal show={showModal} onHide={closeModal}>
                 <Modal.Header closeButton style={{ backgroundColor: '#faccc', color: 'white', borderBottom: 'none' }}>
                     <Modal.Title>Choose an Option</Modal.Title>

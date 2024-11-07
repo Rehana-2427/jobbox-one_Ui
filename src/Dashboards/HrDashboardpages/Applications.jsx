@@ -91,6 +91,7 @@ const Applications = () => {
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
+    setPage(0); // Reset page when page size change
   }
   const fetchJobBysearch = async () => {
     setLoading(true);

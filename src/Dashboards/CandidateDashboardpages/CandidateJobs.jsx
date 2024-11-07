@@ -44,6 +44,7 @@ const CandidateJobs = () => {
   const handlePageSizeChange = (e) => {
     const size = parseInt(e.target.value);
     setPageSize(size);
+    setPage(0);
   };
   useEffect(() => {
     if (search) {
