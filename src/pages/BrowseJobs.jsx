@@ -302,7 +302,7 @@ const BrowseJobs = () => {
                                 return (
                                             <Card
                                                 key={job.id}
-                                                className='browse-job-card image-wrapper'
+                                                className=' image-wrapper'
                                                 style={{ maxWidth: '300px', margin: '10px', padding: '10px', position: 'relative' }}
                                                 onClick={() => {
                                                     const url = new URL('/#/browse-jobs/job-details', window.location.origin);
