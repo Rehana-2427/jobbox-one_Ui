@@ -1229,3 +1229,36 @@
 .custom-toggle:hover {
   background-color: #ddd; 
 }
+
+
+.dream-card-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+
+.responsive-img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Tablet layout: stack images vertically */
+@media (max-width: 991px) {
+  .dream-card-container {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+/* Mobile layout: compact padding and spacing */
+@media (max-width: 767px) {
+  .dream-card-container {
+    flex-direction: column;
+    padding: 10px;
+  }
+}

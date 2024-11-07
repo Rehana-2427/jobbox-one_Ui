@@ -312,9 +312,11 @@ const BrowseJobs = () => {
                                                 }}
                                             >
                                                 <Card.Body style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                                                    
                                                     <img
                                                         src={companyLogos[job.companyName] || "/path/to/default_logo.png"}
                                                         alt={`${job.companyName} logo`}
+                                                        className='square-image'
                                                         style={{ width: '30%', height: '30%', position: 'absolute', top: '5px', right: '10px' }} // Adjusted top value
                                                     />
                                                     <Card.Title style={{ marginTop: '40px' }}>{job.jobTitle}</Card.Title>
