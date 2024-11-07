@@ -18,7 +18,7 @@ const MyApplication = () => {
   const location = useLocation();
   const userName = location.state?.userName;
   const userId = location.state?.userId;
-  const applicationStatus = location.state?.applicationStatus;
+  const [applicationStatus, setApplicationStatus] = useState(location.state?.applicationStatus);
   const [applications, setApplications] = useState([]);
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('All'); // Filter state
@@ -34,6 +34,7 @@ const MyApplication = () => {
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value);
+    setApplicationStatus('');
     setPage(0);
   };
 
