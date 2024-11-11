@@ -150,7 +150,7 @@ const CandidatesCompanies = () => {
   const handlePageSizeChange = (e) => {
     const size = parseInt(e.target.value);
     setPageSize(size);
-    setPage(0); // Reset page when page size changes
+    setPage(0);
   };
 
   const isLastPage = page === totalPages - 1;

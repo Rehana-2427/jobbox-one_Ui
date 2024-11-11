@@ -7,7 +7,6 @@ import Pagination from '../../Pagination';
 import './AdminDashboard.css';
 import AdminleftSide from './AdminleftSide';
 
-// const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
 const BASE_API_URL = process.env.REACT_APP_API_URL;
 const UserValidation = () => {
   const [userData, setUserData] = useState([]);

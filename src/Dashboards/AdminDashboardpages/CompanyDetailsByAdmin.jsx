@@ -136,7 +136,6 @@ const CompanyDetailsByAdmin = () => {
 
 
   const handleCloseModal = () => setShowModal(false);
-
   const handleSocialInputChange = (e) => {
     const { name, value } = e.target;
     setSocialMediaLinks((prevLinks) => ({

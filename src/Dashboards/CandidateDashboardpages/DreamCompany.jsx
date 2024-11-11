@@ -25,7 +25,7 @@ const DreamCompany = () => {
       setErrorMessage('Please enter the company name before selecting a resume.');
       return;
     }
-    setErrorMessage(''); // Clear any previous error message
+    setErrorMessage(''); 
     setShowResumePopup(true);
   };
 
