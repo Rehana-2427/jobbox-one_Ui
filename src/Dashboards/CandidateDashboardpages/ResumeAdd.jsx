@@ -8,7 +8,6 @@ import './CandidateDashboard.css';
 import CandidateLeftSide from './CandidateLeftSide';
 
 const ResumeAdd = () => {
-  // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
   const BASE_API_URL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
   const location = useLocation();

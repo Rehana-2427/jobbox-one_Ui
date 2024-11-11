@@ -21,7 +21,7 @@ const ResumeSelectionPopup = ({ resumes, onSelectResume, onClose }) => {
 
     return (
         <div className="resume-selection-popup">
-            <div className="popup-content">
+            {/* <div className="popup-content"> */}
                 <span className="close" onClick={onClose}>&times;</span>
                 <h2>Select Resume</h2>
                 <select id="resumeSelect" required>
@@ -33,7 +33,7 @@ const ResumeSelectionPopup = ({ resumes, onSelectResume, onClose }) => {
                 {errMessage && <p className="error-message">{errMessage}</p>}
                 <button className='ok' onClick={handleOkClick}>OK</button>
 
-            </div>
+            {/* </div> */}
         </div>
 
     );

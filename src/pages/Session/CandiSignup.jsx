@@ -1,7 +1,3 @@
-import {
-  Box,
-  useMediaQuery
-} from '@mui/material';
 import axios from 'axios';
 import { FacebookAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { Field, Form, Formik } from 'formik';
@@ -254,9 +250,6 @@ const CandiSignup = () => {
       showErrorToast();
     }
   }, [passwordCriteriaError]);
-  const isSmallScreen = useMediaQuery('(max-width:600px)'); // Check for small screen
-  const isMediumScreen = useMediaQuery('(max-width:960px)'); // Check for medium screen
-
 
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();

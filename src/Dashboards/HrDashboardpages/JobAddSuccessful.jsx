@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import HrLeftSide from './HrLeftSide';
-// import "./JobAddSuccessful.css";
+import "./JobAddSuccessful.css";
 const JobAddSuccessful = () => {
 
   const location = useLocation();

@@ -8,12 +8,10 @@ import "./ApplicationDetails.css";
 import HrLeftSide from "./HrLeftSide";
 
 const ApplicationDetails = () => {
-    // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
-    
 
-  const BASE_API_URL = process.env.REACT_APP_API_URL;
+    const BASE_API_URL = process.env.REACT_APP_API_URL;
     const location = useLocation();
-    const { userEmail, userName, applicationId,candidateId, currentApplicationPage, jobId, currentApplicationPageSize } = location.state || {};
+    const { userEmail, userName, applicationId, candidateId, currentApplicationPage, jobId, currentApplicationPageSize } = location.state || {};
     const [candidate, setCandidate] = useState(null);
     const [job, setJob] = useState(null);
     const [navigateBack, setNavigateBack] = useState(false);
@@ -26,29 +24,29 @@ const ApplicationDetails = () => {
     }, [navigateBack, navigate]);
 
     useEffect(() => {
-        
-            const fetchCandidate = async () => {
-                try {
-                    const response = await axios.get(`${BASE_API_URL}/getUser?userId=${candidateId}`);
-                    console.log("candidateId +++>" + candidateId)
-                    setCandidate(response.data);
-                } catch (error) {
-                    console.log(error);
-                }
-            };
-            const fetchJob = async () => {
-                try {
-                    const response = await axios.get(`${BASE_API_URL}/getJob?jobId=${jobId}`);
-                    console.log("jobId +++>" + jobId)
-                    setJob(response.data);
-                } catch (error) {
-                    console.log(error);
-                }
-            };
-            fetchCandidate();
-            fetchJob();
-        
-    }, [candidateId,jobId,  BASE_API_URL]);
+
+        const fetchCandidate = async () => {
+            try {
+                const response = await axios.get(`${BASE_API_URL}/getUser?userId=${candidateId}`);
+                console.log("candidateId +++>" + candidateId)
+                setCandidate(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        const fetchJob = async () => {
+            try {
+                const response = await axios.get(`${BASE_API_URL}/getJob?jobId=${jobId}`);
+                console.log("jobId +++>" + jobId)
+                setJob(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchCandidate();
+        fetchJob();
+
+    }, [candidateId, jobId, BASE_API_URL]);
 
     const handleBack = () => {
         navigate('/hr-dashboard/hr-applications/view-applications', { state: { userEmail, applicationId, userName, currentApplicationPage, jobId, currentApplicationPageSize } });
@@ -71,7 +69,7 @@ const ApplicationDetails = () => {
             </div>
             <div className="right-side">
                 <Button variant='primary' onClick={handleBack}>Back</Button>
-                <div className="application-details-container" style={{overflowY:'scroll'}}>
+                <div className="application-details-container" style={{ overflowY: 'scroll' }}>
                     {job && (
                         <div className="jobdetails">
                             <h2>Job Details</h2>

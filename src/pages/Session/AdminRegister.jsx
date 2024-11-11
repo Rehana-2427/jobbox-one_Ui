@@ -25,16 +25,9 @@ const AdminRegister = () => {
 
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
-            // Check if entered credentials match admin credentials
             if (values.userEmail === adminCredentials.email && values.password === adminCredentials.password) {
-                // If credentials match, navigate to admin dashboard
                 navigate("/admin-dashboard");
             } else {
-                // Optionally, you can verify credentials through API (if backend has specific endpoint)
-                // const response = await axios.get(`${BASE_API_URL}/login?userEmail=${values.userEmail}&password=${values.password}`);
-                // const user = response.data;
-
-                // If the credentials do not match, display an error
                 setErrorMessage("Invalid email or password. Please try again.");
             }
         } catch (error) {

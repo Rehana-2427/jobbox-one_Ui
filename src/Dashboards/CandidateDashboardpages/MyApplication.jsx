@@ -601,7 +601,6 @@ const MyApplication = () => {
                                 size={25}
                                 onClick={() => {
                                   fetchChatByApplication(application.applicationId);
-
                                 }}
                                 style={{ color: 'green', cursor: 'pointer' }}
                               />

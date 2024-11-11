@@ -244,8 +244,6 @@ const EvergreenJobsApplication = () => {
     const handleChatClick = async (applicationId, candidate) => {
         setApplicationId(applicationId);
         setChatWith(candidate);
-        // const responce= await axios.get(`${BASE_API_URL}/fetchChatByApplicationId?applicationId=${applicationId}`);
-        // setChats(responce.data);
         console.log('Chat icon clicked for:');
         // Show the modal
         setShowModal(true);
@@ -336,9 +334,7 @@ const EvergreenJobsApplication = () => {
         setPage(selectedPage);
 
     };
-
-
-
+    
     // Get unique job roles for filtering
     const jobRoles = [...new Set(applications.map(app => app.jobRole))];
     return (

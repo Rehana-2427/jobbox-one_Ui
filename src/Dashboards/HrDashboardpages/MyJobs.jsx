@@ -187,7 +187,7 @@ const MyJobs = () => {
 
   const { logout } = useAuth(); // Get logout function from context
 
-  const  handleLogout = () => {
+  const handleLogout = () => {
     Swal.fire({
       title: 'Are you sure you want to logout?',
       text: "You won't be able to revert this!",
@@ -392,9 +392,6 @@ const MyJobs = () => {
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title">Job Summary</h5>
-                  {/* <button type="button" className="close" onClick={handleCloseModal} aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button> */}
                 </div>
                 <div className="modal-body">
                   <pre className="job-details-text">{selectedJobSummary}</pre>
@@ -412,7 +409,6 @@ const MyJobs = () => {
             </div>
           </div>
         )}
-
       </div>
     </div>
   );
