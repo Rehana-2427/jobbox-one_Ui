@@ -145,7 +145,6 @@ const DreamJob = () => {
       for (const companyName of uniqueElements) {
         const response = await axios.put(`${BASE_API_URL}/applyDreamCompany?userId=${userId}&companyName=${encodeURIComponent(companyName)}&jobRole=${jobRole}&formattedDate=${formattedDate}&resumeId=${resumeId}`);
         console.log(`Applied to ${companyName}: `, response.data);
-
       }
 
       // Close loading popup and show success message if applied successfully

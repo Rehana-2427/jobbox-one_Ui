@@ -27,11 +27,13 @@ import UserRoute from './Session/UserRoute';
 import UserSignin from './Session/UserSignin';
 import Settings from './Settings';
 import TermsAndConditions from './TermsAndConditions';
+import ScrollToTop from './ScrollToTop';
 
 const PagesRoute = () => {
   return (
     <div>
       <Router>
+        <ScrollToTop/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/custom-navbar" element={<CustomNavbar />} />

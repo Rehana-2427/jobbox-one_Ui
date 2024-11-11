@@ -35,6 +35,71 @@ const CandidatesCompanies = () => {
   };
 
 
+  const handlePageSizeChange = (e) => {
+    const size = parseInt(e.target.value);
+    setPageSize(size);
+    setPage(0); // Reset page when page size changes
+    // localStorage.setItem('currentCandidateCompanyPage', 0); // Store the page number in localStorage
+
+  };
+
+  console.log(appliedCompany)
+  useEffect(() => {
+    if (appliedCompany && !search) {
+      fetchDataByAppliedCompanies();
+    } else {
+
+      fetchData();
+    }
+  }, [search, page, pageSize]);
+
+  const fetchDataByAppliedCompanies = async () => {
+    try {
+      const appliedCompanies = await axios.get(`${BASE_API_URL}/appliedCompanies`, {
+        params: {
+          userId: userId,
+          page: page,
+          size: pageSize
+        }
+      });
+      console.log(appliedCompanies.data.content.length);
+      setCompanies(appliedCompanies.data.content);
+      setTotalPages(appliedCompanies.data.totalPages);
+    } catch (error) {
+      console.log("Error fetching data: " + error);
+    }
+  };
+  const fetchData = async () => {
+    try {
+      const url = search
+        ? `${BASE_API_URL}/searchCompany`
+        : `${BASE_API_URL}/companiesList`;
+
+      const params = {
+        search,
+        page: page,
+        size: pageSize
+      };
+
+      console.log("Fetching data with params:", params);
+      const response = await axios.get(url, { params });
+      if (response.data.content.length === 0) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Company not found!"
+        });
+        setSearch('');
+      }
+      setCompanies(response.data.content);
+      setTotalPages(response.data.totalPages);
+    } catch (error) {
+      console.log("Error fetching data: " + error);
+    }
+  };
+  const toggleSettings = () => {
+    navigate('/');
+  };
   useEffect(() => {
     const storedPage = localStorage.getItem('currentCandidateCompanyPage');
     if (storedPage !== null) {
@@ -45,82 +110,6 @@ const CandidatesCompanies = () => {
       }
     }
   }, [totalPages]); // Make sure to include totalPages dependency to sync the state
-  console.log(appliedCompany)
-  useEffect(() => {
-    if (appliedCompany && !search) {
-      const fetchData = async () => {
-        try {
-          const appliedCompanies = await axios.get(`${BASE_API_URL}/appliedCompanies`, {
-            params: {
-              userId: userId,
-              page,
-              size: pageSize
-            }
-          });
-          console.log(appliedCompanies.data.content.length);
-          setCompanies(appliedCompanies.data.content);
-          setTotalPages(appliedCompanies.data.totalPages);
-        } catch (error) {
-          console.log("Error fetching data: " + error);
-        }
-      };
-      fetchData();
-    } else {
-      const fetchData = async () => {
-        try {
-          const url = search
-            ? `${BASE_API_URL}/searchCompany`
-            : `${BASE_API_URL}/companiesList`;
-
-          const params = {
-            search,
-            page,
-            size: pageSize
-          };
-
-          console.log("Fetching data with params:", params);
-          const storedPage = localStorage.getItem('currentCandidateCompanyPage');
-          if (storedPage !== null) {
-            params.page = Number(storedPage);
-            setPage(Number(storedPage));
-
-          }
-          else {
-            params.page = page;
-
-          }
-          if (search) {
-            params.page = 0;
-            setPage(0);
-          } else {
-            params.page = Number(storedPage);
-            setPage(Number(storedPage));
-          }
-
-          const response = await axios.get(url, { params });
-          if (response.data.content.length === 0) {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Company not found!"
-            });
-            setSearch('');
-          }
-          setCompanies(response.data.content);
-          setTotalPages(response.data.totalPages);
-        } catch (error) {
-          console.log("Error fetching data: " + error);
-        }
-      };
-      fetchData();
-    }
-  }, [search, page, pageSize]);
-
-
-  const toggleSettings = () => {
-    navigate('/');
-  };
-
   const handleClick = (companyId) => {
     navigate("/candidate-dashboard/companyPage", { state: { companyId: companyId, userName: userName, userId: userId } });
   };
@@ -147,11 +136,6 @@ const CandidatesCompanies = () => {
   const initials = getInitials(userName);
 
 
-  const handlePageSizeChange = (e) => {
-    const size = parseInt(e.target.value);
-    setPageSize(size);
-    setPage(0);
-  };
 
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
