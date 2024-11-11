@@ -66,7 +66,7 @@ const ViewCandidateDetails = () => {
                         <p><strong>Email:</strong> {candidateDetails.userEmail}</p>
                         <p><strong>Name:</strong> {candidateDetails.userName}</p>
                         <p><strong>Skills:</strong> {candidateDetails.skills}</p>
-                        <p><strong>Education:</strong>
+                        <p><strong>Education:</strong> 
                             {candidateDetails.educationDetails ? (
                                 `${candidateDetails.educationDetails.degree} (${candidateDetails.educationDetails.branch.toUpperCase()}) - from  ${candidateDetails.educationDetails.college.toUpperCase()} - ${candidateDetails.educationDetails.percentage}%`
                             ) : (
