@@ -18,7 +18,7 @@ const DreamCompany = () => {
   const userId = location.state?.userId;
   const [companyName, setCompanyName] = useState('');
   console.log(companyName);
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const [showResumePopup, setShowResumePopup] = useState(false);
   const handleApplyButtonClick = () => {
 
@@ -68,8 +68,8 @@ const navigate = useNavigate();
           Swal.showLoading();
         }
       });
-  // Iterate over companies array and apply
-  let appliedSuccessfully = false;
+      // Iterate over companies array and apply
+      let appliedSuccessfully = false;
       const appliedOn = new Date(); // Get current date and time
       const year = appliedOn.getFullYear(); // Get the full year (e.g., 2024)
       const month = String(appliedOn.getMonth() + 1).padStart(2, '0'); // Get month (January is 0, so we add 1)
@@ -80,17 +80,17 @@ const navigate = useNavigate();
       const response = await axios.put(`${BASE_API_URL}/applyDreamCompany?userId=${userId}&companyName=${companyName}&formattedDate=${formattedDate}&resumeId=${resumeId}`);
       console.log(response.data);
 
-        if (response.data) {
-          Swal.close();
-          appliedSuccessfully = true;
-       
-        
+      if (response.data) {
+        Swal.close();
+        appliedSuccessfully = true;
+
+
       } else {
-          await Swal.fire({
-              icon: 'error',
-              title: 'Application Failed',
-              text: `You have already applied for ${companyName}`,
-            });
+        await Swal.fire({
+          icon: 'warning',
+          title: 'Application Failed',
+          text: `You have already applied for ${companyName}`,
+        });
       }
 
       if (appliedSuccessfully) {
@@ -102,9 +102,9 @@ const navigate = useNavigate();
         setCompanyName('');
         navigate(-1);
       }
-     
-      
-  
+
+
+
     } catch (error) {
       console.error('Error applying for job:', error);
       // Close loading popup on error
@@ -128,7 +128,7 @@ const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
   };
- 
+
   const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
@@ -142,13 +142,13 @@ const navigate = useNavigate();
         </button>
       </div>
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-      <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
+        <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
       </div>
 
       <div className="right-side">
-      <Container className='d-flex justify-content-center'>
+        <Container className='d-flex justify-content-center'>
 
-          <div className="centered-content" style={{ minHeight: 'fit-content',Width: '100%' }} >
+          <div className="centered-content" style={{ minHeight: 'fit-content', Width: '100%' }} >
             {showResumePopup && (
               <ResumeSelectionPopup
                 resumes={resumes}
