@@ -7,17 +7,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import HrLeftSide from './HrLeftSide';
 
 const ViewCandidateDetails = () => {
-    // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
     const BASE_API_URL = process.env.REACT_APP_API_URL;
     const location = useLocation();
-    const navigate = useNavigate(); // Hook to programmatically navigate
-    // const userName = location.state?.userName;
-    // const userEmail = location.state?.userEmail;
-    // const candidateId = location.state?.candidateId;
+    const navigate = useNavigate(); 
     const { userEmail, userName, candidateId, currentDreamAppPage, currentDreamAppPageSize,dreamAppStatus ,dreamAppFromDate,dreamAppToDate,dreamAppSearch} = location.state || {};
-
     const [candidateDetails, setCandidateDetails] = useState(null);
-
     // Fetch candidate details when candidateId changes
     useEffect(() => {
         const fetchDetails = async () => {
@@ -75,7 +69,6 @@ const ViewCandidateDetails = () => {
                         </p>
                         <p><strong>Experience:</strong> {candidateDetails.experience}</p>
                         <p><strong>Phone:</strong> {candidateDetails.phone}</p>
-                        {/* Add more details as needed */}
                     </div>
                 ) : (
                     <p>Loading candidate details...</p>

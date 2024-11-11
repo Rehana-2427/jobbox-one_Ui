@@ -4,9 +4,6 @@ import { Button, Table } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import Pagination from '../../Pagination';
 const CompanyJobs = () => {
-    // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
-
-
     const BASE_API_URL = process.env.REACT_APP_API_URL;
     const [jobs, setJobs] = useState([]);
     const [sortedColumn, setSortedColumn] = useState(null); // Track the currently sorted column

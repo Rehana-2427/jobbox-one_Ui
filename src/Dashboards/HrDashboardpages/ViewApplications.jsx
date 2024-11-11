@@ -10,7 +10,6 @@ import HrLeftSide from "./HrLeftSide";
 import Slider from "./Slider";
 
 const ViewApplications = () => {
-  // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
   const BASE_API_URL = process.env.REACT_APP_API_URL;
   const location = useLocation();
   const { userEmail, userName, jobId, currentJobApplicationPage, currentJobApplicationPageSize } = location.state || {};
@@ -197,7 +196,6 @@ const ViewApplications = () => {
   const fetchResumeTypes = async (applications) => {
     const types = {};
     const fileNames = {};
-    const unread = {}; // Initialize unread messages state
     for (const application of applications) {
       try {
         const response = await axios.get(`${BASE_API_URL}/getResumeByApplicationId?resumeId=${application.resumeId}`);
@@ -390,7 +388,6 @@ const ViewApplications = () => {
 
 
   const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
-
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
     setIsLeftSideVisible(!isLeftSideVisible);

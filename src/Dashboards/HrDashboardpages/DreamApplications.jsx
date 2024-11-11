@@ -10,7 +10,6 @@ import HrLeftSide from "./HrLeftSide";
 import Slider from "./Slider";
 
 const DreamApplication = () => {
-  // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
   const BASE_API_URL = process.env.REACT_APP_API_URL;
   const location = useLocation();
   const userName = location.state?.userName;

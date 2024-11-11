@@ -11,12 +11,11 @@ import { useAuth } from '../../AuthProvider';
 import Pagination from '../../Pagination';
 import HrLeftSide from './HrLeftSide';
 
-// Assuming you have already set up API URL
-
 const EvergreenJobs = () => {
-  // const BASE_API_URL = "http://localhost:8082/api/jobbox";
+
   const BASE_API_URL = process.env.REACT_APP_API_URL;
   const location = useLocation();
+  const navigate = useNavigate();
   const userName = location.state?.userName;
   const userEmail = location.state?.userEmail;
   const [jobs, setJobs] = useState([]);
@@ -32,7 +31,7 @@ const EvergreenJobs = () => {
         userEmail: userEmail,
         page: page,
         size: pageSize,
-        sortBy: sortedColumn, // Include sortedColumn and sortOrder in params
+        sortBy: sortedColumn,
         sortOrder: sortOrder,
       };
 
@@ -60,12 +59,7 @@ const EvergreenJobs = () => {
 
   }, [userEmail, page, pageSize, sortedColumn, sortOrder]);
 
-  const navigate = useNavigate();
-  const toggleSettings = () => {
-    navigate('/');
-  };
-
-
+ 
   const [selectedJobSummary, setSelectedJobSummary] = useState(null);
   const handleViewSummary = (summary) => {
     setSelectedJobSummary(summary);

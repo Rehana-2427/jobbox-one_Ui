@@ -108,10 +108,8 @@ const People = () => {
             confirmButtonText: 'Yes, logout!'
         }).then((result) => {
             if (result.isConfirmed) {
-                logout(); // Call the logout function
-                // Clear user data from localStorage
+                logout();
                 localStorage.removeItem(`userName_${userEmail}`);
-                // Navigate to the login page or home page
                 navigate('/'); // Update with the appropriate path for your login page
             }
         });
