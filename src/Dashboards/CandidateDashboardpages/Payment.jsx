@@ -52,9 +52,7 @@ const Payment = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         logout(); // Call the logout function
-        // Clear user data from localStorage
         localStorage.removeItem(`userName_${userId}`);
-        // Navigate to the login page or home page
         navigate('/'); // Update with the appropriate path for your login page
       }
     });

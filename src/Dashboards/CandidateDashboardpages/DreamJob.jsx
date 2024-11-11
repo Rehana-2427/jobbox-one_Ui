@@ -100,6 +100,7 @@ const DreamJob = () => {
 
       // If the user has already applied to some companies, show the confirmation dialog
       if (alreadyApplied.length > 0) {
+        if(uniqueElements.length > 0){
         const companiesList = alreadyApplied.join(", ");  // Join the array into a string
         const confirmResult = await Swal.fire({
           title: 'You have already applied to these companies:',
@@ -109,12 +110,28 @@ const DreamJob = () => {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
         });
-
-        // If user cancels, stop the operation
-        if (!confirmResult.isConfirmed) {
+         // If user cancels, stop the operation
+         if (!confirmResult.isConfirmed) {
           console.log('Operation canceled by user.');
           return; // Abort the operation
         }
+      }else{
+        const confirmResult = await Swal.fire({
+          title: 'You have already applied to these companies.',
+          //html: `${companiesList}<br><br>If you want to continue and apply to the remaining companies, click OK.`,
+          icon: 'warning',
+         // showCancelButton: true,
+          confirmButtonText: 'OK',
+         // cancelButtonText: 'Cancel',
+        });
+          // If user cancels, stop the operation
+          if (confirmResult.isConfirmed) {
+            console.log('Operation canceled by user.');
+            return; // Abort the operation
+          }
+      }
+
+      
       }
 
 
