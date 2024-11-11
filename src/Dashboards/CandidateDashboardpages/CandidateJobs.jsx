@@ -39,6 +39,7 @@ const CandidateJobs = () => {
     setFilterStatus(status);
     localStorage.setItem('candidateJobsPage', 0);
     setPage(0);
+   
   };
 
   const handlePageSizeChange = (e) => {
@@ -54,7 +55,7 @@ const CandidateJobs = () => {
     } else {
       fetchData();
     }
-  }, [page, pageSize, search, sortedColumn, sortOrder, filterStatus]);
+  }, [page, pageSize, search, sortedColumn, sortOrder, filterStatus,userId]);
 
   async function fetchData() {
     try {
@@ -208,6 +209,8 @@ const CandidateJobs = () => {
         size: pageSize,
         sortBy: sortedColumn,
         sortOrder: sortOrder,
+        //  userId: userId, // Example parameter to pass to backend API
+        //  filterStatus: filterStatus
       };
       const response = await axios.get(`${BASE_API_URL}/searchJobs`, { params });
       setJobs(response.data.content);
