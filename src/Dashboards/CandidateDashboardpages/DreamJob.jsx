@@ -14,7 +14,7 @@ const DreamJob = () => {
   const location = useLocation();
   const userName = location.state?.userName;
   const userId = location.state?.userId;
-  
+
   const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
   const [jobRole, setJobRole] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -73,31 +73,62 @@ const DreamJob = () => {
   const applyJob = async (resumeId, companies) => {
     let loadingPopup;
     try {
+
+
+      const appliedOn = new Date();
+      const formattedDate = `${appliedOn.getFullYear()}-${String(appliedOn.getMonth() + 1).padStart(2, '0')}-${String(appliedOn.getDate()).padStart(2, '0')}`;
+
+      // Get the list of already applied companies
+      const response = await axios.get(`${BASE_API_URL}/checkAppliedCompanies?userId=${userId}&companies=${Array.from(companies)}&jobRole=${jobRole}`);
+      console.log("Applied companies --- > " + response.data);
+
+      const alreadyApplied = response.data;  // Array of companies that the user has already applied to
+      let uniqueElements;
+
+      if (alreadyApplied.length > 0) {
+        // Get unique elements that are in either companies or alreadyApplied but not both
+        uniqueElements = [
+          ...new Set([
+            ...Array.from(companies).filter(x => !alreadyApplied.includes(x)),
+            ...alreadyApplied.filter(x => !Array.from(companies).includes(x))
+          ])
+        ];
+      } else {
+        uniqueElements = Array.from(companies); // All companies to apply to if none have been applied to
+      }
+      console.log("Unique companies to apply to: ", uniqueElements);  // Display unique companies
+
+      // If the user has already applied to some companies, show the confirmation dialog
+      if (alreadyApplied.length > 0) {
+        const companiesList = alreadyApplied.join(", ");  // Join the array into a string
+        const confirmResult = await Swal.fire({
+          title: 'You have already applied to these companies:',
+          html: `${companiesList}<br><br>If you want to continue and apply to the remaining companies, click OK.`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+        });
+
+        // If user cancels, stop the operation
+        if (!confirmResult.isConfirmed) {
+          console.log('Operation canceled by user.');
+          return; // Abort the operation
+        }
+      }
+
+
       loadingPopup = Swal.fire({
         title: 'Applying to the jobs...',
         allowOutsideClick: false,
         didOpen: () => Swal.showLoading(),
       });
-
-      const appliedOn = new Date();
-      const formattedDate = `${appliedOn.getFullYear()}-${String(appliedOn.getMonth() + 1).padStart(2, '0')}-${String(appliedOn.getDate()).padStart(2, '0')}`;
-
-      // Iterate over companies array and apply
-      let appliedSuccessfully = false;
-      for (const companyName of companies) {
+      // Proceed with applying to unique companies
+      let appliedSuccessfully = true;
+      for (const companyName of uniqueElements) {
         const response = await axios.put(`${BASE_API_URL}/applyDreamCompany?userId=${userId}&companyName=${encodeURIComponent(companyName)}&jobRole=${jobRole}&formattedDate=${formattedDate}&resumeId=${resumeId}`);
-        console.log(`applied to   ++>  ${companyName}` + response.data )
-        if (response.data) {
-            appliedSuccessfully = true;
-         
-          
-        } else {
-            await Swal.fire({
-                icon: 'error',
-                title: 'Application Failed',
-                text: `You have already applied for this job at ${companyName}`,
-              });
-        }
+        console.log(`Applied to ${companyName}: `, response.data);
+
       }
 
       // Close loading popup and show success message if applied successfully
@@ -125,6 +156,7 @@ const DreamJob = () => {
       }
     }
   };
+
 
   const handleSubmit = (event) => {
     event.preventDefault();

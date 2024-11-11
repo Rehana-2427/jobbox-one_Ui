@@ -82,7 +82,6 @@ const Resume = () => {
     }
   };
   const handleDelete = async (resumeId, message) => {
-
     const result = await swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -95,10 +94,8 @@ const Resume = () => {
     });
 
     if (result.isConfirmed) {
-
       try {
         await axios.put(`${BASE_API_URL}/deleteResume?resumeId=${resumeId}`);
-
         setResumes(prevResumes => prevResumes.filter(resume => resume.id !== resumeId));
         swal.fire('Deleted!', `${message} has been deleted.`, 'success');
 
@@ -108,7 +105,6 @@ const Resume = () => {
     } else {
       swal.fire('Cancelled', 'Your resume is safe', 'error');
     }
-
   };
 
 
