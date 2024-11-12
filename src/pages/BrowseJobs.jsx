@@ -17,9 +17,8 @@ const BrowseJobs = () => {
     const [jobs, setJobs] = useState([]);
     const [companyLogos, setCompanyLogos] = useState({});
     const [search, setSearch] = useState('');
-    const [showWarning, setShowWarning] = useState(false);
     const [page, setPage] = useState(0);
-    const [pageSize, setPageSize] = useState(4); // Default page size
+    const [pageSize, setPageSize] = useState(6); // Default page size
     const [totalPages, setTotalPages] = useState(0);
     const [sortedColumn, setSortedColumn] = useState(null);
     const [sortOrder, setSortOrder] = useState('asc');
@@ -53,13 +52,11 @@ const BrowseJobs = () => {
         }
     }, [page, pageSize]);
 
-
-    // Fetch company logos
     // Fetch company logos
     const fetchImages = async (jobs) => {
         try {
             const logoPromises = jobs.map(job => {
-                console.log("Fetching logo for:", job.companyName); // Debugging line
+                console.log("Fetching logo for:", job.companyName);
                 return fetchCompanyLogo(job.companyName);
             });
             const logos = await Promise.all(logoPromises);
@@ -157,6 +154,8 @@ const BrowseJobs = () => {
 
     const handleCandidateClick = () => {
         openModal('candidate'); // Set modal content for candidate
+        localStorage.setItem('redirectAfterLogin', 'dream-job');
+
     };
     const closeModal = () => {
         setShowModal(false); // Close modal

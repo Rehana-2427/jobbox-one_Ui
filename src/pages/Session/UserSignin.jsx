@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Nav, Row } from 'react-bootstrap';
 import { FaCheckCircle } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import * as yup from 'yup';
 import { auth } from '../../firebase/firebaseConfig';
@@ -19,41 +19,12 @@ const UserSignin = () => {
         userEmail: yup.string().email("Invalid email").required("Email is required"),
         password: yup.string().min(8, "Password must be 8 characters long").required("Password is required")
     });
-    // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
     const BASE_API_URL = process.env.REACT_APP_API_URL;
     const [errorMessage, setErrorMessage] = useState('');
     const initialValues = { userEmail: "", password: "" };
-    // const handleSubmit = async (values, { setSubmitting }) => {
-    //     try {
-    //         const response = await axios.get(`${BASE_API_URL}/login?userEmail=${values.userEmail}&password=${values.password}`);
-
-    //         // const user = response.data; 
-
-    //          const user = response.data.user;
-    //         const token=response.data.token;
-    //         console.log(token);
-    //         console.log(user.userEmail, " email");
-    //         if (user) {
-    //             if (user.userRole === 'HR' && user.userStatus === 'Approved') {
-    //                 navigate('/hr-dashboard', { state: { userEmail: user.userEmail } });
-    //             }
-    //             else if (user.userRole === 'Candidate') {
-    //                 navigate('/candidate-dashboard', { state: { userId: user.userId } });
-    //             } else {
-    //                 setErrorMessage("Invalid login credentials or role. Please try again.");
-    //             }
-    //         } else {
-    //             setErrorMessage("Invalid email or password.");
-    //         }
-    //     } catch (error) {
-    //         console.log(error);
-    //         setErrorMessage("An error occurred during login. Please try again.");
-    //     } finally {
-    //         setSubmitting(false);
-    //     }
-    // };
-
-
+    const location = useLocation();
+    const companyId = location.state?.companyId;
+    console.log(companyId)
     const handleSubmit = async (values, { setSubmitting }) => {
 
         try {
@@ -67,7 +38,19 @@ const UserSignin = () => {
 
             if (user) {
                 if (user.userRole === 'Candidate') {
-                    navigate('/candidate-dashboard', { state: { userId: user.userId } });
+                    // Check for redirectAfterLogin preference
+                    const redirectAfterLogin = localStorage.getItem('redirectAfterLogin');
+                    if (redirectAfterLogin === 'dream-job') {
+                        navigate('/candidate-dashboard/dream-job', { state: { userId: user.userId, userName: user.userName } });
+                    }
+                    else if (redirectAfterLogin === 'dream-company') {
+                        navigate('/candidate-dashboard/companyPage', { state: { userId: user.userId, userName: user.userName, companyId: companyId } });
+                    }
+                    else {
+                        navigate('/candidate-dashboard', { state: { userId: user.userId } });
+                    }
+                    // Clear the redirect target once used
+                    localStorage.removeItem('redirectAfterLogin');
                 } else {
                     setErrorMessage("Invalid login credentials or role. Please try again.");
                 }

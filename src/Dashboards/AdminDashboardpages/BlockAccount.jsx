@@ -8,11 +8,10 @@ import './AdminDashboard.css';
 import AdminleftSide from './AdminleftSide';
 
 const BlockAccount = () => {
-  // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
   const BASE_API_URL = process.env.REACT_APP_API_URL;
   const [userData, setUserData] = useState([]);
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(6);
   const [totalPages, setTotalPages] = useState(0);
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState('asc');

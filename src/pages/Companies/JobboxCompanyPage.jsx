@@ -12,7 +12,7 @@ const JobboxCompanyPage = () => {
   const [companies, setCompanies] = useState([]);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(6);
   const [totalPages, setTotalPages] = useState(0);
   const [companyType, setCompanyType] = useState('');
   const [industryType, setIndustryType] = useState('');
@@ -139,7 +139,7 @@ const JobboxCompanyPage = () => {
 
   const handlePageSizeChange = (e) => {
     const size = parseInt(e.target.value, 10);
-    localStorage.setItem('currentCompanyPageSize', size);
+    // localStorage.setItem('currentCompanyPageSize', size);
     setPageSize(size);
     setPage(0);
   };

@@ -13,7 +13,6 @@ import './CandidateDashboard.css';
 import CandidateLeftSide from './CandidateLeftSide';
 
 const MyApplication = () => {
-  // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
   const BASE_API_URL = process.env.REACT_APP_API_URL;
   const location = useLocation();
   const userName = location.state?.userName;
@@ -24,7 +23,7 @@ const MyApplication = () => {
   const [filter, setFilter] = useState('All'); // Filter state
   const [resumeNames, setResumeNames] = useState({});
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(5); // Default page size
+  const [pageSize, setPageSize] = useState(6); // Default page size
   const [totalPages, setTotalPages] = useState(0);
   const navigate = useNavigate();
 

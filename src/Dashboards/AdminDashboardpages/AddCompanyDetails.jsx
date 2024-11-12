@@ -9,16 +9,13 @@ import './AdminDashboard.css';
 import AdminleftSide from './AdminleftSide';
 
 const AddCompanyDetails = () => {
-
-
-  // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
   const BASE_API_URL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
   const location = useLocation();
   const [companyData, setCompanyData] = useState([]);
   const currentAdminCompanyPage = location.state?.currentAdminCompanyPage || 0;
   const [page, setPage] = useState(currentAdminCompanyPage);
-  const currentAdminCompanyPageSize = location.state?.currentAdminCompanyPageSize || 5;
+  const currentAdminCompanyPageSize = location.state?.currentAdminCompanyPageSize || 6;
   const [pageSize, setPageSize] = useState(currentAdminCompanyPageSize);
   const [totalPages, setTotalPages] = useState(0);
   const [sortedColumn, setSortedColumn] = useState(null);

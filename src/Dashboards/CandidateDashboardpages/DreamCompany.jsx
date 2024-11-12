@@ -15,7 +15,7 @@ const DreamCompany = () => {
   const location = useLocation();
   const userName = location.state?.userName;
   const userId = location.state?.userId;
-  const [companyName, setCompanyName] = useState('');
+  const [companyName, setCompanyName] =  useState(location.state?.companyName || ''); // Use companyName from location.state if available
   console.log(companyName);
   const navigate = useNavigate();
   const [showResumePopup, setShowResumePopup] = useState(false);
@@ -25,7 +25,7 @@ const DreamCompany = () => {
       setErrorMessage('Please enter the company name before selecting a resume.');
       return;
     }
-    setErrorMessage(''); // Clear any previous error message
+    setErrorMessage(''); 
     setShowResumePopup(true);
   };
 

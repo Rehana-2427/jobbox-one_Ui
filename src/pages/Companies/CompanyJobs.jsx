@@ -1,19 +1,17 @@
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Pagination from '../../Pagination';
 
 const CompanyJobs = ({ companyId }) => {
-  // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
   const BASE_API_URL = process.env.REACT_APP_API_URL;
   const [jobs, setJobs] = useState([]);
   const [sortedColumn, setSortedColumn] = useState(null); // Track the currently sorted column
   const [sortOrder, setSortOrder] = useState(' '); // Track the sort order (asc or desc)
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(6);
   const [totalPages, setTotalPages] = useState(0);
-  const navigate = useNavigate(); // Initialize the navigate hook
   const [selectedJob, setSelectedJob] = useState(null);
 
   const handlePageSizeChange = (e) => {
@@ -57,16 +55,10 @@ const CompanyJobs = ({ companyId }) => {
     fetchJobs();
   }, [fetchJobs, page, pageSize, sortedColumn, sortOrder]);
 
-  const [selectedJobSummary, setSelectedJobSummary] = useState(null);
-  const handleViewSummary = (job) => {
-    setSelectedJob(job);
-  };
   const handleBackToList = () => {
     setSelectedJob(null); // Reset selectedJob to show the job list again
   };
-  const handleCloseModal = () => {
-    setSelectedJobSummary(null);
-  };
+ 
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
   return (

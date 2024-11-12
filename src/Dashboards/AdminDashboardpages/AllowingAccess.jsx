@@ -1,9 +1,9 @@
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import './AdminDashboard.css';
 import AdminleftSide from './AdminleftSide';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 const AllowingAccess = () => {
   const [accessData] = useState([
@@ -31,7 +31,6 @@ const AllowingAccess = () => {
       <div className="right-side">
         <div>
           <h2 style={{ textAlign: 'center' }}>Access Dashboard</h2>
-
           <div className='table-details-list table-wrapper'>
           <Table hover className='text-center' >
               <thead className="table-light">

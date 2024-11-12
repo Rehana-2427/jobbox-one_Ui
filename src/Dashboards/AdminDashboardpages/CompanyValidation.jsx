@@ -2,25 +2,18 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import swal from 'sweetalert2';
-
 // import './AdminDashboard.css';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { BsCheckCircle, BsXCircle } from 'react-icons/bs';
-
 import Pagination from '../../Pagination';
 import AdminleftSide from './AdminleftSide';
 
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-
-// const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
-
 const BASE_API_URL = process.env.REACT_APP_API_URL;
 const CompanyValidation = () => {
-
   const [companyData, setCompanyData] = useState([]);
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(6);
   const [totalPages, setTotalPages] = useState(0);
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState('asc');
