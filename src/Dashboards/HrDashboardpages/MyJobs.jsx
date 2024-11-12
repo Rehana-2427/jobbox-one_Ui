@@ -30,7 +30,7 @@ const MyJobs = () => {
   const currentPage = location.state?.currentPage || 0;
   const [page, setPage] = useState(currentPage);
 
-  const currentPageSize = location.state?.currentPageSize || 5; // Default page size
+  const currentPageSize = location.state?.currentPageSize || 6; // Default page size
   const [pageSize, setPageSize] = useState(currentPageSize); // Default to 5 items per page
 
   const state1 = location.state || {};
@@ -45,7 +45,7 @@ const MyJobs = () => {
   useEffect(() => {
     if (location.state?.currentPage === undefined && location.state?.currentPageSize === undefined) {
       setPage(0);
-      setPageSize(5); // Set default page size to 5
+      setPageSize(6); // Set default page size to 5
     }
   }, [location.state?.currentPage, location.state?.currentPageSize]);
 

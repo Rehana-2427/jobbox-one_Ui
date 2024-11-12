@@ -5,7 +5,6 @@ import './CircularImageSlider.css'; // Import the CSS file for styling
 
 const CircularImageSlider = () => {
     const BASE_API_URL = process.env.REACT_APP_API_URL;
-
     const [images, setImages] = useState([]);
     const [imageKeys, setImageKeys] = useState({});
     const navigate = useNavigate();

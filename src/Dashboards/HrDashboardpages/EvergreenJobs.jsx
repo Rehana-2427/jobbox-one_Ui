@@ -20,7 +20,7 @@ const EvergreenJobs = () => {
   const userEmail = location.state?.userEmail;
   const [jobs, setJobs] = useState([]);
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(6);
   const [totalPages, setTotalPages] = useState(0);
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState(' ');

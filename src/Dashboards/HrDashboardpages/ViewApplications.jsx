@@ -25,7 +25,7 @@ const ViewApplications = () => {
   const [loading, setLoading] = useState(true);
   const currentApplicationPage = location.state?.currentApplicationPage || 0;
   const [page, setPage] = useState(currentApplicationPage);
-  const currentApplicationPageSize = location.state?.currentApplicationPageSize || 5;
+  const currentApplicationPageSize = location.state?.currentApplicationPageSize || 6;
   const [pageSize, setPageSize] = useState(currentApplicationPageSize);
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
@@ -69,7 +69,7 @@ const ViewApplications = () => {
   useEffect(() => {
     if (location.state?.currentApplicationPage === undefined && location.state?.currentApplicationPageSize) {
       setPage(0);
-      setPageSize(5);
+      setPageSize(6);
     }
   }, [location.state?.currentApplicationPage, location.state?.currentApplicationPageSize]);
 

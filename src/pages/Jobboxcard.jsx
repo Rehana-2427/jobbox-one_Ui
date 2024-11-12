@@ -6,14 +6,12 @@ const Jobboxcard = () => {
     return (
         <div className="jobbox-container">
             <div className="column">
-                {/* <h1>Unlock Your Career Potential with JobBox</h1> */}
-                <img src="/jbcard.png.jpg" style={{width:'100%',height:'70%'}}/>
+                <img src="/jbcard.png.jpg" style={{ width: '100%', height: '70%' }} />
                 <p>
                     <b>
                         At JobBox, we believe that every job seeker deserves the chance to shine. Our platform provides you with access to a wide range of job opportunities tailored to your skills and interests. With advanced search features and personalized job recommendations, you can easily find positions that align with your career aspirations. Join JobBox today and take the first step toward a brighter future!
                     </b>
                 </p>
-                {/* <img src="https://cutshort.io/_next/image?url=https%3A%2F%2Fcdn.cutshort.io%2Fpublic%2Fimages%2Fafter_image.png&w=1920&q=75" alt="rightjob" /> */}
 
                 <Button>More Action</Button>
             </div>

@@ -21,7 +21,7 @@ const CandidateJobs = () => {
   const [showResumePopup, setShowResumePopup] = useState(false);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(5); // Default page size
+  const [pageSize, setPageSize] = useState(6); // Default page size
   const [totalPages, setTotalPages] = useState(0);
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState('asc');
@@ -45,9 +45,12 @@ const CandidateJobs = () => {
     setPage(0);
   };
   useEffect(() => {
-    if (search) {
-      fetchJobBySearch();
-    } else if (filterStatus) {
+    if (search && filterStatus) {
+      searchJobsWithFilter(search,filterStatus);
+    } 
+    else if(search){
+      fetchJobBySearch(search);
+    }else if (filterStatus) {
       fetchDataByFilter(filterStatus);
     } else {
       fetchData();
@@ -90,6 +93,30 @@ const CandidateJobs = () => {
       console.error('Error fetching data:', error);
     }
   }
+
+
+  async function searchJobsWithFilter(search,filterStatus) {
+    console.log(filterStatus)
+    try {
+      const params = {
+        search:search,
+        page: page,
+        size: pageSize,
+        sortBy: sortedColumn,
+        sortOrder: sortOrder,
+        userId: userId, // Example parameter to pass to backend API
+        filterStatus: filterStatus
+      };
+      console.log(filterStatus)
+
+      const response = await axios.get(`${BASE_API_URL}/searchJobsWithFilter`, { params });
+      setJobs(response.data.content);
+      setTotalPages(response.data.totalPages);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value);

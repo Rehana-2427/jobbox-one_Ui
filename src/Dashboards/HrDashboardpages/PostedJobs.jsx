@@ -20,7 +20,7 @@ const PostedJobs = () => {
   const [jobs, setJobs] = useState([]);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(6);
   const [totalPages, setTotalPages] = useState(0);
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState(' ');

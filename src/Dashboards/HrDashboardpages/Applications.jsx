@@ -11,16 +11,13 @@ import Pagination from '../../Pagination';
 import HrLeftSide from './HrLeftSide';
 
 const Applications = () => {
-  // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
-
-
   const BASE_API_URL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
   const location = useLocation();
   const userName = location.state?.userName;
   const userEmail = location.state?.userEmail;
   const currentJobApplicationPage = location.state?.currentJobApplicationPage || 0;
-  const currentJobApplicationPageSize = location.state?.currentJobApplicationPageSize || 5;
+  const currentJobApplicationPageSize = location.state?.currentJobApplicationPageSize || 6;
   const [jobs, setJobs] = useState('')
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(currentJobApplicationPage);
@@ -112,7 +109,7 @@ const Applications = () => {
   useEffect(() => {
     if (location.state?.currentJobApplicationPage === undefined && location.state?.currentJobApplicationPageSize === undefined) {
       setPage(0);
-      setPageSize(5)
+      setPageSize(6)
     }
   }, [location.state?.currentJobApplicationPage, location.state?.currentJobApplicationPageSize]);
   const handleSort = (column) => {

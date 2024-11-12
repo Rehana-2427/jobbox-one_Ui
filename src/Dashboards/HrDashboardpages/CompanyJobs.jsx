@@ -9,7 +9,7 @@ const CompanyJobs = () => {
     const [sortedColumn, setSortedColumn] = useState(null); // Track the currently sorted column
     const [sortOrder, setSortOrder] = useState(' '); // Track the sort order (asc or desc)
     const [page, setPage] = useState(0);
-    const [pageSize, setPageSize] = useState(5);
+    const [pageSize, setPageSize] = useState(6);
     const [totalPages, setTotalPages] = useState(0);
     const location = useLocation();
     const [userData, setUserData] = useState({});

@@ -19,7 +19,7 @@ const AdminAction = () => {
   const [error, setError] = useState(null);
 
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(6);
   const [totalPages, setTotalPages] = useState(0);
 
   const fetchHRDetails = async () => {

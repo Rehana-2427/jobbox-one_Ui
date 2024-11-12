@@ -10,14 +10,13 @@ import Pagination from '../../Pagination';
 import HrLeftSide from './HrLeftSide';
 
 const People = () => {
-    // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
     const BASE_API_URL = process.env.REACT_APP_API_URL;
     const location = useLocation();
     const [people, setPeople] = useState([]);
     const userName = location.state?.userName;
     const userEmail = location.state?.userEmail;
     const [page, setPage] = useState(0);
-    const [pageSize, setPageSize] = useState(5);
+    const [pageSize, setPageSize] = useState(6);
     const [totalPages, setTotalPages] = useState(0);
     const [sortedColumn, setSortedColumn] = useState(null); // Track the currently sorted column
     const [sortOrder, setSortOrder] = useState(' '); // Track the sort order (asc or desc)

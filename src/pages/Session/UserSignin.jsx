@@ -67,7 +67,15 @@ const UserSignin = () => {
 
             if (user) {
                 if (user.userRole === 'Candidate') {
-                    navigate('/candidate-dashboard', { state: { userId: user.userId } });
+                    // Check for redirectAfterLogin preference
+                    const redirectAfterLogin = localStorage.getItem('redirectAfterLogin');
+                    if (redirectAfterLogin === 'dream-job') {
+                        navigate('/candidate-dashboard/dream-job', { state: { userId: user.userId, userName: user.userName } });
+                    } else {
+                        navigate('/candidate-dashboard', { state: { userId: user.userId } });
+                    }
+                    // Clear the redirect target once used
+                    localStorage.removeItem('redirectAfterLogin');
                 } else {
                     setErrorMessage("Invalid login credentials or role. Please try again.");
                 }

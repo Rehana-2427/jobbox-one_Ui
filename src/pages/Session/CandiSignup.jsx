@@ -492,7 +492,11 @@ const CandiSignup = () => {
                     <TextField
                       type="text"
                       name="phone"
-                      label="Phone Number"
+                      label={
+                        <>
+                          Phone Number <span style={{ color: 'red' }}>*</span>
+                        </>
+                      }
                       required
                       placeholder="Enter your phone number"
                       value={values.phone}
