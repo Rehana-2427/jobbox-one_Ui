@@ -12,8 +12,6 @@ import CandidateLeftSide from "./CandidateLeftSide";
 import ResumeSelectionPopup from "./ResumeSelectionPopup";
 
 const CompamyPage = () => {
-  // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
-  // const BASE_API_URL = "http://localhost:8082/api/jobbox";
   const BASE_API_URL = process.env.REACT_APP_API_URL;
   const location = useLocation();
   const companyId = location.state?.companyId; // Access companyId from URL parameter
@@ -50,6 +48,7 @@ const CompamyPage = () => {
     specialties: '',
   });
   const [selectedJob, setSelectedJob] = useState(null);
+  console.log(companyId)
   const fetchCompany = async () => {
     try {
       const response = await axios.get(
@@ -60,6 +59,7 @@ const CompamyPage = () => {
       console.error('Error fetching company details:', error);
     }
   };
+  console.log(company?.companyName)
 
   const fetchCompanyDetails = async () => {
     try {
@@ -74,6 +74,7 @@ const CompamyPage = () => {
     fetchCompany();
   }, [companyId]);
 
+  
   useEffect(() => {
     if (company?.companyName) {
       fetchCompanyDetails();
@@ -84,7 +85,7 @@ const CompamyPage = () => {
     }
   }, [company?.companyName, userId]);
 
-  console.log(company?.companyName)
+
   const fetchCompanyLogo = async (companyName) => {
     try {
       const response = await axios.get(`${BASE_API_URL}/logo`, { params: { companyName }, responseType: 'arraybuffer' });
