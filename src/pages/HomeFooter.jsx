@@ -172,7 +172,7 @@ const HomeFooter = () => {
                                         <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
                                     </div>
 
-                                    <div className='footer-links-section'>
+                                    <div className='footer-image-section'>
                                         <div className="footer-column">
                                             <img src="/contact.png" alt="contact" style={{ height: '350px' }} />
                                         </div>

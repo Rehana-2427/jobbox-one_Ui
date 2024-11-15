@@ -797,13 +797,13 @@
   color: #6c757d;
 }
 
-/* .footer-links-section {
+.footer-links-section {
   flex: 1;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-} */
-.footer-links-section {
+}
+.footer-image-section {
   display: flex;
   justify-content: center;
   align-items: center;
