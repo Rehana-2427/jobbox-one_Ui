@@ -1357,6 +1357,30 @@ section {
     height: 20px; /* Maintain aspect ratio */
  
   }
+
+
+  /* Make the button smaller on medium screens (like tablets) */
+@media (max-width: 992px) {
+  .btn-responsive {
+    font-size: 14px; /* Smaller font size on medium screens */
+    padding: 8px 16px; /* Reduced padding */
+  }
+}
+
+/* Further reduce the button size on small screens (like mobile phones) */
+@media (max-width: 576px) {
+  .btn-responsive {
+    font-size: 12px;  /* Even smaller font size */
+    padding: 6px 12px; /* Further reduced padding */
+  }
+}
+
+@media (max-width:400px) {
+  .btn-responsive {
+    font-size: 8px;  /* Even smaller font size */
+    padding: 6px 12px; /* Further reduced padding */
+  }
+}
 }
 
 

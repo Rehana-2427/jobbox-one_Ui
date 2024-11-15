@@ -636,88 +636,70 @@ button.com:hover {
   outline: none;
 }
 
-/* popup*/
 .resume-selection-popup {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center elements horizontally */
+  justify-content: center; /* Center elements vertically */
   position: fixed;
   top: 50%;
   left: 50%;
-  max-width: 400px;
-  width: 80%;
+  transform: translate(-50%, -50%);
+  width: 400px; /* Adjust width as needed */
   height: fit-content;
   transform: translate(-50%, -50%);
   background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
   z-index: 9999;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.popup-content {
-  background: white;
-  padding: 20px;
+.resume-selection-popup h2 {
+  text-align: center;
+}
+
+#resumeSelect {
+  width: 100%; /* Make the select element fill the width */
+  margin: 10px 0;
+  padding: 8px;
+  border: 1px solid #ccc;
   border-radius: 8px;
-  width: 90%;
-  max-width: 500px; /* Adjust max-width as needed */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  font-size: 16px;
+  background-color: #fff;
+  color: #333;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+}
+
+.ok {
+  align-self: center; /* This centers the button horizontally */
+  padding: 10px 20px;
+  background-color: #4CAF50; /* Green background */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.ok:hover {
+  background-color: #45a049; /* Slightly darker green when hovered */
 }
 
 .close {
   position: absolute;
   top: 10px;
   right: 10px;
-  cursor: pointer;
-  color: #666;
   font-size: 24px;
-}
-
-#resumeSelect {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
-  background-color: #fff;
-  color: #333;
-}
-
-#resumeSelect:focus {
-  outline: none;
-  border-color: #4CAF50;
-}
-
-.close:hover {
-  color: #333;
-}
-
-.close:focus {
-  outline: none;
-}
-
-.ok {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin-top: 20px;
-  margin-left: 50px;
   cursor: pointer;
-  border-radius: 8px;
 }
 
-.ok:hover {
-  background-color: #45a049;
-}
 /* Media Queries for responsive design */
 @media (max-width: 768px) {
   .popup-content {
