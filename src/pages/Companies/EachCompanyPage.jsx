@@ -155,10 +155,9 @@ const EachCompanyPage = () => {
   const handleCandidateClick = () => {
     openModal('candidate'); // Set modal content for candidate
     localStorage.setItem('redirectAfterLogin', 'dream-company');
-    navigate("/signin",{state:{companyId:companyId}})
+ 
   };
 
-console.log()
   const handleResumeSelect = async (resumeId) => {
     if (resumeId) {
       // If saving is successful, then apply for the job
@@ -176,7 +175,7 @@ console.log()
         navigate('/hr-sign-in', { state: { userType: 'HR' } }); // Pass user type as state
       }
       else if (modalContent === 'candidate') {
-        navigate('/signin', { state: { userType: 'Candidate' } });
+        navigate('/signin', { state: { userType: 'Candidate', companyId:companyId} });
       }
     }
     else if (option === 'register') {

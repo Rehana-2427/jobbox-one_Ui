@@ -23,14 +23,16 @@ const CustomNavbar = () => {
     const { users } = useAuth(); // Get the user from context
 
     useEffect(() => {
-        // Check if user is logged in (you can check localStorage/sessionStorage here)
-        const loggedInUser = JSON.parse(localStorage.getItem('user')); // Assuming user data is saved here after login
+        const loggedInUser = JSON.parse(localStorage.getItem('user'));
         if (loggedInUser && loggedInUser.userName) {
             setIsLoggedIn(true);
-            setUser(loggedInUser); // Set user object
-            setUsernameInitials(loggedInUser.userName.slice(0, 2).toUpperCase()); // Extract first two letters and capitalize
+            setUser(loggedInUser);
+            setUsernameInitials(loggedInUser.userName.slice(0, 2).toUpperCase());
+        } else {
+            setIsLoggedIn(false); // Ensure logout if localStorage is cleared
         }
     }, []);
+    
 
     const handleChange = (event) => {
         const value = event.target.value;

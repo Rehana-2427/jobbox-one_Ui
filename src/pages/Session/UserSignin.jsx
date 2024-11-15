@@ -66,7 +66,6 @@ const UserSignin = () => {
     };
 
     // Google Sign-In Handler
-    // Google Sign-In Handler
     const signInWithGoogle = async () => {
         const provider = new GoogleAuthProvider();
 
@@ -84,6 +83,8 @@ const UserSignin = () => {
             const existingUser = response.data;
             // Log existingUser to check if it's undefined
             console.log("Existing User:", existingUser);
+             // Save user and token in localStorage (or in a global state like context)
+             localStorage.setItem('user', JSON.stringify(existingUser));
             if (existingUser) {
                 const userId = existingUser.userId;
                 console.log("Existing User ID:", userId);
