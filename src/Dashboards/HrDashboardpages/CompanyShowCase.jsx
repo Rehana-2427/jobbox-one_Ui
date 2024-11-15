@@ -7,10 +7,6 @@ import CompanyJobs from './CompanyJobs'
 import CompnayOverview from './CompnayOverview'
 import './HrDashboard.css'
 import HrLeftSide from './HrLeftSide'
-<<<<<<< HEAD
-=======
-import './HrDashboard.css';
->>>>>>> 4698854e57f8a148c4e13f6e1bcb4694799ea885
 
 const CompanyShowCase = () => {
   // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
@@ -272,18 +268,7 @@ const CompanyShowCase = () => {
       </div>
 
       <div className="right-side">
-<<<<<<< HEAD
-        <div
-          className="small-screen-hr"
-          style={{
-            overflowY: 'auto',
-            maxHeight: isSmallScreen ? '600px' : '1000px',
-            paddingBottom: '20px'
-          }}
-        >
-=======
         <Row>
->>>>>>> 4698854e57f8a148c4e13f6e1bcb4694799ea885
           <Card style={{ width: '100%', height: '60%' }}>
             <Card.Body style={{ padding: 0, position: 'relative' }}>
               <div style={{ position: 'relative', height: '55%' }}>
@@ -311,112 +296,6 @@ const CompanyShowCase = () => {
                   onChange={(e) => handleFileChange('banner', e.target.files[0])}
                   accept="image/*"
                 />
-<<<<<<< HEAD
-              </div>
-
-              <div style={{ position: 'absolute', top: '90%', left: '50px', transform: 'translateY(-50%)' }}>
-                <img
-                  src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
-                  alt="Company Logo"
-                  className="logo-image"
-                  style={{
-                    width: '200px',
-                    height: '120px',
-                    cursor: 'pointer',
-                    clipPath: 'ellipse(50% 50% at 50% 50%)',
-                    objectFit: 'cover',
-                  }}
-                  onClick={() => handleCameraIconClick('logo')}
-                />
-                <img
-                  src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain"
-                  alt="Edit Logo"
-                  className="logo-edit-icon"
-                  style={{
-                    position: 'absolute',
-                    bottom: '10px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
-                    opacity: 0.7,
-                  }}
-                  onClick={() => handleCameraIconClick('logo')}
-                />
-                <input
-                  id="logoInput"
-                  type="file"
-                  style={{ display: 'none' }}
-                  onChange={(e) => handleFileChange('logo', e.target.files[0])}
-                  accept="image/*"
-                />
-              </div>
-            </Card.Body>
-          </Card>
-
-          <Row className="hr-company_page-row2" style={{ marginTop: "50px" }}>
-            <Col md={2}>
-              <span>
-                <a
-                  onClick={() => handleTabClick('overview')}
-                  className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
-                >
-                  About
-                </a>
-              </span>
-            </Col>
-            <Col md={2}>
-              <span>
-                <a
-                  onClick={() => handleTabClick('jobs')}
-                  className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
-                >
-                  Jobs
-                </a>
-              </span>
-            </Col>
-            <Col className="hr-company_page-row2-col3" style={{ textAlign: 'end', marginRight: '20px' }}>
-              <span style={{ marginLeft: '20px' }}>
-                <h4 style={{ paddingRight: '14px' }}><b>{userData.companyName}</b></h4>
-                {/* <div className='social-icons-company hr-company-page-icons'> */}
-
-                {socialMediaLinks.facebookLink && (
-                  <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
-                    <FaFacebook size={24} style={{ margin: '0 5px', color: '#3b5998' }} />
-                  </a>
-                )}
-                {socialMediaLinks.twitterLink && (
-                  <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
-                    <FaTwitter size={24} style={{ margin: '0 5px', color: '#1da1f2' }} />
-                  </a>
-                )}
-                {socialMediaLinks.instagramLink && (
-                  <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
-                    <FaInstagram size={24} style={{ margin: '0 5px', color: '#e4405f' }} />
-                  </a>
-                )}
-                {socialMediaLinks.linkedinLink && (
-                  <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
-                    <FaLinkedin size={24} style={{ margin: '0 5px', color: '#0077b5' }} />
-                  </a>
-                )}
-                <div style={{ paddingBottom: '10px', paddingTop: '10px' }}><Button variant="primary" onClick={setShowModal}>Add Social Media Links</Button></div>
-                {/* </div> */}
-              </span>
-            </Col>
-
-            {/* <div
-              style={{
-                position: 'absolute',
-                top: '80%',
-                left: '5%',
-                transform: 'translateX(-5%)',
-                width: '90%',
-                display: 'flex',
-                justifyContent: 'flex-start',
-                overflowX: 'auto',
-                boxSizing: 'border-box',
-              }}
-            >
-              <ul className="nav-links">
-                <li>
-=======
 
               </div>
               <div style={{ position: 'absolute', top: '90%', left: '50px', transform: 'translateY(-50%)' }}>
@@ -485,7 +364,6 @@ const CompanyShowCase = () => {
                 }}
               >
                 <Col md={2}>
->>>>>>> 4698854e57f8a148c4e13f6e1bcb4694799ea885
                   <span>
                     <a
                       onClick={() => setActiveTab('overview')}
@@ -506,107 +384,6 @@ const CompanyShowCase = () => {
                   </span>
                 </Col>
               </ul>
-<<<<<<< HEAD
-
-            </div> */}
-          </Row>
-
-          <Row className="hr-company_page-row3">
-            <Col xs={12} md={8}>
-              {activeTab === 'overview' && <CompnayOverview style={{ overflowY: 'scroll' }} />}
-              {activeTab === 'jobs' && <CompanyJobs />}
-            </Col>
-            <Col xs={12} md={4}>
-              <Card className='key-stats' style={{ width: '80%', height: 'fit-content' }}>
-                <Card.Body>
-                  <Row className="mb-3">
-                    <h1>Other Information</h1>
-                  </Row>
-                  <Row className="mb-2">
-                    <Col>
-                      <h5>Applicants:{countOfApplications}</h5>
-                    </Col>
-                  </Row>
-                  <Row className="mb-2">
-                    <Col>
-                      <h5>Total HR's:{countOfHr}</h5>
-                    </Col>
-                  </Row>
-                  <Row className="mb-2">
-                    <Col>
-                      <h5>Key Stats:</h5>
-                      <ul>
-                        <li>Active Job Postings: {countOfActiveJobs}</li> {/* Placeholder values */}
-                        <li>Shortlisted Candidates: {countOfShortlistedCandiCompany}</li>
-                        <li>Avg. Time to Fill a Job: 7 days</li>
-                        <li>Dream Applications: {countOfDreamApplicationsInCompany}</li>
-                      </ul>
-                    </Col>
-                  </Row>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        </div>
-
-        <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Add Social Media Links</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <Form.Group controlId='facebookLink'>
-                <Form.Label>Facebook</Form.Label>
-                <Form.Control
-                  type='text'
-                  name='facebookLink'
-                  value={socialMediaLinks.facebookLink}
-                  onChange={handleSocialInputChange}
-                  placeholder='Enter Facebook link'
-                />
-              </Form.Group>
-              <Form.Group controlId='twitterLink'>
-                <Form.Label>Twitter</Form.Label>
-                <Form.Control
-                  type='text'
-                  name='twitterLink'
-                  value={socialMediaLinks.twitterLink}
-                  onChange={handleSocialInputChange}
-                  placeholder='Enter Twitter link'
-                />
-              </Form.Group>
-              <Form.Group controlId='instagramLink'>
-                <Form.Label>Instagram</Form.Label>
-                <Form.Control
-                  type='text'
-                  name='instagramLink'
-                  value={socialMediaLinks.instagramLink}
-                  onChange={handleSocialInputChange}
-                  placeholder='Enter Instagram link'
-                />
-              </Form.Group>
-              <Form.Group controlId='linkedinLink'>
-                <Form.Label>LinkedIn</Form.Label>
-                <Form.Control
-                  type='text'
-                  name='linkedinLink'
-                  value={socialMediaLinks.linkedinLink}
-                  onChange={handleSocialInputChange}
-                  placeholder='Enter LinkedIn link'
-                />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant='secondary' onClick={handleCloseModal}>
-              Close
-            </Button>
-            <Button variant='primary' onClick={handleSaveLinks}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
-=======
             </div>
             {/* Right Section: Company Name & Social Media Icons */}
             <div
@@ -793,7 +570,6 @@ const CompanyShowCase = () => {
             </Card>
           </Col>
         </Row>
->>>>>>> 4698854e57f8a148c4e13f6e1bcb4694799ea885
       </div>
     </div>
   )
