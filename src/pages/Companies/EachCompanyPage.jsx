@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Card, Col, Modal, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Modal, Row } from 'react-bootstrap';
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -8,6 +8,7 @@ import ResumeSelectionPopup from '../../Dashboards/CandidateDashboardpages/Resum
 import HomeFooter from '../HomeFooter';
 import CompanyJobs from './CompanyJobs';
 import CompanyOverView from './CompanyOverView';
+import './Company.css';
 
 const EachCompanyPage = () => {
   // const BASE_API_URL = 'http://51.79.18.21:8082/api/jobbox';
@@ -155,10 +156,10 @@ const EachCompanyPage = () => {
   const handleCandidateClick = () => {
     openModal('candidate'); // Set modal content for candidate
     localStorage.setItem('redirectAfterLogin', 'dream-company');
-    navigate("/signin",{state:{companyId:companyId}})
+    // navigate("/signin",{state:{companyId:companyId}})
   };
 
-console.log()
+  console.log()
   const handleResumeSelect = async (resumeId) => {
     if (resumeId) {
       // If saving is successful, then apply for the job
@@ -176,7 +177,7 @@ console.log()
         navigate('/hr-sign-in', { state: { userType: 'HR' } }); // Pass user type as state
       }
       else if (modalContent === 'candidate') {
-        navigate('/signin', { state: { userType: 'Candidate' } });
+        navigate('/signin', { state: { userType: 'Candidate', companyId: companyId } });
       }
     }
     else if (option === 'register') {
@@ -367,36 +368,109 @@ console.log()
   return (
     <div>
       <div className='dashboard-container'>
-        <Col>
-          <Card style={{ width: '100%', height: '60%' }}>
-            <Card.Body style={{ padding: 0, position: 'relative' }}>
-              <div style={{ position: 'relative', height: '55%' }}>
-                <img
-                  src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
-                  alt="Company Banner"
-                  className="banner-image"
-                  style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
-                />
+        {/* <Container> */}
+        <div>
+          <Row style={{ marginBottom: '20px' }}>
+            <div>
+              <Card style={{ width: '100%', height: '60%' }}>
+                <Card.Body style={{ padding: 0, position: 'relative' }}>
+                  <div style={{ position: 'relative', height: '55%' }}>
+                    <img
+                      src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
+                      alt="Company Banner"
+                      className="banner-image"
+                      style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
+                    />
+                  </div>
+                  <div style={{ position: 'absolute', top: '90%', left: '50px', transform: 'translateY(-50%)' }}>
+                    <img
+                      src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
+                      alt="Company Logo"
+                      className="logo-image"
+                      style={{
+                        width: '200px', // Fixed width
+                        height: '120px', // Fixed height
+                        cursor: 'pointer',
+                        // border: '5px solid white',
+                        clipPath: 'ellipse(50% 50% at 50% 50%)', // Creates a horizontal oval
+                        objectFit: 'cover', // Ensures the image covers the dimensions without distortion
+                      }}
+                    />
+                  </div>
+                </Card.Body>
+              </Card>
+            </div>
+          </Row>
+          <Row
+            style={{
+              display: 'flex',                // Use flexbox to align elements side by side
+              justifyContent: 'space-between', // Space out the left and right sections
+              alignItems: 'center',           // Vertically center the content
+              width: '100%',
+              padding: '0 20px',              // Optional: Add some padding for spacing
+            }}
+          >
+            <div>
+              {/* Left Section: Navigation Tabs */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+                width: '50%',
+                marginTop: '30px',  // Move navigation links down a bit
+              }}>
+                <ul
+                  className="nav-links"
+                  style={{
+                    listStyleType: 'none',
+                    display: 'flex',
+                    margin: 0,
+                    padding: 0,
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-between', // Align tabs to the left
+                  }}
+                >
+                  <Col md={2}>
+                    <span>
+                      <a
+                        onClick={() => setActiveTab('overview')}
+                        className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
+                      >
+                        About
+                      </a>
+                    </span>
+                  </Col>
+                  <Col md={2}>
+                    <span>
+                      <a
+                        onClick={() => setActiveTab('jobs')}
+                        className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
+                      >
+                        Jobs
+                      </a>
+                    </span>
+                  </Col>
+                </ul>
               </div>
-              <div style={{ position: 'absolute', top: '55%', left: '50px', transform: 'translateY(-50%)' }}>
-                <label htmlFor="logoInput">
-                  <img
-                    src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
-                    alt="Company Logo"
-                    className="logo-image"
-                    style={{
-                      width: '200px', // Fixed width
-                      height: '120px', // Fixed height
-                      cursor: 'pointer',
-                      clipPath: 'ellipse(50% 50% at 50% 50%)', // Creates a horizontal oval
-                      objectFit: 'cover', // Ensures the image covers the dimensions without distortion
-                    }}
-                  />
-                </label>
-              </div>
-              <div>
-                <h1 style={{ position: 'absolute', top: '60%', right: '100px' }}>{companyName}</h1>
-                <div className='social-icons-company' style={{ position: 'absolute', top: '70%', right: '60px' }}>
+
+              {/* Right Section: Company Name & Social Media Icons */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',   // Stack items vertically in the right section
+                  alignItems: 'flex-end',    // Align everything to the right
+                  zIndex: 10,
+                  marginTop: '-80px',        // Move the right section up a bit
+                }}
+              >
+                {/* Company Name Section */}
+                <div style={{ marginBottom: '10px' }}>
+                  <h2 style={{ margin: 0 }}>
+                    {companyName}
+                  </h2>
+                </div>
+
+                {/* Social Media Icons Section */}
+                <div className="social-icons-company" style={{ display: 'flex', marginTop: '10px' }}>
                   <FaFacebook size={30}
                     onClick={() => handleCompanyIconClick('Facebook')}
                     style={{ cursor: 'pointer', color: '#4267B2', margin: '5px' }}
@@ -415,64 +489,12 @@ console.log()
                   />
                 </div>
               </div>
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '80%',
-                  left: '5%',
-                  transform: 'translateX(-5%)',
-                  width: '90%',
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  overflowX: 'auto',
-                  boxSizing: 'border-box',
-                }}
-              >
-                <ul
-                  className="nav-links"
-                  style={{
-                    listStyleType: 'none',
-                    display: 'flex',
-                    margin: 0,
-                    padding: 0,
-                    flexWrap: 'wrap',
-                  }}
-                >
-                  <li>
-                    <span>
-                      <a
-                        onClick={() => handleTabClick('overview')}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            handleTabClick('overview');
-                          }
-                        }}
-                        tabIndex="0"
-                        className={`tab-link ${activeTab === 'overview' ? 'active' : 'inactive'}`}
-                        role="button"
-                        style={{
-                          textDecoration: 'none',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        About
-                      </a>
-                    </span>
-                  </li>
+            </div>
+          </Row>
 
-                  <li>
-                    <span ref={jobsSectionRef}>
-                      <a onClick={() => handleTabClick('jobs')} className={`tab-link ${activeTab === 'jobs' ? 'active' : 'inactive'}`}>
-                        Jobs
-                      </a>
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </Card.Body>
-          </Card>
 
-          <Row>
+
+          <Row style={{ marginTop: '10px' }}>
             <Col xs={12} md={8}>
               {activeTab === 'home' && (
                 <div>
@@ -583,14 +605,13 @@ console.log()
                 </Card.Body>
               </Card>
             </Col>
-
-            <Row >
-              <HomeFooter />
-            </Row>
-
           </Row>
 
-        </Col>
+          <Row style={{ marginTop: '10px' }} >
+              <HomeFooter />
+            </Row>
+        </div>
+        {/* </Container> */}
 
         {showResumePopup && (
           <ResumeSelectionPopup
@@ -644,7 +665,7 @@ console.log()
           </Modal.Body>
         </Modal>
       </div>
-    </div>
+    </div >
   );
 };
 

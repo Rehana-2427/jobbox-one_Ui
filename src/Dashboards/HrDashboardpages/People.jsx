@@ -8,7 +8,6 @@ import Swal from 'sweetalert2';
 import { useAuth } from '../../AuthProvider';
 import Pagination from '../../Pagination';
 import HrLeftSide from './HrLeftSide';
-
 const People = () => {
     const BASE_API_URL = process.env.REACT_APP_API_URL;
     const location = useLocation();
@@ -23,7 +22,6 @@ const People = () => {
     const isLastPage = page === totalPages - 1;
     const isPageSizeDisabled = isLastPage;
     const [user, setUser] = useState(null); // State to hold user data
-
     const fetchHRData = useCallback(async () => {
         if (!user) return; // Ensure user is loaded
         try {
@@ -37,11 +35,12 @@ const People = () => {
             const response = await axios.get(`${BASE_API_URL}/getHrEachCompany`, { params });
             setPeople(response.data.content);
             setTotalPages(response.data.totalPages);
+            console.log("People--> "+response.data.content);
+            console.log("People.length--> "+response.data.content.length);
         } catch (error) {
             console.error('Error fetching HR data:', error);
         }
     }, [user, page, pageSize, sortedColumn, sortOrder]);
-
     useEffect(() => {
         // Load user data from localStorage on component mount
         const storedUser = localStorage.getItem('user');
@@ -49,11 +48,9 @@ const People = () => {
             setUser(JSON.parse(storedUser));
         }
     }, []);
-
     useEffect(() => {
         fetchHRData();
     }, [fetchHRData]);
-
     const handleSort = (column) => {
         let order = 'asc';
         if (sortedColumn === column) {
@@ -63,11 +60,9 @@ const People = () => {
         setSortOrder(order);
     };
     const navigate = useNavigate();
-
     const handlePageClick = (data) => {
         const selectedPage = data.selected;
         setPage(selectedPage);
-
     };
     const convertToUpperCase = (str) => {
         return String(str).toUpperCase();
@@ -80,29 +75,25 @@ const People = () => {
             return convertToUpperCase(nameParts[0][0] + nameParts[0][1]);
         }
     };
-
     const initials = getInitials(userName);
     const handlePageSizeChange = (e) => {
         const size = parseInt(e.target.value);
         setPageSize(size);
         setPage(0); // Reset page when page size change
     };
-
     const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
-
     const toggleLeftSide = () => {
         console.log("Toggling left side visibility");
         setIsLeftSideVisible(!isLeftSideVisible);
     };
     const { logout } = useAuth(); // Get logout function from context
-
     const handleLogout = () => {
         Swal.fire({
             title: 'Are you sure you want to logout?',
             text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#3085D6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, logout!'
         }).then((result) => {
@@ -123,10 +114,8 @@ const People = () => {
             <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
                 <HrLeftSide user={{ userName, userEmail }} onClose={toggleLeftSide} />
             </div>
-
             <div className="right-side">
                 <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-
                     <Dropdown className="ml-2">
                         <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
                             <div
@@ -162,7 +151,6 @@ const People = () => {
                             <Table hover className='text-center'>
                                 <thead className="table-light">
                                     <tr>
-
                                         <th scope="col" onClick={() => handleSort('userName')}>
                                             HR Name {sortedColumn === 'userName' && (
                                                 sortOrder === 'asc' ? '▲' : '▼'
@@ -179,7 +167,6 @@ const People = () => {
                                 <tbody>
                                     {people.map(person => (
                                         <tr key={person.userId}>
-
                                             <td>{person.userName}</td>
                                             <td>
                                                 <a href={`mailto:${person.userEmail}`}>{person.userEmail}</a>
@@ -191,7 +178,6 @@ const People = () => {
                             </Table>
                         </div>
                         {/* Pagination */}
-
                         <Pagination
                             page={page}
                             pageSize={pageSize}
@@ -201,11 +187,16 @@ const People = () => {
                             handlePageClick={handlePageClick}
                         />
                     </div>
-                )}
+                 )} 
             </div>
+      
         </div>
-
     );
 }
-
 export default People;
+
+
+
+
+
+

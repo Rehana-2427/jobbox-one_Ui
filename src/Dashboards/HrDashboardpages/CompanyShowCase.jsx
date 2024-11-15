@@ -8,7 +8,7 @@ import { useLocation } from 'react-router-dom'
 import CompanyJobs from './CompanyJobs'
 import CompnayOverview from './CompnayOverview'
 import HrLeftSide from './HrLeftSide'
-
+import './HrDashboard.css';
 
 const CompanyShowCase = () => {
   // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
@@ -263,193 +263,273 @@ const CompanyShowCase = () => {
       </div>
 
       <div className="right-side">
-        <Card style={{ width: '100%', height: '60%' }}>
-          <Card.Body style={{ padding: 0, position: 'relative' }}>
-            <div style={{ position: 'relative', height: '55%' }}>
-              <img
-                src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
-                alt="Company Banner"
-                className="banner-image"
-                onClick={() => handleCameraIconClick('banner')}
-                style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
-              />
-              <img
-                src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain" alt="Edit Banner"
-                className="banner-edit-icon"
-                style={{
-                  position: 'absolute',
-                  top: '185px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
-                  opacity: 0.7,
-                }}
-                onClick={() => handleCameraIconClick('banner')}
-              />
-              <input
-                id="bannerInput"
-                type="file"
-                style={{ display: 'none' }}
-                onChange={(e) => handleFileChange('banner', e.target.files[0])}
-                accept="image/*"
-              />
+        <Row>
+          <Card style={{ width: '100%', height: '60%' }}>
+            <Card.Body style={{ padding: 0, position: 'relative' }}>
+              <div style={{ position: 'relative', height: '55%' }}>
+                <img
+                  src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
+                  alt="Company Banner"
+                  className="banner-image"
+                  onClick={() => handleCameraIconClick('banner')}
+                  style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
+                />
+                <img
+                  src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain" alt="Edit Banner"
+                  className="banner-edit-icon"
+                  style={{
+                    position: 'absolute',
+                    top: '185px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
+                    opacity: 0.7,
+                  }}
+                  onClick={() => handleCameraIconClick('banner')}
+                />
+                <input
+                  id="bannerInput"
+                  type="file"
+                  style={{ display: 'none' }}
+                  onChange={(e) => handleFileChange('banner', e.target.files[0])}
+                  accept="image/*"
+                />
 
-            </div>
-            <div style={{ position: 'absolute', top: '55%', left: '50px', transform: 'translateY(-50%)' }}>
-              <img
-                src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
-                alt="Company Logo"
-                className="logo-image candi-company-logo"
-                style={{
-                  width: '200px',
-                  height: '120px',
-                  cursor: 'pointer',
-                  clipPath: 'ellipse(50% 50% at 50% 50%)',
-                  objectFit: 'cover', // Ensures the image covers the dimensions without distortion
-                }}
-                onClick={() => handleCameraIconClick('logo')}
-              />
-              <img
-                src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain" alt="Edit Logo"
-                className="logo-edit-icon"
-                style={{
-                  position: 'absolute',
-                  bottom: '10px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
-                  opacity: 0.7,
-                }}
-                onClick={() => handleCameraIconClick('logo')}
-              />
-              <input
-                id="logoInput"
-                type="file"
-                style={{ display: 'none' }}
-                onChange={(e) => handleFileChange('logo', e.target.files[0])}
-                accept="image/*"
-              />
-            </div>
-            <div>
-              <h1 className='hr-company-page-name'>{userData.companyName}</h1>
-              <div className='social-icons-company hr-company-page-icons'>
-                <Button variant="primary" onClick={setShowModal}>Add Social Media Links</Button>
-                <br />
-                {socialMediaLinks.facebookLink && (
-                  <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
-                    <FaFacebook size={24} style={{ margin: '0 5px', color: '#3b5998' }} />
-                  </a>
-                )}
-                {socialMediaLinks.twitterLink && (
-                  <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
-                    <FaTwitter size={24} style={{ margin: '0 5px', color: '#1da1f2' }} />
-                  </a>
-                )}
-                {socialMediaLinks.instagramLink && (
-                  <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
-                    <FaInstagram size={24} style={{ margin: '0 5px', color: '#e4405f' }} />
-                  </a>
-                )}
-                {socialMediaLinks.linkedinLink && (
-                  <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
-                    <FaLinkedin size={24} style={{ margin: '0 5px', color: '#0077b5' }} />
-                  </a>
-                )}
               </div>
-            </div>
+              <div style={{ position: 'absolute', top: '90%', left: '50px', transform: 'translateY(-50%)' }}>
+                <img
+                  src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
+                  alt="Company Logo"
+                  className="logo-image"
+                  style={{
+                    width: '200px', // Fixed width
+                    height: '120px', // Fixed height
+                    cursor: 'pointer',
+                    // border: '5px solid white',
+                    clipPath: 'ellipse(50% 50% at 50% 50%)', // Creates a horizontal oval
+                    objectFit: 'cover', // Ensures the image covers the dimensions without distortion
+                  }}
+                />
 
-            <Modal show={showModal} onHide={handleCloseModal}>
-              <Modal.Header closeButton>
-                <Modal.Title>Add Social Media Links</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Form>
-                  <Form.Group controlId='facebookLink'>
-                    <Form.Label>Facebook</Form.Label>
-                    <Form.Control
-                      type='text'
-                      name='facebookLink'
-                      value={socialMediaLinks.facebookLink}
-                      onChange={handleSocialInputChange}
-                      placeholder='Enter Facebook link'
-                    />
-                  </Form.Group>
-                  <Form.Group controlId='twitterLink'>
-                    <Form.Label>Twitter</Form.Label>
-                    <Form.Control
-                      type='text'
-                      name='twitterLink'
-                      value={socialMediaLinks.twitterLink}
-                      onChange={handleSocialInputChange}
-                      placeholder='Enter Twitter link'
-                    />
-                  </Form.Group>
-                  <Form.Group controlId='instagramLink'>
-                    <Form.Label>Instagram</Form.Label>
-                    <Form.Control
-                      type='text'
-                      name='instagramLink'
-                      value={socialMediaLinks.instagramLink}
-                      onChange={handleSocialInputChange}
-                      placeholder='Enter Instagram link'
-                    />
-                  </Form.Group>
-                  <Form.Group controlId='linkedinLink'>
-                    <Form.Label>LinkedIn</Form.Label>
-                    <Form.Control
-                      type='text'
-                      name='linkedinLink'
-                      value={socialMediaLinks.linkedinLink}
-                      onChange={handleSocialInputChange}
-                      placeholder='Enter LinkedIn link'
-                    />
-                  </Form.Group>
-                </Form>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant='secondary' onClick={handleCloseModal}>
-                  Close
-                </Button>
-                <Button variant='primary' onClick={handleSaveLinks}>
-                  Save Changes
-                </Button>
-              </Modal.Footer>
-            </Modal>
-            <div
-              style={{
-                position: 'absolute',
-                top: '80%',
-                left: '5%',
-                transform: 'translateX(-5%)',
-                width: '90%',
-                display: 'flex',
-                justifyContent: 'flex-start',
-                overflowX: 'auto',
-                boxSizing: 'border-box',
-              }}
-            >
-              <ul className="nav-links">
-                <li>
+                <img
+                  src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain" alt="Edit Logo"
+                  className="logo-edit-icon"
+                  style={{
+                    position: 'absolute',
+                    bottom: '10px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
+                    opacity: 0.7,
+                  }}
+                  onClick={() => handleCameraIconClick('logo')}
+                />
+                <input
+                  id="logoInput"
+                  type="file"
+                  style={{ display: 'none' }}
+                  onChange={(e) => handleFileChange('logo', e.target.files[0])}
+                  accept="image/*"
+                />
+              </div>
+            </Card.Body>
+          </Card>
+        </Row>
+        <Row
+          style={{
+            display: 'flex',                // Use flexbox to align elements side by side
+            justifyContent: 'space-between', // Space out the left and right sections
+            alignItems: 'center',           // Vertically center the content
+            width: '100%',
+            padding: '0 20px',              // Optional: Add some padding for spacing
+            marginTop: '30px'
+          }}
+        >
+          <div>
+            {/* Left Section: Navigation Tabs */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'flex-start',
+              width: '50%',
+              marginTop: '30px',  // Move navigation links down a bit
+            }}>
+              <ul
+                className="nav-links"
+                style={{
+                  listStyleType: 'none',
+                  display: 'flex',
+                  margin: 0,
+                  padding: 0,
+                  flexWrap: 'wrap',
+                  justifyContent: 'space-between', // Align tabs to the left
+                }}
+              >
+                <Col md={2}>
                   <span>
                     <a
-                      onClick={() => handleTabClick('overview')}
+                      onClick={() => setActiveTab('overview')}
                       className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
                     >
                       About
                     </a>
                   </span>
-                </li>
-                <li>
+                </Col>
+                <Col md={2}>
                   <span>
                     <a
-                      onClick={() => handleTabClick('jobs')}
+                      onClick={() => setActiveTab('jobs')}
                       className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
                     >
                       Jobs
                     </a>
                   </span>
-                </li>
+                </Col>
               </ul>
-
             </div>
-          </Card.Body>
-        </Card>
+            {/* Right Section: Company Name & Social Media Icons */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',   // Stack items vertically in the right section
+                alignItems: 'flex-end',    // Align everything to the right
+                zIndex: 10,
+                marginTop: '-80px',        // Move the right section up a bit
+              }}
+            >
+              {/* Company Name Section */}
+              <div style={{ marginTop: '0px', marginBottom: '5px' }}>
+                <h2 style={{ margin: 0 }}>
+                  {companyName}
+                </h2>
+              </div>
+              <div className='social-icons-company ' style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginTop: '-30px' }}>
 
-        <Row>
+                <div style={{ marginTop: '30px' }}>
+                  {socialMediaLinks.facebookLink && (
+                    <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
+                      <FaFacebook size={24} style={{ margin: '0 2px', color: '#3b5998' }} />
+                    </a>
+                  )}
+                  {socialMediaLinks.twitterLink && (
+                    <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
+                      <FaTwitter size={24} style={{ margin: '0 2px', color: '#1da1f2' }} />
+                    </a>
+                  )}
+                  {socialMediaLinks.instagramLink && (
+                    <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
+                      <FaInstagram size={24} style={{ margin: '0 2px', color: '#e4405f' }} />
+                    </a>
+                  )}
+                  {socialMediaLinks.linkedinLink && (
+                    <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
+                      <FaLinkedin size={24} style={{ margin: '0 2px', color: '#0077b5' }} />
+                    </a>
+                  )}
+                </div>
+
+                <Button
+                  variant="primary"
+                  onClick={() => setShowModal(true)}
+                  className="btn btn-sm add-job-button " // Optional if you want to apply a base size className="add-job-button"
+                  style={{ marginTop: '5px' }}
+                >
+                  Add Social Media Links
+                </Button>
+
+              </div>
+            </div>
+          </div>
+          <Modal show={showModal} onHide={handleCloseModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>Add Social Media Links</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <Form.Group controlId='facebookLink'>
+                  <Form.Label>Facebook</Form.Label>
+                  <Form.Control
+                    type='text'
+                    name='facebookLink'
+                    value={socialMediaLinks.facebookLink}
+                    onChange={handleSocialInputChange}
+                    placeholder='Enter Facebook link'
+                  />
+                </Form.Group>
+                <Form.Group controlId='twitterLink'>
+                  <Form.Label>Twitter</Form.Label>
+                  <Form.Control
+                    type='text'
+                    name='twitterLink'
+                    value={socialMediaLinks.twitterLink}
+                    onChange={handleSocialInputChange}
+                    placeholder='Enter Twitter link'
+                  />
+                </Form.Group>
+                <Form.Group controlId='instagramLink'>
+                  <Form.Label>Instagram</Form.Label>
+                  <Form.Control
+                    type='text'
+                    name='instagramLink'
+                    value={socialMediaLinks.instagramLink}
+                    onChange={handleSocialInputChange}
+                    placeholder='Enter Instagram link'
+                  />
+                </Form.Group>
+                <Form.Group controlId='linkedinLink'>
+                  <Form.Label>LinkedIn</Form.Label>
+                  <Form.Control
+                    type='text'
+                    name='linkedinLink'
+                    value={socialMediaLinks.linkedinLink}
+                    onChange={handleSocialInputChange}
+                    placeholder='Enter LinkedIn link'
+                  />
+                </Form.Group>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant='secondary' onClick={handleCloseModal}>
+                Close
+              </Button>
+              <Button variant='primary' onClick={handleSaveLinks}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          {/* <div
+          style={{
+            position: 'absolute',
+            top: '80%',
+            left: '5%',
+            transform: 'translateX(-5%)',
+            width: '90%',
+            display: 'flex',
+            justifyContent: 'flex-start',
+            overflowX: 'auto',
+            boxSizing: 'border-box',
+          }}
+        >
+          <ul className="nav-links">
+            <li>
+              <span>
+                <a
+                  onClick={() => handleTabClick('overview')}
+                  className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
+                >
+                  About
+                </a>
+              </span>
+            </li>
+            <li>
+              <span>
+                <a
+                  onClick={() => handleTabClick('jobs')}
+                  className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
+                >
+                  Jobs
+                </a>
+              </span>
+            </li>
+          </ul>
+
+        </div> */}
+        </Row>
+
+        <Row style={{ marginTop: '20px' }}>
           <Col xs={12} md={8}>
             {activeTab === 'overview' && <CompnayOverview style={{ overflowY: 'scroll' }} />}
             {activeTab === 'jobs' && <CompanyJobs />}

@@ -244,34 +244,39 @@ const Jobdetails = () => {
             <div>
                 <CustomNavbar />
             </div>
-            <div style={{ paddingTop: '150px' }}>
+            <div className='welcome-msg' >
                 <div>
-                    <Card style={{ width: '100%', height: '60%' }}>
-                        <Card.Body style={{ padding: 0, position: 'relative' }}>
-                            <div style={{ position: 'relative', height: '55%' }}>
-                                <img
-                                    src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
-                                    alt="Company Banner"
-                                    className="banner-image"
-                                    style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
-                                />
-                            </div>
-                            <div style={{ position: 'absolute', top: '100%', left: '50px', transform: 'translateY(-50%)' }}>
-                                <img
-                                    src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
-                                    alt="Company Logo"
-                                    className="logo-image"
-                                    style={{
-                                        width: '200px', // Fixed width
-                                        height: '120px', // Fixed height
-                                        cursor: 'pointer',
-                                        clipPath: 'ellipse(50% 50% at 50% 50%)', // Creates a horizontal oval
-                                        objectFit: 'cover', // Ensures the image covers the dimensions without distortion
-                                    }}
-                                />
-                            </div>
-                        </Card.Body>
-                    </Card>
+                    <Row style={{ marginTop: '-10px' }}>
+                        <div>
+                            <Card style={{ width: '100%', height: '60%' }}>
+                                <Card.Body style={{ padding: 0, position: 'relative' }}>
+                                    <div style={{ position: 'relative', height: '55%' }}>
+                                        <img
+                                            src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
+                                            alt="Company Banner"
+                                            className="banner-image"
+                                            style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
+                                        />
+                                    </div>
+                                    <div style={{ position: 'absolute', top: '90%', left: '50px', transform: 'translateY(-50%)' }}>
+                                        <img
+                                            src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
+                                            alt="Company Logo"
+                                            className="logo-image"
+                                            style={{
+                                                width: '200px', // Fixed width
+                                                height: '120px', // Fixed height
+                                                cursor: 'pointer',
+                                                // border: '5px solid white',
+                                                clipPath: 'ellipse(50% 50% at 50% 50%)', // Creates a horizontal oval
+                                                objectFit: 'cover', // Ensures the image covers the dimensions without distortion
+                                            }}
+                                        />
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                        </div>
+                    </Row>
                 </div>
                 <br></br><br></br>
             </div>
