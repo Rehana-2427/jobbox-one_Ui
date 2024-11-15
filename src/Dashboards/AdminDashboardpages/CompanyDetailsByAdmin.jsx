@@ -1,8 +1,6 @@
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Form, FormGroup, Modal } from 'react-bootstrap';
+import { Button, Card, Col, Form, FormGroup, Modal, Row } from 'react-bootstrap';
 import { FaEdit, FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './AdminDashboard.css';
@@ -26,8 +24,11 @@ const CompanyDetailsByAdmin = () => {
     year: '',
     specialties: ''
   });
+  const [activeTab, setActiveTab] = useState('overview'); // State to control the active tab
 
-
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+  };
   const location = useLocation();
 
   const { currentAdminCompanyPage, companyName, currentAdminCompanyPageSize } = location.state || {}
@@ -53,9 +54,9 @@ const CompanyDetailsByAdmin = () => {
   const handleSave = async () => {
     try {
       const response = await axios.put(`${BASE_API_URL}/updateCompanyDetailsByAdmin?companyName=${companyName}`, companyDetails);
-      console.log(response.data); 
-      setCompanyDetails({ ...companyDetails }); 
-      setEditableCompanyDetails(false); 
+      console.log(response.data);
+      setCompanyDetails({ ...companyDetails });
+      setEditableCompanyDetails(false);
     } catch (error) {
       console.error('Error updating company details:', error);
       // Handle error state or display error message to user
@@ -192,67 +193,105 @@ const CompanyDetailsByAdmin = () => {
 
   };
 
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
 
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
     setIsLeftSideVisible(!isLeftSideVisible);
   };
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+
+  useEffect(() => {
+    // Update the `isSmallScreen` state based on screen resizing
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div className='dashboard-container'>
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide} >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
+
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-      <AdminleftSide onClose={toggleLeftSide} />
+        <AdminleftSide onClose={toggleLeftSide} />
       </div>
       <div className="right-side">
-        <Card style={{ width: '100%', height: '60%' }}>
-          <Card.Body style={{ padding: 0, position: 'relative' }}>
-            <div style={{ position: 'relative', height: '55%' }}>
-              <img
-                src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
-                alt="Company Banner"
-                className="banner-image"
-                onClick={() => handleCameraIconClick('banner')}
-                style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
-              />
-              <input
-                id="bannerInput"
-                type="file"
-                style={{ display: 'none' }}
-                onChange={(e) => handleFileChange('banner', e.target.files[0])}
-                accept="image/*"
-              />
-            </div>
-            <div style={{ position: 'absolute', top: '55%', left: '50px', transform: 'translateY(-50%)' }}>
-              <img
-                src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
-                alt="Company Logo"
-                className="logo-image"
-                style={{
-                  width: '200px', // Fixed width
-                  height: '120px', // Fixed height
-                  cursor: 'pointer',
-                  clipPath: 'ellipse(50% 50% at 50% 50%)', // Creates a horizontal oval
-                  objectFit: 'cover', // Ensures the image covers the dimensions without distortion
-                }}                
-                onClick={() => handleCameraIconClick('logo')}
-              />
-              <input
-                id="logoInput"
-                type="file"
-                style={{ display: 'none' }}
-                onChange={(e) => handleFileChange('logo', e.target.files[0])}
-                accept="image/*"
-              />
-            </div>
-            <div>
-              <h1 style={{ position: 'absolute', top: '70%', right: '100px' }}>{companyName}</h1>
-              <div className='social-icons-company' style={{ position: 'absolute', top: '80%', right: '60px' }}>
-                <Button variant="primary" onClick={setShowModal}>Add Social Media Links</Button><br></br>
+        <div
+          style={{
+            overflowY: 'auto',
+            maxHeight: isSmallScreen ? '600px' : '1000px',
+            paddingBottom: '0px'
+          }}
+        >
+          <Card style={{ width: '100%', height: '60%' }}>
+            <Card.Body style={{ padding: 0, position: 'relative' }}>
+              <div style={{ position: 'relative', height: '55%' }}>
+                <img
+                  src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
+                  alt="Company Banner"
+                  className="banner-image"
+                  onClick={() => handleCameraIconClick('banner')}
+                  style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
+                />
+                <img
+                  src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain" alt="Edit Banner"
+                  className="banner-edit-icon"
+                  style={{
+                    position: 'absolute',
+                    top: '185px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
+                    opacity: 0.7,
+                  }}
+                  onClick={() => handleCameraIconClick('banner')}
+                />
+                <input
+                  id="bannerInput"
+                  type="file"
+                  style={{ display: 'none' }}
+                  onChange={(e) => handleFileChange('banner', e.target.files[0])}
+                  accept="image/*"
+                />
+              </div>
+              <div style={{ position: 'absolute', top: '90%', left: '50px', transform: 'translateY(-50%)' }}>
+                <img
+                  src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
+                  alt="Company Logo"
+                  className="logo-image"
+                  style={{
+                    width: '200px',
+                    height: '120px',
+                    cursor: 'pointer',
+                    clipPath: 'ellipse(50% 50% at 50% 50%)',
+                    objectFit: 'cover',
+                  }}
+                  onClick={() => handleCameraIconClick('logo')}
+                />
+                <img
+                  src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain"
+                  alt="Edit Logo"
+                  className="logo-edit-icon"
+                  style={{
+                    position: 'absolute',
+                    bottom: '10px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
+                    opacity: 0.7,
+                  }}
+                  onClick={() => handleCameraIconClick('logo')}
+                />
+                <input
+                  id="logoInput"
+                  type="file"
+                  style={{ display: 'none' }}
+                  onChange={(e) => handleFileChange('logo', e.target.files[0])}
+                  accept="image/*"
+                />
+              </div>
+            </Card.Body>
+          </Card>
+          <Row className="hr-company_page-row2" style={{ marginTop: "50px" }}>
+            <Col style={{ textAlign: 'end', marginRight: '20px' }}>
+              <span style={{ marginLeft: '20px' }}>
+                <h4 style={{ paddingRight: '14px' }}>{companyName}</h4>
                 {socialMediaLinks.facebookLink && (
                   <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
                     <FaFacebook size={24} style={{ margin: '0 5px', color: '#3b5998' }} />
@@ -273,198 +312,204 @@ const CompanyDetailsByAdmin = () => {
                     <FaLinkedin size={24} style={{ margin: '0 5px', color: '#0077b5' }} />
                   </a>
                 )}
-              </div>
-            </div>
-            <Modal show={showModal} onHide={handleCloseModal}>
-              <Modal.Header closeButton>
-                <Modal.Title>Add Social Media Links</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Form>
-                  <Form.Group controlId='facebookLink'>
-                    <Form.Label>Facebook</Form.Label>
-                    <Form.Control
-                      type='text'
-                      name='facebookLink'
-                      value={socialMediaLinks.facebookLink}
-                      onChange={handleSocialInputChange}
-                      placeholder='Enter Facebook link'
-                    />
-                  </Form.Group>
-                  <Form.Group controlId='twitterLink'>
-                    <Form.Label>Twitter</Form.Label>
-                    <Form.Control
-                      type='text'
-                      name='twitterLink'
-                      value={socialMediaLinks.twitterLink}
-                      onChange={handleSocialInputChange}
-                      placeholder='Enter Twitter link'
-                    />
-                  </Form.Group>
-                  <Form.Group controlId='instagramLink'>
-                    <Form.Label>Instagram</Form.Label>
-                    <Form.Control
-                      type='text'
-                      name='instagramLink'
-                      value={socialMediaLinks.instagramLink}
-                      onChange={handleSocialInputChange}
-                      placeholder='Enter Instagram link'
-                    />
-                  </Form.Group>
-                  <Form.Group controlId='linkedinLink'>
-                    <Form.Label>LinkedIn</Form.Label>
-                    <Form.Control
-                      type='text'
-                      name='linkedinLink'
-                      value={socialMediaLinks.linkedinLink}
-                      onChange={handleSocialInputChange}
-                      placeholder='Enter LinkedIn link'
-                    />
-                  </Form.Group>
-                </Form>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant='secondary' onClick={handleCloseModal}>
-                  Close
+                <Button variant="primary" onClick={setShowModal}>Add Social Media Links</Button><br></br>
+              </span>
+            </Col>
+          </Row>
+
+          <Row className="hr-company_page-row3">
+            {/* <h3 style={{ position: 'absolute', top: '80%' }}>About {companyName}</h3> */}
+            {editableCompanyDetails ? (
+              <Form className='company-overview-by-admin'>
+                <FormGroup controlId="overView">
+                  <Form.Label>
+                    <h3>Overview</h3>
+                  </Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    name="overView"
+                    value={companyDetails.overView}
+                    onChange={handleInputChange}
+                    className="fullWidthTextarea"
+                    style={{ minHeight: '150px' }}
+                  />
+                </FormGroup>
+                <FormGroup controlId="websiteLink">
+                  <Form.Label>
+                    <h4>Website</h4>
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="websiteLink"
+                    value={companyDetails.websiteLink}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+                <FormGroup controlId="industryService">
+                  <Form.Label>
+                    <h4>Industry Service</h4>
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="industryService"
+                    value={companyDetails.industryService}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+                <FormGroup controlId="companySize">
+                  <Form.Label>
+                    <h4>Company Size</h4>
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="companySize"
+                    value={companyDetails.companySize}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+                <FormGroup controlId="headquarters">
+                  <Form.Label>
+                    <h4>Headquarters</h4>
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="headquaters"
+                    value={companyDetails.headquaters}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+                <FormGroup controlId="year">
+                  <Form.Label>
+                    <h4>Founded</h4>
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="year"
+                    value={companyDetails.year}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+                <FormGroup controlId="location">
+                  <Form.Label>
+                    <h4>Location</h4>
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="location"
+                    value={companyDetails.location}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+                <FormGroup controlId="specialties">
+                  <Form.Label>
+                    <h4>Specialties</h4>
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="specialties"
+                    value={companyDetails.specialties}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+                <Button variant="primary" onClick={handleSave}>
+                  Save
                 </Button>
-                <Button variant='primary' onClick={handleSaveLinks}>
-                  Save Changes
-                </Button>
-              </Modal.Footer>
-            </Modal>
-            <h3 style={{ position: 'absolute', top: '80%' }}>About {companyName}</h3>
-          </Card.Body>
-        </Card>
-        {editableCompanyDetails ? (
-          <Form className='company-overview-by-admin'>
-            <FormGroup controlId="overView">
-              <Form.Label>
-                <h3>Overview</h3>
-              </Form.Label>
-              <Form.Control
-                as="textarea"
-                name="overView"
-                value={companyDetails.overView}
-                onChange={handleInputChange}
-                className="fullWidthTextarea"
-                style={{ minHeight: '150px' }}
-              />
-            </FormGroup>
-            <FormGroup controlId="websiteLink">
-              <Form.Label>
-                <h4>Website</h4>
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="websiteLink"
-                value={companyDetails.websiteLink}
-                onChange={handleInputChange}
-              />
-            </FormGroup>
-            <FormGroup controlId="industryService">
-              <Form.Label>
-                <h4>Industry Service</h4>
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="industryService"
-                value={companyDetails.industryService}
-                onChange={handleInputChange}
-              />
-            </FormGroup>
-            <FormGroup controlId="companySize">
-              <Form.Label>
-                <h4>Company Size</h4>
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="companySize"
-                value={companyDetails.companySize}
-                onChange={handleInputChange}
-              />
-            </FormGroup>
-            <FormGroup controlId="headquarters">
-              <Form.Label>
-                <h4>Headquarters</h4>
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="headquaters"
-                value={companyDetails.headquaters}
-                onChange={handleInputChange}
-              />
-            </FormGroup>
-            <FormGroup controlId="year">
-              <Form.Label>
-                <h4>Founded</h4>
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="year"
-                value={companyDetails.year}
-                onChange={handleInputChange}
-              />
-            </FormGroup>
-            <FormGroup controlId="location">
-              <Form.Label>
-                <h4>Location</h4>
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="location"
-                value={companyDetails.location}
-                onChange={handleInputChange}
-              />
-            </FormGroup>
-            <FormGroup controlId="specialties">
-              <Form.Label>
-                <h4>Specialties</h4>
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="specialties"
-                value={companyDetails.specialties}
-                onChange={handleInputChange}
-              />
-            </FormGroup>
-            <Button variant="primary" onClick={handleSave}>
-              Save
-            </Button>
-          </Form>
-        ) : (
-          <>
-            <div className='company-overview-by-admin'>
-              <h3>
-                About
-                <FaEdit onClick={() => setEditableCompanyDetails(true)} style={{ cursor: 'pointer' }} />
-              </h3>
-              <p>{companyDetails.overView}</p>
-              <h4>Website</h4>
-              <p>
-                <a href={companyDetails.websiteLink} target="_blank" rel="noopener noreferrer">
-                  {companyDetails.websiteLink}
-                </a>
-              </p>
-              <h4>Industry Service</h4>
-              <p>{companyDetails.industryService}</p>
-              <h4>Company Size</h4>
-              <p>{companyDetails.companySize === '0' ? '' : companyDetails.companySize}</p>
-              <h4>Headquarters</h4>
-              <p>{companyDetails.headquaters}</p>
-              <h4>Founded</h4>
-              <p>{companyDetails.year !== '0' && companyDetails.year}</p>
-              <h4>Location</h4>
-              <p>{companyDetails.location}</p>
-              <h4>Specialties</h4>
-              <p>{companyDetails.specialties}</p>
-            </div>
-          </>
-        )}
-        <Button variant='primary' onClick={handleBack} style={{
-          position: 'fixed', right: '50px'
-        }}>Back</Button>
+              </Form>
+            ) : (
+              <>
+                <div className='company-overview-by-admin'>
+                  <h3>
+                    About
+                    <FaEdit onClick={() => setEditableCompanyDetails(true)} style={{ cursor: 'pointer' }} />
+                  </h3>
+                  <p>{companyDetails.overView}</p>
+                  <h4>Website</h4>
+                  <p>
+                    <a href={companyDetails.websiteLink} target="_blank" rel="noopener noreferrer">
+                      {companyDetails.websiteLink}
+                    </a>
+                  </p>
+                  <h4>Industry Service</h4>
+                  <p>{companyDetails.industryService}</p>
+                  <h4>Company Size</h4>
+                  <p>{companyDetails.companySize === '0' ? '' : companyDetails.companySize}</p>
+                  <h4>Headquarters</h4>
+                  <p>{companyDetails.headquaters}</p>
+                  <h4>Founded</h4>
+                  <p>{companyDetails.year !== '0' && companyDetails.year}</p>
+                  <h4>Location</h4>
+                  <p>{companyDetails.location}</p>
+                  <h4>Specialties</h4>
+                  <p>{companyDetails.specialties}</p>
+                </div>
+              </>
+            )}
+          </Row>
+
+
+          <Button variant='primary' onClick={handleBack} style={{
+            position: 'fixed', right: '50px'
+          }}>Back</Button>
+          <Modal show={showModal} onHide={handleCloseModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>Add Social Media Links</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <Form.Group controlId='facebookLink'>
+                  <Form.Label>Facebook</Form.Label>
+                  <Form.Control
+                    type='text'
+                    name='facebookLink'
+                    value={socialMediaLinks.facebookLink}
+                    onChange={handleSocialInputChange}
+                    placeholder='Enter Facebook link'
+                  />
+                </Form.Group>
+                <Form.Group controlId='twitterLink'>
+                  <Form.Label>Twitter</Form.Label>
+                  <Form.Control
+                    type='text'
+                    name='twitterLink'
+                    value={socialMediaLinks.twitterLink}
+                    onChange={handleSocialInputChange}
+                    placeholder='Enter Twitter link'
+                  />
+                </Form.Group>
+                <Form.Group controlId='instagramLink'>
+                  <Form.Label>Instagram</Form.Label>
+                  <Form.Control
+                    type='text'
+                    name='instagramLink'
+                    value={socialMediaLinks.instagramLink}
+                    onChange={handleSocialInputChange}
+                    placeholder='Enter Instagram link'
+                  />
+                </Form.Group>
+                <Form.Group controlId='linkedinLink'>
+                  <Form.Label>LinkedIn</Form.Label>
+                  <Form.Control
+                    type='text'
+                    name='linkedinLink'
+                    value={socialMediaLinks.linkedinLink}
+                    onChange={handleSocialInputChange}
+                    placeholder='Enter LinkedIn link'
+                  />
+                </Form.Group>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant='secondary' onClick={handleCloseModal}>
+                Close
+              </Button>
+              <Button variant='primary' onClick={handleSaveLinks}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div >
       </div>
-    </div>
+    </div >
   );
 };
 

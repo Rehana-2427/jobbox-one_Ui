@@ -1,4 +1,4 @@
-import { faBars, faBriefcase, faEnvelope, faStar, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faBriefcase, faEnvelope, faStar, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -138,7 +138,7 @@ const HrDashboard = () => {
 
   const { logout } = useAuth(); // Get logout function from context
 
-  const  handleLogout = () => {
+  const handleLogout = () => {
     Swal.fire({
       title: 'Are you sure you want to logout?',
       text: "You won't be able to revert this!",
@@ -179,119 +179,134 @@ const HrDashboard = () => {
   };
   const initials = getInitials(userName);
 
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
 
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
     setIsLeftSideVisible(!isLeftSideVisible);
   };
+
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+
+  useEffect(() => {
+    // Update the `isSmallScreen` state based on screen resizing
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   return (
     <div className='dashboard-container'>
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide} >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
+
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
+        {/* Pass the toggle function to close the left side when needed */}
         <HrLeftSide user={{ userName, userEmail }} onClose={toggleLeftSide} />
       </div>
 
 
       <div className="right-side" >
+        <div
+          className="small-screen-hr"
+          style={{
+            overflowY: 'auto',
+            maxHeight: isSmallScreen ? '600px' : '1000px',
+            paddingBottom: '20px'
+          }}
+        >                {/* HR header icons - full screen icon , user icon , notification */}
+          <div className="d-flex justify-content-end align-items-center mb-3 mt-12 ml-2">
+            <i datafullscreen="true" onClick={toggleFullScreen} className="i-Full-Screen header-icon d-none d-lg-inline-block" />
+            <Dropdown className="ml-2">
+              <Dropdown.Toggle as="span" className="toggle-hidden">
+                <div className="initials-placeholder">
+                  {initials}
+                </div>
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="mt-3">
+                <Dropdown.Item as={Link} to="/settings">
+                  <i className="i-Data-Settings me-1" /> Account settings
+                </Dropdown.Item>
+                <Dropdown.Item as="button" onClick={handleLogout}>
+                  <i className="i-Lock-2 me-1" /> Logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
 
-        {/* HR header icons - full screen icon , user icon , notification */}
-        <div className="d-flex justify-content-end align-items-center mb-3 mt-12 ml-2">
-          <i datafullscreen="true" onClick={toggleFullScreen} className="i-Full-Screen header-icon d-none d-lg-inline-block" />
-          <Dropdown className="ml-2">
-            <Dropdown.Toggle as="span" className="toggle-hidden">
-              <div className="initials-placeholder">
-                {initials}
-              </div>
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="mt-3">
-              <Dropdown.Item as={Link} to="/settings">
-                <i className="i-Data-Settings me-1" /> Account settings
-              </Dropdown.Item>
-              <Dropdown.Item as="button" onClick={handleLogout}>
-                <i className="i-Lock-2 me-1" /> Logout
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-
-        <Container className="my-dashboard-container">
-          <h3 className='status-info text-center bg-light'>Company status</h3>
-          <Row className="dashboard d-flex mt-4">
-            {DATA.map((card, index) => (
-              <Col lg={3} sm={6} key={index} >
-                <Card className="card-icon-bg gap-3 card-icon-bg-primary o-hidden mb-4" style={{ maxWidth: '250px' }}>
-                  <Card.Body className="align-items-center gap-4" >
-                    <FontAwesomeIcon icon={card.icon} className="me-2 text-primary mb-0 text-24 fw-semibold" />
-                    <div className="content gap-1">
-                      {card.link ? (
-                        <Link to={card.link} state={{ userName, userEmail }} className="nav-link">
-                          <p className="text-muted mb-0 text-capitalize title-responsive">{card.subtitle}</p>
-                          <p className="lead text-primary text-24 mb-0 text-capitalize">{card.title}</p>
-                        </Link>
-                      ) : (
-                        <>
-                          <p className="text-muted mb-0 text-capitalize subtitle-responsive">{card.subtitle}</p>
-                          <p className="lead text-primary text-24 mb-0 text-capitalize">{card.title}</p>
-                        </>
-                      )}
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </Container>
-        <Container className="my-dashboard-container ">
-          <Row className="dashboard d-flex mt-4 table-wrapper">
-            <Col md={8} className="offset-md-2 mt-4"> {/* Increased width */}
-              <Card className="shadow-sm rounded-4 card-icon-bg" style={{ width: '100%', backgroundColor: '#E6E6FA' }}> {/* Light purple */}
-                <Card.Header className="bg-light text-center" style={{ height: '30px', width: '100%' }}>
-                  <Card.Title as="h4" className='text-center'>Monthly Job Percentages</Card.Title>
-                </Card.Header>
-                <Card.Body style={{ height: '300px', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <Bar
-                    data={monthlyJobData}
-                    options={{
-                      responsive: true,
-                      scales: {
-                        x: {
-                          beginAtZero: true,
-                          ticks: {
-                            color: '#888',
-                            font: {
-                              size: 12
+          <Container className="my-dashboard-container">
+            <h3 className='status-info text-center bg-light'>Company status</h3>
+            <Row className="dashboard d-flex mt-4">
+              {DATA.map((card, index) => (
+                <Col lg={3} sm={6} key={index} >
+                  <Card className="card-icon-bg gap-3 card-icon-bg-primary o-hidden mb-4" style={{ maxWidth: '250px' }}>
+                    <Card.Body className="align-items-center gap-4" >
+                      <FontAwesomeIcon icon={card.icon} className="me-2 text-primary mb-0 text-24 fw-semibold" />
+                      <div className="content gap-1">
+                        {card.link ? (
+                          <Link to={card.link} state={{ userName, userEmail }} className="nav-link">
+                            <p className="text-muted mb-0 text-capitalize title-responsive">{card.subtitle}</p>
+                            <p className="lead text-primary text-24 mb-0 text-capitalize">{card.title}</p>
+                          </Link>
+                        ) : (
+                          <>
+                            <p className="text-muted mb-0 text-capitalize subtitle-responsive">{card.subtitle}</p>
+                            <p className="lead text-primary text-24 mb-0 text-capitalize">{card.title}</p>
+                          </>
+                        )}
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </Container>
+          <Container className="my-dashboard-container ">
+            <Row className="dashboard d-flex mt-4 table-wrapper">
+              <Col md={8} className="offset-md-2 mt-4"> {/* Increased width */}
+                <Card className="shadow-sm rounded-4 card-icon-bg" style={{ width: '100%', backgroundColor: '#E6E6FA' }}> {/* Light purple */}
+                  <Card.Header className="bg-light text-center" style={{ height: '30px', width: '100%' }}>
+                    <Card.Title as="h4" className='text-center'>Monthly Job Percentages</Card.Title>
+                  </Card.Header>
+                  <Card.Body style={{ height: '300px', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Bar
+                      data={monthlyJobData}
+                      options={{
+                        responsive: true,
+                        scales: {
+                          x: {
+                            beginAtZero: true,
+                            ticks: {
+                              color: '#888',
+                              font: {
+                                size: 12
+                              }
+                            }
+                          },
+                          y: {
+                            beginAtZero: true,
+                            ticks: {
+                              color: '#888',
+                              font: {
+                                size: 12
+                              },
+                              maxTicksLimit: 100,
+                              stepSize: 10
                             }
                           }
-                        },
-                        y: {
-                          beginAtZero: true,
-                          ticks: {
-                            color: '#888',
-                            font: {
-                              size: 12
-                            },
-                            maxTicksLimit: 100,
-                            stepSize: 10
-                          }
                         }
-                      }
-                    }}
-                  />
-                </Card.Body>
+                      }}
+                    />
+                  </Card.Body>
 
-              </Card>
-            </Col>
+                </Card>
+              </Col>
 
-          </Row>
-        </Container>
+            </Row>
+          </Container>
+        </div>
       </div>
     </div>
-
   );
 };
 

@@ -1,9 +1,9 @@
-import { faBars, faClose } from '@fortawesome/free-solid-svg-icons';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Container, Form, FormControl, InputGroup } from 'react-bootstrap';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import CandidateLeftSide from './CandidateLeftSide';
 import ResumeSelectionPopup from './ResumeSelectionPopup';
@@ -15,13 +15,12 @@ const DreamJob = () => {
   const userName = location.state?.userName;
   const userId = location.state?.userId;
 
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
   const [jobRole, setJobRole] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [companyInput, setCompanyInput] = useState('');
   const [companies, setCompanies] = useState(new Set());
-  const [isSwaling, setIsSwaling] = useState(false);
-  const navigate = useNavigate();
+ 
   const [showResumePopup, setShowResumePopup] = useState(false);
   const [resumes, setResumes] = useState([]);
 
@@ -184,11 +183,7 @@ const DreamJob = () => {
 
   return (
     <div className='dashboard-container'>
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide}>
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
+     
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
         <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
       </div>

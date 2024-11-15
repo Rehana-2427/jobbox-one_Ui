@@ -1,5 +1,8 @@
-import { faAddressCard, faBriefcase, faBuilding, faEnvelope, faTimes, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faAddressCard, faBriefcase, faBuilding, faEnvelope, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import MenuIcon from '@mui/icons-material/Menu';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
 import React, { useEffect, useRef, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -13,6 +16,7 @@ const HrLeftSide = ({ user, onClose }) => {
     const location = useLocation();
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 900);
     const [isJobsDropdownOpen, setIsJobsDropdownOpen] = useState(false);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     useEffect(() => {
         const handleResize = () => {
@@ -72,120 +76,142 @@ const HrLeftSide = ({ user, onClose }) => {
         };
     }, [location]);
 
-    return (
-        <div>
-            <div
-                onClick={onClose}
-                style={{ display: isSmallScreen ? 'block' : 'none', marginLeft: '12px' }}
-            >
-                <FontAwesomeIcon icon={faTimes} style={{ fontSize: '1.5rem', color: 'black' }} />
-            </div>
-            <Navbar expand="lg" className="flex-column align-items-center" style={{ height: '100vh', backgroundColor: 'white', textAlign: 'center' }}>
-                <Container fluid className="flex-column">
-                <Navbar.Brand>
-                        <a href="/">
-                            <img
-                                style={{ backgroundColor: 'white' }}
-                                src="/jb_logo.png"
-                                alt="jobboxlogo"
-                                className="auth-logo"
-                            />
-                        </a>
-                    </Navbar.Brand>
-                    <Navbar.Text>
-                        <h2 style={{ color: 'black' }}>{userName}</h2>
-                    </Navbar.Text>
-                    <div ref={scrollContainerRef} className='scrollbar-container' style={{ height: 'calc(100vh - 170px)', overflowY: 'auto', paddingRight: '10px', color: 'gray' }}>
-                        <Nav className="flex-column full-height align-items-center">
-                            {navLinks.map((link, index) => (
-                                <React.Fragment key={index}>
-                                    {!link.subLinks ? (
-                                        // Regular nav links
+    const toggleDrawer = (open) => () => {
+        setIsDrawerOpen(open);
+    };
+
+    const renderNavLinks = () => (
+        <Nav className="flex-column full-height align-items-center">
+            {navLinks.map((link, index) => (
+                <React.Fragment key={index}>
+                    {!link.subLinks ? (
+                        <Link
+                            to={{ pathname: link.to, state: { userName, userEmail } }}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                navigate(link.to, { state: { userName, userEmail } });
+                                if (isSmallScreen) {
+                                    onClose();
+                                }
+                            }}
+                            className="nav-link d-flex align-items-center"
+                            style={{
+                                fontSize: '1.1rem',
+                                transition: 'color 0.3s',
+                                color: 'black',
+                            }}
+                        >
+                            <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                                {link.icon && <span style={{ marginRight: '10px' }}>{link.icon}</span>}
+                                {link.label}
+                            </div>
+                        </Link>
+                    ) : (
+                        <div
+                            onMouseEnter={() => setIsJobsDropdownOpen(true)}
+                            onMouseLeave={() => setIsJobsDropdownOpen(false)}
+                            style={{ position: 'relative' }}
+                        >
+                            <div
+                                className="nav-link d-flex align-items-start"
+                                style={{
+                                    fontSize: '1.1rem',
+                                    transition: 'color 0.3s',
+                                    color: 'black',
+                                    cursor: 'pointer',
+                                    backgroundColor: 'transparent',
+                                }}
+                            >
+                                <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                                    {link.icon && <span style={{ marginRight: '10px' }}>{link.icon}</span>}
+                                    {link.label}
+                                </div>
+                            </div>
+                            {isJobsDropdownOpen && (
+                                <div className="dropdown-menu show" style={{ position: 'absolute', padding: '5px 0', overflow: 'hidden' }}>
+                                    {link.subLinks.map((subLink, subIndex) => (
                                         <Link
-                                            to={{ pathname: link.to, state: { userName, userEmail } }}
+                                            key={subIndex}
+                                            to={{ pathname: subLink.to, state: { userName, userEmail } }}
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                navigate(link.to, { state: { userName, userEmail } });
+                                                navigate(subLink.to, { state: { userName, userEmail } });
                                                 if (isSmallScreen) {
                                                     onClose();
                                                 }
                                             }}
-                                            className="nav-link d-flex align-items-center"
-                                            style={{
-                                                fontSize: '1.1rem',
-                                                transition: 'color 0.3s',
-                                                color: 'black',
-                                            }}
+                                            className="dropdown-item"
+                                            style={{ textAlign: 'start' }}
                                         >
-                                            <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                                                {link.icon && <span style={{ marginRight: '10px' }}>{link.icon}</span>}
-                                                {link.label}
-                                            </div>
+                                            {subLink.label}
                                         </Link>
-                                    ) : (
-                                        // Dropdown link for "All Jobs"
-                                        <div
-                                            onMouseEnter={() => setIsJobsDropdownOpen(true)}
-                                            onMouseLeave={() => setIsJobsDropdownOpen(false)}
-                                            style={{ position: 'relative' }}
-                                        >
-                                            <div
-                                                className="nav-link d-flex align-items-start"
-                                                style={{
-                                                    fontSize: '1.1rem',
-                                                    transition: 'color 0.3s',
-                                                    color: 'black',
-                                                    cursor: 'pointer',
-                                                    backgroundColor: 'transparent',
-                                                }}
-                                            >
-                                                <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                                                    {link.icon && <span style={{ marginRight: '10px' }}>{link.icon}</span>}
-                                                    {link.label}
-                                                </div>
-                                            </div>
-                                            {isJobsDropdownOpen && (
-                                                <div
-                                                className="dropdown-menu show"
-                                                style={{
-                                                    position: 'absolute',                                                
-                                                    width: '50px', // Set a specific width
-                                                    maxWidth: '60px', // Ensure it doesn't exceed the screen size
-                                                    padding: '5px 0', // Reduce padding
-                                                    overflow: 'hidden' // Prevent overflow
-                                                }}
-                                            >
-                                                {link.subLinks.map((subLink, subIndex) => (
-                                                    <Link
-                                                        key={subIndex}
-                                                        to={{ pathname: subLink.to, state: { userName, userEmail } }}
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-                                                            navigate(subLink.to, { state: { userName, userEmail } });
-                                                            if (isSmallScreen) {
-                                                                onClose();
-                                                            }
-                                                        }}
-                                                        className="dropdown-item"
-                                                        style={{ textAlign: 'start' }} // Ensures text doesn't wrap
-                                                    >
-                                                        {subLink.label}
-                                                    </Link>
-                                                ))}
-                                            </div>
-                                            
-                                            
-                                            )}
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
+                    <hr style={{ width: '100%', borderColor: 'black' }} />
+                </React.Fragment>
+            ))}
+        </Nav>
+    );
 
-                                        </div>
-                                    )}
-                                    <hr style={{ width: '100%', borderColor: 'black' }} />
-                                </React.Fragment>
-                            ))}
-                        </Nav>
-                    </div>
-                </Container>
-            </Navbar>
+    return (
+        <div>
+            {isSmallScreen ? (
+                <>
+                    <IconButton onClick={toggleDrawer(true)} style={{ marginLeft: '12px' }}>
+                        <MenuIcon />
+                    </IconButton>
+                    <Drawer
+                        anchor="left"
+                        open={isDrawerOpen}
+                        onClose={toggleDrawer(false)}
+                        elevation={0}
+                        PaperProps={{
+                            sx: {
+                                boxShadow: 'none', // Removes any potential shadow
+                                border: 'none',    // Ensures no border or shadow effect
+                            },
+                            style: {
+                                boxShadow: 'none', // Ensures no shadow on the Drawer paper itself
+                                color:'black'
+                            },
+                        }}
+                        BackdropProps={{ invisible: true }}
+                    >
+                        <div style={{ width: 250, padding: '10px' }}>
+                            <Navbar.Brand>
+                                <a href="/">
+                                    <img src="/jb_logo.png" alt="jobboxlogo" className="auth-logo" style={{ backgroundColor: 'white' }} />
+                                </a>
+                            </Navbar.Brand>
+                            <Navbar.Text>
+                                <h2 style={{ color: 'black' }}>{userName}</h2>
+                            </Navbar.Text>
+                            <div ref={scrollContainerRef} style={{ height: 'calc(100vh - 170px)', overflowY: 'auto', paddingRight: '10px', color: 'gray' }}>
+                                {renderNavLinks()}
+                            </div>
+                        </div>
+                    </Drawer>
+                </>
+            ) : (
+                <Navbar expand="lg" className="flex-column align-items-center" style={{ height: '100vh', backgroundColor: 'white', textAlign: 'center' }}>
+                    <Container fluid className="flex-column">
+                        <Navbar.Brand>
+                            <a href="/">
+                                <img src="/jb_logo.png" alt="jobboxlogo" className="auth-logo" style={{ backgroundColor: 'white' }} />
+                            </a>
+                        </Navbar.Brand>
+                        <Navbar.Text>
+                            <h2 style={{ color: 'black' }}>{userName}</h2>
+                        </Navbar.Text>
+                        <div ref={scrollContainerRef} className="scrollbar-container" style={{ height: 'calc(100vh - 170px)', overflowY: 'auto', paddingRight: '10px', color: 'gray' }}>
+                            {renderNavLinks()}
+                        </div>
+                    </Container>
+                </Navbar>
+            )}
         </div>
     );
 };

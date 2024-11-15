@@ -1,7 +1,7 @@
-import { faArrowLeft, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './CandidateDashboard.css';
@@ -133,153 +133,167 @@ const ResumeAdd = () => {
   const handleBack = () => {
     navigate('/candidate-dashboard/resume', { state: { userName, userId } }); // Navigate back to previous page
   };
-   
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
     setIsLeftSideVisible(!isLeftSideVisible);
   };
 
   console.log(userName, userId)
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
 
+  useEffect(() => {
+    // Update the `isSmallScreen` state based on screen resizing
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   return (
     <div className='dashboard-container'>
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide} >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
+
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-      <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
+        <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
       </div>
       <div className="right-side">
-        <Col xs={6}>
-          <Button onClick={handleBack} variant="secondary">
-            <FontAwesomeIcon icon={faArrowLeft} />
-          </Button>
-        </Col>
-        <Col sm={9} className='resume-page' style={{ paddingLeft: '20px' }}>
-          <h2>Add Resume</h2>
-          <Form onSubmit={handleSubmit} className='resume-Add'>
-            <Form.Group as={Row} className='select-type'>
-              <Form.Label column sm={3}>Select Type:</Form.Label>
-              <Col sm={9}>
-                <div className="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label className={`btn btn-outline-primary ${fileType === 'file' ? 'active' : ''}`}>
-                    <input
-                      type="radio"
-                      value="file"
-                      checked={fileType === 'file'}
-                      onChange={handleFileTypeChange}
-                    /> File
-                  </label>
-                  <label className={`btn btn-outline-primary ${fileType === 'link' ? 'active' : ''}`}>
-                    <input
-                      type="radio"
-                      value="link"
-                      checked={fileType === 'link'}
-                      onChange={handleFileTypeChange}
-                    /> Link
-                  </label>
-                  <label className={`btn btn-outline-primary ${fileType === 'brief' ? 'active' : ''}`}>
-                    <input
-                      type="radio"
-                      value="brief"
-                      checked={fileType === 'brief'}
-                      onChange={handleFileTypeChange}
-                    /> Brief
-                  </label>
-                </div>
-              </Col>
-            </Form.Group>
-            {fileType === 'file' && (
-              <Form.Group as={Row} className='select-file'>
-                <Form.Label column sm={3}>Select File:</Form.Label>
+        <div
+          style={{
+            overflowY: 'auto',
+            maxHeight: isSmallScreen ? '600px' : '1000px',
+            paddingBottom: '20px'
+          }}
+        >
+          <Col xs={6}>
+            <Button onClick={handleBack} variant="secondary">
+              <FontAwesomeIcon icon={faArrowLeft} />
+            </Button>
+          </Col>
+          <Col sm={9} className='resume-page' style={{ paddingLeft: '20px' }}>
+            <h2>Add Resume</h2>
+            <Form onSubmit={handleSubmit} className='resume-Add'>
+              <Form.Group as={Row} className='select-type'>
+                <Form.Label column sm={3}>Select Type:</Form.Label>
                 <Col sm={9}>
-                  <Form.Control type='file' accept='.pdf, .doc, .docx' onChange={handleFileChange} required />
+                  <div className="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label className={`btn btn-outline-primary ${fileType === 'file' ? 'active' : ''}`}>
+                      <input
+                        type="radio"
+                        value="file"
+                        checked={fileType === 'file'}
+                        onChange={handleFileTypeChange}
+                      /> File
+                    </label>
+                    <label className={`btn btn-outline-primary ${fileType === 'link' ? 'active' : ''}`}>
+                      <input
+                        type="radio"
+                        value="link"
+                        checked={fileType === 'link'}
+                        onChange={handleFileTypeChange}
+                      /> Link
+                    </label>
+                    <label className={`btn btn-outline-primary ${fileType === 'brief' ? 'active' : ''}`}>
+                      <input
+                        type="radio"
+                        value="brief"
+                        checked={fileType === 'brief'}
+                        onChange={handleFileTypeChange}
+                      /> Brief
+                    </label>
+                  </div>
                 </Col>
               </Form.Group>
-            )}
-
-            {fileType === 'link' && (
-              <>
-                <Form.Group as={Row} className='select-link'>
-                  <Form.Label column sm={3}>Enter Link:</Form.Label>
-                  <Col sm={9}>
-                    <Form.Control type='text' value={link} onChange={handleLinkChange} required />
-                  </Col>
-
-                </Form.Group>
-                <div className="note-container">
-                  <p className="note-text">“You can also apply just using a resume link or a LinkedIn profile using this feature”.</p>
-                </div>
-              </>
-            )}
-
-
-            {fileType === 'brief' && (
-              <React.Fragment>
-                <Form.Group as={Row} className='message-type'>
-                  <Form.Label column sm={3}>Brief Resume:</Form.Label>
-                  <Col sm={9}>
-                    <Form.Control
-                      as='textarea'
-                      placeholder='Write or upload a .txt file'
-                      value={briefMessage}
-                      onChange={handleBriefMessageChange}
-                      disabled={!!file} // Disable textarea if file is selected
-                      required
-                    />
-                  </Col>
-                </Form.Group>
-
+              {fileType === 'file' && (
                 <Form.Group as={Row} className='select-file'>
-                  <Form.Label column sm={3}>Upload Text File:</Form.Label>
+                  <Form.Label column sm={3}>Select File:</Form.Label>
                   <Col sm={9}>
-                    <Form.Control
-                      type='file'
-                      accept='.txt'
-                      onChange={handleTextFileChange}
-                    // disabled={!!briefMessage} // Disable file input if briefMessage is entered
-                    />
+                    <Form.Control type='file' accept='.pdf, .doc, .docx' onChange={handleFileChange} required />
                   </Col>
                 </Form.Group>
-                <div className="note-container">
-                  <p className="note-text">
-                    “You can use this to apply in stealth mode without sharing all details to the HR”.
-                  </p>
-                </div>
-              </React.Fragment>
-            )}
-            <Form.Group as={Row} className='message-type' style={{ marginTop: '20px' }}>
-              <Form.Label column sm={3}>Resume Title:</Form.Label>
-              <Col sm={9}>
-                <Form.Control as='textarea' value={message} onChange={handleMessageChange} required />
-              </Col>
-            </Form.Group>
-            <Form.Group as={Row}>
-              <Col sm={{ span: 9, offset: 3 }}>
-                <Button type="submit" className='uploadResume' disabled={loading}>
-                  {loading ? 'Uploading...' : 'Upload Resume'}
+              )}
+
+              {fileType === 'link' && (
+                <>
+                  <Form.Group as={Row} className='select-link'>
+                    <Form.Label column sm={3}>Enter Link:</Form.Label>
+                    <Col sm={9}>
+                      <Form.Control type='text' value={link} onChange={handleLinkChange} required />
+                    </Col>
+
+                  </Form.Group>
+                  <div className="note-container">
+                    <p className="note-text">“You can also apply just using a resume link or a LinkedIn profile using this feature”.</p>
+                  </div>
+                </>
+              )}
+
+
+              {fileType === 'brief' && (
+                <React.Fragment>
+                  <Form.Group as={Row} className='message-type'>
+                    <Form.Label column sm={3}>Brief Resume:</Form.Label>
+                    <Col sm={9}>
+                      <Form.Control
+                        as='textarea'
+                        placeholder='Write or upload a .txt file'
+                        value={briefMessage}
+                        onChange={handleBriefMessageChange}
+                        disabled={!!file} // Disable textarea if file is selected
+                        required
+                      />
+                    </Col>
+                  </Form.Group>
+
+                  <Form.Group as={Row} className='select-file'>
+                    <Form.Label column sm={3}>Upload Text File:</Form.Label>
+                    <Col sm={9}>
+                      <Form.Control
+                        type='file'
+                        accept='.txt'
+                        onChange={handleTextFileChange}
+                      // disabled={!!briefMessage} // Disable file input if briefMessage is entered
+                      />
+                    </Col>
+                  </Form.Group>
+                  <div className="note-container">
+                    <p className="note-text">
+                      “You can use this to apply in stealth mode without sharing all details to the HR”.
+                    </p>
+                  </div>
+                </React.Fragment>
+              )}
+              <Form.Group as={Row} className='message-type' style={{ marginTop: '20px' }}>
+                <Form.Label column sm={3}>Resume Title:</Form.Label>
+                <Col sm={9}>
+                  <Form.Control as='textarea' value={message} onChange={handleMessageChange} required />
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Col sm={{ span: 9, offset: 3 }}>
+                  <Button type="submit" className='uploadResume' disabled={loading}>
+                    {loading ? 'Uploading...' : 'Upload Resume'}
+                  </Button>
+                </Col>
+              </Form.Group>
+            </Form>
+
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+              <Modal.Header closeButton>
+                <Modal.Title>Success!</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>{successMessage}</Modal.Body>
+              <Modal.Footer>
+                <Button variant="primary" onClick={handleOk}>
+                  OK
                 </Button>
-              </Col>
-            </Form.Group>
-          </Form>
+              </Modal.Footer>
+            </Modal>
 
-          <Modal show={showModal} onHide={() => setShowModal(false)}>
-            <Modal.Header closeButton>
-              <Modal.Title>Success!</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>{successMessage}</Modal.Body>
-            <Modal.Footer>
-              <Button variant="primary" onClick={handleOk}>
-                OK
-              </Button>
-            </Modal.Footer>
-          </Modal>
-
-          {successMessage && <p>{successMessage}</p>}
-        </Col>
+            {successMessage && <p>{successMessage}</p>}
+          </Col>
+        </div>
       </div>
     </div>
   );

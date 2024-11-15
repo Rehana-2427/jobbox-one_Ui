@@ -1,8 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Dropdown, Table } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -12,7 +10,6 @@ import './CandidateDashboard.css';
 import CandidateLeftSide from './CandidateLeftSide';
 
 const CandidatesCompanies = () => {
-  // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
   const BASE_API_URL = process.env.REACT_APP_API_URL;
   const location = useLocation();
   const userName = location.state?.userName;
@@ -140,7 +137,7 @@ const CandidatesCompanies = () => {
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
 
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
     setIsLeftSideVisible(!isLeftSideVisible);
@@ -167,108 +164,123 @@ const CandidatesCompanies = () => {
       }
     });
   };
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+
+  useEffect(() => {
+    // Update the `isSmallScreen` state based on screen resizing
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <div className='dashboard-container'>
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide} >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
+
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
         <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
       </div>
 
       <div className="right-side" >
-        <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-          <div className="search-bar">
-            <input
-              style={{ borderRadius: '6px', height: '35px' }}
-              type="text"
-              name="search"
-              placeholder="Search"
-              value={search}
-              onChange={handleSearchChange}
-            />
+
+
+        <div
+          style={{
+            overflowY: 'auto',
+            maxHeight: isSmallScreen ? '600px' : '1000px',
+            paddingBottom: '20px'
+          }}
+        >
+
+          <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
+            <div className="search-bar">
+              <input
+                style={{ borderRadius: '6px', height: '35px' }}
+                type="text"
+                name="search"
+                placeholder="Search"
+                value={search}
+                onChange={handleSearchChange}
+              />
+            </div>
+            <Dropdown className="ml-2">
+              <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
+                <div className="initials-placeholder"
+                  style={{
+                    width: '30px',
+                    height: '30px',
+                    borderRadius: '50%',
+                    backgroundColor: 'grey',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                    fontWeight: 'bold',
+                  }}
+                >
+
+                  {initials}
+                </div>
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="mt-3">
+                <Dropdown.Item as={Link} to="/settings">
+                  <i className="i-Data-Settings me-1" /> Account settings
+                </Dropdown.Item>
+                <Dropdown.Item as="button" onClick={handleLogout}>
+                  <i className="i-Lock-2 me-1" /> Logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
-          <Dropdown className="ml-2">
-            <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
-              <div className="initials-placeholder"
-                style={{
-                  width: '30px',
-                  height: '30px',
-                  borderRadius: '50%',
-                  backgroundColor: 'grey',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'white',
-                  fontWeight: 'bold',
-                }}
-              >
 
-                {initials}
-              </div>
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="mt-3">
-              <Dropdown.Item as={Link} to="/settings">
-                <i className="i-Data-Settings me-1" /> Account settings
-              </Dropdown.Item>
-              <Dropdown.Item as="button" onClick={handleLogout}>
-                <i className="i-Lock-2 me-1" /> Logout
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-
-        <div className="container mt-4">
-          {companies.length > 0 ? (
-            <div className='table-details-list table-wrapper'>
-              <Table hover className='text-center'>
-                <thead className="table-light">
-                  <tr>
-                    <th>Company Name</th>
-                    <th>Industry</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {companies.map((company) => (
-                    <tr key={company.companyId}>
-                      <td>{company.companyName}</td>
-                      <td>{company.industryService}</td>
-                      <td>
-                        <Button variant="primary" onClick={() => handleClick(company.companyId)}>
-                          View
-                        </Button>
-                      </td>
+          <div className="container mt-4">
+            {companies.length > 0 ? (
+              <div className='table-details-list table-wrapper'>
+                <Table hover className='text-center'>
+                  <thead className="table-light">
+                    <tr>
+                      <th>Company Name</th>
+                      <th>Industry</th>
+                      <th>Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </div>
-          ) : (
-            <div className="d-flex justify-content-center mt-5">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
+                  </thead>
+                  <tbody>
+                    {companies.map((company) => (
+                      <tr key={company.companyId}>
+                        <td>{company.companyName}</td>
+                        <td>{company.industryService}</td>
+                        <td>
+                          <Button variant="primary" onClick={() => handleClick(company.companyId)}>
+                            View
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
               </div>
-            </div>
+            ) : (
+              <div className="d-flex justify-content-center mt-5">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            )}
+          </div>
+          {/* Conditional Rendering for Pagination */}
+          {companies.length > 0 && (
+            <Pagination
+              page={page}
+              pageSize={pageSize}
+              totalPages={totalPages}
+              handlePageSizeChange={handlePageSizeChange}
+              isPageSizeDisabled={isPageSizeDisabled}
+              handlePageClick={handlePageClick}
+            />
           )}
         </div>
-
-
-        {/* Conditional Rendering for Pagination */}
-        {companies.length > 0 && (
-          <Pagination
-            page={page}
-            pageSize={pageSize}
-            totalPages={totalPages}
-            handlePageSizeChange={handlePageSizeChange}
-            isPageSizeDisabled={isPageSizeDisabled}
-            handlePageClick={handlePageClick}
-          />
-        )}
-
       </div>
     </div>
   );

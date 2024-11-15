@@ -808,13 +808,13 @@ section {
   }
 
   .left-side.visible {
-    display: block;
+    /* display: block; */
     position: absolute;
     top: 15px;
     left: 0;
     height: 100%;
     z-index: 100;
-    width: 250px;
+    width: 10px;
   }
 
   .right-side {
@@ -1356,5 +1356,63 @@ section {
     width: 20px; /* Smaller icon size */
     height: 20px; /* Maintain aspect ratio */
  
+  }
+}
+
+
+
+@media (max-width: 767px) {
+  .hr-company_page-row2-col3 {
+    position: relative;
+    bottom: 60px;
+  }
+  .hr-company_page-row2{
+    height: 125px;
+    position: relative;
+    bottom: 50px;
+  }
+  .hr-company_page-row3{
+    position: relative;
+    bottom: 55px;
+  }
+}
+@media (max-width: 900px) {
+  .hr-company_page-row2 {
+    height: 125px;
+    position: relative;
+    bottom:20px;
+  }
+
+  .hr-company_page-row3 {
+    position: relative;
+    bottom: 10px;
+  }
+}
+
+
+@media (max-width: 750px){
+.logo-edit-icon{
+  width: 100px;
+  height: 70px;
+}
+}
+@media (max-width: 710px){
+  .banner-edit-icon{
+    position: absolute;
+    top: 120px;
+  }
+  }
+
+
+  .MuiDrawer-paper {
+    box-shadow: none !important;
+    border: none !important;
+}
+
+
+/* In your CSS file or within a <style> tag */
+@media (max-width: 900px) {
+  .small-screen-hr {
+      max-height: 600px;
   }
 }

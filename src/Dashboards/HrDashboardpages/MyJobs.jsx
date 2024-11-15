@@ -1,5 +1,3 @@
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { Button, Dropdown, Table } from 'react-bootstrap';
@@ -176,7 +174,7 @@ const MyJobs = () => {
     const selectedPage = data.selected;
     setPage(selectedPage);
 
-  }; const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  }; const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
 
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
@@ -206,13 +204,20 @@ const MyJobs = () => {
       }
     });
   };
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+
+  useEffect(() => {
+    // Update the `isSmallScreen` state based on screen resizing
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   return (
     <div className='dashboard-container'>
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide} >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
+
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
         <HrLeftSide user={{ userName, userEmail }} onClose={toggleLeftSide} />
       </div>
@@ -226,70 +231,78 @@ const MyJobs = () => {
             maxHeight: '1500px',
           }}
         > */}
-        <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-          <div className="search-bar">
-            <input
-              style={{ borderRadius: '6px', height: '35px' }}
-              type="text"
-              name="search"
-              placeholder="Search"
-              value={search}
-              onChange={handleSearchChange}
-            />
-          </div>
-          <Dropdown className="ml-2">
-            <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
+        <div
+          className="small-screen-hr"
+          style={{
+            overflowY: 'auto',
+            maxHeight: isSmallScreen ? '600px' : '1000px',
+            paddingBottom: '100px'
+          }}
+        >
+          <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
+            <div className="search-bar">
+              <input
+                style={{ borderRadius: '6px', height: '35px' }}
+                type="text"
+                name="search"
+                placeholder="Search"
+                value={search}
+                onChange={handleSearchChange}
+              />
+            </div>
+            <Dropdown className="ml-2">
+              <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
 
-              <div
-                className="initials-placeholder"
-                style={{
-                  fontWeight: 'bold',
+                <div
+                  className="initials-placeholder"
+                  style={{
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {initials}
+                </div>
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="mt-3">
+                <Dropdown.Item as={Link} to="/settings">
+                  <i className="i-Data-Settings me-1" /> Account settings
+                </Dropdown.Item>
+                <Dropdown.Item as="button" onClick={handleLogout}>
+                  <i className="i-Lock-2 me-1" /> Logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h2 style={{ textAlign: 'left' }}>
+              {jobs.length === 0
+                ? 'You have not posted any jobs yet. Post Now'
+                : `Jobs posted by ${userName}`}
+            </h2>
+            <Button
+              className="add-job-button"
+              style={{ textAlign: 'right', marginBottom: '12px', position: 'relative', bottom: '30px', right: '20px' }}
+            >
+              <Link
+                to={{ pathname: '/hr-dashboard/my-jobs/addJob', state: { userName, userEmail } }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate('/hr-dashboard/my-jobs/addJob', { state: { userName, userEmail } });
                 }}
               >
-                {initials}
-              </div>
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="mt-3">
-              <Dropdown.Item as={Link} to="/settings">
-                <i className="i-Data-Settings me-1" /> Account settings
-              </Dropdown.Item>
-              <Dropdown.Item as="button" onClick={handleLogout}>
-                <i className="i-Lock-2 me-1" /> Logout
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h2 style={{ textAlign: 'left' }}>
-            {jobs.length === 0
-              ? 'You have not posted any jobs yet. Post Now'
-              : `Jobs posted by ${userName}`}
-          </h2>
-          <Button
-            className="add-job-button"
-            style={{ textAlign: 'right', marginBottom: '12px', position: 'relative', bottom: '30px', right: '20px' }}
-          >
-            <Link
-              to={{ pathname: '/hr-dashboard/my-jobs/addJob', state: { userName, userEmail } }}
-              onClick={(e) => {
-                e.preventDefault();
-                navigate('/hr-dashboard/my-jobs/addJob', { state: { userName, userEmail } });
-              }}
-            >
-              Add Job
-            </Link>
-          </Button>
-        </div>
-
-
-        {loading ? (
-          <div className="d-flex justify-content-center align-items-center">
-            <div className="spinner-bubble spinner-bubble-primary m-5" />
-            <span>Loading...</span>
+                Add Job
+              </Link>
+            </Button>
           </div>
-        ) : jobs.length > 0 ? (
-          <>
-            {/* <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+
+
+          {loading ? (
+            <div className="d-flex justify-content-center align-items-center">
+              <div className="spinner-bubble spinner-bubble-primary m-5" />
+              <span>Loading...</span>
+            </div>
+          ) : jobs.length > 0 ? (
+            <>
+              {/* <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h2 style={{ textAlign: 'left' }}>Jobs posted by {userName}</h2>
               {!loading && jobs.length >= 0 && (
                 <Button className="add-job-button" style={{ textAlign: 'right', marginBottom: '12px', position: 'relative', bottom: '30px', right: '20px' }}>
@@ -306,109 +319,110 @@ const MyJobs = () => {
               )}
             </div> */}
 
-            <div>
-              <div className='table-details-list table-wrapper'>
-                <Table hover className='text-center' >
-                  <thead className="table-light">
-                    <tr>
-                      <th scope="col" onClick={() => handleSort('jobTitle')}>
-                        Job Title {sortedColumn === 'jobTitle' && (sortOrder === 'asc' ? '▲' : '▼')}
-                      </th>
-                      <th scope="col" onClick={() => handleSort('jobType')}>
-                        Job Type {sortedColumn === 'jobType' && (sortOrder === 'asc' ? '▲' : '▼')}
-                      </th>
-                      <th scope="col" onClick={() => handleSort('postingDate')}>
-                        Posting Date {sortedColumn === 'postingDate' && (sortOrder === 'asc' ? '▲' : '▼')}
-                      </th>
-                      <th scope="col" onClick={() => handleSort('skills')}>
-                        Skills {sortedColumn === 'skills' && (sortOrder === 'asc' ? '▲' : '▼')}
-                      </th>
-                      <th scope="col" onClick={() => handleSort('numberOfPosition')}>
-                        No of Position {sortedColumn === 'numberOfPosition' && (sortOrder === 'asc' ? '▲' : '▼')}
-                      </th>
-                      <th scope="col" onClick={() => handleSort('salary')}>
-                        Salary {sortedColumn === 'salary' && (sortOrder === 'asc' ? '▲' : '▼')}
-                      </th>
-                      <th scope="col" onClick={() => handleSort('applicationDeadline')}>
-                        Application Deadline {sortedColumn === 'applicationDeadline' && (sortOrder === 'asc' ? '▲' : '▼')}
-                      </th>
-                      <th scope="col">Job Description</th>
-                      <th scope="col">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {jobs.map((job) => (
-                      <tr key={job.jobId}>
-                        <td>{job.jobTitle}</td>
-                        <td>{job.jobType}</td>
-                        <td>{job.postingDate}</td>
-                        <td>{job.skills}</td>
-                        <td>{job.numberOfPosition}</td>
-                        <td>{job.salary}</td>
-                        <td>
-                          {job.jobCategory === "evergreen" && !job.applicationDeadline ? (
-                            <span style={{ color: 'green', fontWeight: 'bold' }} title="This position is always open for hiring, feel free to apply anytime!">
-                              Evergreen Job - No Due Date
-                            </span>
-                          ) : (
-                            job.applicationDeadline || 'Not Specified'
-                          )}
-                        </td>
-                        <td><Button variant="secondary" className='description btn-rounded' onClick={() => handleViewSummary(job.jobsummary)}>Summary</Button></td>
-                        <td>
-                          <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <span className="cursor-pointer text-success me-2 update" onClick={() => navigate('/hr-dashboard/my-jobs/update-job', { state: { userName, userEmail, jobId: job.jobId, currentPage: page, currentPageSize: pageSize } })}>
-                              <MdEdit size={18} className="text-success" />
-                            </span>
-                            <span className='delete cursor-pointer text-danger me-2' onClick={() => handleDelete(job.jobId)}>
-                              <MdDelete className="text-danger" size={18} />
-                            </span>
-                          </div>
-                        </td>
+              <div>
+                <div className='table-details-list table-wrapper'>
+                  <Table hover className='text-center' >
+                    <thead className="table-light">
+                      <tr>
+                        <th scope="col" onClick={() => handleSort('jobTitle')}>
+                          Job Title {sortedColumn === 'jobTitle' && (sortOrder === 'asc' ? '▲' : '▼')}
+                        </th>
+                        <th scope="col" onClick={() => handleSort('jobType')}>
+                          Job Type {sortedColumn === 'jobType' && (sortOrder === 'asc' ? '▲' : '▼')}
+                        </th>
+                        <th scope="col" onClick={() => handleSort('postingDate')}>
+                          Posting Date {sortedColumn === 'postingDate' && (sortOrder === 'asc' ? '▲' : '▼')}
+                        </th>
+                        <th scope="col" onClick={() => handleSort('skills')}>
+                          Skills {sortedColumn === 'skills' && (sortOrder === 'asc' ? '▲' : '▼')}
+                        </th>
+                        <th scope="col" onClick={() => handleSort('numberOfPosition')}>
+                          No of Position {sortedColumn === 'numberOfPosition' && (sortOrder === 'asc' ? '▲' : '▼')}
+                        </th>
+                        <th scope="col" onClick={() => handleSort('salary')}>
+                          Salary {sortedColumn === 'salary' && (sortOrder === 'asc' ? '▲' : '▼')}
+                        </th>
+                        <th scope="col" onClick={() => handleSort('applicationDeadline')}>
+                          Application Deadline {sortedColumn === 'applicationDeadline' && (sortOrder === 'asc' ? '▲' : '▼')}
+                        </th>
+                        <th scope="col">Job Description</th>
+                        <th scope="col">Action</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </Table>
+                    </thead>
+                    <tbody>
+                      {jobs.map((job) => (
+                        <tr key={job.jobId}>
+                          <td>{job.jobTitle}</td>
+                          <td>{job.jobType}</td>
+                          <td>{job.postingDate}</td>
+                          <td>{job.skills}</td>
+                          <td>{job.numberOfPosition}</td>
+                          <td>{job.salary}</td>
+                          <td>
+                            {job.jobCategory === "evergreen" && !job.applicationDeadline ? (
+                              <span style={{ color: 'green', fontWeight: 'bold' }} title="This position is always open for hiring, feel free to apply anytime!">
+                                Evergreen Job - No Due Date
+                              </span>
+                            ) : (
+                              job.applicationDeadline || 'Not Specified'
+                            )}
+                          </td>
+                          <td><Button variant="secondary" className='description btn-rounded' onClick={() => handleViewSummary(job.jobsummary)}>Summary</Button></td>
+                          <td>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                              <span className="cursor-pointer text-success me-2 update" onClick={() => navigate('/hr-dashboard/my-jobs/update-job', { state: { userName, userEmail, jobId: job.jobId, currentPage: page, currentPageSize: pageSize } })}>
+                                <MdEdit size={18} className="text-success" />
+                              </span>
+                              <span className='delete cursor-pointer text-danger me-2' onClick={() => handleDelete(job.jobId)}>
+                                <MdDelete className="text-danger" size={18} />
+                              </span>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
               </div>
-            </div>
 
-            <Pagination
-              page={page}
-              pageSize={pageSize}
-              totalPages={totalPages}
-              handlePageSizeChange={handlePageSizeChange}
-              isPageSizeDisabled={isPageSizeDisabled}
-              handlePageClick={handlePageClick}
-            />
-          </>
-        ) : (
-          <section>
-            {/* <h2>You have not posted any jobs yet. Post Now</h2> */}
-          </section>
-        )}
-        {selectedJobSummary && (
-          <div className="modal fade show" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
-            <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title">Job Summary</h5>
-                </div>
-                <div className="modal-body">
-                  <pre className="job-details-text">{selectedJobSummary}</pre>
-                </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" onClick={handleCloseModal} onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      handleCloseModal();
-                    }
-                  }}>
-                    Close
-                  </button>
+              <Pagination
+                page={page}
+                pageSize={pageSize}
+                totalPages={totalPages}
+                handlePageSizeChange={handlePageSizeChange}
+                isPageSizeDisabled={isPageSizeDisabled}
+                handlePageClick={handlePageClick}
+              />
+            </>
+          ) : (
+            <section>
+              {/* <h2>You have not posted any jobs yet. Post Now</h2> */}
+            </section>
+          )}
+          {selectedJobSummary && (
+            <div className="modal fade show" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">Job Summary</h5>
+                  </div>
+                  <div className="modal-body">
+                    <pre className="job-details-text">{selectedJobSummary}</pre>
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" onClick={handleCloseModal} onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        handleCloseModal();
+                      }
+                    }}>
+                      Close
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,3 @@
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Dropdown, Modal, Spinner } from 'react-bootstrap'; // Import Spinner component
@@ -124,7 +122,7 @@ const Resume = () => {
 
   const initials = getInitials(userName);
 
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
     setIsLeftSideVisible(!isLeftSideVisible);
@@ -153,14 +151,20 @@ const Resume = () => {
       }
     });
   };
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+
+  useEffect(() => {
+    // Update the `isSmallScreen` state based on screen resizing
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   return (
     <div className='dashboard-container'>
       {/* Left Side with Hamburger */}
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide}>
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
 
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
         <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
@@ -169,101 +173,109 @@ const Resume = () => {
       {/* Right Side */}
       <div className="right-side">
         {/* Top bar with dropdown */}
-        <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-          <Dropdown className="ml-2">
-            <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
-              <div
-                className="initials-placeholder"
-                style={{
-                  width: '30px',
-                  height: '30px',
-                  borderRadius: '50%',
-                  backgroundColor: 'grey',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'white',
-                  fontWeight: 'bold',
-                }}
-              >
-                {initials}
-              </div>
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="mt-3">
-              <Dropdown.Item as={Link} to="/settings">
-                <i className="i-Data-Settings me-1" /> Account settings
-              </Dropdown.Item>
-              <Dropdown.Item as="button" onClick={handleLogout}>
-                <i className="i-Lock-2 me-1" /> Logout
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-
-        {/* Brief Modal */}
-        {showBriefSettings && (
-          <Modal show={showBriefSettings} onHide={() => setShowBriefSettings(false)}>
-            <Modal.Header closeButton>
-              <Modal.Title>Brief Resume</Modal.Title>
-            </Modal.Header>
-            <Modal.Body style={{ overflowY: 'auto' }}>
-              {showMessage}
-            </Modal.Body>
-          </Modal>
-        )}
-
-        {/* Resumes Section */}
-        <h1 className='text-center'>MY RESUMES</h1>
-
-        {loading ? (
-          // Show spinner while loading
-          <div className="text-center">
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </Spinner>
-            <h4>Please wait... Fetching your resumes...</h4>
+        <div
+          style={{
+            overflowY: 'auto',
+            maxHeight: isSmallScreen ? '600px' : '1000px',
+            paddingBottom: '20px'
+          }}
+        >
+          <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
+            <Dropdown className="ml-2">
+              <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
+                <div
+                  className="initials-placeholder"
+                  style={{
+                    width: '30px',
+                    height: '30px',
+                    borderRadius: '50%',
+                    backgroundColor: 'grey',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {initials}
+                </div>
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="mt-3">
+                <Dropdown.Item as={Link} to="/settings">
+                  <i className="i-Data-Settings me-1" /> Account settings
+                </Dropdown.Item>
+                <Dropdown.Item as="button" onClick={handleLogout}>
+                  <i className="i-Lock-2 me-1" /> Logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
-        ) : (
-          <>
-            {resumes.length === 0 ? (
-              // Show message if no resumes are found
-              <div className="text-center">No resumes found</div>
-            ) : (
-              <div className="cards d-flex flex-wrap justify-content-start" style={{ minHeight: 'fit-content' }}>
-                {resumes.map((resume, index) => (
-                  <Card className='resume-card' style={{ width: '200px', margin: '12px' }} key={resume.id}>
-                    <Card.Body>
-                      <Card.Title>Resume : {index + 1}</Card.Title>
-                      <Card.Text>{resume.message}</Card.Text>
-                      {resume.fileType === 'file' && (
-                        <Button size="sm" className='download' variant="primary" onClick={() => handleDownload(resume.id, resume.fileName)}>
-                          Download
-                        </Button>
-                      )}
-                      {resume.fileType === 'link' && (
-                        <Card.Link href={resume.fileName} target="_blank">Open Link</Card.Link>
-                      )}
-                      {resume.fileType === 'brief' && (
-                        <Button variant="secondary" size="sm" className='open-brief-modal' onClick={() => handleBrief(resume.id, resume.fileType)}>
-                          Open Brief
-                        </Button>
-                      )}
-                      <Button variant="danger" size="sm" className='delete' style={{ marginLeft: '10px' }} onClick={() => handleDelete(resume.id, resume.message)}>
-                        Delete
-                      </Button>
-                    </Card.Body>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </>
-        )}
 
-        {/* Add Resume Section */}
-        <div className='adding-resumes' style={{ marginTop: '50px' }}>
-          <Link to="/candidate-dashboard/resumeAdd" state={{ userName: userName, userId: userId }}>
-            <Button>ADD NEW RESUME</Button>
-          </Link>
+          {/* Brief Modal */}
+          {showBriefSettings && (
+            <Modal show={showBriefSettings} onHide={() => setShowBriefSettings(false)}>
+              <Modal.Header closeButton>
+                <Modal.Title>Brief Resume</Modal.Title>
+              </Modal.Header>
+              <Modal.Body style={{ overflowY: 'auto' }}>
+                {showMessage}
+              </Modal.Body>
+            </Modal>
+          )}
+
+          {/* Resumes Section */}
+          <h1 className='text-center'>MY RESUMES</h1>
+
+          {loading ? (
+            // Show spinner while loading
+            <div className="text-center">
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+              <h4>Please wait... Fetching your resumes...</h4>
+            </div>
+          ) : (
+            <>
+              {resumes.length === 0 ? (
+                // Show message if no resumes are found
+                <div className="text-center">No resumes found</div>
+              ) : (
+                <div className="cards d-flex flex-wrap justify-content-start" style={{ minHeight: 'fit-content' }}>
+                  {resumes.map((resume, index) => (
+                    <Card className='resume-card' style={{ width: '200px', margin: '12px' }} key={resume.id}>
+                      <Card.Body>
+                        <Card.Title>Resume : {index + 1}</Card.Title>
+                        <Card.Text>{resume.message}</Card.Text>
+                        {resume.fileType === 'file' && (
+                          <Button size="sm" className='download' variant="primary" onClick={() => handleDownload(resume.id, resume.fileName)}>
+                            Download
+                          </Button>
+                        )}
+                        {resume.fileType === 'link' && (
+                          <Card.Link href={resume.fileName} target="_blank">Open Link</Card.Link>
+                        )}
+                        {resume.fileType === 'brief' && (
+                          <Button variant="secondary" size="sm" className='open-brief-modal' onClick={() => handleBrief(resume.id, resume.fileType)}>
+                            Open Brief
+                          </Button>
+                        )}
+                        <Button variant="danger" size="sm" className='delete' style={{ marginLeft: '10px' }} onClick={() => handleDelete(resume.id, resume.message)}>
+                          Delete
+                        </Button>
+                      </Card.Body>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+
+          {/* Add Resume Section */}
+          <div className='adding-resumes' style={{ marginTop: '50px' }}>
+            <Link to="/candidate-dashboard/resumeAdd" state={{ userName: userName, userId: userId }}>
+              <Button>ADD NEW RESUME</Button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

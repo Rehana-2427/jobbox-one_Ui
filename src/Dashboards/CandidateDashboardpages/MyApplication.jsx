@@ -1,4 +1,4 @@
-import { faBars, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
@@ -61,7 +61,7 @@ const MyApplication = () => {
     } else {
       fetchApplications();
     }
-  }, [applicationStatus, page, pageSize, search, sortOrder, sortedColumn, userId,filter]);
+  }, [applicationStatus, page, pageSize, search, sortOrder, sortedColumn, userId, filter]);
 
   const fetchApplications = async () => {
     try {
@@ -379,7 +379,7 @@ const MyApplication = () => {
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
 
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
     setIsLeftSideVisible(!isLeftSideVisible);
@@ -406,249 +406,265 @@ const MyApplication = () => {
       }
     });
   };
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+
+  useEffect(() => {
+    // Update the `isSmallScreen` state based on screen resizing
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   return (
     <div className='dashboard-container'>
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide} >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
+
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
         <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
       </div>
-      <div className="right-side" style={{ overflowY: 'scroll' }}>
-        <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-          <div className="search-bar">
-            <input
-              style={{ borderRadius: '6px', height: '35px' }}
-              type="text"
-              name="search"
-              placeholder="Search"
-              value={search}
-              onChange={handleSearchChange}
-            />
+      <div className="right-side">
+
+        <div
+          style={{
+            overflowY: 'auto',
+            maxHeight: isSmallScreen ? '600px' : '1000px',
+            paddingBottom: '20px'
+          }}
+        >
+          <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
+            <div className="search-bar">
+              <input
+                style={{ borderRadius: '6px', height: '35px' }}
+                type="text"
+                name="search"
+                placeholder="Search"
+                value={search}
+                onChange={handleSearchChange}
+              />
+            </div>
+
+            <Dropdown className="ml-2">
+              <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
+                <div
+                  className="initials-placeholder"
+                  style={{
+                    width: '30px',
+                    height: '30px',
+                    borderRadius: '50%',
+                    backgroundColor: 'grey',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {initials}
+                </div>
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu className="mt-3">
+                <Dropdown.Item as={Link} to="/settings">
+                  <i className="i-Data-Settings me-1" /> Account settings
+                </Dropdown.Item>
+                <Dropdown.Item as="button" onClick={handleLogout}>
+                  <i className="i-Lock-2 me-1" /> Logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
 
-          <Dropdown className="ml-2">
-            <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
-              <div
-                className="initials-placeholder"
-                style={{
-                  width: '30px',
-                  height: '30px',
-                  borderRadius: '50%',
-                  backgroundColor: 'grey',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'white',
-                  fontWeight: 'bold',
-                }}
-              >
-                {initials}
+          <Modal show={showModal} onHide={handleCloseModal} className="custom-modal">
+            <Modal.Header closeButton>
+              <Modal.Title>Chat</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body ref={modalBodyRef}>
+              <div className="chat-messages">
+                {chatsByApplication.length > 0 ? (
+                  chatsByApplication.map((chat, index) => (
+                    <div key={chat.id} className="chat-message">
+                      {/* Render date if it's the first message or a new day */}
+                      {index === 0 || isDifferentDay(chatsByApplication[index - 1].createdAt, chat.createdAt) && (
+                        <div className="d-flex justify-content-center align-items-center text-center font-weight-bold my-3">
+                          {formatDate(chat.createdAt)}
+                        </div>
+                      )}
+                      {/* Render HR message if present */}
+                      {chat.hrMessage && (
+                        <div className="message-right">
+                          {chat.hrMessage}
+                          <div className="message-time">
+                            {formatMessageDateTime(chat.createdAt)}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Render candidate message if present */}
+                      {chat.candidateMessage && (
+                        <div className="message-left">
+                          {chat.candidateMessage}
+                          <div className="message-time">
+                            {formatMessageDateTime(chat.createdAt)}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <p>Loading...</p>
+                )}
               </div>
-            </Dropdown.Toggle>
+            </Modal.Body>
 
-            <Dropdown.Menu className="mt-3">
-              <Dropdown.Item as={Link} to="/settings">
-                <i className="i-Data-Settings me-1" /> Account settings
-              </Dropdown.Item>
-              <Dropdown.Item as="button" onClick={handleLogout}>
-                <i className="i-Lock-2 me-1" /> Logout
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
+            <Modal.Footer>
+              <Form.Group controlId="messageInput" className="mb-2">
+                <Form.Control
+                  type="text"
+                  as='textarea'
+                  placeholder="Enter your message"
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  style={{ width: '350px' }}
+                />
+              </Form.Group>
 
-        <Modal show={showModal} onHide={handleCloseModal} className="custom-modal">
-          <Modal.Header closeButton>
-            <Modal.Title>Chat</Modal.Title>
-          </Modal.Header>
+              <Button variant="primary" onClick={handleSend}>
+                <FontAwesomeIcon icon={faPaperPlane} />
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          <div className="filter p-3 border rounded shadow-sm"
+            style={{ maxWidth: '30%', backgroundColor: '#f4f4f9' }}>
+            <label htmlFor="status" className="form-label"
+              style={{ color: '#6c5b7b' }}>Filter by Actions:</label>
+            <select id="status" className="form-select form-select-sm fs-6" // Adjust the fs-* class as needed
+              style={{ borderColor: '#6c5b7b' }} onChange={handleFilterChange} value={filter}>
+              <option value="all">All</option>
+              <option value="Regular Jobs">Regular Jobs</option>
+              <option value="Dream Applications">Dream Application</option>
+              <option value="EverGreen Jobs">EverGreen Jobs</option>
+            </select>
+          </div>
+          <div>
+            {applications.length > 0 ? (
+              <>
+                <div className='table-details-list table-wrapper'>
+                  <Table hover className='text-center'>
+                    <thead className="table-light">
+                      <tr>
+                        <th scope="col" onClick={() => handleSort('companyName')}>
+                          Company Name{sortedColumn === 'companyName' && (sortOrder === 'asc' ? '▲' : '▼')}
+                        </th>
+                        <th scope="col" onClick={() => handleSort('jobRole')}>
+                          Job Title{sortedColumn === 'jobRole' && (sortOrder === 'asc' ? '▲' : '▼')}
+                        </th>
+                        <th scope="col" onClick={() => handleSort('appliedOn')}>
+                          Applied On{sortedColumn === 'appliedOn' && (sortOrder === 'asc' ? '▲' : '▼')}
+                        </th>
+                        <th scope="col">Resume Profile</th>
+                        <th scope="col">Job Status</th>
+                        <th scope="col" onClick={() => handleSort('applicationStatus')}>
+                          Action {sortedColumn === 'applicationStatus' && (sortOrder === 'asc' ? '▲' : '▼')}
+                        </th>
+                        <th scope="col">Chat</th>
+                        <th scope="col">Delete</th>
+                      </tr>
+                    </thead>
 
-          <Modal.Body ref={modalBodyRef}>
-            <div className="chat-messages">
-              {chatsByApplication.length > 0 ? (
-                chatsByApplication.map((chat, index) => (
-                  <div key={chat.id} className="chat-message">
-                    {/* Render date if it's the first message or a new day */}
-                    {index === 0 || isDifferentDay(chatsByApplication[index - 1].createdAt, chat.createdAt) && (
-                      <div className="d-flex justify-content-center align-items-center text-center font-weight-bold my-3">
-                        {formatDate(chat.createdAt)}
-                      </div>
-                    )}
-                    {/* Render HR message if present */}
-                    {chat.hrMessage && (
-                      <div className="message-right">
-                        {chat.hrMessage}
-                        <div className="message-time">
-                          {formatMessageDateTime(chat.createdAt)}
-                        </div>
-                      </div>
-                    )}
+                    <tbody>
+                      {applications.map((application, index) => (
+                        <tr key={index}>
+                          <td>{application.companyName}</td>
+                          <td>{application.jobRole || 'Dream application'}</td>
+                          <td>{application.appliedOn}</td>
+                          <td>{resumeNames[application.resumeId]}</td>
+                          <td style={{ color: renderJobStatus(application.applicationId) === 'Evergreen' ? 'green' : 'black' }}>
+                            {renderJobStatus(application.applicationId)}
+                          </td>
 
-                    {/* Render candidate message if present */}
-                    {chat.candidateMessage && (
-                      <div className="message-left">
-                        {chat.candidateMessage}
-                        <div className="message-time">
-                          {formatMessageDateTime(chat.createdAt)}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))
-              ) : (
-                <p>Loading...</p>
-              )}
-            </div>
-          </Modal.Body>
+                          <td>{application.applicationStatus}</td>
 
-          <Modal.Footer>
-            <Form.Group controlId="messageInput" className="mb-2">
-              <Form.Control
-                type="text"
-                as='textarea'
-                placeholder="Enter your message"
-                value={inputValue}
-                onChange={handleInputChange}
-                style={{ width: '350px' }}
-              />
-            </Form.Group>
-
-            <Button variant="primary" onClick={handleSend}>
-              <FontAwesomeIcon icon={faPaperPlane} />
-            </Button>
-          </Modal.Footer>
-        </Modal>
-        <div className="filter p-3 border rounded shadow-sm"
-          style={{ maxWidth: '30%', backgroundColor: '#f4f4f9' }}>
-          <label htmlFor="status" className="form-label"
-            style={{ color: '#6c5b7b' }}>Filter by Actions:</label>
-          <select id="status" className="form-select form-select-sm fs-6" // Adjust the fs-* class as needed
-            style={{ borderColor: '#6c5b7b' }} onChange={handleFilterChange} value={filter}>
-            <option value="all">All</option>
-            <option value="Regular Jobs">Regular Jobs</option>
-            <option value="Dream Applications">Dream Application</option>
-            <option value="EverGreen Jobs">EverGreen Jobs</option>
-          </select>
-        </div>
-        <div>
-          {applications.length > 0 ? (
-            <>
-              <div className='table-details-list table-wrapper'>
-                <Table hover className='text-center'>
-                  <thead className="table-light">
-                    <tr>
-                      <th scope="col" onClick={() => handleSort('companyName')}>
-                        Company Name{sortedColumn === 'companyName' && (sortOrder === 'asc' ? '▲' : '▼')}
-                      </th>
-                      <th scope="col" onClick={() => handleSort('jobRole')}>
-                        Job Title{sortedColumn === 'jobRole' && (sortOrder === 'asc' ? '▲' : '▼')}
-                      </th>
-                      <th scope="col" onClick={() => handleSort('appliedOn')}>
-                        Applied On{sortedColumn === 'appliedOn' && (sortOrder === 'asc' ? '▲' : '▼')}
-                      </th>
-                      <th scope="col">Resume Profile</th>
-                      <th scope="col">Job Status</th>
-                      <th scope="col" onClick={() => handleSort('applicationStatus')}>
-                        Action {sortedColumn === 'applicationStatus' && (sortOrder === 'asc' ? '▲' : '▼')}
-                      </th>
-                      <th scope="col">Chat</th>
-                      <th scope="col">Delete</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {applications.map((application, index) => (
-                      <tr key={index}>
-                        <td>{application.companyName}</td>
-                        <td>{application.jobRole || 'Dream application'}</td>
-                        <td>{application.appliedOn}</td>
-                        <td>{resumeNames[application.resumeId]}</td>
-                        <td style={{ color: renderJobStatus(application.applicationId) === 'Evergreen' ? 'green' : 'black' }}>
-                          {renderJobStatus(application.applicationId)}
-                        </td>
-
-                        <td>{application.applicationStatus}</td>
-
-                        <td>
-                          {chats[index] && chats[index].length > 0 ? (
-                            <div style={{ position: 'relative', display: 'inline-block' }}>
-                              {unreadMessages[application.applicationId] > 0 && (
-                                <span
-                                  style={{
-                                    position: 'absolute',
-                                    top: '-5px',
-                                    right: '-15px',
-                                    backgroundColor: 'red',
-                                    color: 'white',
-                                    borderRadius: '50%',
-                                    width: '20px',
-                                    height: '20px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    fontSize: '12px',
-                                    fontWeight: 'bold',
-                                    zIndex: 1, // Ensure notification badge is above SiImessage icon
+                          <td>
+                            {chats[index] && chats[index].length > 0 ? (
+                              <div style={{ position: 'relative', display: 'inline-block' }}>
+                                {unreadMessages[application.applicationId] > 0 && (
+                                  <span
+                                    style={{
+                                      position: 'absolute',
+                                      top: '-5px',
+                                      right: '-15px',
+                                      backgroundColor: 'red',
+                                      color: 'white',
+                                      borderRadius: '50%',
+                                      width: '20px',
+                                      height: '20px',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      fontSize: '12px',
+                                      fontWeight: 'bold',
+                                      zIndex: 1, // Ensure notification badge is above SiImessage icon
+                                    }}
+                                  >
+                                    {unreadMessages[application.applicationId]}
+                                  </span>
+                                )}
+                                <SiImessage
+                                  size={25}
+                                  onClick={() => {
+                                    fetchChatByApplication(application.applicationId);
                                   }}
-                                >
-                                  {unreadMessages[application.applicationId]}
-                                </span>
-                              )}
+                                  style={{ color: 'green', cursor: 'pointer' }}
+                                />
+                              </div>
+
+                            ) : (
                               <SiImessage
                                 size={25}
-                                onClick={() => {
-                                  fetchChatByApplication(application.applicationId);
-                                }}
-                                style={{ color: 'green', cursor: 'pointer' }}
+                                style={{ color: 'grey', cursor: 'not-allowed' }}
                               />
-                            </div>
+                            )}
+                          </td>
+                          <td>
+                            <span className='delete cursor-pointer text-danger me-2' onClick={() => {
+                              Swal.fire({
+                                title: "Are you sure?",
+                                text: "You won't be able to revert this!",
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Yes, delete it!"
+                              }).then((result) => {
+                                if (result.isConfirmed) {
+                                  handleDelete(application.applicationId);
+                                }
+                              });
+                            }}>
+                              <MdDelete className="text-danger" size={18} />
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
 
-                          ) : (
-                            <SiImessage
-                              size={25}
-                              style={{ color: 'grey', cursor: 'not-allowed' }}
-                            />
-                          )}
-                        </td>
-                        <td>
-                          <span className='delete cursor-pointer text-danger me-2' onClick={() => {
-                            Swal.fire({
-                              title: "Are you sure?",
-                              text: "You won't be able to revert this!",
-                              icon: "warning",
-                              showCancelButton: true,
-                              confirmButtonColor: "#3085d6",
-                              cancelButtonColor: "#d33",
-                              confirmButtonText: "Yes, delete it!"
-                            }).then((result) => {
-                              if (result.isConfirmed) {
-                                handleDelete(application.applicationId);
-                              }
-                            });
-                          }}>
-                            <MdDelete className="text-danger" size={18} />
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </div>
-
-              <Pagination
-                page={page}
-                pageSize={pageSize}
-                totalPages={totalPages}
-                handlePageSizeChange={handlePageSizeChange}
-                isPageSizeDisabled={isPageSizeDisabled}
-                handlePageClick={handlePageClick}
-              />
-            </>
-          ) : (
-            <h4 className='text-center'>No Applications Found..!!</h4>
-          )}
+                <Pagination
+                  page={page}
+                  pageSize={pageSize}
+                  totalPages={totalPages}
+                  handlePageSizeChange={handlePageSizeChange}
+                  isPageSizeDisabled={isPageSizeDisabled}
+                  handlePageClick={handlePageClick}
+                />
+              </>
+            ) : (
+              <h4 className='text-center'>No Applications Found..!!</h4>
+            )}
+          </div>
         </div>
       </div>
     </div >

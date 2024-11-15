@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import swal from 'sweetalert2';
 // import './AdminDashboard.css';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { BsCheckCircle, BsXCircle } from 'react-icons/bs';
 import Pagination from '../../Pagination';
 import AdminleftSide from './AdminleftSide';
@@ -131,71 +129,88 @@ const CompanyValidation = () => {
   };
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
 
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
     setIsLeftSideVisible(!isLeftSideVisible);
   };
+
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+
+  useEffect(() => {
+    // Update the `isSmallScreen` state based on screen resizing
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div className='dashboard-container'>
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide} >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
+
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-      <AdminleftSide onClose={toggleLeftSide} />
+        <AdminleftSide onClose={toggleLeftSide} />
       </div>
 
       <div className="right-side">
-        {companyData.length > 0 ? (
-          <>
-            <h2 style={{ textAlign: 'center' }}>Details of Company Validation</h2>
-            <div className='table-details-list table-wrapper'>
-              <Table hover className='text-center' >
-                <thead className="table-light">
-                  <tr>
-                    <th onClick={() => handleSort('companyName')}>
-                      Company Name {sortedColumn === 'companyName' && (sortOrder === 'asc' ? '▲' : '▼')}
-                    </th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {companyData.map((company) => (
-                    <tr key={company.companyId}>
-                      <td>{company.companyName}</td>
-                      <td>
 
-                        <span className="icon-button select" onClick={() => approveCompany(company.companyId, company.companyName)}>
-                          <BsCheckCircle />
-                        </span>
-                        <span className="icon-button reject" onClick={() => rejectCompany(company.companyId, company.companyName)}>
-                          <BsXCircle />
-                        </span>
-                      </td>
+        <div
+          style={{
+            overflowY: 'auto',
+            maxHeight: isSmallScreen ? '600px' : '1000px',
+            paddingBottom: '20px'
+          }}
+        >
+          {companyData.length > 0 ? (
+            <>
+              <h2 style={{ textAlign: 'center' }}>Details of Company Validation</h2>
+              <div className='table-details-list table-wrapper'>
+                <Table hover className='text-center' >
+                  <thead className="table-light">
+                    <tr>
+                      <th onClick={() => handleSort('companyName')}>
+                        Company Name {sortedColumn === 'companyName' && (sortOrder === 'asc' ? '▲' : '▼')}
+                      </th>
+                      <th>Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </div>
-          </>
-        ) : (
-          <h4 className='text-center'>Loading.. .!!</h4>
-        )}
-        {/* Pagination */}
-      
-        <Pagination
-          page={page}
-          pageSize={pageSize}
-          totalPages={totalPages}
-          handlePageSizeChange={handlePageSizeChange}
-          isPageSizeDisabled={isPageSizeDisabled}
-          handlePageClick={handlePageClick}
-        />
-      </div>
+                  </thead>
+                  <tbody>
+                    {companyData.map((company) => (
+                      <tr key={company.companyId}>
+                        <td>{company.companyName}</td>
+                        <td>
 
+                          <span className="icon-button select" onClick={() => approveCompany(company.companyId, company.companyName)}>
+                            <BsCheckCircle />
+                          </span>
+                          <span className="icon-button reject" onClick={() => rejectCompany(company.companyId, company.companyName)}>
+                            <BsXCircle />
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
+            </>
+          ) : (
+            <h4 className='text-center'>Loading.. .!!</h4>
+          )}
+          {/* Pagination */}
+
+          <Pagination
+            page={page}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            handlePageSizeChange={handlePageSizeChange}
+            isPageSizeDisabled={isPageSizeDisabled}
+            handlePageClick={handlePageClick}
+          />
+        </div>
+      </div>
     </div>
   );
 }

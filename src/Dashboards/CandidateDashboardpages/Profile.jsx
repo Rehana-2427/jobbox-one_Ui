@@ -1,4 +1,4 @@
-import { faBars, faClose } from '@fortawesome/free-solid-svg-icons';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -154,7 +154,7 @@ const Profile = () => {
 
   const initials = getInitials(userName);
 
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
     setIsLeftSideVisible(!isLeftSideVisible);
@@ -181,276 +181,290 @@ const Profile = () => {
       }
     });
   };
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+
+  useEffect(() => {
+    // Update the `isSmallScreen` state based on screen resizing
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   return (
     <div className='dashboard-container'>
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide} >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
+
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
         <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
       </div>
       <div className="right-side">
-        <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-          <Dropdown className="ml-2">
-            <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
-              <div
-                className="initials-placeholder"
-                style={{
-                  width: '30px',
-                  height: '30px',
-                  borderRadius: '50%',
-                  backgroundColor: 'grey',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'white',
-                  fontWeight: 'bold',
-                }}
-              >
-                {initials}
-              </div>
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="mt-3">
-              <Dropdown.Item as={Link} to="/settings">
-                <i className="i-Data-Settings me-1" /> Account settings
-              </Dropdown.Item>
-              <Dropdown.Item as="button" onClick={handleLogout}>
-                <i className="i-Lock-2 me-1" /> Logout
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
+        <div
+          style={{
+            overflowY: 'auto',
+            maxHeight: isSmallScreen ? '600px' : '1000px',
+            paddingBottom: '20px'
+          }}
+        >
+          <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
+            <Dropdown className="ml-2">
+              <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
+                <div
+                  className="initials-placeholder"
+                  style={{
+                    width: '30px',
+                    height: '30px',
+                    borderRadius: '50%',
+                    backgroundColor: 'grey',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {initials}
+                </div>
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="mt-3">
+                <Dropdown.Item as={Link} to="/settings">
+                  <i className="i-Data-Settings me-1" /> Account settings
+                </Dropdown.Item>
+                <Dropdown.Item as="button" onClick={handleLogout}>
+                  <i className="i-Lock-2 me-1" /> Logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
 
-        <h4>Personal details:</h4>
-        <div className="profile-container">
-          {userData && (
-            <>
-              <div className="profile-item">
-                <span className="profile-label">Name:</span>
-                <span className="profile-value">
-                  {userData.userName ? userData.userName : (
-                    <>
-                      <input
-                        type="text"
-                        value={newName}
-                        onChange={(e) => setNewName(e.target.value)}
-                        placeholder="Enter your name"
-                      />
-                      <button onClick={handleEditName}>Edit Name</button>
-                    </>
-                  )}
-                </span>
-              </div>
-              <div className="profile-item">
-                <span className="profile-label">Email:</span>
-                <span className="profile-value">{userData.userEmail}</span>
-              </div>
-              <div className="profile-item">
-                <span className="profile-label">Phone Number:</span>
-                <span className="profile-value">{userData.phone}</span>
-              </div>
-            </>
-          )}
-        </div>
+          <h4>Personal details:</h4>
+          <div className="profile-container">
+            {userData && (
+              <>
+                <div className="profile-item">
+                  <span className="profile-label">Name:</span>
+                  <span className="profile-value">
+                    {userData.userName ? userData.userName : (
+                      <>
+                        <input
+                          type="text"
+                          value={newName}
+                          onChange={(e) => setNewName(e.target.value)}
+                          placeholder="Enter your name"
+                        />
+                        <button onClick={handleEditName}>Edit Name</button>
+                      </>
+                    )}
+                  </span>
+                </div>
+                <div className="profile-item">
+                  <span className="profile-label">Email:</span>
+                  <span className="profile-value">{userData.userEmail}</span>
+                </div>
+                <div className="profile-item">
+                  <span className="profile-label">Phone Number:</span>
+                  <span className="profile-value">{userData.phone}</span>
+                </div>
+              </>
+            )}
+          </div>
 
 
 
 
-        {/* Skills Section */}
-        <div className='candidate-profile-details'>
-          <h4
-            onClick={() => toggleDropdown('skills')}
-            className='d-flex align-items-center cursor-pointer'
-          >
-            Skills: {dropdowns.skills ? <IoIosArrowDropup /> : <IoIosArrowDropdown />}
-          </h4>
+          {/* Skills Section */}
+          <div className='candidate-profile-details'>
+            <h4
+              onClick={() => toggleDropdown('skills')}
+              className='d-flex align-items-center cursor-pointer'
+            >
+              Skills: {dropdowns.skills ? <IoIosArrowDropup /> : <IoIosArrowDropdown />}
+            </h4>
 
-          {dropdowns.skills && (
-            <>
-              <p className='text-danger mb-3'>(Note: Add at least 5 skills)</p>
-              <div className='mb-3 d-flex flex-wrap'>
-                {skills.map((skill, index) => (
-                  <span
-                    key={index}
-                    className="badge bg-light text-dark me-2 mb-2 position-relative d-inline-flex align-items-center"
-                    style={{
-                      fontSize: '1.25rem',
-                      padding: '0.5rem 1rem',
-                      borderRadius: '0.25rem',
-                      position: 'relative',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                    }}
-                  >
-                    {skill}
-                    <i
-                      className='fas fa-times ms-2 text-danger'
-                      onClick={() => handleRemoveSkill(index)}
+            {dropdowns.skills && (
+              <>
+                <p className='text-danger mb-3'>(Note: Add at least 5 skills)</p>
+                <div className='mb-3 d-flex flex-wrap'>
+                  {skills.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="badge bg-light text-dark me-2 mb-2 position-relative d-inline-flex align-items-center"
                       style={{
-                        cursor: 'pointer',
-                        fontSize: '1.2rem',
-                        position: 'absolute',
-                        right: '3px',
-                        top: '50%',
-                        transform: 'translateY(-50%)'
+                        fontSize: '1.25rem',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '0.25rem',
+                        position: 'relative',
+                        display: 'inline-flex',
+                        alignItems: 'center',
                       }}
                     >
-                      <FontAwesomeIcon icon={faClose} />
-                    </i>
-                  </span>
-                ))}
-              </div>
+                      {skill}
+                      <i
+                        className='fas fa-times ms-2 text-danger'
+                        onClick={() => handleRemoveSkill(index)}
+                        style={{
+                          cursor: 'pointer',
+                          fontSize: '1.2rem',
+                          position: 'absolute',
+                          right: '3px',
+                          top: '50%',
+                          transform: 'translateY(-50%)'
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faClose} />
+                      </i>
+                    </span>
+                  ))}
+                </div>
 
 
-              <div className='d-flex align-items-center'>
-                <input
-                  type='text'
-                  value={newSkill}
-                  onChange={(e) => setNewSkill(e.target.value)}
-                  placeholder='Add a new skill'
-                  className='form-control me-2'
-                  style={{ width: '300px' }}
-                />
-                <Button variant='primary' onClick={handleAddSkill}>Add Skill</Button>
+                <div className='d-flex align-items-center'>
+                  <input
+                    type='text'
+                    value={newSkill}
+                    onChange={(e) => setNewSkill(e.target.value)}
+                    placeholder='Add a new skill'
+                    className='form-control me-2'
+                    style={{ width: '300px' }}
+                  />
+                  <Button variant='primary' onClick={handleAddSkill}>Add Skill</Button>
+                </div>
+                {showSkillsMessage && (
+                  <p className='text-danger mt-3'>
+                    Please add at least 5 skills.
+                  </p>
+                )}
+              </>
+            )}
+          </div>
+
+          {/* Education Details Section */}
+          <div className='candidate-profile-details'>
+            <h4
+              onClick={() => toggleDropdown('education')}
+              style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+            >
+              Education Details: {dropdowns.education ? <IoIosArrowDropup /> : <IoIosArrowDropdown />}
+            </h4>
+            {dropdowns.education && (
+              <div className="container mt-3">
+                <div className="row mb-3">
+                  <div className="col-md-6 mb-2 mb-md-0">
+                    <div className="form-group">
+                      <label htmlFor="degree"><b>Last Education Degree:</b></label>
+                      <input
+                        type="text"
+                        id="degree"
+                        name="degree"
+                        className="form-control"
+                        value={educationDetails.degree}
+                        onChange={handleEducationChange}
+                        placeholder="Enter your last education degree"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label htmlFor="branch"><b>Branch Name:</b></label>
+                      <input
+                        type="text"
+                        id="branch"
+                        name="branch"
+                        className="form-control"
+                        value={educationDetails.branch}
+                        onChange={handleEducationChange}
+                        placeholder="Enter branch name"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="row mb-3">
+                  <div className="col-md-6 mb-2 mb-md-0">
+                    <div className="form-group">
+                      <label htmlFor="percentage"><b>Percentage/CGPA:</b></label>
+                      <input
+                        type="text"
+                        id="percentage"
+                        name="percentage"
+                        className="form-control"
+                        value={educationDetails.percentage}
+                        onChange={handleEducationChange}
+                        placeholder="Enter percentage or CGPA"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label htmlFor="college"><b>College/University:</b></label>
+                      <input
+                        type="text"
+                        id="college"
+                        name="college"
+                        className="form-control"
+                        value={educationDetails.college}
+                        onChange={handleEducationChange}
+                        placeholder="Enter college or university name"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
-              {showSkillsMessage && (
-                <p className='text-danger mt-3'>
-                  Please add at least 5 skills.
-                </p>
-              )}
-            </>
-          )}
+            )}
+          </div>
+
+
+          {/* Experience Section */}
+          <div className='candidate-profile-details'>
+
+            <h4
+              onClick={() => toggleDropdown('experience')}
+              style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+            >
+
+              Experience: {dropdowns.experience ? <IoIosArrowDropup /> : <IoIosArrowDropdown />}
+
+            </h4>
+            {dropdowns.experience && (
+              <div>
+                <p className='text-danger mb-3'>Note: If you are a fresher just enter 0</p>
+                <div className='form-group'>
+                  <label htmlFor='experience'>
+                    <b>How many years of experience do you have?</b>
+                  </label>
+
+                  <div className='row'>
+                    <div className='col-md-6 col-lg-4'>
+                      <input
+                        id='experience'
+                        type='text'
+                        className='form-control form-control-sm'
+                        name='experience'
+                        value={experience}
+                        onChange={handleExperienceChange}
+                        placeholder='Your experience'
+                      />
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            )}
+          </div>
+          <div className='d-flex justify-content-center mt-3'>
+            <Button variant='primary' onClick={handleSave}>
+              Save
+            </Button>
+          </div>
         </div>
-
-        {/* Education Details Section */}
-        <div className='candidate-profile-details'>
-          <h4
-            onClick={() => toggleDropdown('education')}
-            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
-          >
-            Education Details: {dropdowns.education ? <IoIosArrowDropup /> : <IoIosArrowDropdown />}
-          </h4>
-          {dropdowns.education && (
-            <div className="container mt-3">
-              <div className="row mb-3">
-                <div className="col-md-6 mb-2 mb-md-0">
-                  <div className="form-group">
-                    <label htmlFor="degree"><b>Last Education Degree:</b></label>
-                    <input
-                      type="text"
-                      id="degree"
-                      name="degree"
-                      className="form-control"
-                      value={educationDetails.degree}
-                      onChange={handleEducationChange}
-                      placeholder="Enter your last education degree"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="branch"><b>Branch Name:</b></label>
-                    <input
-                      type="text"
-                      id="branch"
-                      name="branch"
-                      className="form-control"
-                      value={educationDetails.branch}
-                      onChange={handleEducationChange}
-                      placeholder="Enter branch name"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="row mb-3">
-                <div className="col-md-6 mb-2 mb-md-0">
-                  <div className="form-group">
-                    <label htmlFor="percentage"><b>Percentage/CGPA:</b></label>
-                    <input
-                      type="text"
-                      id="percentage"
-                      name="percentage"
-                      className="form-control"
-                      value={educationDetails.percentage}
-                      onChange={handleEducationChange}
-                      placeholder="Enter percentage or CGPA"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="college"><b>College/University:</b></label>
-                    <input
-                      type="text"
-                      id="college"
-                      name="college"
-                      className="form-control"
-                      value={educationDetails.college}
-                      onChange={handleEducationChange}
-                      placeholder="Enter college or university name"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+        <div>
+          {/* Your application components */}
+          <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
         </div>
-
-
-        {/* Experience Section */}
-        <div className='candidate-profile-details'>
-
-          <h4
-            onClick={() => toggleDropdown('experience')}
-            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
-          >
-
-            Experience: {dropdowns.experience ? <IoIosArrowDropup /> : <IoIosArrowDropdown />}
-
-          </h4>
-          {dropdowns.experience && (
-            <div>
-              <p className='text-danger mb-3'>Note: If you are a fresher just enter 0</p>
-              <div className='form-group'>
-                <label htmlFor='experience'>
-                  <b>How many years of experience do you have?</b>
-                </label>
-
-                <div className='row'>
-                  <div className='col-md-6 col-lg-4'>
-                    <input
-                      id='experience'
-                      type='text'
-                      className='form-control form-control-sm'
-                      name='experience'
-                      value={experience}
-                      onChange={handleExperienceChange}
-                      placeholder='Your experience'
-                    />
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          )}
-        </div>
-        <div className='d-flex justify-content-center mt-3'>
-          <Button variant='primary' onClick={handleSave}>
-            Save
-          </Button>
-        </div>
-      </div>
-      <div>
-        {/* Your application components */}
-        <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
       </div>
     </div>
-
   );
 };
 

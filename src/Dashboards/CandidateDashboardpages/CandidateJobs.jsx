@@ -1,5 +1,3 @@
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Dropdown, Table } from 'react-bootstrap';
@@ -36,7 +34,7 @@ const CandidateJobs = () => {
     setFilterStatus(status);
     localStorage.setItem('candidateJobsPage', 0);
     setPage(0);
-   
+
   };
 
   const handlePageSizeChange = (e) => {
@@ -46,16 +44,16 @@ const CandidateJobs = () => {
   };
   useEffect(() => {
     if (search && filterStatus) {
-      searchJobsWithFilter(search,filterStatus);
-    } 
-    else if(search){
+      searchJobsWithFilter(search, filterStatus);
+    }
+    else if (search) {
       fetchJobBySearch(search);
-    }else if (filterStatus) {
+    } else if (filterStatus) {
       fetchDataByFilter(filterStatus);
     } else {
       fetchData();
     }
-  }, [page, pageSize, search, sortedColumn, sortOrder, filterStatus,userId]);
+  }, [page, pageSize, search, sortedColumn, sortOrder, filterStatus, userId]);
 
   async function fetchData() {
     try {
@@ -95,11 +93,11 @@ const CandidateJobs = () => {
   }
 
 
-  async function searchJobsWithFilter(search,filterStatus) {
+  async function searchJobsWithFilter(search, filterStatus) {
     console.log(filterStatus)
     try {
       const params = {
-        search:search,
+        search: search,
         page: page,
         size: pageSize,
         sortBy: sortedColumn,
@@ -299,7 +297,7 @@ const CandidateJobs = () => {
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
 
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
     setIsLeftSideVisible(!isLeftSideVisible);
@@ -327,16 +325,20 @@ const CandidateJobs = () => {
       }
     });
   };
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
 
+  useEffect(() => {
+    // Update the `isSmallScreen` state based on screen resizing
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   return (
     <div className='dashboard-container'>
-      <div>
 
-        <button className="hamburger-icon" onClick={toggleLeftSide} >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-
-      </div>
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
         <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
       </div>
@@ -349,207 +351,219 @@ const CandidateJobs = () => {
           />
         )}
 
-        <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-          <div className="search-bar" >
-            <input style={{ borderRadius: '6px', height: '35px' }}
-              type="text"
-              name="search"
-              placeholder="Search"
-              value={search}
-              onChange={handleSearchChange}
-            />
-          </div>
-          <Dropdown className="ml-2">
-            <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
-              <div
-                className="initials-placeholder"
-                style={{
-                  width: '30px',
-                  height: '30px',
-                  borderRadius: '50%',
-                  backgroundColor: 'grey',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'white',
-                  fontWeight: 'bold',
-                }}
-              >
-                {initials}
-              </div>
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="mt-3">
-              <Dropdown.Item as={Link} to="/settings">
-                <i className="i-Data-Settings me-1" /> Account settings
-              </Dropdown.Item>
-              <Dropdown.Item as="button" onClick={handleLogout}>
-                <i className="i-Lock-2 me-1" /> Logout
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-        <div className="filter p-3 border rounded shadow-sm"
-          style={{ maxWidth: '30%', backgroundColor: '#f4f4f9' }}>
-          <label htmlFor="status" className="form-label"
-            style={{ color: '#6c5b7b' }}>Filter by Actions:</label>
-          <select id="status" className="form-select form-select-sm fs-6" // Adjust the fs-* class as needed
-            style={{ borderColor: '#6c5b7b' }} onChange={handleFilterChange} value={filterStatus}>
-            <option value="all">All</option>
-            <option value="Apply">Apply</option>
-            <option value="Applied">Applied</option>
-          </select>
-        </div>
-        {jobs.length > 0 && (
-          <div>
-            <h2> Regular Jobs For {userName}</h2>
-            <div className='table-details-list table-wrapper'>
-              <Table hover className='text-center'>
-                <thead className="table-light">
-                  <tr>
-                    <th scope='col' onClick={() => handleSort('jobTitle')}>
-                      Job Profile {sortedColumn === 'jobTitle' && (sortOrder === 'asc' ? '▲' : '▼')}
-                    </th>
-                    <th scope='col' onClick={() => handleSort('companyName')}>
-                      Company Name{sortedColumn === 'companyName' && (sortOrder === 'asc' ? '▲' : '▼')}
-                    </th>
-                    <th scope='col' onClick={() => handleSort('applicationDeadline')}>
-                      Application Deadline {sortedColumn === 'applicationDeadline' && (sortOrder === 'asc' ? '▲' : '▼')}
-                    </th>
-                    <th scope='col' onClick={() => handleSort('skills')}>
-                      Skills {sortedColumn === 'skills' && (sortOrder === 'asc' ? '▲' : '▼')}
-                    </th>
-                    <th scope='col' onClick={() => handleSort('location')}>
-                      Location {sortedColumn === 'location' && (sortOrder === 'asc' ? '▲' : '▼')}
-                    </th>
-
-                    {/* <th scope='col'>Job Summary</th> */}
-                    <th scope='col'>Job description</th>
-                    <th scope='col'>Actions</th>
-
-                  </tr>
-                </thead>
-                <tbody>
-                  {jobs.map(job => (
-                    <tr key={job.id} id='job-table-list'>
-                      {/* Job Title with Tooltip for Evergreen Job */}
-                      <td
-                        title={job.jobCategory === "evergreen" && !job.applicationDeadline ?
-                          "This position is always open for hiring, feel free to apply anytime!" :
-                          ""
-                        }
-                      >
-                        {job.jobTitle}
-                      </td>
-
-                      {/* Company Name */}
-                      <td>{job.companyName}</td>
-
-                      {/* Application Deadline or Evergreen Job Info */}
-                      <td>
-                        {job.jobCategory === "evergreen" && !job.applicationDeadline ? (
-                          <span style={{ color: 'green', fontWeight: 'bold' }} title="This position is always open for hiring, feel free to apply anytime!">
-                            Evergreen Job - No Due Date
-                          </span>
-                        ) : (
-                          job.applicationDeadline || 'Not Specified'
-                        )}
-                      </td>
-
-                      {/* Skills */}
-                      <td>{job.skills}</td>
-
-                      {/* Location */}
-                      <td>{job.location}</td>
-
-                      {/* View Job Description Button */}
-                      <td>
-                        <Button
-                          variant="secondary"
-                          className='description btn-rounded'
-                          onClick={() => {
-                            const url = new URL('/#/candidate-dashboard/job-description', window.location.origin);
-                            url.searchParams.append('companyName', encodeURIComponent(job.companyName || ''));
-                            url.searchParams.append('jobId', encodeURIComponent(job.jobId || ''));
-                            url.searchParams.append('userId', encodeURIComponent(userId || ''));
-                            url.searchParams.append('userName', encodeURIComponent(userName || ''));
-                            window.open(url.toString(), '_blank', 'noopener,noreferrer');
-                          }}
-                        >
-                          View
-                        </Button>
-                      </td>
-
-                      {/* Apply Button or Applied Status */}
-                      <td>
-                        {hasUserApplied[job.jobId] === true || (applyjobs && applyjobs.jobId === job.jobId) ? (
-                          <p>Applied</p>
-                        ) : (
-                          <Button onClick={() => handleApplyButtonClick(job.jobId)}>Apply</Button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-
-              </Table>
+        <div
+          style={{
+            overflowY: 'auto',
+            maxHeight: isSmallScreen ? '600px' : '1000px',
+            paddingBottom: '20px'
+          }}
+        >
+          <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
+            <div className="search-bar">
+              <input
+                style={{ borderRadius: '6px', height: '35px' }}
+                type="text"
+                name="search"
+                placeholder="Search"
+                value={search}
+                onChange={handleSearchChange}
+              />
             </div>
-            {selectedJobSummary && (
-              <div className="modal-summary">
-                <div className="modal-content-summary">
-                  <span className="close" onClick={handleCloseModal}>&times;</span>
-                  <div className="job-summary">
-                    <h3>Job Summary</h3>
-                    <pre className='job-details-text'>{selectedJobSummary}</pre>
-                  </div>
+            <Dropdown className="ml-2">
+              <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
+                <div
+                  className="initials-placeholder"
+                  style={{
+                    width: '30px',
+                    height: '30px',
+                    borderRadius: '50%',
+                    backgroundColor: 'grey',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {initials}
                 </div>
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="mt-3">
+                <Dropdown.Item as={Link} to="/settings">
+                  <i className="i-Data-Settings me-1" /> Account settings
+                </Dropdown.Item>
+                <Dropdown.Item as="button" onClick={handleLogout}>
+                  <i className="i-Lock-2 me-1" /> Logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+          <div
+            className="filter p-3 border rounded shadow-sm"
+            style={{ maxWidth: '30%', backgroundColor: '#f4f4f9' }}
+          >
+            <label htmlFor="status" className="form-label" style={{ color: '#6c5b7b' }}>
+              Filter by Actions:
+            </label>
+            <select
+              id="status"
+              className="form-select form-select-sm fs-6"
+              style={{ borderColor: '#6c5b7b' }}
+              onChange={handleFilterChange}
+              value={filterStatus}
+            >
+              <option value="all">All</option>
+              <option value="Apply">Apply</option>
+              <option value="Applied">Applied</option>
+            </select>
+          </div>
+          <div style={{ overflowY: 'auto', maxHeight: '600px', paddingBottom: '50px' }}>
+            {jobs.length > 0 && (
+              <div>
+                <h2> Regular Jobs For {userName}</h2>
+                <div className="table-details-list table-wrapper">
+                  <Table hover className="text-center">
+                    <thead className="table-light">
+                      <tr>
+                        <th scope="col" onClick={() => handleSort('jobTitle')}>
+                          Job Profile{' '}
+                          {sortedColumn === 'jobTitle' && (sortOrder === 'asc' ? '▲' : '▼')}
+                        </th>
+                        <th scope="col" onClick={() => handleSort('companyName')}>
+                          Company Name{' '}
+                          {sortedColumn === 'companyName' && (sortOrder === 'asc' ? '▲' : '▼')}
+                        </th>
+                        <th scope="col" onClick={() => handleSort('applicationDeadline')}>
+                          Application Deadline{' '}
+                          {sortedColumn === 'applicationDeadline' && (sortOrder === 'asc' ? '▲' : '▼')}
+                        </th>
+                        <th scope="col" onClick={() => handleSort('skills')}>
+                          Skills{' '}
+                          {sortedColumn === 'skills' && (sortOrder === 'asc' ? '▲' : '▼')}
+                        </th>
+                        <th scope="col" onClick={() => handleSort('location')}>
+                          Location{' '}
+                          {sortedColumn === 'location' && (sortOrder === 'asc' ? '▲' : '▼')}
+                        </th>
+                        <th scope="col">Job description</th>
+                        <th scope="col">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {jobs.map((job) => (
+                        <tr key={job.id} id="job-table-list">
+                          <td
+                            title={
+                              job.jobCategory === 'evergreen' && !job.applicationDeadline
+                                ? 'This position is always open for hiring, feel free to apply anytime!'
+                                : ''
+                            }
+                          >
+                            {job.jobTitle}
+                          </td>
+                          <td>{job.companyName}</td>
+                          <td>
+                            {job.jobCategory === 'evergreen' && !job.applicationDeadline ? (
+                              <span
+                                style={{ color: 'green', fontWeight: 'bold' }}
+                                title="This position is always open for hiring, feel free to apply anytime!"
+                              >
+                                Evergreen Job - No Due Date
+                              </span>
+                            ) : (
+                              job.applicationDeadline || 'Not Specified'
+                            )}
+                          </td>
+                          <td>{job.skills}</td>
+                          <td>{job.location}</td>
+                          <td>
+                            <Button
+                              variant="secondary"
+                              className="description btn-rounded"
+                              onClick={() => {
+                                const url = new URL('/#/candidate-dashboard/job-description', window.location.origin);
+                                url.searchParams.append('companyName', encodeURIComponent(job.companyName || ''));
+                                url.searchParams.append('jobId', encodeURIComponent(job.jobId || ''));
+                                url.searchParams.append('userId', encodeURIComponent(userId || ''));
+                                url.searchParams.append('userName', encodeURIComponent(userName || ''));
+                                window.open(url.toString(), '_blank', 'noopener,noreferrer');
+                              }}
+                            >
+                              View
+                            </Button>
+                          </td>
+                          <td>
+                            {hasUserApplied[job.jobId] === true || (applyjobs && applyjobs.jobId === job.jobId) ? (
+                              <p>Applied</p>
+                            ) : (
+                              <Button onClick={() => handleApplyButtonClick(job.jobId)}>Apply</Button>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
+                {selectedJobSummary && (
+                  <div className="modal-summary">
+                    <div className="modal-content-summary">
+                      <span className="close" onClick={handleCloseModal}>
+                        &times;
+                      </span>
+                      <div className="job-summary">
+                        <h3>Job Summary</h3>
+                        <pre className="job-details-text">{selectedJobSummary}</pre>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <Pagination
+                  page={page}
+                  pageSize={pageSize}
+                  totalPages={totalPages}
+                  handlePageSizeChange={handlePageSizeChange}
+                  isPageSizeDisabled={isPageSizeDisabled}
+                  handlePageClick={handlePageClick}
+                />
               </div>
             )}
 
-            <Pagination
-              page={page}
-              pageSize={pageSize}
-              totalPages={totalPages}
-              handlePageSizeChange={handlePageSizeChange}
-              isPageSizeDisabled={isPageSizeDisabled}
-              handlePageClick={handlePageClick}
-            />
-          </div>
-        )}
+            {jobs.length === 0 && <h1>No jobs found.</h1>}
 
-        {jobs.length === 0 && <h1>No jobs found.</h1>}
+            <div className="dream p-3">
+              <p className="text-center responsive-text">
+                Can't find your dream company or dream job? Don't worry, you can still apply to them.
+              </p>
+              <p className="text-center responsive-text">
+                Just add the name of your dream company and job role and apply to them directly.
+              </p>
+              <div className="app d-flex flex-column flex-md-row justify-content-center align-items-center gap-3">
+                <Button
+                  variant="primary"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/candidate-dashboard/dream-company', { state: { userName, userId } });
+                  }}
+                  className="w-md-auto"
+                >
+                  Apply to your dream company
+                </Button>
 
-        <div className="dream p-3">
-          <p className="text-center responsive-text">
-            Can't find your dream company or dream job? Don't worry, you can still apply to them.
-          </p>
-          <p className="text-center responsive-text">
-            Just add the name of your dream company and job role and apply to them directly.
-          </p>
-          <div className="app d-flex flex-column flex-md-row justify-content-center align-items-center gap-3">
-            <Button
-              variant="primary"
-              onClick={(e) => {
-                e.preventDefault();
-                navigate('/candidate-dashboard/dream-company', { state: { userName, userId } });
-              }}
-              className="w-md-auto" // Makes button take full width on small screens, and auto on larger screens
-            >
-              Apply to your dream company
-            </Button>
-
-            <Button
-              variant="success"
-              onClick={(e) => {
-                e.preventDefault();
-                navigate('/candidate-dashboard/dream-job', { state: { userName, userId } });
-              }}
-              className="w-md-auto"
-            >
-              Apply to your dream job
-            </Button>
+                <Button
+                  variant="success"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/candidate-dashboard/dream-job', { state: { userName, userId } });
+                  }}
+                  className="w-md-auto"
+                >
+                  Apply to your dream job
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
-
       </div>
     </div>
 

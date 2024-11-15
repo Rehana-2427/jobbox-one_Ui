@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import './AdminDashboard.css';
 import AdminleftSide from './AdminleftSide';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 const Myprofile = ({ userType }) => {
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
 
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
@@ -14,13 +12,9 @@ const Myprofile = ({ userType }) => {
   };
   return (
     <div className='dashboard-container'>
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide} >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
+
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-      <AdminleftSide onClose={toggleLeftSide} />
+        <AdminleftSide onClose={toggleLeftSide} />
       </div>
 
       <div className="right-side">

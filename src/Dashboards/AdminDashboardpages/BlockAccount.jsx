@@ -1,5 +1,3 @@
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
@@ -56,70 +54,85 @@ const BlockAccount = () => {
   };
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
 
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
     setIsLeftSideVisible(!isLeftSideVisible);
   };
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+
+  useEffect(() => {
+    // Update the `isSmallScreen` state based on screen resizing
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div className='dashboard-container'>
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide} >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
+
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-      <AdminleftSide onClose={toggleLeftSide} />
+        <AdminleftSide onClose={toggleLeftSide} />
       </div>
 
       <div className="right-side">
-        {userData.length > 0 ? (
-          <>
-            <h2>List of Rejected Hr's</h2>
-            <div className='table-details-list table-wrapper'>
-              <Table hover className='text-center' >
-                <thead className="table-light">
-                  <tr>
-                    <th onClick={() => handleSort('userName')}>
-                      UserName {sortedColumn === 'userName' && (sortOrder === 'asc' ? '▲' : '▼')}
-                    </th>  <th onClick={() => handleSort('userEmail')}>
-                      userEmail {sortedColumn === 'userEmail' && (sortOrder === 'asc' ? '▲' : '▼')}
-                    </th>
-                    <th onClick={() => handleSort('companyName')}>
-                      Company {sortedColumn === 'companyName' && (sortOrder === 'asc' ? '▲' : '▼')}
-                    </th>
+        <div
+          style={{
+            overflowY: 'auto',
+            maxHeight: isSmallScreen ? '600px' : '1000px',
+            paddingBottom: '20px'
+          }}
+        >
+          {userData.length > 0 ? (
+            <>
+              <h2>List of Rejected Hr's</h2>
+              <div className='table-details-list table-wrapper'>
+                <Table hover className='text-center' >
+                  <thead className="table-light">
+                    <tr>
+                      <th onClick={() => handleSort('userName')}>
+                        UserName {sortedColumn === 'userName' && (sortOrder === 'asc' ? '▲' : '▼')}
+                      </th>  <th onClick={() => handleSort('userEmail')}>
+                        userEmail {sortedColumn === 'userEmail' && (sortOrder === 'asc' ? '▲' : '▼')}
+                      </th>
+                      <th onClick={() => handleSort('companyName')}>
+                        Company {sortedColumn === 'companyName' && (sortOrder === 'asc' ? '▲' : '▼')}
+                      </th>
 
-                  </tr>
-                </thead>
-                <tbody>
-                  {userData.map(user => (
-                    <tr key={user.userId}>
-                      <td>{user.userName}</td>
-                      <td>{user.userEmail}</td>
-                      <td>{user.companyName}</td>
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </div>
-          </>
+                  </thead>
+                  <tbody>
+                    {userData.map(user => (
+                      <tr key={user.userId}>
+                        <td>{user.userName}</td>
+                        <td>{user.userEmail}</td>
+                        <td>{user.companyName}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
+            </>
 
-        ) : (
-          <h4 className='text-center'>Loading.. .!!</h4>
-        )}
+          ) : (
+            <h4 className='text-center'>Loading.. .!!</h4>
+          )}
 
-        {/* Pagination */}
-       
-        <Pagination
-          page={page}
-          pageSize={pageSize}
-          totalPages={totalPages}
-          handlePageSizeChange={handlePageSizeChange}
-          isPageSizeDisabled={isPageSizeDisabled}
-          handlePageClick={handlePageClick}
-        />
+          {/* Pagination */}
 
+          <Pagination
+            page={page}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            handlePageSizeChange={handlePageSizeChange}
+            isPageSizeDisabled={isPageSizeDisabled}
+            handlePageClick={handlePageClick}
+          />
+        </div>
       </div>
     </div>
   )

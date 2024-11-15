@@ -6,11 +6,8 @@ import swal from 'sweetalert2';
 import Pagination from '../../Pagination';
 import AdminleftSide from './AdminleftSide';
 
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
-// const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
 
 const BASE_API_URL = process.env.REACT_APP_API_URL;
 const AdminAction = () => {
@@ -116,73 +113,90 @@ const AdminAction = () => {
 
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
 
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
     setIsLeftSideVisible(!isLeftSideVisible);
   };
+
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+
+  useEffect(() => {
+    // Update the `isSmallScreen` state based on screen resizing
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div className='dashboard-container'>
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide} >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
+
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-      <AdminleftSide onClose={toggleLeftSide} />
+        <AdminleftSide onClose={toggleLeftSide} />
       </div>
 
       <div className="right-side">
-        <header className="admin-header">
-          <h2 style={{ color: 'wheat' }}>User Validation</h2>
-        </header>
-        <div className='table-details-list table-wrapper'>
-          <Table hover className='text-center'>
-            <thead className="table-light">
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>CompanyWebsite</th>
-                <th>Date of user registarion</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {hrDetails.map(hr => (
-                <tr key={hr.userId}>
-                  <td>{hr.userName} ({hr.companyName} HR)</td>
-                  <td>{hr.userEmail}</td>
-                  <td>{hr.companyWebsite}</td>
-                  <td>{hr.appliedDate}</td>
-                  <td>
-                    <Button key='success' variant='success' className="m-1 text-capitalize" onClick={() => approveRequest(hr.userEmail, hr.userId)}>
-                      Approve
-                    </Button>
 
-                    <Button key='danger' variant='danger' className="m-1 text-capitalize" onClick={() => rejectRequest(hr.userEmail, hr.userId)}>
-                      Reject
-                    </Button>
-                  </td>
+        <div
+          style={{
+            overflowY: 'auto',
+            maxHeight: isSmallScreen ? '600px' : '1000px',
+            paddingBottom: '20px'
+          }}
+        >
+          <header className="admin-header">
+            <h2 style={{ color: 'wheat' }}>User Validation</h2>
+          </header>
+          <div className='table-details-list table-wrapper'>
+            <Table hover className='text-center'>
+              <thead className="table-light">
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>CompanyWebsite</th>
+                  <th>Date of user registarion</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
+              </thead>
+              <tbody>
+                {hrDetails.map(hr => (
+                  <tr key={hr.userId}>
+                    <td>{hr.userName} ({hr.companyName} HR)</td>
+                    <td>{hr.userEmail}</td>
+                    <td>{hr.companyWebsite}</td>
+                    <td>{hr.appliedDate}</td>
+                    <td>
+                      <Button key='success' variant='success' className="m-1 text-capitalize" onClick={() => approveRequest(hr.userEmail, hr.userId)}>
+                        Approve
+                      </Button>
 
-        {/* Pagination */}
-      
-        <Pagination
-          page={page}
-          pageSize={pageSize}
-          totalPages={totalPages}
-          handlePageSizeChange={handlePageSizeChange}
-          isPageSizeDisabled={isPageSizeDisabled}
-          handlePageClick={handlePageClick}
-        />
+                      <Button key='danger' variant='danger' className="m-1 text-capitalize" onClick={() => rejectRequest(hr.userEmail, hr.userId)}>
+                        Reject
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+
+          {/* Pagination */}
+
+          <Pagination
+            page={page}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            handlePageSizeChange={handlePageSizeChange}
+            isPageSizeDisabled={isPageSizeDisabled}
+            handlePageClick={handlePageClick}
+          />
+        </div>
       </div>
     </div>
-
 
   );
 

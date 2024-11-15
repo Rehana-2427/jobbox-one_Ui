@@ -1,5 +1,3 @@
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
@@ -63,86 +61,103 @@ const AddCompanyDetails = () => {
     setPage(0); // Reset page when page size changes
   };
 
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
 
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
     setIsLeftSideVisible(!isLeftSideVisible);
   };
+
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+
+  useEffect(() => {
+    // Update the `isSmallScreen` state based on screen resizing
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div className='dashboard-container'>
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide} >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
+
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-      <AdminleftSide onClose={toggleLeftSide} />
+        <AdminleftSide onClose={toggleLeftSide} />
       </div>
 
       <div className="right-side">
-        {companyData.length > 0 ? (
-          <>
-            <h2>Add Company Details</h2>
-            <div className='table-details-list table-wrapper'>
-              <Table hover className='text-center'>
-                <thead className="table-light">
-                  <tr>
-                    <th>Company Name</th>
-                    <th>Company WebSite</th>
-                    <th>Company Email</th>
-                    <th>Service</th>
-                    <th onClick={() => handleSort('location')}>
-                      Location {sortedColumn === 'location' && (sortOrder === 'asc' ? '▲' : '▼')}
-                    </th>
-                    <th onClick={() => handleSort('date')}>
-                      Submit Date {sortedColumn === 'date' && (sortOrder === 'asc' ? '▲' : '▼')}
-                    </th>
-                    <th>Status</th>
-                    <th onClick={() => handleSort('actionDate')}>
-                      Action Date {sortedColumn === 'actionDate' && (sortOrder === 'asc' ? '▲' : '▼')}
-                    </th>
-                    <th>Add Detail</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {companyData.map((company) => (
-                    <tr key={company.companyId}>
-                      <td>{company.companyName}</td>
-                      <td>{company.websiteLink}</td>
-                      <td>{company.jobboxEmail}</td>
-                      <td>{company.industryService}</td>
-                      <td>{company.location}</td>
-                      <td>{company.date}</td>
-                      <td>{company.companyStatus}</td>
-                      <td>{company.actionDate}</td>
-                      <td><Link to={{
-                        pathname: '/admin-dashboard/companyDetailsByAdmin',
-                        state: { companyName: company.companyName, currentAdminCompanyPage: page, currentAdminCompanyPageSize: pageSize }
-                      }} onClick={(e) => {
-                        e.preventDefault();
-                        navigate('/admin-dashboard/companyDetailsByAdmin', { state: { companyName: company.companyName, currentAdminCompanyPage: page, currentAdminCompanyPageSize: pageSize } });
-                      }}>ADD</Link></td>
+        <div
+          style={{
+            overflowY: 'auto',
+            maxHeight: isSmallScreen ? '600px' : '1000px',
+            paddingBottom: '100px'
+          }}
+        >
+          {companyData.length > 0 ? (
+            <>
+              <h2>Add Company Details</h2>
+              <div className='table-details-list table-wrapper'>
+                <Table hover className='text-center'>
+                  <thead className="table-light">
+                    <tr>
+                      <th>Company Name</th>
+                      <th>Company WebSite</th>
+                      <th>Company Email</th>
+                      <th>Service</th>
+                      <th onClick={() => handleSort('location')}>
+                        Location {sortedColumn === 'location' && (sortOrder === 'asc' ? '▲' : '▼')}
+                      </th>
+                      <th onClick={() => handleSort('date')}>
+                        Submit Date {sortedColumn === 'date' && (sortOrder === 'asc' ? '▲' : '▼')}
+                      </th>
+                      <th>Status</th>
+                      <th onClick={() => handleSort('actionDate')}>
+                        Action Date {sortedColumn === 'actionDate' && (sortOrder === 'asc' ? '▲' : '▼')}
+                      </th>
+                      <th>Add Detail</th>
                     </tr>
+                  </thead>
+                  <tbody>
+                    {companyData.map((company) => (
+                      <tr key={company.companyId}>
+                        <td>{company.companyName}</td>
+                        <td>{company.websiteLink}</td>
+                        <td>{company.jobboxEmail}</td>
+                        <td>{company.industryService}</td>
+                        <td>{company.location}</td>
+                        <td>{company.date}</td>
+                        <td>{company.companyStatus}</td>
+                        <td>{company.actionDate}</td>
+                        <td><Link to={{
+                          pathname: '/admin-dashboard/companyDetailsByAdmin',
+                          state: { companyName: company.companyName, currentAdminCompanyPage: page, currentAdminCompanyPageSize: pageSize }
+                        }} onClick={(e) => {
+                          e.preventDefault();
+                          navigate('/admin-dashboard/companyDetailsByAdmin', { state: { companyName: company.companyName, currentAdminCompanyPage: page, currentAdminCompanyPageSize: pageSize } });
+                        }}>ADD</Link></td>
+                      </tr>
 
-                  ))}
-                </tbody>
-              </Table>
-            </div>
-          </>
-        ) : (
-          <h4 className='text-center'>Loading.. .!!</h4>
-        )}
-        {/* Pagination */}
-   
-        <Pagination
-          page={page}
-          pageSize={pageSize}
-          totalPages={totalPages}
-          handlePageSizeChange={handlePageSizeChange}
-          isPageSizeDisabled={isPageSizeDisabled}
-          handlePageClick={handlePageClick}
-        />
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
+            </>
+          ) : (
+            <h4 className='text-center'>Loading.. .!!</h4>
+          )}
+          {/* Pagination */}
+
+          <Pagination
+            page={page}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            handlePageSizeChange={handlePageSizeChange}
+            isPageSizeDisabled={isPageSizeDisabled}
+            handlePageClick={handlePageClick}
+          />
+        </div>
       </div>
     </div>
   )

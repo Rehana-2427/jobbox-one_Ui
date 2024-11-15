@@ -265,6 +265,7 @@
 .tab-link {
   padding-left: 2vw;
   cursor: pointer;
+  display: inline-block;
 }
 
 .active {

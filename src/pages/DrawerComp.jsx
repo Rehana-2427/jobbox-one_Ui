@@ -26,7 +26,6 @@ const pages = [
 const DrawerComp = () => {
     const [openDrawer, setOpenDrawer] = useState(false);
     const currentPath = window.location.pathname;
-    const [value, setValue] = useState();
     const [selectedValue, setSelectedValue] = React.useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
     const [usernameInitials, setUsernameInitials] = useState(""); // State to store username initials

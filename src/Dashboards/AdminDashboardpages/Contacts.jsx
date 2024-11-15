@@ -1,5 +1,3 @@
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Modal, Table } from 'react-bootstrap';
@@ -70,90 +68,105 @@ const Contacts = () => {
   };
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
 
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
     setIsLeftSideVisible(!isLeftSideVisible);
   };
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+
+  useEffect(() => {
+    // Update the `isSmallScreen` state based on screen resizing
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   return (
     <div className='dashboard-container'>
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide} >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
+
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-      <AdminleftSide onClose={toggleLeftSide} />
+        <AdminleftSide onClose={toggleLeftSide} />
       </div>
 
       <div className="right-side">
-        <h2 style={{ textAlign: 'center' }}>Request from the Users</h2>
-        <div className="help">
-          <div className='table-details-list table-wrapper'>
-            <Table hover className='text-center' style={{ marginLeft: '12px' }}>
-              <thead className="table-light">
-                <tr>
-                  <th>User</th>
-                  <th>Email</th>
-                  <th>Subject</th>
-                  <th>Message</th>
-                  <th>Replying To Users</th>
-                </tr>
-              </thead>
-              <tbody>
-                {contacts.map(contact => (
-                  <tr key={contact.id}>
-                    <td>{contact.name}</td>
-                    <td>{contact.email}</td>
-                    <td>{contact.subject}</td>
-                    <td>{contact.message}</td>
-                    <td>
-                      {contact.replyMsg === null ? (
-                        <Button onClick={() => openModal(contact.email, contact.contactID, contact.message)}>Reply</Button>
-                      ) : (
-                        <h3>Replied</h3>
-                      )}
-                    </td>
+        <div
+          style={{
+            overflowY: 'auto',
+            maxHeight: isSmallScreen ? '600px' : '1000px',
+            paddingBottom: '100px'
+          }}
+        >
+          <h2 style={{ textAlign: 'center' }}>Request from the Users</h2>
+          <div className="help">
+            <div className='table-details-list table-wrapper'>
+              <Table hover className='text-center' style={{ marginLeft: '12px' }}>
+                <thead className="table-light">
+                  <tr>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                    <th>Replying To Users</th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
+                </thead>
+                <tbody>
+                  {contacts.map(contact => (
+                    <tr key={contact.id}>
+                      <td>{contact.name}</td>
+                      <td>{contact.email}</td>
+                      <td>{contact.subject}</td>
+                      <td>{contact.message}</td>
+                      <td>
+                        {contact.replyMsg === null ? (
+                          <Button onClick={() => openModal(contact.email, contact.contactID, contact.message)}>Reply</Button>
+                        ) : (
+                          <h3>Replied</h3>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
+            <Modal show={showModal} onHide={closeModal}>
+              <Modal.Header closeButton>
+                <Modal.Title>Compose Message</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <p>To: {selectedEmail}</p>
+                <p>Query:{contactmessage}</p>
+                <Form.Control
+                  as="textarea"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Write your message here..."
+                  rows={4}
+                />
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={closeModal}>
+                  Close
+                </Button>
+                <Button variant="primary" onClick={handleSendMessage}>
+                  Send
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </div>
-          <Modal show={showModal} onHide={closeModal}>
-            <Modal.Header closeButton>
-              <Modal.Title>Compose Message</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <p>To: {selectedEmail}</p>
-              <p>Query:{contactmessage}</p>
-              <Form.Control
-                as="textarea"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Write your message here..."
-                rows={4}
-              />
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={closeModal}>
-                Close
-              </Button>
-              <Button variant="primary" onClick={handleSendMessage}>
-                Send
-              </Button>
-            </Modal.Footer>
-          </Modal>
+
+          <Pagination
+            page={page}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            handlePageSizeChange={handlePageSizeChange}
+            isPageSizeDisabled={isPageSizeDisabled}
+            handlePageClick={handlePageClick}
+          />
         </div>
-      
-        <Pagination
-          page={page}
-          pageSize={pageSize}
-          totalPages={totalPages}
-          handlePageSizeChange={handlePageSizeChange}
-          isPageSizeDisabled={isPageSizeDisabled}
-          handlePageClick={handlePageClick}
-        />
       </div>
     </div>
   )

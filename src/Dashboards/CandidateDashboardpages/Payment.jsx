@@ -1,6 +1,4 @@
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Container, Dropdown, Row } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom'; // Import Link from react-router-dom
 import Swal from 'sweetalert2';
@@ -31,7 +29,7 @@ const Payment = () => {
   const initials = getInitials(userName);
 
 
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
     setIsLeftSideVisible(!isLeftSideVisible);
@@ -57,48 +55,62 @@ const Payment = () => {
       }
     });
   };
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+
+  useEffect(() => {
+    // Update the `isSmallScreen` state based on screen resizing
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   return (
     <div className='dashboard-container'>
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide} >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
+
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
         <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
       </div>
       <div className="right-side">
-        <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-          <Dropdown className="ml-2">
-            <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
-              <div
-                className="initials-placeholder"
-                style={{
-                  width: '30px',
-                  height: '30px',
-                  borderRadius: '50%',
-                  backgroundColor: 'grey',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'white',
-                  fontWeight: 'bold',
-                }}
-              >
-                {initials}
-              </div>
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="mt-3">
-              <Dropdown.Item as={Link} to="/settings">
-                <i className="i-Data-Settings me-1" /> Account settings
-              </Dropdown.Item>
-              <Dropdown.Item as="button" onClick={handleLogout}>
-                <i className="i-Lock-2 me-1" /> Logout
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-        {/* <div className="payment-container">
+        <div
+          style={{
+            overflowY: 'auto',
+            maxHeight: isSmallScreen ? '600px' : '1000px',
+            paddingBottom: '20px'
+          }}
+        >
+          <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
+            <Dropdown className="ml-2">
+              <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
+                <div
+                  className="initials-placeholder"
+                  style={{
+                    width: '30px',
+                    height: '30px',
+                    borderRadius: '50%',
+                    backgroundColor: 'grey',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {initials}
+                </div>
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="mt-3">
+                <Dropdown.Item as={Link} to="/settings">
+                  <i className="i-Data-Settings me-1" /> Account settings
+                </Dropdown.Item>
+                <Dropdown.Item as="button" onClick={handleLogout}>
+                  <i className="i-Lock-2 me-1" /> Logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+          {/* <div className="payment-container">
           <div>
             <h2>Payment Via</h2>
             <section className="payment-options">
@@ -112,78 +124,78 @@ const Payment = () => {
             <p style={{ textAlign: 'center' }}>Payments Details</p>
           </div>
         </div> */}
-        <Container>
-          <Row>
-            <div className='text-center'>
-              <h4 style={{ color: 'purple' }}>Choose Your Plan</h4>
-              <h1>Flexible Candidate Plans</h1>
-              <p>Select the plan that best fits your job search needs</p>
-            </div>
-            <Col md={4}>
-              <Card>
-                <Card.Body>
-                  <Card.Title>Basic Candidate Plan</Card.Title>
-                  <Card.Text>
-                    <h3>$0.00(Free)</h3>
-                    <p>/month</p>
-                  </Card.Text>
-                  <Button variant="primary">Get Started</Button>
-                  <Card.Text className="mt-3">
-                    <p>Perfect for job seekers</p>
-                    <ul>
-                      <li>Apply to up to 5 jobs per day</li>
-                      <li>Email notifications</li>
-                      <li>Access to job postings</li>
-                    </ul>
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
+          <Container>
+            <Row>
+              <div className='text-center'>
+                <h4 style={{ color: 'purple' }}>Choose Your Plan</h4>
+                <h1>Flexible Candidate Plans</h1>
+                <p>Select the plan that best fits your job search needs</p>
+              </div>
+              <Col md={4}>
+                <Card>
+                  <Card.Body>
+                    <Card.Title>Basic Candidate Plan</Card.Title>
+                    <Card.Text>
+                      <h3>$0.00(Free)</h3>
+                      <p>/month</p>
+                    </Card.Text>
+                    <Button variant="primary">Get Started</Button>
+                    <Card.Text className="mt-3">
+                      <p>Perfect for job seekers</p>
+                      <ul>
+                        <li>Apply to up to 5 jobs per day</li>
+                        <li>Email notifications</li>
+                        <li>Access to job postings</li>
+                      </ul>
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
 
-            <Col md={4}>
-              <Card>
-                <Card.Body>
-                  <Card.Title>Premium Candidate Plan</Card.Title>
-                  <Card.Text>
-                    <h3>$9.99</h3>
-                    <p>/month</p>
-                  </Card.Text>
-                  <Button variant="primary">Get Started</Button>
-                  <Card.Text className="mt-3">
-                    <p>Great for serious job hunters</p>
-                    <ul>
-                      <li>Apply to unlimited jobs</li>
-                      <li>Resume optimization tips</li>
-                      <li>Priority application review</li>
-                    </ul>
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
+              <Col md={4}>
+                <Card>
+                  <Card.Body>
+                    <Card.Title>Premium Candidate Plan</Card.Title>
+                    <Card.Text>
+                      <h3>$9.99</h3>
+                      <p>/month</p>
+                    </Card.Text>
+                    <Button variant="primary">Get Started</Button>
+                    <Card.Text className="mt-3">
+                      <p>Great for serious job hunters</p>
+                      <ul>
+                        <li>Apply to unlimited jobs</li>
+                        <li>Resume optimization tips</li>
+                        <li>Priority application review</li>
+                      </ul>
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
 
-            <Col md={4}>
-              <Card>
-                <Card.Body>
-                  <Card.Title>Elite Candidate Plan</Card.Title>
-                  <Card.Text>
-                    <h3>$19.99</h3>
-                    <p>/month</p>
-                  </Card.Text>
-                  <Button variant="primary">Get Started</Button>
-                  <Card.Text className="mt-3">
-                    <p>Ideal for professionals seeking top jobs</p>
-                    <ul>
-                      <li>One-on-one career coaching</li>
-                      <li>Exclusive job postings</li>
-                      <li>Profile visibility boost</li>
-                    </ul>
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-
+              <Col md={4}>
+                <Card>
+                  <Card.Body>
+                    <Card.Title>Elite Candidate Plan</Card.Title>
+                    <Card.Text>
+                      <h3>$19.99</h3>
+                      <p>/month</p>
+                    </Card.Text>
+                    <Button variant="primary">Get Started</Button>
+                    <Card.Text className="mt-3">
+                      <p>Ideal for professionals seeking top jobs</p>
+                      <ul>
+                        <li>One-on-one career coaching</li>
+                        <li>Exclusive job postings</li>
+                        <li>Profile visibility boost</li>
+                      </ul>
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
       </div>
     </div>
   );

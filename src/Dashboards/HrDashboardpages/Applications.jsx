@@ -1,5 +1,3 @@
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Dropdown, Table } from 'react-bootstrap';
@@ -138,7 +136,7 @@ const Applications = () => {
   console.log("current page from update job")
 
   const initials = getInitials(userName);
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
 
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
@@ -168,18 +166,33 @@ const Applications = () => {
     });
   };
 
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+
+  useEffect(() => {
+    // Update the `isSmallScreen` state based on screen resizing
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
   return (
     <div className='dashboard-container'>
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide} >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
         <HrLeftSide user={{ userName, userEmail }} onClose={toggleLeftSide} />
       </div>
 
       <div className="right-side">
+      <div
+          className="small-screen-hr"
+          style={{
+            overflowY: 'auto',
+            maxHeight: isSmallScreen ? '600px' : '1000px',
+            paddingBottom: '100px'
+          }}
+        >  
         <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
           <div className="search-bar">
             <input
@@ -284,6 +297,7 @@ const Applications = () => {
         )}
       </div>
     </div>
+    </div >
 
   );
 }

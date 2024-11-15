@@ -1132,3 +1132,53 @@ button.com:hover {
 }
 
 }
+
+@media (max-width: 767px) {
+  .candidate-company_page-row2-col3 {
+    position: relative;
+    bottom: 65px;
+  
+  }
+  .candidate-company_page-row2{
+    height: 70px;
+  }
+}
+
+
+.tab-link {
+  padding-left: 2vw;
+  cursor: pointer;
+  display: inline-block; /* Make sure the links are block-level for better click area */
+  position: relative;
+  z-index: 10; /* Ensure it's above other content */
+}
+
+@media (max-width: 992px) {
+  .tab-link {
+    font-size: 20px;
+    padding-left: 1vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .tab-link {
+    font-size: 1.5em;
+    padding-left: 0.8vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .tab-link {
+    font-size: 1.5em;
+    padding-left: 0.5vw;
+  }
+}
+
+.active {
+  color: purple;
+}
+
+.inactive {
+  color: gray;
+}
+

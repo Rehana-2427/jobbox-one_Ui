@@ -1,5 +1,3 @@
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
@@ -48,7 +46,7 @@ const HrProfile = () => {
 
   const initials = getInitials(userName);
 
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
 
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
@@ -76,68 +74,81 @@ const HrProfile = () => {
       }
     });
   };
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
 
+  useEffect(() => {
+    // Update the `isSmallScreen` state based on screen resizing
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   return (
     <div className='dashboard-container'>
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide} >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
+
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
         <HrLeftSide user={{ userName, userEmail }} onClose={toggleLeftSide} />
       </div>
 
       <div className="right-side">
-        <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-          <Dropdown className="ml-2">
-            <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
-              <div
-                className="initials-placeholder"
-                style={{
-                  width: '30px',
-                  height: '30px',
-                  borderRadius: '50%',
-                  backgroundColor: 'grey',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'white',
-                  fontWeight: 'bold',
-                }}
-              >
-                {initials}
-              </div>
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="mt-3">
-              <Dropdown.Item as={Link} to="/settings">
-                <i className="i-Data-Settings me-1" /> Account settings
-              </Dropdown.Item>
-              <Dropdown.Item as="button" onClick={handleLogout}>
-                <i className="i-Lock-2 me-1" /> Logout
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-        <div>
-          <div className="profile-container">
-            {userData && (
-              <>
-                <div className="profile-item">
-                  <span className="profile-label">Name:</span>
-                  <span className="profile-value">{userData.userName}</span>
+        <div
+          className="small-screen-hr"
+          style={{
+            overflowY: 'auto',
+            maxHeight: isSmallScreen ? '600px' : '1000px',
+            paddingBottom: '20px'
+          }}
+        >                <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
+            <Dropdown className="ml-2">
+              <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
+                <div
+                  className="initials-placeholder"
+                  style={{
+                    width: '30px',
+                    height: '30px',
+                    borderRadius: '50%',
+                    backgroundColor: 'grey',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {initials}
                 </div>
-                <div className="profile-item">
-                  <span className="profile-label">Company Email:</span>
-                  <span className="profile-value">{userData.userEmail}</span>
-                </div>
-
-              </>
-            )}
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="mt-3">
+                <Dropdown.Item as={Link} to="/settings">
+                  <i className="i-Data-Settings me-1" /> Account settings
+                </Dropdown.Item>
+                <Dropdown.Item as="button" onClick={handleLogout}>
+                  <i className="i-Lock-2 me-1" /> Logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
+          <div>
+            <div className="profile-container">
+              {userData && (
+                <>
+                  <div className="profile-item">
+                    <span className="profile-label">Name:</span>
+                    <span className="profile-value">{userData.userName}</span>
+                  </div>
+                  <div className="profile-item">
+                    <span className="profile-label">Company Email:</span>
+                    <span className="profile-value">{userData.userEmail}</span>
+                  </div>
 
-        </div>
-        {/* 
+                </>
+              )}
+            </div>
+
+          </div>
+          {/* 
         <Container>
           <Row>
             <div className='text-center'>
@@ -209,6 +220,7 @@ const HrProfile = () => {
             </Col>
           </Row>
         </Container> */}
+        </div>
       </div>
     </div>
   );
