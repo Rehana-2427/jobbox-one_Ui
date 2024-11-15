@@ -1,14 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Card, Col, Container, Modal, Row } from 'react-bootstrap';
+import { Button, Card, Col, Modal, Row } from 'react-bootstrap';
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import ResumeSelectionPopup from '../../Dashboards/CandidateDashboardpages/ResumeSelectionPopup';
 import HomeFooter from '../HomeFooter';
+import './Company.css';
 import CompanyJobs from './CompanyJobs';
 import CompanyOverView from './CompanyOverView';
-import './Company.css';
 
 const EachCompanyPage = () => {
   // const BASE_API_URL = 'http://51.79.18.21:8082/api/jobbox';
@@ -156,16 +156,10 @@ const EachCompanyPage = () => {
   const handleCandidateClick = () => {
     openModal('candidate'); // Set modal content for candidate
     localStorage.setItem('redirectAfterLogin', 'dream-company');
-<<<<<<< HEAD
- 
-  };
-
-=======
     // navigate("/signin",{state:{companyId:companyId}})
   };
 
   console.log()
->>>>>>> 4698854e57f8a148c4e13f6e1bcb4694799ea885
   const handleResumeSelect = async (resumeId) => {
     if (resumeId) {
       // If saving is successful, then apply for the job
@@ -183,11 +177,7 @@ const EachCompanyPage = () => {
         navigate('/hr-sign-in', { state: { userType: 'HR' } }); // Pass user type as state
       }
       else if (modalContent === 'candidate') {
-<<<<<<< HEAD
-        navigate('/signin', { state: { userType: 'Candidate', companyId:companyId} });
-=======
         navigate('/signin', { state: { userType: 'Candidate', companyId: companyId } });
->>>>>>> 4698854e57f8a148c4e13f6e1bcb4694799ea885
       }
     }
     else if (option === 'register') {

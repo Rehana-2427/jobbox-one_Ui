@@ -217,13 +217,15 @@ const CompanyDetailsByAdmin = () => {
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
         <AdminleftSide onClose={toggleLeftSide} />
       </div>
-      <div className="right-side">
+      <div className="right-side" >
         <div
           style={{
             overflowY: 'auto',
             maxHeight: isSmallScreen ? '600px' : '1000px',
-            paddingBottom: '0px'
+            paddingBottom: '20px',
+            // height: '100%' // Optionally ensure height is defined
           }}
+
         >
           <Card style={{ width: '100%', height: '60%' }}>
             <Card.Body style={{ padding: 0, position: 'relative' }}>
@@ -450,64 +452,65 @@ const CompanyDetailsByAdmin = () => {
           <Button variant='primary' onClick={handleBack} style={{
             position: 'fixed', right: '50px'
           }}>Back</Button>
-          <Modal show={showModal} onHide={handleCloseModal}>
-            <Modal.Header closeButton>
-              <Modal.Title>Add Social Media Links</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form>
-                <Form.Group controlId='facebookLink'>
-                  <Form.Label>Facebook</Form.Label>
-                  <Form.Control
-                    type='text'
-                    name='facebookLink'
-                    value={socialMediaLinks.facebookLink}
-                    onChange={handleSocialInputChange}
-                    placeholder='Enter Facebook link'
-                  />
-                </Form.Group>
-                <Form.Group controlId='twitterLink'>
-                  <Form.Label>Twitter</Form.Label>
-                  <Form.Control
-                    type='text'
-                    name='twitterLink'
-                    value={socialMediaLinks.twitterLink}
-                    onChange={handleSocialInputChange}
-                    placeholder='Enter Twitter link'
-                  />
-                </Form.Group>
-                <Form.Group controlId='instagramLink'>
-                  <Form.Label>Instagram</Form.Label>
-                  <Form.Control
-                    type='text'
-                    name='instagramLink'
-                    value={socialMediaLinks.instagramLink}
-                    onChange={handleSocialInputChange}
-                    placeholder='Enter Instagram link'
-                  />
-                </Form.Group>
-                <Form.Group controlId='linkedinLink'>
-                  <Form.Label>LinkedIn</Form.Label>
-                  <Form.Control
-                    type='text'
-                    name='linkedinLink'
-                    value={socialMediaLinks.linkedinLink}
-                    onChange={handleSocialInputChange}
-                    placeholder='Enter LinkedIn link'
-                  />
-                </Form.Group>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant='secondary' onClick={handleCloseModal}>
-                Close
-              </Button>
-              <Button variant='primary' onClick={handleSaveLinks}>
-                Save Changes
-              </Button>
-            </Modal.Footer>
-          </Modal>
+
         </div >
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add Social Media Links</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group controlId='facebookLink'>
+                <Form.Label>Facebook</Form.Label>
+                <Form.Control
+                  type='text'
+                  name='facebookLink'
+                  value={socialMediaLinks.facebookLink}
+                  onChange={handleSocialInputChange}
+                  placeholder='Enter Facebook link'
+                />
+              </Form.Group>
+              <Form.Group controlId='twitterLink'>
+                <Form.Label>Twitter</Form.Label>
+                <Form.Control
+                  type='text'
+                  name='twitterLink'
+                  value={socialMediaLinks.twitterLink}
+                  onChange={handleSocialInputChange}
+                  placeholder='Enter Twitter link'
+                />
+              </Form.Group>
+              <Form.Group controlId='instagramLink'>
+                <Form.Label>Instagram</Form.Label>
+                <Form.Control
+                  type='text'
+                  name='instagramLink'
+                  value={socialMediaLinks.instagramLink}
+                  onChange={handleSocialInputChange}
+                  placeholder='Enter Instagram link'
+                />
+              </Form.Group>
+              <Form.Group controlId='linkedinLink'>
+                <Form.Label>LinkedIn</Form.Label>
+                <Form.Control
+                  type='text'
+                  name='linkedinLink'
+                  value={socialMediaLinks.linkedinLink}
+                  onChange={handleSocialInputChange}
+                  placeholder='Enter LinkedIn link'
+                />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant='secondary' onClick={handleCloseModal}>
+              Close
+            </Button>
+            <Button variant='primary' onClick={handleSaveLinks}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </div >
   );
