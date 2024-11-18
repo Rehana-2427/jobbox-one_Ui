@@ -20,7 +20,7 @@ const DreamJob = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [companyInput, setCompanyInput] = useState('');
   const [companies, setCompanies] = useState(new Set());
- 
+
   const [showResumePopup, setShowResumePopup] = useState(false);
   const [resumes, setResumes] = useState([]);
 
@@ -99,38 +99,38 @@ const DreamJob = () => {
 
       // If the user has already applied to some companies, show the confirmation dialog
       if (alreadyApplied.length > 0) {
-        if(uniqueElements.length > 0){
-        const companiesList = alreadyApplied.join(", ");  // Join the array into a string
-        const confirmResult = await Swal.fire({
-          title: 'You have already applied to these companies:',
-          html: `${companiesList}<br><br>If you want to continue and apply to the remaining companies, click OK.`,
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'OK',
-          cancelButtonText: 'Cancel',
-        });
-         // If user cancels, stop the operation
-         if (!confirmResult.isConfirmed) {
-          console.log('Operation canceled by user.');
-          return; // Abort the operation
-        }
-      }else{
-        const confirmResult = await Swal.fire({
-          title: 'You have already applied to these companies.',
-          //html: `${companiesList}<br><br>If you want to continue and apply to the remaining companies, click OK.`,
-          icon: 'warning',
-         // showCancelButton: true,
-          confirmButtonText: 'OK',
-         // cancelButtonText: 'Cancel',
-        });
+        if (uniqueElements.length > 0) {
+          const companiesList = alreadyApplied.join(", ");  // Join the array into a string
+          const confirmResult = await Swal.fire({
+            title: 'You have already applied to these companies:',
+            html: `${companiesList}<br><br>If you want to continue and apply to the remaining companies, click OK.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+          });
+          // If user cancels, stop the operation
+          if (!confirmResult.isConfirmed) {
+            console.log('Operation canceled by user.');
+            return; // Abort the operation
+          }
+        } else {
+          const confirmResult = await Swal.fire({
+            title: 'You have already applied to these companies.',
+            //html: `${companiesList}<br><br>If you want to continue and apply to the remaining companies, click OK.`,
+            icon: 'warning',
+            // showCancelButton: true,
+            confirmButtonText: 'OK',
+            // cancelButtonText: 'Cancel',
+          });
           // If user cancels, stop the operation
           if (confirmResult.isConfirmed) {
             console.log('Operation canceled by user.');
             return; // Abort the operation
           }
-      }
+        }
 
-      
+
       }
 
 
@@ -183,14 +183,15 @@ const DreamJob = () => {
 
   return (
     <div className='dashboard-container'>
-     
+
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
         <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
       </div>
 
       <div className="right-side">
         <Container className='d-flex justify-content-center'>
-          <div className="centered-content" style={{ minHeight: 'fit-content', width: '100%' }}>
+
+          <div className="centered-content" style={{ minHeight: 'fit-content', Width: '100%' }} >
             {showResumePopup && (
               <ResumeSelectionPopup
                 resumes={resumes}
@@ -198,8 +199,9 @@ const DreamJob = () => {
                 onClose={() => setShowResumePopup(false)}
               />
             )}
-            <Card className="center-container-card">
-              <Form onSubmit={handleSubmit} className="center-form-card">
+
+            <Card className="center-container-card" >
+              <Form onSubmit={handleSubmit} className="center-form-card" style={{ maxWidth: '350px' }}>
                 <Form.Group>
                   <Form.Label htmlFor="jobRole">Job Title:</Form.Label>
                   <Form.Control
@@ -229,50 +231,62 @@ const DreamJob = () => {
                     </Button>
                   </InputGroup>
                   <Form.Text className="text-muted text-wrap">
-                    Enter company names one by one. Click "Add" to include each company in the list.
+                    Enter company names one by one. <br /> Click "Add" to include each company in the list.
                   </Form.Text>
 
-                  <div>
-                    {Array.from(companies).map((company, index) => (
-                      <span
-                        key={index}
-                        className="badge bg-light text-dark me-2"
+                </Form.Group>
+
+                <br />
+
+                <div className='mb-3 d-flex flex-wrap'>
+                  {Array.from(companies).map((company, index) => (
+                    <span
+                      key={index}
+                      className="badge bg-light text-dark me-2 mb-2 position-relative d-inline-flex align-items-center"
+                      style={{
+                        fontSize: '1.25rem',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '0.25rem',
+                        position: 'relative',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                      }}
+                    >
+                      {company}  
+                      <i
+                        className="fas fa-times ms-2"
+                        onClick={() => handleRemoveCompany(company)}
                         style={{
-                          fontSize: '1.25rem',
-                          padding: '0.5rem 1rem',
-                          borderRadius: '0.25rem',
-                          position: 'relative',
-                          display: 'inline-flex',
-                          alignItems: 'center',
+                          cursor: 'pointer',
+                          color: '#dc3545',
+                          fontSize: '1.2rem',
+                          position: 'absolute',
+                          right: '3px',
+                          top: '12%',
+                          transform: 'translateY(-50%)',
                         }}
                       >
-                        {company}
-                        <i
-                          className="fas fa-times ms-2"
-                          onClick={() => handleRemoveCompany(company)}
-                          style={{
-                            cursor: 'pointer',
-                            color: '#dc3545',
-                            fontSize: '1.2rem',
-                            position: 'absolute',
-                            right: '3px',
-                            top: '12%',
-                            transform: 'translateY(-50%)',
-                          }}
-                        >
-                          <FontAwesomeIcon icon={faClose} />
-                        </i>
-                      </span>
-                    ))}
-                  </div>
-                </Form.Group>
+                        <FontAwesomeIcon icon={faClose} />
+                      </i>
+                    </span>
+                  ))}
+                </div>
+                <br />
                 <Form.Group>
                   <Form.Label htmlFor="resume">Resume:</Form.Label>
                   <Button onClick={handleApplyButtonClick}>Select Resume</Button>
                 </Form.Group>
               </Form>
-              {errorMessage && <p className="text-danger mt-3">{errorMessage}</p>}
+
+
+              {errorMessage &&
+                <p className="error-message" style={{ maxWidth: '350px', textWrap: 'auto' }}>
+                  {errorMessage}
+                </p>
+              }
+
             </Card>
+
           </div>
         </Container>
       </div>

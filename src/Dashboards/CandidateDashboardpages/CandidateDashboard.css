@@ -936,6 +936,20 @@ button.com:hover {
   margin: 180px
 }
 
+/* Optional: Add responsiveness using media queries */
+@media (max-width: 768px) {
+  .center-container-card {
+    padding: 15px; /* Reduce padding on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .center-container-card {
+    padding: 10px; /* Further reduce padding for smaller devices */
+  }
+}
+
+
 .job-details-text {
   font-family: nunito, sans-serif;
   font-size: 13px;

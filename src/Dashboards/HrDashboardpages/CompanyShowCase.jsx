@@ -429,7 +429,8 @@ const CompanyShowCase = () => {
                 <Button
                   variant="primary"
                   onClick={() => setShowModal(true)}
-                  className="btn btn-sm add-job-button " // Optional if you want to apply a base size className="add-job-button"
+                  //   className="btn btn-sm add-job-button " // Optional if you want to apply a base size className="add-job-button"
+                  className="thq-button-filled cta-button"
                   style={{ marginTop: '5px' }}
                 >
                   Add Social Media Links

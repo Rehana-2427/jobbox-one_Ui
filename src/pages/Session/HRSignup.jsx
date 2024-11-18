@@ -308,15 +308,13 @@ const HRSignup = () => {
                                 <Card
                                     className="hr-form-card o-hidden"
                                     style={{
+                                        width: '100%',  // Make sure the card takes up full width
+                                        maxWidth: '850px', // Limit max width for large screens
                                         transition: 'width 0.3s ease',
                                         position: 'relative',
-                                        bottom: '50px',
-                                        right: '70px',
-                                        backgroundColor: '#fff',
-                                        padding: '20px 30px',
-                                        borderRadius: '10px',
-                                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                                    }}
+                                        bottom: '40px',
+                                        right: '0',
+                                      }}
                                 >
                                     <Row>
                                         <Col style={{ paddingLeft: '50px' }}>
