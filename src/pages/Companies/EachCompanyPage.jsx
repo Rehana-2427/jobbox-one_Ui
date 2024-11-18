@@ -1,14 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Card, Col, Container, Modal, Row } from 'react-bootstrap';
+import { Button, Card, Col, Modal, Row } from 'react-bootstrap';
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import ResumeSelectionPopup from '../../Dashboards/CandidateDashboardpages/ResumeSelectionPopup';
 import HomeFooter from '../HomeFooter';
+import './Company.css';
 import CompanyJobs from './CompanyJobs';
 import CompanyOverView from './CompanyOverView';
-import './Company.css';
 
 const EachCompanyPage = () => {
   // const BASE_API_URL = 'http://51.79.18.21:8082/api/jobbox';

@@ -133,7 +133,7 @@ const DrawerComp = () => {
                             </div>
                             <Box sx={{
                                 fontSize: '24px',
-                                fontWeight: 'bold'
+                                fontWeight: 'bold' 
                             }}>{user.userName}</Box>
                         </Box>
                     )}
@@ -195,7 +195,7 @@ const DrawerComp = () => {
                             flexDirection: 'column',
                             gap: '10px',
                             position: 'absolute',  // Position the box at the bottom
-                            bottom: '20px',  // Distance from the bottom of the viewport
+                            bottom: '70px',  // Distance from the bottom of the viewport
                             left: '50%',  // Center horizontally
                             transform: 'translateX(-50%)',  // Adjust for centering
                             width: '100%',  // Make it full width if needed

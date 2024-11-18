@@ -261,318 +261,244 @@ const CompanyShowCase = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   return (
-    <div className='dashboard-container' style={{ background: '#f2f2f2', minHeight: '100vh' }}>
+    <div className="dashboard-container" style={{ background: '#f2f2f2', minHeight: '100vh' }}>
+  <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
+    <HrLeftSide user={{ userName, userEmail }} onClose={toggleLeftSide} />
+  </div>
 
-      <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-        <HrLeftSide user={{ userName, userEmail }} onClose={toggleLeftSide} />
-      </div>
+  <div className="right-side">
+    <div
+      className="small-screen-hr"
+      style={{
+        overflowY: 'auto',
+        maxHeight: isSmallScreen ? '600px' : '1000px',
+        paddingBottom: '20px',
+      }}
+    >
+      <Card style={{ width: '100%', height: '60%' }}>
+        <Card.Body style={{ padding: 0, position: 'relative' }}>
+          <div style={{ position: 'relative', height: '55%' }}>
+            <img
+              src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
+              alt="Company Banner"
+              className="banner-image"
+              onClick={() => handleCameraIconClick('banner')}
+              style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
+            />
+            <img
+              src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain"
+              alt="Edit Banner"
+              className="banner-edit-icon"
+              style={{
+                position: 'absolute',
+                top: '185px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
+                opacity: 0.7,
+              }}
+              onClick={() => handleCameraIconClick('banner')}
+            />
+            <input
+              id="bannerInput"
+              type="file"
+              style={{ display: 'none' }}
+              onChange={(e) => handleFileChange('banner', e.target.files[0])}
+              accept="image/*"
+            />
+          </div>
 
-      <div className="right-side">
-        <Row>
-          <Card style={{ width: '100%', height: '60%' }}>
-            <Card.Body style={{ padding: 0, position: 'relative' }}>
-              <div style={{ position: 'relative', height: '55%' }}>
-                <img
-                  src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
-                  alt="Company Banner"
-                  className="banner-image"
-                  onClick={() => handleCameraIconClick('banner')}
-                  style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
-                />
-                <img
-                  src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain" alt="Edit Banner"
-                  className="banner-edit-icon"
-                  style={{
-                    position: 'absolute',
-                    top: '185px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
-                    opacity: 0.7,
-                  }}
-                  onClick={() => handleCameraIconClick('banner')}
-                />
-                <input
-                  id="bannerInput"
-                  type="file"
-                  style={{ display: 'none' }}
-                  onChange={(e) => handleFileChange('banner', e.target.files[0])}
-                  accept="image/*"
-                />
+          <div style={{ position: 'absolute', top: '90%', left: '50px', transform: 'translateY(-50%)' }}>
+            <img
+              src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
+              alt="Company Logo"
+              className="logo-image"
+              style={{
+                width: '200px',
+                height: '120px',
+                cursor: 'pointer',
+                clipPath: 'ellipse(50% 50% at 50% 50%)',
+                objectFit: 'cover',
+              }}
+              onClick={() => handleCameraIconClick('logo')}
+            />
+            <img
+              src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain"
+              alt="Edit Logo"
+              className="logo-edit-icon"
+              style={{
+                position: 'absolute',
+                bottom: '10px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
+                opacity: 0.7,
+              }}
+              onClick={() => handleCameraIconClick('logo')}
+            />
+            <input
+              id="logoInput"
+              type="file"
+              style={{ display: 'none' }}
+              onChange={(e) => handleFileChange('logo', e.target.files[0])}
+              accept="image/*"
+            />
+          </div>
+        </Card.Body>
+      </Card>
 
-              </div>
-              <div style={{ position: 'absolute', top: '90%', left: '50px', transform: 'translateY(-50%)' }}>
-                <img
-                  src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
-                  alt="Company Logo"
-                  className="logo-image"
-                  style={{
-                    width: '200px', // Fixed width
-                    height: '120px', // Fixed height
-                    cursor: 'pointer',
-                    // border: '5px solid white',
-                    clipPath: 'ellipse(50% 50% at 50% 50%)', // Creates a horizontal oval
-                    objectFit: 'cover', // Ensures the image covers the dimensions without distortion
-                  }}
-                />
+      <Row className="hr-company_page-row2" style={{ marginTop: '50px' }}>
+        <Col md={2}>
+          <span>
+            <a
+              onClick={() => handleTabClick('overview')}
+              className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
+            >
+              About
+            </a>
+          </span>
+        </Col>
+        <Col md={2}>
+          <span>
+            <a
+              onClick={() => handleTabClick('jobs')}
+              className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
+            >
+              Jobs
+            </a>
+          </span>
+        </Col>
+        <Col className="hr-company_page-row2-col3" style={{ textAlign: 'end', marginRight: '20px' }}>
+          <span style={{ marginLeft: '20px' }}>
+            <h4 style={{ paddingRight: '14px' }}><b>{userData.companyName}</b></h4>
+            {socialMediaLinks.facebookLink && (
+              <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
+                <FaFacebook size={24} style={{ margin: '0 5px', color: '#3b5998' }} />
+              </a>
+            )}
+            {socialMediaLinks.twitterLink && (
+              <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
+                <FaTwitter size={24} style={{ margin: '0 5px', color: '#1da1f2' }} />
+              </a>
+            )}
+            {socialMediaLinks.instagramLink && (
+              <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
+                <FaInstagram size={24} style={{ margin: '0 5px', color: '#e4405f' }} />
+              </a>
+            )}
+            {socialMediaLinks.linkedinLink && (
+              <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
+                <FaLinkedin size={24} style={{ margin: '0 5px', color: '#0077b5' }} />
+              </a>
+            )}
+            <div style={{ paddingBottom: '10px', paddingTop: '10px' }}>
+              <Button variant="primary" onClick={setShowModal}>Add Social Media Links</Button>
+            </div>
+          </span>
+        </Col>
+      </Row>
 
-                <img
-                  src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain" alt="Edit Logo"
-                  className="logo-edit-icon"
-                  style={{
-                    position: 'absolute',
-                    bottom: '10px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
-                    opacity: 0.7,
-                  }}
-                  onClick={() => handleCameraIconClick('logo')}
-                />
-                <input
-                  id="logoInput"
-                  type="file"
-                  style={{ display: 'none' }}
-                  onChange={(e) => handleFileChange('logo', e.target.files[0])}
-                  accept="image/*"
-                />
-              </div>
+      <Row className="hr-company_page-row3">
+        <Col xs={12} md={8}>
+          {activeTab === 'overview' && <CompnayOverview style={{ overflowY: 'scroll' }} />}
+          {activeTab === 'jobs' && <CompanyJobs />}
+        </Col>
+        <Col xs={12} md={4}>
+          <Card className="key-stats" style={{ width: '80%', height: 'fit-content' }}>
+            <Card.Body>
+              <Row className="mb-3">
+                <h1>Other Information</h1>
+              </Row>
+              <Row className="mb-2">
+                <Col>
+                  <h5>Applicants: {countOfApplications}</h5>
+                </Col>
+              </Row>
+              <Row className="mb-2">
+                <Col>
+                  <h5>Total HR's: {countOfHr}</h5>
+                </Col>
+              </Row>
+              <Row className="mb-2">
+                <Col>
+                  <h5>Key Stats:</h5>
+                  <ul>
+                    <li>Active Job Postings: {countOfActiveJobs}</li>
+                    <li>Shortlisted Candidates: {countOfShortlistedCandiCompany}</li>
+                    <li>Avg. Time to Fill a Job: 7 days</li>
+                    <li>Dream Applications: {countOfDreamApplicationsInCompany}</li>
+                  </ul>
+                </Col>
+              </Row>
             </Card.Body>
           </Card>
-        </Row>
-        <Row
-          style={{
-            display: 'flex',                // Use flexbox to align elements side by side
-            justifyContent: 'space-between', // Space out the left and right sections
-            alignItems: 'center',           // Vertically center the content
-            width: '100%',
-            padding: '0 20px',              // Optional: Add some padding for spacing
-            marginTop: '30px'
-          }}
-        >
-          <div>
-            {/* Left Section: Navigation Tabs */}
-            <div style={{
-              display: 'flex',
-              justifyContent: 'flex-start',
-              width: '50%',
-              marginTop: '30px',  // Move navigation links down a bit
-            }}>
-              <ul
-                className="nav-links"
-                style={{
-                  listStyleType: 'none',
-                  display: 'flex',
-                  margin: 0,
-                  padding: 0,
-                  flexWrap: 'wrap',
-                  justifyContent: 'space-between', // Align tabs to the left
-                }}
-              >
-                <Col md={2}>
-                  <span>
-                    <a
-                      onClick={() => setActiveTab('overview')}
-                      className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
-                    >
-                      About
-                    </a>
-                  </span>
-                </Col>
-                <Col md={2}>
-                  <span>
-                    <a
-                      onClick={() => setActiveTab('jobs')}
-                      className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
-                    >
-                      Jobs
-                    </a>
-                  </span>
-                </Col>
-              </ul>
-            </div>
-            {/* Right Section: Company Name & Social Media Icons */}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',   // Stack items vertically in the right section
-                alignItems: 'flex-end',    // Align everything to the right
-                zIndex: 10,
-                marginTop: '-80px',        // Move the right section up a bit
-              }}
-            >
-              {/* Company Name Section */}
-              <div style={{ marginTop: '0px', marginBottom: '5px' }}>
-                <h2 style={{ margin: 0 }}>
-                  {companyName}
-                </h2>
-              </div>
-              <div className='social-icons-company ' style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginTop: '-30px' }}>
-
-                <div style={{ marginTop: '30px' }}>
-                  {socialMediaLinks.facebookLink && (
-                    <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
-                      <FaFacebook size={24} style={{ margin: '0 2px', color: '#3b5998' }} />
-                    </a>
-                  )}
-                  {socialMediaLinks.twitterLink && (
-                    <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
-                      <FaTwitter size={24} style={{ margin: '0 2px', color: '#1da1f2' }} />
-                    </a>
-                  )}
-                  {socialMediaLinks.instagramLink && (
-                    <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
-                      <FaInstagram size={24} style={{ margin: '0 2px', color: '#e4405f' }} />
-                    </a>
-                  )}
-                  {socialMediaLinks.linkedinLink && (
-                    <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
-                      <FaLinkedin size={24} style={{ margin: '0 2px', color: '#0077b5' }} />
-                    </a>
-                  )}
-                </div>
-
-                <Button
-                  variant="primary"
-                  onClick={() => setShowModal(true)}
-                  //   className="btn btn-sm add-job-button " // Optional if you want to apply a base size className="add-job-button"
-                  className="thq-button-filled cta-button"
-                  style={{ marginTop: '5px' }}
-                >
-                  Add Social Media Links
-                </Button>
-
-              </div>
-            </div>
-          </div>
-          <Modal show={showModal} onHide={handleCloseModal}>
-            <Modal.Header closeButton>
-              <Modal.Title>Add Social Media Links</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form>
-                <Form.Group controlId='facebookLink'>
-                  <Form.Label>Facebook</Form.Label>
-                  <Form.Control
-                    type='text'
-                    name='facebookLink'
-                    value={socialMediaLinks.facebookLink}
-                    onChange={handleSocialInputChange}
-                    placeholder='Enter Facebook link'
-                  />
-                </Form.Group>
-                <Form.Group controlId='twitterLink'>
-                  <Form.Label>Twitter</Form.Label>
-                  <Form.Control
-                    type='text'
-                    name='twitterLink'
-                    value={socialMediaLinks.twitterLink}
-                    onChange={handleSocialInputChange}
-                    placeholder='Enter Twitter link'
-                  />
-                </Form.Group>
-                <Form.Group controlId='instagramLink'>
-                  <Form.Label>Instagram</Form.Label>
-                  <Form.Control
-                    type='text'
-                    name='instagramLink'
-                    value={socialMediaLinks.instagramLink}
-                    onChange={handleSocialInputChange}
-                    placeholder='Enter Instagram link'
-                  />
-                </Form.Group>
-                <Form.Group controlId='linkedinLink'>
-                  <Form.Label>LinkedIn</Form.Label>
-                  <Form.Control
-                    type='text'
-                    name='linkedinLink'
-                    value={socialMediaLinks.linkedinLink}
-                    onChange={handleSocialInputChange}
-                    placeholder='Enter LinkedIn link'
-                  />
-                </Form.Group>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant='secondary' onClick={handleCloseModal}>
-                Close
-              </Button>
-              <Button variant='primary' onClick={handleSaveLinks}>
-                Save Changes
-              </Button>
-            </Modal.Footer>
-          </Modal>
-          {/* <div
-          style={{
-            position: 'absolute',
-            top: '80%',
-            left: '5%',
-            transform: 'translateX(-5%)',
-            width: '90%',
-            display: 'flex',
-            justifyContent: 'flex-start',
-            overflowX: 'auto',
-            boxSizing: 'border-box',
-          }}
-        >
-          <ul className="nav-links">
-            <li>
-              <span>
-                <a
-                  onClick={() => handleTabClick('overview')}
-                  className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
-                >
-                  About
-                </a>
-              </span>
-            </li>
-            <li>
-              <span>
-                <a
-                  onClick={() => handleTabClick('jobs')}
-                  className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
-                >
-                  Jobs
-                </a>
-              </span>
-            </li>
-          </ul>
-
-        </div> */}
-        </Row>
-
-        <Row style={{ marginTop: '20px' }}>
-          <Col xs={12} md={8}>
-            {activeTab === 'overview' && <CompnayOverview style={{ overflowY: 'scroll' }} />}
-            {activeTab === 'jobs' && <CompanyJobs />}
-          </Col>
-          <Col xs={12} md={4}>
-            <Card className='key-stats' style={{ width: '80%', height: 'fit-content' }}>
-              <Card.Body>
-                <Row className="mb-3">
-                  <h1>Other Information</h1>
-                </Row>
-                <Row className="mb-2">
-                  <Col>
-                    <h5>Applicants:{countOfApplications}</h5>
-                  </Col>
-                </Row>
-                <Row className="mb-2">
-                  <Col>
-                    <h5>Total HR's:{countOfHr}</h5>
-                  </Col>
-                </Row>
-                <Row className="mb-2">
-                  <Col>
-                    <h5>Key Stats:</h5>
-                    <ul>
-                      <li>Active Job Postings: {countOfActiveJobs}</li> {/* Placeholder values */}
-                      <li>Shortlisted Candidates: {countOfShortlistedCandiCompany}</li>
-                      <li>Avg. Time to Fill a Job: 7 days</li>
-                      <li>Dream Applications: {countOfDreamApplicationsInCompany}</li>
-                    </ul>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </div>
+        </Col>
+      </Row>
     </div>
+
+    {/* <Button
+      variant="primary"
+      onClick={() => setShowModal(true)}
+      className="thq-button-filled cta-button"
+      style={{ marginTop: '5px' }}
+    >
+      Add Social Media Links
+    </Button> */}
+  </div>
+
+  <Modal show={showModal} onHide={handleCloseModal}>
+    <Modal.Header closeButton>
+      <Modal.Title>Add Social Media Links</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+      <Form>
+        <Form.Group controlId="facebookLink">
+          <Form.Label>Facebook</Form.Label>
+          <Form.Control
+            type="text"
+            name="facebookLink"
+            value={socialMediaLinks.facebookLink}
+            onChange={handleSocialInputChange}
+            placeholder="Enter Facebook link"
+          />
+        </Form.Group>
+        <Form.Group controlId="twitterLink">
+          <Form.Label>Twitter</Form.Label>
+          <Form.Control
+            type="text"
+            name="twitterLink"
+            value={socialMediaLinks.twitterLink}
+            onChange={handleSocialInputChange}
+            placeholder="Enter Twitter link"
+          />
+        </Form.Group>
+        <Form.Group controlId="instagramLink">
+          <Form.Label>Instagram</Form.Label>
+          <Form.Control
+            type="text"
+            name="instagramLink"
+            value={socialMediaLinks.instagramLink}
+            onChange={handleSocialInputChange}
+            placeholder="Enter Instagram link"
+          />
+        </Form.Group>
+        <Form.Group controlId="linkedinLink">
+          <Form.Label>LinkedIn</Form.Label>
+          <Form.Control
+            type="text"
+            name="linkedinLink"
+            value={socialMediaLinks.linkedinLink}
+            onChange={handleSocialInputChange}
+            placeholder="Enter LinkedIn link"
+          />
+        </Form.Group>
+      </Form>
+    </Modal.Body>
+    <Modal.Footer>
+      <Button variant="secondary" onClick={handleCloseModal}>
+        Close
+      </Button>
+      <Button variant="primary" onClick={handleSaveLinks}>
+        Save Changes
+      </Button>
+    </Modal.Footer>
+  </Modal>
+</div>
+
   )
 }
 export default CompanyShowCase
