@@ -139,8 +139,8 @@ const CandidatesCompanies = () => {
 
   const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
   const toggleLeftSide = () => {
-    console.log("Toggling left side visibility");
-    setIsLeftSideVisible(!isLeftSideVisible);
+  console.log("Toggling left side visibility");
+  setIsLeftSideVisible(!isLeftSideVisible);
   };
 
   const { logout } = useAuth(); // Get logout function from context
@@ -220,7 +220,6 @@ const CandidatesCompanies = () => {
                     fontWeight: 'bold',
                   }}
                 >
-
                   {initials}
                 </div>
               </Dropdown.Toggle>
