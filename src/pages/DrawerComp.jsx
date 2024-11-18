@@ -113,7 +113,7 @@ const DrawerComp = () => {
                 onClose={() => setOpenDrawer(false)}
                 sx={{
                     '& .MuiDrawer-paper': {
-                        height: '100vh', // Set the height to full viewport height
+                        // height: '100vh', // Set the height to full viewport height
                         boxSizing: 'border-box', // Ensure padding and border are included in the height
                     }
                 }}

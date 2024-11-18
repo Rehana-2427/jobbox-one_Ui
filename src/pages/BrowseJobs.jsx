@@ -2,7 +2,6 @@ import axios from 'axios';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Card, Modal, Row } from 'react-bootstrap';
-import { FaSearch } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import Pagination from '../Pagination';
 import './BrowseJobs.css';
@@ -208,11 +207,11 @@ const BrowseJobs = () => {
                                 className='search-input-bar'
                                 onChange={handleInputChange}
                             />
-                            <FaSearch fontSize={20} style={{
+                            {/* <FaSearch fontSize={20} style={{
                                 position: 'absolute',
                                 top: '12px',
                                 right: '50px', // Adjust as needed to position it correctly
-                            }} />
+                            }} /> */}
                         </div>
                     </div>
                 </Row>

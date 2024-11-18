@@ -1431,7 +1431,7 @@ section {
   .MuiDrawer-paper {
     box-shadow: none !important;
     border: none !important;
-    max-height: 100vh;
+    max-height: 100%;
 }
 
 

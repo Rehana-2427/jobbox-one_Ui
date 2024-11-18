@@ -72,33 +72,32 @@
 /* Large screens (default styles) */
 @media (min-width: 1200px) {
   .hr-form-card {
-    width: 70%;
+    /* width: 70%;
     position: relative;
-    left: 50px;
-    top: 20px;
+    left: 50px; */
+    /* top: 20px; */
   }
 
   .hr-form {
     max-height: 70vh; /* Adjust for large screens */
-    padding: 40px;
+    /* padding: 40px; */
   }
 }
 
 /* Medium screens (e.g., tablets) */
 @media (max-width: 1200px) {
-  .hr-form-card {
+  /* .hr-form-card {
     width: 90%;
     position: relative;
     left: 10px;
     padding-left: 20px;
-    top: 10px;
-  }
+  } */
 
   .hr-form {
-    position: relative;
+    /* position: relative;
     top: 80px;
-    max-height: 80vh;
-    padding: 20px;
+    max-height: 80vh; */
+    /* padding: 20px; */
   }
 }
 
@@ -112,10 +111,10 @@
   }
 
   .hr-form {
-    position: relative;
+    /* position: relative;
     top: 70px;
-    max-height: 80vh;
-    padding: 15px;
+    max-height: 80vh; */
+    /* padding: 15px; */
   }
 }
 
@@ -130,10 +129,10 @@
   }
 
   .hr-form {
-    position: relative;
+    /* position: relative;
     top: 60px;
-    max-height: 75vh;
-    padding: 15px;
+    max-height: 75vh; */
+    /* padding: 15px; */
   }
 
   .hr-form button {
@@ -153,7 +152,7 @@
 /* Ensure readability on very small screens */
 @media (max-width: 400px) {
   .hr-form {
-    padding: 10px;
+    /* padding: 10px; */
   }
 
   .hr-form input,
@@ -163,6 +162,8 @@
     padding: 6px;
   }
 }
-
-
-
+@media(max-width: 990px){
+  .employee-register-form{
+    margin-top: 0px !important;
+  }
+}

@@ -8,6 +8,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import Swal from 'sweetalert2';
 import * as yup from 'yup';
 import { auth } from '../../firebase/firebaseConfig';
+import CustomNavbar from '../CustomNavbar';
 import SocialButtons from './sessions/SocialButtons';
 import TextField from './sessions/TextField';
 
@@ -389,273 +390,247 @@ const CandiSignup = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs" className="hr-form-container">
-    <div className="hr-form" style={{ maxHeight: '90vh', overflowY: 'auto' }}>
-      <div style={{ textAlign: 'center' }}>
-        <h2 style={{ fontFamily: '"Roboto", sans-serif', color: '#333', fontWeight: '500' }}>
-          Candidate Registration Form
-        </h2>
-      </div>
-      <div
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: '100vh',
-          position: 'relative',
-          right: '70px',
-          top: '60px',
-          backgroundColor: '#f4f4f4', // Soft background color
-          padding: '30px 40px',
-          borderRadius: '10px',
-          boxShadow: '0 10px 20px rgba(0, 0, 0, 0.1)',
-          width: '100%',
-          maxWidth: '850px', // Ensure it's not too wide on large screens
-        }}
-      >
-        <Formik
-          initialValues={formValues}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-          enableReinitialize
-        >
-          {({ values, errors, touched, handleChange, handleBlur, isSubmitting }) => (
-            <Form className="form">
-              {/* Card Section */}
-              <Card
-                className="hr-form-card o-hidden"
-                style={{
-                  width: '100%',  // Make sure the card takes up full width
-                  maxWidth: '850px', // Limit max width for large screens
-                  transition: 'width 0.3s ease',
-                  position: 'relative',
-                  bottom: '40px',
-                  right: '0',
-                }}
-              >
-                <Row>
-                  {/* Left Section */}
-                  <Col md={6} className="text-center auth-cover" style={{ marginTop: '15px' }}>
-                    <div className="ps-3 auth-right">
-                      <div className="w-100 h-100 justify-content-center d-flex flex-column">
-                        <p>Already have an account? Login</p>
-                        <SocialButtons
-                          isLogin={true}
-                          routeUrl="/signin"
-                          googleHandler={signInWithGoogle}
-                          facebookHandler={signInWithFacebook}
-                        />
+    <div>
+      <CustomNavbar />
+      <Container component="main" maxWidth="xs" style={{ marginTop: '150px' }} className='employee-register-form'>
+        <div style={{ textAlign: 'center' }}>
+          <h3 style={{ fontFamily: '"Roboto", sans-serif', color: '#333', fontWeight: '500' }}>
+            Candidate Registration Form
+          </h3>
+        </div>
+        <div className="hr-form" style={{ maxHeight: '90vh', overflowY: 'auto', marginTop: '0' }}>
+          <Formik
+            initialValues={formValues}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+            enableReinitialize
+          >
+            {({ values, errors, touched, handleChange, handleBlur, isSubmitting }) => (
+              <Form className="form">
+                {/* Card Section */}
+                <Card className="hr-form-card o-hidden" style={{ width: '100%', transition: 'width 0.3s ease' }} >
+                  <Row>
+                    {/* Left Section */}
+                    <Col md={6} className="text-center auth-cover" style={{ marginTop: '15px' }}>
+                      <div className="ps-3 auth-right">
+                        <div className="w-100 h-100 justify-content-center d-flex flex-column">
+                          <p>Already have an account? Login</p>
+                          <SocialButtons
+                            isLogin={true}
+                            routeUrl="/signin"
+                            googleHandler={signInWithGoogle}
+                            facebookHandler={signInWithFacebook}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </Col>
-                  {/* Right Section */}
-                  <Col md={6}>
-                    <TextField
-                      type="text"
-                      name="userName"
-                      label={
-                        <>
-                          Your name <span style={{ color: 'red' }}>*</span>
-                        </>
-                      }
-                      required
-                      placeholder="Enter your name"
-                      value={values.userName}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      helperText={errors.userName}
-                      error={errors.userName && touched.userName}
-                      errorMessage={touched.userName && errors.userName}
-                      disabled={disableFormFields}
-                      fullWidth
-                    />
-  
-                    <TextField
-                      type="email"
-                      name="userEmail"
-                      label={
-                        <>
-                          Your Email <span style={{ color: 'red' }}>*</span>
-                        </>
-                      }
-                      required
-                      placeholder="Enter your email"
-                      value={values.userEmail}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      helperText={errors.userEmail}
-                      error={errors.userEmail && touched.userEmail}
-                      errorMessage={touched.userEmail && errors.userEmail}
-                      disabled={disableFormFields || emailExistsError}
-                      fullWidth
-                    />
-                    <TextField
-                      type="text"
-                      name="phone"
-                      label={
-                        <>
-                          Phone Number <span style={{ color: 'red' }}>*</span>
-                        </>
-                      }
-                      required
-                      placeholder="Enter your phone number"
-                      value={values.phone}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      helperText={errors.phone}
-                      error={errors.phone && touched.phone}
-                      fullWidth
-                      errorMessage={touched.phone && errors.phone}
-                      disabled={disableFormFields}
-                    />
-                    <TextField
-                      type="password"
-                      name="password"
-                      label={
-                        <>
-                          Password <span style={{ color: 'red' }}>*</span>
-                        </>
-                      }
-                      required
-                      placeholder="Enter your password"
-                      value={values.password}
-                      onChange={handleChange}
-                      onBlur={(e) => {
-                        handleBlur(e);
-                        if (errors.password) {
-                          setPasswordCriteriaError(true); // Show toast if there's an error
+                    </Col>
+                    {/* Right Section */}
+                    <Col md={6}>
+                      <TextField
+                        type="text"
+                        name="userName"
+                        label={
+                          <>
+                            Your name <span style={{ color: 'red' }}>*</span>
+                          </>
                         }
-                      }}
-                      helperText={errors.password}
-                      error={errors.password && touched.password}
-                      fullWidth
-                      errorMessage={touched.password && errors.password}
-                      disabled={disableFormFields}
-                    />
-  
-                    <TextField
-                      type="password"
-                      name="confirmPassword"
-                      label={
-                        <>
-                          Confirm Password <span style={{ color: 'red' }}>*</span>
-                        </>
-                      }
-                      required
-                      placeholder="Re-enter your password"
-                      value={values.confirmPassword}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      helperText={errors.confirmPassword}
-                      error={errors.confirmPassword && touched.confirmPassword}
-                      fullWidth
-                      errorMessage={touched.confirmPassword && errors.confirmPassword}
-                      disabled={disableFormFields}
-                    />
-                    {passwordMatchError && (
-                      <p style={{ color: 'red', fontSize: '0.875rem', marginTop: '0.25rem' }}>
-                        Password did not match, please try again...
-                      </p>
-                    )}
-  
-                    {!otpVerified && (
+                        required
+                        placeholder="Enter your name"
+                        value={values.userName}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        helperText={errors.userName}
+                        error={errors.userName && touched.userName}
+                        errorMessage={touched.userName && errors.userName}
+                        disabled={disableFormFields}
+                        fullWidth
+                      />
+
+                      <TextField
+                        type="email"
+                        name="userEmail"
+                        label={
+                          <>
+                            Your Email <span style={{ color: 'red' }}>*</span>
+                          </>
+                        }
+                        required
+                        placeholder="Enter your email"
+                        value={values.userEmail}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        helperText={errors.userEmail}
+                        error={errors.userEmail && touched.userEmail}
+                        errorMessage={touched.userEmail && errors.userEmail}
+                        disabled={disableFormFields || emailExistsError}
+                        fullWidth
+                      />
+                      <TextField
+                        type="text"
+                        name="phone"
+                        label={
+                          <>
+                            Phone Number <span style={{ color: 'red' }}>*</span>
+                          </>
+                        }
+                        required
+                        placeholder="Enter your phone number"
+                        value={values.phone}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        helperText={errors.phone}
+                        error={errors.phone && touched.phone}
+                        fullWidth
+                        errorMessage={touched.phone && errors.phone}
+                        disabled={disableFormFields}
+                      />
+                      <TextField
+                        type="password"
+                        name="password"
+                        label={
+                          <>
+                            Password <span style={{ color: 'red' }}>*</span>
+                          </>
+                        }
+                        required
+                        placeholder="Enter your password"
+                        value={values.password}
+                        onChange={handleChange}
+                        onBlur={(e) => {
+                          handleBlur(e);
+                          if (errors.password) {
+                            setPasswordCriteriaError(true); // Show toast if there's an error
+                          }
+                        }}
+                        helperText={errors.password}
+                        error={errors.password && touched.password}
+                        fullWidth
+                        errorMessage={touched.password && errors.password}
+                        disabled={disableFormFields}
+                      />
+
+                      <TextField
+                        type="password"
+                        name="confirmPassword"
+                        label={
+                          <>
+                            Confirm Password <span style={{ color: 'red' }}>*</span>
+                          </>
+                        }
+                        required
+                        placeholder="Re-enter your password"
+                        value={values.confirmPassword}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        helperText={errors.confirmPassword}
+                        error={errors.confirmPassword && touched.confirmPassword}
+                        fullWidth
+                        errorMessage={touched.confirmPassword && errors.confirmPassword}
+                        disabled={disableFormFields}
+                      />
+                      {passwordMatchError && (
+                        <p style={{ color: 'red', fontSize: '0.875rem', marginTop: '0.25rem' }}>
+                          Password did not match, please try again...
+                        </p>
+                      )}
+
+                      {!otpVerified && (
+                        <div className="d-flex justify-content-center">
+                          <Button
+                            disabled={disableFormFields || otpVerified}
+                            className="mt-2"
+                            onClick={() => {
+                              setDisableFormFields(true);
+                              sendOTP(values.userEmail);
+                            }}
+                          >
+                            Validate my email
+                          </Button>
+                        </div>
+                      )}
+
+                      {successMessage && <p className="success-message">{successMessage}</p>}
+
+                      <div>
+                        <Field
+                          type="checkbox"
+                          name="agreeToTermsAndCondition"
+                          id="agreeToTermsAndCondition"
+                          checked={values.agreeToTermsAndCondition}
+                          onChange={(e) => {
+                            handleChange(e);
+                            setAgreeToTermsAndConditionByCheck(true);
+                          }}
+                          style={{ marginRight: '10px', transform: 'scale(1)', borderColor: 'black' }}
+                        />
+                        <label>
+                          I agree to the{' '}
+                          <Link to="/terms-and-conditions" target="_blank">
+                            Terms and Conditions
+                          </Link>{' '}
+                          of the website
+                        </label>
+                        {touched.agreeToTermsAndCondition && errors.agreeToTermsAndCondition && (
+                          <div className="invalid-feedback">{errors.agreeToTermsAndCondition}</div>
+                        )}
+                      </div>
+
+                      {emailExistsError && (
+                        <div>
+                          <p className="error-message">
+                            Email already exists. Please{' '}
+                            <Link to="/signin">click here for login</Link>
+                          </p>
+                          <p>OR</p>
+                          <Button onClick={() => updateUserData(values)}>Update Your Data</Button>
+                        </div>
+                      )}
+
+                      {errorMessage && <div className="text-danger">{errorMessage}</div>}
                       <div className="d-flex justify-content-center">
                         <Button
-                          disabled={disableFormFields || otpVerified}
-                          className="mt-2"
-                          onClick={() => {
-                            setDisableFormFields(true);
-                            sendOTP(values.userEmail);
-                          }}
+                          type="submit"
+                          className="btn btn-primary w-50 my-1 btn-rounded mt-3 d-flex justify-content-center align-items-center"
+                          disabled={!otpVerified || isSubmitting || emailExistsError || agreeToTermsAndConditionByCheck === false}
                         >
-                          Validate my email
+                          {isSubmitting ? 'Registering...' : 'Register'}
                         </Button>
                       </div>
-                    )}
-  
-                    {successMessage && <p className="success-message">{successMessage}</p>}
-  
-                    <div>
-                      <Field
-                        type="checkbox"
-                        name="agreeToTermsAndCondition"
-                        id="agreeToTermsAndCondition"
-                        checked={values.agreeToTermsAndCondition}
-                        onChange={(e) => {
-                          handleChange(e);
-                          setAgreeToTermsAndConditionByCheck(true);
-                        }}
-                        style={{ marginRight: '10px', transform: 'scale(1)', borderColor: 'black' }}
-                      />
-                      <label>
-                        I agree to the{' '}
-                        <Link to="/terms-and-conditions" target="_blank">
-                          Terms and Conditions
-                        </Link>{' '}
-                        of the website
-                      </label>
-                      {touched.agreeToTermsAndCondition && errors.agreeToTermsAndCondition && (
-                        <div className="invalid-feedback">{errors.agreeToTermsAndCondition}</div>
-                      )}
-                    </div>
-  
-                    {emailExistsError && (
-                      <div>
-                        <p className="error-message">
-                          Email already exists. Please{' '}
-                          <Link to="/signin">click here for login</Link>
-                        </p>
-                        <p>OR</p>
-                        <Button onClick={() => updateUserData(values)}>Update Your Data</Button>
-                      </div>
-                    )}
-  
-                    {errorMessage && <div className="text-danger">{errorMessage}</div>}
-                    <div className="d-flex justify-content-center">
-                      <Button
-                        type="submit"
-                        className="btn btn-primary w-50 my-1 btn-rounded mt-3 d-flex justify-content-center align-items-center"
-                        disabled={!otpVerified || isSubmitting || emailExistsError || agreeToTermsAndConditionByCheck === false}
-                      >
-                        {isSubmitting ? 'Registering...' : 'Register'}
-                      </Button>
-                    </div>
-                  </Col>
-                </Row>
-              </Card>
-            </Form>
-          )}
-        </Formik>
-      </div>
+                    </Col>
+                  </Row>
+                </Card>
+              </Form>
+            )}
+          </Formik>
+        </div>
+        <Modal show={showOTPModal} onHide={() => setShowOTPModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>OTP Verification</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>An OTP has been sent to your email. Please enter it below:</p>
+            <TextField
+              type="text"
+              name="otp"
+              placeholder="Enter OTP"
+              value={enterOtpValue}
+              onChange={(e) => setEnterOtpValue(e.target.value)}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowOTPModal(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={handleOTPVerification}>
+              Verify OTP
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        <div>
+          <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
+        </div>
+      </Container>
     </div>
-    <Modal show={showOTPModal} onHide={() => setShowOTPModal(false)}>
-      <Modal.Header closeButton>
-        <Modal.Title>OTP Verification</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <p>An OTP has been sent to your email. Please enter it below:</p>
-        <TextField
-          type="text"
-          name="otp"
-          placeholder="Enter OTP"
-          value={enterOtpValue}
-          onChange={(e) => setEnterOtpValue(e.target.value)}
-        />
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShowOTPModal(false)}>
-          Cancel
-        </Button>
-        <Button variant="primary" onClick={handleOTPVerification}>
-          Verify OTP
-        </Button>
-      </Modal.Footer>
-    </Modal>
-    <div>
-      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
-    </div>
-  </Container>
-  
   )
 };
 
