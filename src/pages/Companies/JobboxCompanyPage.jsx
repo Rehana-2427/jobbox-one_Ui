@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, Col, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
 import Pagination from "../../Pagination";
@@ -159,7 +159,7 @@ const JobboxCompanyPage = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const navLinkStyle = screenWidth > 990 ? { marginRight: '40px', marginLeft: '150px' } : {};
+  // const navLinkStyle = screenWidth > 990 ? { marginRight: '40px', marginLeft: '150px' } : {};
 
   return (
     <div className="top-right-content">
@@ -167,94 +167,196 @@ const JobboxCompanyPage = () => {
 
       <div className="companyJob" style={{ marginTop: '100px' }}>
 
-        <div >
+        {/* <div style={{border:'1px solid red'}}> */}
 
-          <div className="d-flex flex-column justify-content-between">
-            {/* Filter Options Section */}
-            <h3 style={{paddingTop:'20px'}}>Filter Options</h3>
-            <div className="filter-section d-flex flex-row justify-content-between" style={{ maxWidth: '100%', backgroundColor: '#f4f4f9', marginLeft: '24px', marginRight: '24px' }}>
-              {/* Filter by Company Type */}
-              <div className="filter mb-3 filter-select-company-type" style={{width:'300px'}}>
-                <label htmlFor="companyType" className="form-label" style={{ color: '#6c5b7b', fontWeight: 'bold' }}>
-                  Select Company Type:
-                </label>
-                <select id="companyType" className="form-select form-select-sm fs-6" style={{ borderColor: '#6c5b7b', borderRadius: '5px', padding: '8px' }} value={companyType} onChange={handleCompanyTypeChange}>
-                  <option value='all'>All</option>
-                  {companyTypes.map(type => (
-                    <option key={type} value={type}>{type}</option>
-                  ))}
-                </select>
-              </div>
+        {/* Filter Options*/}
+        <div className="d-flex flex-column justify-content-between" >
+          <h3 style={{ paddingTop: '20px' }}>Filter Options</h3>
+          <Row
+            className="d-flex flex-wrap gx-2"
+            style={{
+              maxWidth: '100%',
+              backgroundColor: '#f4f4f9',
+            }}
+          >
+            {/* Filter by Company Type */}
+            <Col
+              md={3}
+              xs={12}
+              className="mb-2"
+              style={{
+                margin: '5px 0',
+              }}
+            >
+              <label
+                htmlFor="companyType"
+                className="form-label"
+                style={{
+                  color: '#6c5b7b',
+                  fontWeight: 'bold',
+                }}
+              >
+                Select Company Type:
+              </label>
+              <select
+                id="companyType"
+                className="form-select form-select-sm fs-6"
+                style={{
+                  borderColor: '#6c5b7b',
+                  borderRadius: '5px',
+                  maxWidth: '100%',
+                  minWidth: '150px',
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
+                  textOverflow: 'ellipsis',
+                }}
+                value={companyType}
+                onChange={handleCompanyTypeChange}
+              >
+                <option value="all">All</option>
+                {companyTypes.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+            </Col>
 
-              {/* Filter by Industry */}
-              <div className="filter mb-3">
-                <label htmlFor="industryType" className="form-label" style={{ color: '#6c5b7b', fontWeight: 'bold' }}>
-                  Select Industry:
-                </label>
-                <select id="industryType" className="form-select form-select-sm fs-6" style={{ borderColor: '#6c5b7b', borderRadius: '5px', padding: '8px' }} value={industryType} onChange={handleIndustryTypeChange}>
-                  <option value='all'>All</option>
-                  {industryTypes.map(type => (
-                    <option key={type} value={type}>{type}</option>
-                  ))}
-                </select>
-              </div>
+            {/* Filter by Industry */}
+            <Col
+              md={3}
+              xs={12}
+              className="mb-2"
+              style={{
+                margin: '5px 0',
+              }}
+            >
+              <label
+                htmlFor="industryType"
+                className="form-label"
+                style={{
+                  color: '#6c5b7b',
+                  fontWeight: 'bold',
+                }}
+              >
+                Select Industry:
+              </label>
+              <select
+                id="industryType"
+                className="form-select form-select-sm fs-6"
+                style={{
+                  borderColor: '#6c5b7b',
+                  borderRadius: '5px',
+                }}
+                value={industryType}
+                onChange={handleIndustryTypeChange}
+              >
+                <option value="all">All</option>
+                {industryTypes.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+            </Col>
 
-              {/* Filter by Location */}
-              <div className="filter mb-3">
-                <label htmlFor="location" className="form-label" style={{ color: '#6c5b7b', fontWeight: 'bold' }}>
-                 Search Location:
-                </label>
-                <input
-                  type="text"
-                  id="location"
-                  style={{ height: '45px', borderRadius: '5px', width: '100%', border: '1px solid #ccc', padding: '8px' }}
-                  placeholder="Enter location"
-                  value={location}
-                  onChange={handleLocationChange}
-                />
-              </div>
+            {/* Filter by Location */}
+            <Col
+              md={3}
+              xs={12}
+              className="mb-2"
+              style={{
+                margin: '5px 0',
+              }}
+            >
+              <label
+                htmlFor="location"
+                className="form-label"
+                style={{
+                  color: '#6c5b7b',
+                  fontWeight: 'bold',
+                }}
+              >
+                Search Location:
+              </label>
+              <input
+                type="text"
+                id="location"
+                style={{
+                  height: '40px',
+                  borderRadius: '5px',
+                  width: '100%',
+                  border: '1px solid #ccc',
+                  padding: '8px',
+                }}
+                placeholder="Enter location"
+                value={location}
+                onChange={handleLocationChange}
+              />
+            </Col>
 
-              {/* Search Input */}
-              <div className="filter mb-3">
-                <label htmlFor="search" className="form-label" style={{ color: '#6c5b7b', fontWeight: 'bold' }}>
-                  Search Company:
-                </label>
-                <input
-                  style={{ height: '45px', borderRadius: '5px', width: '100%', border: '1px solid #ccc', padding: '8px' }}
-                  type="text"
-                  name="search"
-                  id="search"
-                  placeholder="Search Company By Name"
-                  value={search}
-                  onChange={handleSearchChange}
-                />
-              </div>
-            </div>
+            {/* Search Input */}
+            <Col
+              md={3}
+              xs={12}
+              className="mb-2"
+              style={{
+                margin: '5px 0',
+              }}
+            >
+              <label
+                htmlFor="search"
+                className="form-label"
+                style={{
+                  color: '#6c5b7b',
+                  fontWeight: 'bold',
+                }}
+              >
+                Search Company:
+              </label>
+              <input
+                style={{
+                  height: '40px',
+                  borderRadius: '5px',
+                  width: '100%',
+                  border: '1px solid #ccc',
+                  padding: '8px',
+                }}
+                type="text"
+                name="search"
+                id="search"
+                placeholder="Search Company By Name"
+                value={search}
+                onChange={handleSearchChange}
+              />
+            </Col>
+          </Row>
 
-            {/* Company Cards Section */}
-            <div className="cards flex-grow-1 d-flex flex-wrap justify-content-start" style={{ minHeight: 'fit-content', width: '100%', marginLeft: '45px' }}>
-              {companies.length > 0 ? (
-                companies.map((company) => (
-                  <Card className="company-card-job" key={company.companyId} style={{ width: '100%', flex: '1 0 400px', margin: '12px' }}>
-                    <Card.Body>
-                      <Card.Title>Company Name: <b>{company.companyName}</b></Card.Title>
-                      <Card.Text>Industry: <b>{company.industryService}</b></Card.Text>
-                      <Button onClick={() => handleClick(company.companyId)}>
-                        View
-                      </Button>
-                    </Card.Body>
-                  </Card>
-                ))
-              ) : (
-                <div className="d-flex justify-content-center mt-5">
-                  <div className="spinner-border text-primary" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                  </div>
+
+          {/* Company Cards Section */}
+          <div className="cards flex-grow-1 d-flex flex-wrap justify-content-start" style={{ minHeight: 'fit-content', width: '100%', marginLeft: '45px' }}>
+            {companies.length > 0 ? (
+              companies.map((company) => (
+                <Card className="company-card-job" key={company.companyId} style={{ width: '100%', flex: '1 0 400px', margin: '12px' }}>
+                  <Card.Body>
+                    <Card.Title>Company Name: <b>{company.companyName}</b></Card.Title>
+                    <Card.Text>Industry: <b>{company.industryService}</b></Card.Text>
+                    <Button onClick={() => handleClick(company.companyId)}>
+                      View
+                    </Button>
+                  </Card.Body>
+                </Card>
+              ))
+            ) : (
+              <div className="d-flex justify-content-center mt-5">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
+        {/* </div> */}
         {companies.length > 0 && (
           <Pagination
             page={page}

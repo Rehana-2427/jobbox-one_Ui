@@ -11,17 +11,19 @@ const AboutJobbox = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const navLinkStyle = screenWidth > 990 ? { marginRight: '40px', marginLeft: '150px' } : {};
+   
+
     return (
         <div className="about-container" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <CustomNavbar />
 
             {/* Main content */}
-            <div style={{ flex: '1' }}>
+            <div style={{ flex: '1',marginTop:'200px'}}>
+           
             </div>
 
             {/* Footer section */}
-            <div style={{marginTop:'400px'}}>
+            <div style={{ marginTop: '400px' }}>
                 <HomeFooter />
             </div>
         </div>

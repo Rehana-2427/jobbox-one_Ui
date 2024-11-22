@@ -237,6 +237,12 @@
   flex: 1;
 }
 
+@media(max-width:990px){
+  .companyJob{
+    margin-top: 0px !important;
+  }
+}
+
 /* footer section - social media links icon  */
 .social-icon {
   font-size: clamp(24px, 4vw, 30px);
