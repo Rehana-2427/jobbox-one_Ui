@@ -8,6 +8,7 @@ import { useLocation } from 'react-router-dom';
 import Pagination from '../../Pagination';
 import HrLeftSide from './HrLeftSide';
 import Slider from './Slider';
+import ChatComponent from '../ChatComponent';
 
 const EvergreenJobsApplication = () => {
     const BASE_API_URL = process.env.REACT_APP_API_URL;

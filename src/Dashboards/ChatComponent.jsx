@@ -114,6 +114,7 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
       destination: '/app/chat',
       body: JSON.stringify(message)
     });
+    setNewMessage(''); // Clear input field after sending
   };
 
   const handleClose = () => {
