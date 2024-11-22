@@ -28,6 +28,7 @@ import UserSignin from './Session/UserSignin';
 import Settings from './Settings';
 import TermsAndConditions from './TermsAndConditions';
 import ScrollToTop from './ScrollToTop';
+import ChatComponent from '../Dashboards/ChatComponent';
 
 const PagesRoute = () => {
   return (
@@ -66,6 +67,7 @@ const PagesRoute = () => {
           <Route path='/admin-dashboard/*' element={<AdminDashboardRoute />} />
           <Route path="/candidate-dashboard/job-description" element={<JobDescription />} />
           <Route path='/jobboxCompanyPage/eachCompanyPage/publicJobDetailsPage' element={<PublicJobDetailsPage />} />
+          <Route path='/chatComponent' element={<ChatComponent />} />
         </Routes>
       </Router>
     </div>

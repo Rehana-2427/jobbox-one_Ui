@@ -401,96 +401,53 @@ const EachCompanyPage = () => {
               </Card>
             </div>
           </Row>
-          <Row
-            style={{
-              display: 'flex',                // Use flexbox to align elements side by side
-              justifyContent: 'space-between', // Space out the left and right sections
-              alignItems: 'center',           // Vertically center the content
-              width: '100%',
-              padding: '0 20px',              // Optional: Add some padding for spacing
-            }}
-          >
-            <div>
-              {/* Left Section: Navigation Tabs */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'flex-start',
-                width: '50%',
-                marginTop: '30px',  // Move navigation links down a bit
-              }}>
-                <ul
-                  className="nav-links"
-                  style={{
-                    listStyleType: 'none',
-                    display: 'flex',
-                    margin: 0,
-                    padding: 0,
-                    flexWrap: 'wrap',
-                    justifyContent: 'space-between', // Align tabs to the left
-                  }}
-                >
-                  <Col md={2}>
-                    <span>
-                      <a
-                        onClick={() => setActiveTab('overview')}
-                        className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
-                      >
-                        About
-                      </a>
-                    </span>
-                  </Col>
-                  <Col md={2}>
-                    <span>
-                      <a
-                        onClick={() => setActiveTab('jobs')}
-                        className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
-                      >
-                        Jobs
-                      </a>
-                    </span>
-                  </Col>
-                </ul>
-              </div>
-
-              {/* Right Section: Company Name & Social Media Icons */}
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',   // Stack items vertically in the right section
-                  alignItems: 'flex-end',    // Align everything to the right
-                  zIndex: 10,
-                  marginTop: '-80px',        // Move the right section up a bit
-                }}
-              >
-                {/* Company Name Section */}
-                <div style={{ marginBottom: '10px' }}>
-                  <h2 style={{ margin: 0 }}>
-                    {companyName}
-                  </h2>
-                </div>
-
-                {/* Social Media Icons Section */}
-                <div className="social-icons-company" style={{ display: 'flex', marginTop: '10px' }}>
-                  <FaFacebook size={30}
-                    onClick={() => handleCompanyIconClick('Facebook')}
-                    style={{ cursor: 'pointer', color: '#4267B2', margin: '5px' }}
-                  />
-                  <FaTwitter size={30}
-                    onClick={() => handleCompanyIconClick('Twitter')}
-                    style={{ fontSize: 'clamp(24px, 4vw, 30px)', cursor: 'pointer', color: '#1DA1F2', margin: '5px' }}
-                  />
-                  <FaInstagram size={30}
-                    onClick={() => handleCompanyIconClick('Instagram')}
-                    style={{ fontSize: 'clamp(24px, 4vw, 30px)', cursor: 'pointer', color: '#C13584', margin: '5px' }}
-                  />
-                  <FaLinkedin size={30}
-                    onClick={() => handleCompanyIconClick('LinkedIn')}
-                    style={{ fontSize: 'clamp(24px, 4vw, 30px)', cursor: 'pointer', color: '#0077B5', margin: '5px' }}
-                  />
-                </div>
-              </div>
-            </div>
-          </Row>
+          <Row className="hr-company_page-row2" style={{ marginTop: '50px' }}>
+        <Col md={2}>
+          <span>
+            <a
+              onClick={() => handleTabClick('overview')}
+              className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
+            >
+              About
+            </a>
+          </span>
+        </Col>
+        <Col md={2}>
+          <span>
+            <a
+              onClick={() => handleTabClick('jobs')}
+              className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
+            >
+              Jobs
+            </a>
+          </span>
+        </Col>
+        <Col className="hr-company_page-row2-col3" style={{ textAlign: 'end', marginRight: '20px' }}>
+          <span style={{ marginLeft: '20px' }}>
+            <h4 style={{ paddingRight: '14px' }}><b>{companyName}</b></h4>
+            {socialMediaLinks.facebookLink && (
+              <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
+                <FaFacebook size={24} style={{ margin: '0 5px', color: '#3b5998' }} />
+              </a>
+            )}
+            {socialMediaLinks.twitterLink && (
+              <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
+                <FaTwitter size={24} style={{ margin: '0 5px', color: '#1da1f2' }} />
+              </a>
+            )}
+            {socialMediaLinks.instagramLink && (
+              <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
+                <FaInstagram size={24} style={{ margin: '0 5px', color: '#e4405f' }} />
+              </a>
+            )}
+            {socialMediaLinks.linkedinLink && (
+              <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
+                <FaLinkedin size={24} style={{ margin: '0 5px', color: '#0077b5' }} />
+              </a>
+            )}
+          </span>
+        </Col>
+      </Row>
 
 
 

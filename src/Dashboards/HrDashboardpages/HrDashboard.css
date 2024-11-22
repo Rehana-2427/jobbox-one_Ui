@@ -715,11 +715,14 @@ section {
   /* Adjust the value as needed */
 }
 
-.custom-modal .chat-messages {
-  max-height: 400px; /* Set a max height for scrolling */
+.custom-modal  {
+  max-height: 600px; /* Set a max height for scrolling */
   overflow-y: auto; /* Enable vertical scrolling */
 }
-
+.chat-messages {
+  max-height: 100%; /* Set a max height for scrolling */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
 .chat-message {
   margin-bottom: 10px; /* Space between messages */
 }

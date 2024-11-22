@@ -281,7 +281,7 @@ const HRSignup = () => {
                         Employee Registration Form
                     </h3>
                 </div>
-                <div className="hr-form" style={{ maxHeight: '90vh', overflowY: 'auto', marginTop: '0' }}>
+                <div className="hr-form" style={{ maxHeight: '90vh', marginTop: '0' }}>
                     <Formik
                         initialValues={formValues}
                         validationSchema={validationSchema}
@@ -315,7 +315,11 @@ const HRSignup = () => {
                                         <TextField
                                             type="text"
                                             name="userName"
-                                            label="Your name"
+                                            label={
+                                                <>
+                                                    Your name <span style={{ color: 'red' }}>*</span>
+                                                </>
+                                            }
                                             required
                                             placeholder="Enter your name"
                                             value={values.userName}
@@ -334,7 +338,11 @@ const HRSignup = () => {
                                         <TextField
                                             type="email"
                                             name="userEmail"
-                                            label="Your Official Company Email"
+                                            label={
+                                                <>
+                                                    Your Official Company Email <span style={{ color: 'red' }}>*</span>
+                                                </>
+                                            }
                                             required
                                             placeholder="Enter your email"
                                             value={values.userEmail}
@@ -355,7 +363,11 @@ const HRSignup = () => {
                                                 <TextField
                                                     type="text"
                                                     name="companyName"
-                                                    label="Company name"
+                                                    label={
+                                                        <>
+                                                            Company name <span style={{ color: 'red' }}>*</span>
+                                                        </>
+                                                    }
                                                     required
                                                     placeholder="Enter your company name"
                                                     value={companyName || values.companyName}
@@ -429,7 +441,11 @@ const HRSignup = () => {
                                         <TextField
                                             type="password"
                                             name="password"
-                                            label="Password"
+                                            label={
+                                                <>
+                                                    Password <span style={{ color: 'red' }}>*</span>
+                                                </>
+                                            }
                                             required
                                             placeholder="Enter your password"
                                             value={values.password}
@@ -447,7 +463,11 @@ const HRSignup = () => {
                                         <TextField
                                             type="password"
                                             name="confirmPassword"
-                                            label="Confirm Password"
+                                            label={
+                                                <>
+                                                    Confirm Password <span style={{ color: 'red' }}>*</span>
+                                                </>
+                                            }
                                             required
                                             placeholder="Re-enter your password"
                                             value={values.confirmPassword}

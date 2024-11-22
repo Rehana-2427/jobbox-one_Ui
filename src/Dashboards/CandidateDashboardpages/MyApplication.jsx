@@ -11,6 +11,7 @@ import { useAuth } from '../../AuthProvider';
 import Pagination from '../../Pagination';
 import './CandidateDashboard.css';
 import CandidateLeftSide from './CandidateLeftSide';
+import ChatComponent from '../ChatComponent';
 
 const MyApplication = () => {
   const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -224,31 +225,7 @@ const MyApplication = () => {
   const renderJobStatus = (applicationId) => {
     return jobStatuses[applicationId] || 'Loading...';
   };
-  const renderUnreadMessage = (applicationId) => {
-    const unreadCount = unreadMessages[applicationId];
-    if (unreadCount > 0) {
-      return (
-        <span
-          style={{
 
-            top: '0',
-            marginTop: '10px',
-            backgroundColor: 'red',
-            color: 'white',
-            borderRadius: '50%',
-            // width: '0px',
-            // height: '20px',
-            fontSize: '12px',
-            fontWeight: 'bold',
-          }}
-        >
-          {unreadCount}
-        </span>
-      );
-    } else {
-      return null; // Return null if there are no unread messages
-    }
-  };
 
   const fetchCountUnreadMessage = async (applicationId) => {
     try {
@@ -274,11 +251,6 @@ const MyApplication = () => {
 
   const initials = getInitials(userName);
 
-  const [showModal, setShowModal] = useState(false);
-  const [showChat, setShowChat] = useState(false);
-
-  const [inputValue, setInputValue] = useState('');
-
 
   const fetchChat = async (applicationId) => {
 
@@ -290,23 +262,8 @@ const MyApplication = () => {
     }
   };
 
-  const [applicationId, setApplicationId] = useState(0);
-  const [chatsByApplication, setChatsByApplication] = useState([]);
-  const fetchChatByApplication = async (applicationId) => {
-    setApplicationId(applicationId);
-    setUnreadMessages(0);
-    try {
-      await axios.put(`${BASE_API_URL}/markHRMessagesAsRead?applicationId=${applicationId}`);
-      const response = await axios.get(`${BASE_API_URL}/fetchChatByApplicationId?applicationId=${applicationId}`);
-      setChatsByApplication(response.data);
-      // Mark messages as read when opening chat modal
-      setShowModal(true);
-      // Clear unread message indicator
-      // setUnreadMessages({ ...unreadMessages, [applicationId]: false });
-    } catch (error) {
-      console.error("Error fetching chats:", error);
-    }
-  };
+
+
   const handleDelete = async (applicationId) => {
 
     try {
@@ -319,62 +276,7 @@ const MyApplication = () => {
     } // Show a confirmation dialog before deletion
 
   };
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setShowChat(false); // Optionally reset showChat state
-    setInputValue(''); // Reset input value when closing modal
-  };
-
-  const handleSend = async () => {
-    try {
-      await axios.put(`${BASE_API_URL}/markHRMessagesAsRead?applicationId=${applicationId}`);
-      const responce = await axios.put(`${BASE_API_URL}/saveCandidateChatByApplicationId?applicationId=${applicationId}&candidatechat=${inputValue}`);
-      console.log('Sending message:', inputValue);
-
-      // Fetch updated chat messages or update state as needed
-      fetchChatByApplication(applicationId);
-      setInputValue('');
-
-    } catch (error) {
-      console.error('Error marking messages as read:', error);
-    }
-  };
-
-
-  // Function to format time with AM/PM
-  function formatMessageDateTime(timestamp) {
-    const date = new Date(timestamp);
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-    return `${formattedHours}:${minutes} ${ampm}`;
-  }
-
-  function isDifferentDay(date1, date2) {
-    const day1 = new Date(date1).getDate();
-    const day2 = new Date(date2).getDate();
-    return day1 !== day2;
-  }
-
-  // Function to format date with only day
-  function formatDate(timestamp) {
-    const date = new Date(timestamp);
-    const options = { weekday: 'long' }; // Show only the full day name
-    return date.toLocaleDateString('en-US', options);
-  }
-
-  const modalBodyRef = useRef(null);
-  useEffect(() => {
-    // Scroll to bottom of modal body when chats change (new message added)
-    if (modalBodyRef.current) {
-      modalBodyRef.current.scrollTop = modalBodyRef.current.scrollHeight;
-    }
-  }, [chatsByApplication]);
 
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
@@ -417,6 +319,30 @@ const MyApplication = () => {
     // Clean up the event listener on component unmount
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // State to track if the ChatComponent is open
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  const [chatData, setChatData] = useState({
+    applicationId: null,
+    candidateId: null,
+    hrId: null,
+  });
+
+  // Function to handle chat icon click
+  const toggleChat = (application) => {
+    // Mark messages as read
+    axios.put(`${BASE_API_URL}/markHRMessagesAsRead?applicationId=${application.applicationId}`);
+    // Set the chat data for the clicked application
+    setChatData({
+      applicationId: application.applicationId,
+      candidateId: application.candidateId,
+      hrId: application.hrId,
+    });
+    // Toggle the visibility of the ChatComponent
+    setIsChatOpen(!isChatOpen);
+  };
+
   return (
     <div className='dashboard-container'>
 
@@ -475,66 +401,6 @@ const MyApplication = () => {
             </Dropdown>
           </div>
 
-          <Modal show={showModal} onHide={handleCloseModal} className="custom-modal">
-            <Modal.Header closeButton>
-              <Modal.Title>Chat</Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body ref={modalBodyRef}>
-              <div className="chat-messages">
-                {chatsByApplication.length > 0 ? (
-                  chatsByApplication.map((chat, index) => (
-                    <div key={chat.id} className="chat-message">
-                      {/* Render date if it's the first message or a new day */}
-                      {index === 0 || isDifferentDay(chatsByApplication[index - 1].createdAt, chat.createdAt) && (
-                        <div className="d-flex justify-content-center align-items-center text-center font-weight-bold my-3">
-                          {formatDate(chat.createdAt)}
-                        </div>
-                      )}
-                      {/* Render HR message if present */}
-                      {chat.hrMessage && (
-                        <div className="message-right">
-                          {chat.hrMessage}
-                          <div className="message-time">
-                            {formatMessageDateTime(chat.createdAt)}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Render candidate message if present */}
-                      {chat.candidateMessage && (
-                        <div className="message-left">
-                          {chat.candidateMessage}
-                          <div className="message-time">
-                            {formatMessageDateTime(chat.createdAt)}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ))
-                ) : (
-                  <p>Loading...</p>
-                )}
-              </div>
-            </Modal.Body>
-
-            <Modal.Footer>
-              <Form.Group controlId="messageInput" className="mb-2">
-                <Form.Control
-                  type="text"
-                  as='textarea'
-                  placeholder="Enter your message"
-                  value={inputValue}
-                  onChange={handleInputChange}
-                  style={{ width: '350px' }}
-                />
-              </Form.Group>
-
-              <Button variant="primary" onClick={handleSend}>
-                <FontAwesomeIcon icon={faPaperPlane} />
-              </Button>
-            </Modal.Footer>
-          </Modal>
           <div className="filter p-3 border rounded shadow-sm"
             style={{ maxWidth: '30%', backgroundColor: '#f4f4f9' }}>
             <label htmlFor="status" className="form-label"
@@ -611,11 +477,10 @@ const MyApplication = () => {
                                     {unreadMessages[application.applicationId]}
                                   </span>
                                 )}
+
                                 <SiImessage
                                   size={25}
-                                  onClick={() => {
-                                    fetchChatByApplication(application.applicationId);
-                                  }}
+                                  onClick={() => toggleChat(application)}
                                   style={{ color: 'green', cursor: 'pointer' }}
                                 />
                               </div>
@@ -666,6 +531,15 @@ const MyApplication = () => {
             )}
           </div>
         </div>
+        {isChatOpen && (
+          <ChatComponent
+            applicationId={chatData.applicationId}
+            candidateId={chatData.candidateId}
+            // hrId={chatData.hrId}
+            userType='Candidate'
+            setIsChatOpen={setIsChatOpen}
+          />
+        )}
       </div>
     </div >
   );
