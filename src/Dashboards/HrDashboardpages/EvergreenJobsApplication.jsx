@@ -349,6 +349,29 @@ const EvergreenJobsApplication = () => {
         // Clean up the event listener on component unmount
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+
+    // State to track if the ChatComponent is open
+    const [isChatOpen, setIsChatOpen] = useState(false);
+
+    const [chatData, setChatData] = useState({
+        applicationId: null,
+        candidateId: null,
+        hrId: null,
+    });
+
+    // Function to handle chat icon click
+    const toggleChat = (application) => {
+        // Set the chat data for the clicked application
+        // Mark messages as read
+        axios.put(`${BASE_API_URL}/markCandidateMessagesAsRead?applicationId=${application.applicationId}`);
+        setChatData({
+            applicationId: application.applicationId,
+            candidateId: application.candidateId,
+            hrId: application.hrId,
+        });
+        // Toggle the visibility of the ChatComponent
+        setIsChatOpen(!isChatOpen);
+    };
     return (
         <div className='dashboard-container'>
 
@@ -475,7 +498,7 @@ const EvergreenJobsApplication = () => {
                                                                         {unreadMessages[application.applicationId]}
                                                                     </span>
                                                                 )}
-                                                                <SiImessage
+                                                                {/* <SiImessage
                                                                     size={25}
                                                                     onClick={() => {
                                                                         handleChatClick(application.applicationId, candidateName[application.candidateId]);
@@ -483,7 +506,14 @@ const EvergreenJobsApplication = () => {
                                                                     }}
                                                                     style={{ color: 'green', cursor: 'pointer' }}
                                                                 />
+                                                                {/* Chat icon, click to toggle the ChatComponent */}
+                                                                <SiImessage
+                                                                    size={25}
+                                                                    onClick={() => toggleChat(application)}
+                                                                    style={{ color: 'green', cursor: 'pointer' }}
+                                                                />
                                                             </div>
+
                                                         ) : (
                                                             <SiImessage
                                                                 size={25}
@@ -587,6 +617,16 @@ const EvergreenJobsApplication = () => {
                     </Modal>
                 </div>
             </div>
+            {/* Conditionally render the ChatComponent */}
+            {isChatOpen && (
+                <ChatComponent
+                    applicationId={chatData.applicationId}
+                    // candidateId={chatData.candidateId}
+                    hrId={chatData.hrId}
+                    userType='HR'
+                    setIsChatOpen={setIsChatOpen}
+                />
+            )}
         </div>
     );
 };

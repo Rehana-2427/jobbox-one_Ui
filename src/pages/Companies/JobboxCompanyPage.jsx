@@ -370,8 +370,6 @@ const JobboxCompanyPage = () => {
 
 
       </div>
-
-
       <div >
         <HomeFooter />
       </div>

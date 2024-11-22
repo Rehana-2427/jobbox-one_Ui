@@ -1,0 +1,18 @@
+/* styles.css */
+@media (max-width: 768px) {
+    .social-icons-company {
+      top: 60%;
+      right: 20px;
+    }
+  
+    h1 {
+      top: 50%;
+      right: 30px;
+      font-size: 1.5rem; /* Smaller font size for mobile */
+    }
+  
+    .nav-links {
+      flex-direction: column; /* Stack navigation links vertically on mobile */
+    }
+  }
+  

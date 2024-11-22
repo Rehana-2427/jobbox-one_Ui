@@ -6,7 +6,7 @@ import { MdSettings } from "react-icons/md";
 
 const JobListings = () => {
     return (
-        <Container >
+        <Container>
             <Row>
                 <Col md={3} >
                     <h1 style={{ borderBottom: '2px solid purple', display: 'inline-block' }}>Job Listings</h1>

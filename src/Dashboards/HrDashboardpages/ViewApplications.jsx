@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Pagination from "../../Pagination";
 import HrLeftSide from "./HrLeftSide";
 import Slider from "./Slider";
+import ChatComponent from "../ChatComponent";
 
 const ViewApplications = () => {
   const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -287,96 +288,6 @@ const ViewApplications = () => {
 
   const navigate = useNavigate();
 
-  const [showModal, setShowModal] = useState(false);
-  const [showChat, setShowChat] = useState(false);
-
-  const [inputValue, setInputValue] = useState('');
-  const [applicationId, setApplicationId] = useState(0);
-  const [chats, setChats] = useState([]);
-  const [chatWith, setChatWith] = useState('');
-  const handleChatClick = async (applicationId, candidate) => {
-    setApplicationId(applicationId);
-    setChatWith(candidate);
-    setUnreadMessages(0);
-    // const responce= await axios.get(`${BASE_API_URL}/fetchChatByApplicationId?applicationId=${applicationId}`);
-    // setChats(responce.data);
-    console.log('Chat icon clicked for:');
-    // Show the modal
-    setShowModal(true);
-    setShowChat(true);
-    try {
-      await axios.put(`${BASE_API_URL}/markCandidateMessagesAsRead?applicationId=${applicationId}`);
-      const response = await axios.get(`${BASE_API_URL}/fetchChatByApplicationId?applicationId=${applicationId}`);
-      setChats(response.data);
-      console.log("Chats === > " + chats)
-      console.log("Chats === > " + response.data)
-      setShowModal(true); // Show the modal once chats are fetched
-      setShowChat(true); // Optionally manage showChat state separately
-
-
-
-
-    } catch (error) {
-      console.error("Error fetching chats:", error);
-    }
-  };
-
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setShowChat(false); // Optionally reset showChat state
-    setInputValue(''); // Reset input value when closing modal
-  };
-
-  const handleSend = async () => {
-    // Handle send logic here
-    try {
-      await axios.put(`${BASE_API_URL}/markCandidateMessagesAsRead?applicationId=${applicationId}`);
-      const responce = await axios.put(`${BASE_API_URL}/saveHRChatByApplicationId?applicationId=${applicationId}&hrchat=${inputValue}`);
-      console.log('Sending message:', inputValue);
-      // Close the modal or perform any other actions
-      setShowModal(true);
-      setInputValue('');
-      handleChatClick(applicationId, chatWith)
-      // Reset input value after sending
-    } catch {
-      console.log('error')
-    }
-  };
-  // Function to format date with only day
-  function formatDate(timestamp) {
-    const date = new Date(timestamp);
-    const options = { weekday: 'long' }; // Show only the full day name
-    return date.toLocaleDateString('en-US', options);
-  }
-
-  // Function to format time with AM/PM
-  function formatMessageDateTime(timestamp) {
-    const date = new Date(timestamp);
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-    return `${formattedHours}:${minutes} ${ampm}`;
-  }
-
-  // Function to check if two dates are different days
-  function isDifferentDay(date1, date2) {
-    const day1 = new Date(date1).getDate();
-    const day2 = new Date(date2).getDate();
-    return day1 !== day2;
-  }
-  const modalBodyRef = useRef(null);
-  useEffect(() => {
-    // Scroll to bottom of modal body when chats change (new message added)
-    if (modalBodyRef.current) {
-      modalBodyRef.current.scrollTop = modalBodyRef.current.scrollHeight;
-    }
-  }, [chats]);
-
   const handleBack = () => {
     const state1 = location.state || {};
     console.log(state1)
@@ -404,6 +315,32 @@ const ViewApplications = () => {
     // Clean up the event listener on component unmount
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+
+
+  // State to track if the ChatComponent is open
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  const [chatData, setChatData] = useState({
+    applicationId: null,
+    candidateId: null,
+    hrId: null,
+  });
+
+  // Function to handle chat icon click
+  const toggleChat = (application) => {
+    // Set the chat data for the clicked application
+    // Mark messages as read
+    axios.put(`${BASE_API_URL}/markCandidateMessagesAsRead?applicationId=${application.applicationId}`);
+    setChatData({
+      applicationId: application.applicationId,
+      candidateId: application.candidateId,
+      hrId: application.hrId,
+    });
+    // Toggle the visibility of the ChatComponent
+    setIsChatOpen(!isChatOpen);
+  };
+
   return (
     <div className='dashboard-container'>
 
@@ -511,61 +448,8 @@ const ViewApplications = () => {
                 <Modal.Body style={{ overflowY: 'auto' }}>{showMessage}</Modal.Body>
               </Modal>
             )}
-            <Modal show={showModal} onHide={handleCloseModal} className="custom-modal">
-              <Modal.Header closeButton>
-                <Modal.Title>Chat with {chatWith}</Modal.Title>
-              </Modal.Header>
-              <Modal.Body ref={modalBodyRef}>
-                <div className="chat-messages">
-                  {chats ? (
-                    chats.map((chat, index) => (
-                      <div key={chat.id} className="chat-message">
-                        {index === 0 || isDifferentDay(chats[index - 1].createdAt, chat.createdAt) && (
-                          <div className="d-flex justify-content-center align-items-center text-center font-weight-bold my-3">
-                            {formatDate(chat.createdAt)}
-                          </div>
-                        )}
-                        {chat.candidateMessage && (
-                          <div className="message-right">
-                            {chat.candidateMessage}
-                            <div className="message-time">
-                              {formatMessageDateTime(chat.createdAt)}
-                            </div>
-                          </div>
-                        )}
-                        {/* Render HR message if present */}
-                        {chat.hrMessage && (
-                          <div className="message-left">
-                            {chat.hrMessage}
-                            <div className="message-time">
-                              {formatMessageDateTime(chat.createdAt)}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    ))
-                  ) : (
-                    <p>Loading...</p>
-                  )}
-                </div>
-                {/* Message input section */}
-              </Modal.Body>
-              <Modal.Footer>
-                <Form.Group controlId="messageInput" className="mb-3">
-                  <Form.Control
-                    as='textarea'
-                    type="text"
-                    placeholder="Enter your message"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    style={{ width: '350px' }} // Custom styles to increase size
-                  />
-                </Form.Group>
-                <Button variant="primary" onClick={handleSend}>
-                  <FontAwesomeIcon icon={faPaperPlane} /> {/* Send icon from Font Awesome */}
-                </Button>
-              </Modal.Footer>
-            </Modal>
+
+
             <div>
               {loading ? (
                 <div className="d-flex justify-content-center align-items-center">
@@ -645,14 +529,15 @@ const ViewApplications = () => {
                                     {unreadMessages[application.applicationId]}
                                   </span>
                                 )}
+
+                                {/* Chat icon, click to toggle the ChatComponent */}
                                 <SiImessage
                                   size={25}
-                                  onClick={() => {
-                                    handleChatClick(application.applicationId, candidateName[application.candidateId]);
-                                    setShowModal(true);
-                                  }}
+                                  onClick={() => toggleChat(application)}
                                   style={{ color: 'green', cursor: 'pointer' }}
                                 />
+
+
                               </div>
                             </td>
 
@@ -677,6 +562,16 @@ const ViewApplications = () => {
             </div>
           </div>
         </div>
+        {/* Conditionally render the ChatComponent */}
+        {isChatOpen && (
+          <ChatComponent
+            applicationId={chatData.applicationId}
+            // candidateId={chatData.candidateId}
+            hrId={chatData.hrId}
+            userType='HR'
+            setIsChatOpen={setIsChatOpen}
+          />
+        )}
       </div >
     </div>
   );

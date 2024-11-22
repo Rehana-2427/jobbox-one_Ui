@@ -28,6 +28,11 @@ import UserRoute from './Session/UserRoute';
 import UserSignin from './Session/UserSignin';
 import Settings from './Settings';
 import TermsAndConditions from './TermsAndConditions';
+<<<<<<< HEAD
+=======
+import ScrollToTop from './ScrollToTop';
+import ChatComponent from '../Dashboards/ChatComponent';
+>>>>>>> 6b0793e7ad4face80075fd6efe0d3d61ada3f751
 
 const PagesRoute = () => {
   return (
@@ -66,7 +71,11 @@ const PagesRoute = () => {
           <Route path='/admin-dashboard/*' element={<AdminDashboardRoute />} />
           <Route path="/candidate-dashboard/job-description" element={<JobDescription />} />
           <Route path='/jobboxCompanyPage/eachCompanyPage/publicJobDetailsPage' element={<PublicJobDetailsPage />} />
+<<<<<<< HEAD
 
+=======
+          <Route path='/chatComponent' element={<ChatComponent />} />
+>>>>>>> 6b0793e7ad4face80075fd6efe0d3d61ada3f751
         </Routes>
       </Router>
     </div>

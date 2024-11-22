@@ -1,6 +1,8 @@
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Container, Row, Table } from "react-bootstrap";
+import { Button, Card, Col, Row, Table } from "react-bootstrap";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -248,12 +250,6 @@ const CompamyPage = () => {
   };
 
   const applyJob = async (jobId, resumeId) => {
-
-    const appliedOn = new Date(); // Get current date and time
-    const year = appliedOn.getFullYear(); // Get the full year (e.g., 2024)
-    const month = String(appliedOn.getMonth() + 1).padStart(2, '0'); // Get month (January is 0, so we add 1)
-    const day = String(appliedOn.getDate()).padStart(2, '0'); // Get day of the month
-    const formattedDate = `${year}-${month}-${day}`;
     let loadingPopup;
 
     try {
@@ -265,6 +261,11 @@ const CompamyPage = () => {
           Swal.showLoading();
         }
       });
+      const appliedOn = new Date(); // Get current date and time
+      const year = appliedOn.getFullYear(); // Get the full year (e.g., 2024)
+      const month = String(appliedOn.getMonth() + 1).padStart(2, '0'); // Get month (January is 0, so we add 1)
+      const day = String(appliedOn.getDate()).padStart(2, '0'); // Get day of the month
+      const formattedDate = `${year}-${month}-${day}`;
       const response = await axios.put(`${BASE_API_URL}/applyJob`, null, {
         params: { jobId, userId, formattedDate, resumeId },
       });
@@ -388,316 +389,301 @@ const CompamyPage = () => {
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
 
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
     setIsLeftSideVisible(!isLeftSideVisible);
   };
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
-
-  useEffect(() => {
-    // Update the `isSmallScreen` state based on screen resizing
-    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
-
-    window.addEventListener('resize', handleResize);
-
-    // Clean up the event listener on component unmount
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   return (
     <div className='dashboard-container'>
+      <div>
+        <button className="hamburger-icon" onClick={toggleLeftSide} >
+          <FontAwesomeIcon icon={faBars} />
+        </button>
+      </div>
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
         <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
       </div>
       <div className="right-side">
-        <Container>
-          {showResumePopup && (
-            <ResumeSelectionPopup
-              resumes={resumes}
-              onSelectResume={handleResumeSelect}
-              onClose={() => setShowResumePopup(false)}
-            />
-          )}
-          <div
-            style={{
-              overflowY: 'auto',
-              maxHeight: isSmallScreen ? '600px' : '1000px',
-              paddingBottom: '20px'
-            }}
-          >
-            <Row>
-              <Card style={{ width: '100%', height: '60%' }}>
-                <Card.Body style={{ padding: 0, position: 'relative' }}>
-                  <div style={{ position: 'relative', height: '55%' }}>
-                    <img
-                      src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
-                      alt="Company Banner"
-                      className="banner-image"
-                      style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
-                    />
-                  </div>
-                  <div style={{ position: 'absolute', top: '90%', left: '50px', transform: 'translateY(-50%)' }}>
-                    <img
-                      src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
-                      alt="Company Logo"
-                      className="logo-image"
-                      style={{
-                        width: '200px', // Fixed width
-                        height: '120px', // Fixed height
-                        cursor: 'pointer',
-                        // border: '5px solid white',
-                        clipPath: 'ellipse(50% 50% at 50% 50%)', // Creates a horizontal oval
-                        objectFit: 'cover', // Ensures the image covers the dimensions without distortion
-                      }}
-                    />
-                  </div>
-                </Card.Body>
-              </Card>
-              <br></br><br></br>
-            </Row>
 
-            {/* <Container style={{ marginTop: "30px" }}> */}
-            <Row className="candidate-company_page-row2" style={{ marginTop: "40px", }}>
-              <Col md={2}>
-                <span>
-                  <a
-                    onClick={() => setActiveTab('overview')}
-                    className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
-                  >
-                    About
-                  </a>
-                </span>
-              </Col>
-              <Col md={2}>
-                <span>
-                  <a
-                    onClick={() => setActiveTab('jobs')}
-                    className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
-                  >
-                    Jobs
-                  </a>
-                </span>
-              </Col>
-              <Col className="candidate-company_page-row2-col3" style={{ textAlign: 'end' }}>
-                <span>
-                  <h4 style={{ paddingRight: '14px' }}><b>{company?.companyName}</b></h4>
-                  {socialMediaLinks.facebookLink && (
-                    <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
-                      <FaFacebook size={35} style={{ margin: '0 5px', color: '#3b5998', paddingBottom: '10px' }} />
-                    </a>
-                  )}
-                  {socialMediaLinks.twitterLink && (
-                    <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
-                      <FaTwitter size={35} style={{ margin: '0 5px', color: '#1da1f2', paddingBottom: '10px' }} />
-                    </a>
-                  )}
-                  {socialMediaLinks.instagramLink && (
-                    <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
-                      <FaInstagram size={35} style={{ margin: '0 5px', color: '#e4405f', paddingBottom: '10px' }} />
-                    </a>
-                  )}
-                  {socialMediaLinks.linkedinLink && (
-                    <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
-                      <FaLinkedin size={35} style={{ margin: '0 5px', color: '#0077b5', paddingBottom: '10px' }} />
-                    </a>
-                  )}
-                </span>
-              </Col>
-            </Row>
+        {showResumePopup && (
+          <ResumeSelectionPopup
+            resumes={resumes}
+            onSelectResume={handleResumeSelect}
+            onClose={() => setShowResumePopup(false)}
+          />
+        )}
 
-            <Row>
-              <Col xs={12} md={8}>
-                {activeTab === 'overview' && (
-                  <>
-                    <div className='company-overview'>
-                      <Card className="job-details-text" style={{ marginTop: '20px', width: '100%', height: "fit-content" }}>
-                        <Card.Body>
-                          <h3>About {company?.companyName} </h3>
-                          {companyInfo.overView && (
-                            <p><strong>Overview:</strong> {companyInfo.overView}</p>
-                          )}
-                          {companyInfo.websiteLink && (
-                            <p><strong>Website:</strong> <a href={companyInfo.websiteLink} target="_blank" rel="noopener noreferrer">{companyInfo.websiteLink}</a></p>
-                          )}
-                          {companyInfo.industryService && (
-                            <p><strong>Industry Service:</strong> {companyInfo.industryService}</p>
-                          )}
-                          {companyInfo.companySize && companyInfo.companySize !== '0' && (
-                            <p><strong>Company Size:</strong> {companyInfo.companySize}</p>
-                          )}
-                          {companyInfo.headquaters && (
-                            <p><strong>Headquarters:</strong> {companyInfo.headquaters}</p>
-                          )}
-                          {companyInfo.year && companyInfo.year !== '0' && (
-                            <p><strong>Year Founded:</strong> {companyInfo.year}</p>
-                          )}
-                          {companyInfo.specialties && (
-                            <p><strong>Specialties:</strong> {companyInfo.specialties}</p>
-                          )}
-                        </Card.Body>
-                      </Card>
-                    </div>
-                  </>
+        <Card style={{ width: '100%', height: '60%' }}>
+          <Card.Body style={{ padding: 0, position: 'relative' }}>
+            <div style={{ position: 'relative', height: '55%' }}>
+              <img
+                src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
+                alt="Company Banner"
+                className="banner-image"
+                style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
+              />
+            </div>
+            <div style={{ position: 'absolute', top: '55%', left: '50px', transform: 'translateY(-50%)' }}>
+              <img
+                src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
+                alt="Company Logo"
+                className="candi-company-logo"
+              />
+            </div>
+            <div>
+              <h1 className="company-name">{company?.companyName}</h1>
+              <div className='social-icons-company social-media-links' style={{ position: 'absolute', top: '80%', right: '60px' }}>
+                {socialMediaLinks.facebookLink && (
+                  <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
+                    <FaFacebook size={24} style={{ margin: '0 5px', color: '#3b5998' }} />
+                  </a>
                 )}
-                {activeTab === 'jobs' && (
-                  <>
-                    <div className="company-job" style={{ marginTop: '20px', width: '100%', height: "fit-content" }}>
-                      {!selectedJob ? (
-                        <div className="jobs_list">
-                          {jobs.length > 0 && (
-                            <div>
-                              <div className="table-details-list table-wrapper">
-                                <Table hover className='text-center' style={{ marginLeft: '5px', marginRight: '12px' }}>
-                                  <thead className="table-light">
-                                    <tr>
-                                      <th scope='col' onClick={() => handleSort('jobTitle')}>
-                                        Job Profile {sortedColumn === 'jobTitle' && (sortOrder === 'asc' ? '▲' : '▼')}
-                                      </th>
-                                      <th scope='col' onClick={() => handleSort('applicationDeadline')}>
-                                        Application Deadline {sortedColumn === 'applicationDeadline' && (sortOrder === 'asc' ? '▲' : '▼')}
-                                      </th>
-                                      <th scope='col' onClick={() => handleSort('skills')}>
-                                        Skills {sortedColumn === 'skills' && (sortOrder === 'asc' ? '▲' : '▼')}
-                                      </th>
-                                      <th scope='col'>Job Summary</th>
-                                      <th scope='col'>Actions</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {jobs.map(job => (
-                                      <tr key={job.id} id='job-table-list'>
-                                        <td
-                                          title={job.jobCategory === "evergreen" && !job.applicationDeadline ?
-                                            "This position is always open for hiring, feel free to apply anytime!" :
-                                            ""
-                                          }
-                                        >
-                                          {job.jobTitle}
-                                        </td>
-                                        <td>
-                                          {job.jobCategory === "evergreen" && !job.applicationDeadline ? (
-                                            <span style={{ color: 'green', fontWeight: 'bold' }} title="This position is always open for hiring, feel free to apply anytime!">
-                                              Evergreen Job - No Due Date
-                                            </span>
-                                          ) : (
-                                            job.applicationDeadline || 'Not Specified'
-                                          )}
-                                        </td>
+                {socialMediaLinks.twitterLink && (
+                  <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
+                    <FaTwitter size={24} style={{ margin: '0 5px', color: '#1da1f2' }} />
+                  </a>
+                )}
+                {socialMediaLinks.instagramLink && (
+                  <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
+                    <FaInstagram size={24} style={{ margin: '0 5px', color: '#e4405f' }} />
+                  </a>
+                )}
+                {socialMediaLinks.linkedinLink && (
+                  <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
+                    <FaLinkedin size={24} style={{ margin: '0 5px', color: '#0077b5' }} />
+                  </a>
+                )}
+              </div>
+            </div>
+            <div
+              style={{
+                position: 'absolute',
+                top: '80%',
+                left: '5%', // Adjusted to be responsive
+                transform: 'translateX(-5%)', // Centered horizontally relative to the left margin
+                width: '90%', // Responsive width
+                display: 'flex',
+                justifyContent: 'flex-start', // Align items to the start (left side)
+                overflowX: 'auto', // Allow horizontal scroll if needed
+                boxSizing: 'border-box',
+              }}
+            >
+              <ul className="nav-links">
+                <li>
+                  <span>
+                    <a
+                      onClick={() => setActiveTab('overview')}
+                      className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
+                    >
+                      About
+                    </a>
+                  </span>
+                </li>
+                <li>
+                  <span>
+                    <a
+                      onClick={() => setActiveTab('jobs')}
+                      className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
+                    >
+                      Jobs
+                    </a>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </Card.Body>
+        </Card>
+        <Row>
+          <Col xs={12} md={8}>
+            {activeTab === 'overview' && (
+              <>
+                <div className='company-overview'>
+                  <Card className="job-details-text" style={{ marginTop: '20px', width: '100%', height: "fit-content" }}>
+                    <Card.Body>
+                      <h3>About {company?.companyName} </h3>
+                      {companyInfo.overView && (
+                        <p><strong>Overview:</strong> {companyInfo.overView}</p>
+                      )}
+                      {companyInfo.websiteLink && (
+                        <p><strong>Website:</strong> <a href={companyInfo.websiteLink} target="_blank" rel="noopener noreferrer">{companyInfo.websiteLink}</a></p>
+                      )}
+                      {companyInfo.industryService && (
+                        <p><strong>Industry Service:</strong> {companyInfo.industryService}</p>
+                      )}
+                      {companyInfo.companySize && companyInfo.companySize !== '0' && (
+                        <p><strong>Company Size:</strong> {companyInfo.companySize}</p>
+                      )}
+                      {companyInfo.headquaters && (
+                        <p><strong>Headquarters:</strong> {companyInfo.headquaters}</p>
+                      )}
+                      {companyInfo.year && companyInfo.year !== '0' && (
+                        <p><strong>Year Founded:</strong> {companyInfo.year}</p>
+                      )}
+                      {companyInfo.specialties && (
+                        <p><strong>Specialties:</strong> {companyInfo.specialties}</p>
+                      )}
+                    </Card.Body>
+                  </Card>
+                </div>
+              </>
+            )}
+            {activeTab === 'jobs' && (
+              <>
+                <div className="company-job" style={{ marginTop: '20px', width: '100%', height: "fit-content" }}>
+                  {!selectedJob ? (
+                    <div className="jobs_list">
+                      {jobs.length > 0 && (
+                        <div>
+                          <div className="table-details-list table-wrapper">
+                            <Table hover className='text-center' style={{ marginLeft: '5px', marginRight: '12px' }}>
+                              <thead className="table-light">
+                                <tr>
+                                  <th scope='col' onClick={() => handleSort('jobTitle')}>
+                                    Job Profile {sortedColumn === 'jobTitle' && (sortOrder === 'asc' ? '▲' : '▼')}
+                                  </th>
+                                  <th scope='col' onClick={() => handleSort('applicationDeadline')}>
+                                    Application Deadline {sortedColumn === 'applicationDeadline' && (sortOrder === 'asc' ? '▲' : '▼')}
+                                  </th>
+                                  <th scope='col' onClick={() => handleSort('skills')}>
+                                    Skills {sortedColumn === 'skills' && (sortOrder === 'asc' ? '▲' : '▼')}
+                                  </th>
+                                  <th scope='col'>Job Summary</th>
+                                  <th scope='col'>Actions</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {jobs.map(job => (
+                                  <tr key={job.id} id='job-table-list'>
+                                    <td
+                                      title={job.jobCategory === "evergreen" && !job.applicationDeadline ?
+                                        "This position is always open for hiring, feel free to apply anytime!" :
+                                        ""
+                                      }
+                                    >
+                                      {job.jobTitle}
+                                    </td>
+                                    <td>
+                                      {job.jobCategory === "evergreen" && !job.applicationDeadline ? (
+                                        <span style={{ color: 'green', fontWeight: 'bold' }} title="This position is always open for hiring, feel free to apply anytime!">
+                                          Evergreen Job - No Due Date
+                                        </span>
+                                      ) : (
+                                        job.applicationDeadline || 'Not Specified'
+                                      )}
+                                    </td>
 
-                                        <td>{job.skills}</td>
-                                        <td>
-                                          <Button variant="secondary" className='description btn-rounded' onClick={() => handleViewSummary(job)}>View</Button>
-                                        </td>                                <td>
-                                          {hasUserApplied[job.jobId] === true || (applyjobs && applyjobs.jobId === job.jobId) ? (
-                                            <p>Applied</p>
-                                          ) : (
-                                            <Button onClick={() => handleApplyButtonClick(job.jobId)}>Apply</Button>
-                                          )}
-                                        </td>
-                                      </tr>
-                                    ))}
-                                  </tbody>
-                                </Table>
-                              </div>
-                              <Pagination
-                                page={page}
-                                pageSize={pageSize}
-                                totalPages={totalPages}
-                                handlePageSizeChange={handlePageSizeChange}
-                                isPageSizeDisabled={isPageSizeDisabled}
-                                handlePageClick={handlePageClick}
-                              />
-                            </div>
-                          )}
-                          {jobs.length === 0 && <h1>No jobs found.</h1>}
-                        </div>
-                      ) : (
-                        <div className="selected-job-details">
-                          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <Button
-                              variant="primary"
-                              onClick={handleBackToList}
-                            >
-                              Back to Jobs
-                            </Button>
+                                    <td>{job.skills}</td>
+                                    <td>
+                                      <Button variant="secondary" className='description btn-rounded' onClick={() => handleViewSummary(job)}>View</Button>
+                                    </td>                                <td>
+                                      {hasUserApplied[job.jobId] === true || (applyjobs && applyjobs.jobId === job.jobId) ? (
+                                        <p>Applied</p>
+                                      ) : (
+                                        <Button onClick={() => handleApplyButtonClick(job.jobId)}>Apply</Button>
+                                      )}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </Table>
                           </div>
-                          <h3>Job Details</h3>
-                          <p><strong>Title:</strong> {selectedJob.jobTitle}</p>
-                          <p><strong>Type:</strong> {selectedJob.jobType}</p>
-                          <p><strong>Skills:</strong> {selectedJob.skills}</p>
-                          <p><strong>Posting Date:</strong> {selectedJob.postingDate}</p>
-                          <p><strong>Vacancy:</strong> {selectedJob.numberOfPosition}</p>
-                          <p><strong>Salary:</strong> {selectedJob.salary}</p>
-                          <p><strong>Location:</strong> {selectedJob.location}</p>
-                          <strong>Job Summary:</strong>
-                          <pre className="job-details-text">
-                            {selectedJob.jobsummary}
-                          </pre>
-                          <p><strong>Application Deadline:</strong> {selectedJob.applicationDeadline}</p>
+                          <Pagination
+                            page={page}
+                            pageSize={pageSize}
+                            totalPages={totalPages}
+                            handlePageSizeChange={handlePageSizeChange}
+                            isPageSizeDisabled={isPageSizeDisabled}
+                            handlePageClick={handlePageClick}
+                          />
                         </div>
                       )}
+                      {jobs.length === 0 && <h1>No jobs found.</h1>}
                     </div>
-                  </>
-                )}
-              </Col>
-              <Col xs={12} md={4}>
-                <Card className='key-stats' style={{ width: '80%', height: 'fit-content' }}>
-                  <Card.Body>
-                    <Row className="mb-3">
-                      <Col>
-                        {hasDreamApplied === true ? (
-                          <p style={{
-                            color: '#28a745', /* Green color for the text */
-                            fontSize: '18px', /* Larger font size */
-                            fontWeight: 'bold', /* Bold text */
-                            backgroundColor: '#e9f5e9', /* Light green background color */
-                            padding: '10px',
-                            borderRadius: '5px', /* Rounded corners */
-                            textAlign: 'left', /* Center-align the text */
-                            margin: '10px 0', /* Margin above and below the paragraph */
-                            boxShadow: 'rgba(0, 0, 0, 0.1)', /* Subtle shadow effect */
-                            width: '100px'
-                          }}>
-                            Applied
-                          </p>
-                        ) : (
-                          <Button variant="success" onClick={handleApplyCompany}>Apply</Button>
-                        )}
-                      </Col>
-                    </Row>
-                    <h1>Other Information</h1>
-                    <Row className="mb-2">
-                      <Col>
-                        <h5>Applicants: {countOfApplications}</h5>
-                      </Col>
-                    </Row>
-                    <Row className="mb-2">
-                      <Col>
-                        <h5>Total HR's: {countOfHR}</h5>
-                      </Col>
-                    </Row>
-                    <Row className="mb-2">
-                      <Col>
-                        <h5>Total Jobs:{countOfTotalJobs}</h5>
-                      </Col>
-                    </Row>
-                    <Row className="mb-2">
-                      <Col>
-                        <h5>Key Stats:</h5>
-                        <ul>
-                          <li>Active Job Postings:{countOfJobs}</li> {/* Placeholder values */}
-                          <li>Shortlisted Applications:{countOfshortlistedApplications} </li>
-                          <li>Avg. Time to Fill a Job: 7 days</li>
-                        </ul>
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-          </div>
-        </Container>
+                  ) : (
+                    <div className="selected-job-details">
+                      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <Button
+                          variant="primary"
+                          onClick={handleBackToList}
+                        >
+                          Back to Jobs
+                        </Button>
+                      </div>
+                      <h3>Job Details</h3>
+                      <p><strong>Title:</strong> {selectedJob.jobTitle}</p>
+                      <p><strong>Type:</strong> {selectedJob.jobType}</p>
+                      <p><strong>Skills:</strong> {selectedJob.skills}</p>
+                      <p><strong>Posting Date:</strong> {selectedJob.postingDate}</p>
+                      <p><strong>Vacancy:</strong> {selectedJob.numberOfPosition}</p>
+                      <p><strong>Salary:</strong> {selectedJob.salary}</p>
+                      <p><strong>Location:</strong> {selectedJob.location}</p>
+                      <strong>Job Summary:</strong>
+                      <pre className="job-details-text">
+                        {selectedJob.jobsummary}
+                      </pre>
+                      <p><strong>Application Deadline:</strong> {selectedJob.applicationDeadline}</p>
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
+          </Col>
+          <Col xs={12} md={4}>
+            <Card className='key-stats' style={{ width: '80%', height: 'fit-content' }}>
+              <Card.Body>
+                <Row className="mb-3">
+                  <Col>
+                    {hasDreamApplied === true ? (
+                      <p style={{
+                        color: '#28a745', /* Green color for the text */
+                        fontSize: '18px', /* Larger font size */
+                        fontWeight: 'bold', /* Bold text */
+                        backgroundColor: '#e9f5e9', /* Light green background color */
+                        padding: '10px',
+                        borderRadius: '5px', /* Rounded corners */
+                        textAlign: 'left', /* Center-align the text */
+                        margin: '10px 0', /* Margin above and below the paragraph */
+                        boxShadow: 'rgba(0, 0, 0, 0.1)', /* Subtle shadow effect */
+                        width: '100px'
+                      }}>
+                        Applied
+                      </p>
+                    ) : (
+                      <Button variant="success" onClick={handleApplyCompany}>Apply</Button>
+                    )}
+                  </Col>
+                </Row>
+                <h1>Other Information</h1>
+                <Row className="mb-2">
+                  <Col>
+                    <h5>Applicants: {countOfApplications}</h5>
+                  </Col>
+                </Row>
+                <Row className="mb-2">
+                  <Col>
+                    <h5>Total HR's: {countOfHR}</h5>
+                  </Col>
+                </Row>
+                <Row className="mb-2">
+                  <Col>
+                    <h5>Total Jobs:{countOfTotalJobs}</h5>
+                  </Col>
+                </Row>
+                <Row className="mb-2">
+                  <Col>
+                    <h5>Key Stats:</h5>
+                    <ul>
+                      <li>Active Job Postings:{countOfJobs}</li> {/* Placeholder values */}
+                      <li>Shortlisted Applications:{countOfshortlistedApplications} </li>
+                      <li>Avg. Time to Fill a Job: 7 days</li>
+                    </ul>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       </div>
     </div>
   );

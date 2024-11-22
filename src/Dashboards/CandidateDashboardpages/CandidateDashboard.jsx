@@ -1,5 +1,5 @@
 
-import { faBuilding, faEye, faFileAlt, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faBuilding, faEye, faFileAlt, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -209,7 +209,7 @@ const CandidateDashboard = () => {
     { icon: faStar, title: countOfshortlistedApplications, subtitle: "Shortlist", link: '/candidate-dashboard/my-application', state: { userName, userId, applicationStatus: "Shortlisted" } },
 
   ];
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
 
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
@@ -237,24 +237,17 @@ const CandidateDashboard = () => {
       }
     });
   };
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
-
-  useEffect(() => {
-    // Update the `isSmallScreen` state based on screen resizing
-    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
-
-    window.addEventListener('resize', handleResize);
-
-    // Clean up the event listener on component unmount
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
   return (
     <div className='dashboard-container'>
-
+      <div>
+        <button className="hamburger-icon" onClick={toggleLeftSide} >
+          <FontAwesomeIcon icon={faBars} />
+        </button>
+      </div>
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
         <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
       </div>
-      <div className="right-side">
+      <div className="right-side" style={{ overflowY: 'scroll' }}>
         {/* candidate header icons - full screen icon , user icon , notification */}
         <div className="d-flex justify-content-end align-items-center mb-3 mt-2">
           <Dropdown className="ml-2">
@@ -295,7 +288,7 @@ const CandidateDashboard = () => {
             </Dropdown.Toggle>
             <Dropdown.Menu className="mt-3">
               <Dropdown.Item as={Link} to="/settings">
-                <i className="i-Data-Settings me-1" /> Account settings
+                <i className="i-Data-Settings me-1"/> Account settings
               </Dropdown.Item>
               <Dropdown.Item as="button" onClick={handleLogout}>
                 <i className="i-Lock-2 me-1" /> Logout
@@ -303,71 +296,60 @@ const CandidateDashboard = () => {
             </Dropdown.Menu>
           </Dropdown>
         </div>
-
-        {/* Scrollable content */}
-        <div
-          style={{
-            overflowY: 'auto',
-            maxHeight: isSmallScreen ? '600px' : '1000px',
-            paddingBottom: '20px'
-          }}
-        >
-          <Container>
-            <h3 className="status-info text-center bg-light">My Application Status</h3>
-            <Row className="dashboard d-flex mt-4">
-              {DATA.map((item, index) => (
-                <Col lg={3} sm={6} className="mb-4" key={index}>
-                  <Card className="card-icon-bg gap-3 card-icon-bg-primary o-hidden mb-4" style={{ maxWidth: '260px' }}>
-                    <Card.Body className="align-items-center gap-4">
-                      <FontAwesomeIcon icon={item.icon} className="text-primary mb-2 text-24" />
-                      {item.link ? (
-                        <Link
-                          to={{
-                            pathname: item.link,
-                            state: item.state ? item.state : { userName, userId },
-                          }}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            navigate(item.link, { state: item.state ? item.state : { userName, userId } });
-                          }}
-                          className="nav-link"
-                        >
-                          <h4 className="text-primary mb-0">
-                            {item.subtitle}
-                            <span className="d-block mt-2">{item.title !== null ? item.title : 'Loading...'}</span>
-                          </h4>
-                        </Link>
-                      ) : (
-                        <div>
-                          <h4 className="text-primary mb-0">
-                            {item.subtitle}
-                            <span className="d-block mt-2">{item.title !== null ? item.title : 'Loading...'}</span>
-                          </h4>
-                        </div>
-                      )}
-                    </Card.Body>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-            <Row className="justify-content-center mb-4">
-              <Col xs={24} md={8} className="mb-4">
-                <div className="chart-card">
-                  <Card.Title className="text-center">Applications per Day</Card.Title>
-                  <Chart
-                    style={{ height: '200px', width: '100%' }}
-                    options={options}
-                    series={options.series}
-                    type={options.chart.type}
-                  />
-                </div>
+        <Container>
+          <h3 className='status-info text-center bg-light'>My Application Status</h3>
+          <Row className="dashboard d-flex mt-4">
+            {DATA.map((item, index) => (
+              <Col lg={3} sm={6} className="mb-4" key={index}>
+                <Card className="card-icon-bg gap-3 card-icon-bg-primary o-hidden mb-4" style={{ maxWidth: '260px' }}>
+                  <Card.Body className="align-items-center gap-4">
+                    <FontAwesomeIcon icon={item.icon} className="text-primary mb-2 text-24" />
+                    {item.link ? (
+                      <Link
+                        to={{
+                          pathname: item.link,
+                          state: item.state ? item.state : { userName, userId }
+                        }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          navigate(item.link, { state: item.state ? item.state : { userName, userId } });
+                        }}
+                        className="nav-link"
+                      >
+                        <h4 className="text-primary mb-0">
+                          {item.subtitle}
+                          <span className="d-block mt-2">{item.title !== null ? item.title : 'Loading...'}</span>
+                        </h4>
+                      </Link>
+                    ) : (
+                      <div>
+                        <h4 className="text-primary mb-0">
+                          {item.subtitle}
+                          <span className="d-block mt-2">{item.title !== null ? item.title : 'Loading...'}</span>
+                        </h4>
+                      </div>
+                    )}
+                  </Card.Body>
+                </Card>
               </Col>
-            </Row>
-          </Container>
-        </div>
+            ))}
+          </Row>
+          <Row className="justify-content-center mb-4">
+            <Col xs={24} md={8} className='mb-4'>  {/* Adjust the column size */}
+              <div className="chart-card">
+                <Card.Title className="text-center">Applications per Day</Card.Title>
+                <Chart
+                  style={{ height: '200px', width: '120%' }}  // Set width to 100%
+                  options={options}
+                  series={options.series}
+                  type={options.chart.type}
+                />
+              </div>
+            </Col>
+
+          </Row>
+        </Container>
       </div>
-
-
     </div>
   );
 };

@@ -50,7 +50,11 @@ const HrSignin = () => {
     return (
         <div>
             <CustomNavbar />
+<<<<<<< HEAD
             <div className="auth-layout-wrap" style={{ maxHeight: '100vh', overflowY: 'auto'}}>
+=======
+            <div className="auth-layout-wrap" style={{ maxHeight: '100vh', overflowY: 'auto' }}>
+>>>>>>> 6b0793e7ad4face80075fd6efe0d3d61ada3f751
                 <div className="auth-content candidate-login" style={{ position: 'relative', padding: '20px' }}>
                     <Card className="o-hidden user_regi_signin">
                         <Row>
@@ -95,7 +99,9 @@ const HrSignin = () => {
                                     </Formik>
                                     {errorMessage && <div className="text-danger mt-2">{errorMessage}</div>}
                                     <div className="mt-3 text-center">
-                                        <Link to="/forgetpassword" className="text-muted">Forgot Password?</Link>
+                                        <Link to="/forgetpassword" className="text-muted" style={{ color: 'red' }}>
+                                            Forgot Password?
+                                        </Link>
                                     </div>
                                     <div>
                                         <hr />

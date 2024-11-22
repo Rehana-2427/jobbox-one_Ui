@@ -690,12 +690,18 @@ const DreamApplication = () => {
                                     {unreadMessages[application.applicationId]}
                                   </span>
                                 )}
-                                <SiImessage
+                                {/* <SiImessage
                                   size={25}
                                   onClick={() => {
                                     handleChatClick(application.applicationId, candidateName[application.candidateId]);
                                     setShowModal(true);
                                   }}
+                                  style={{ color: 'green', cursor: 'pointer' }}
+                                /> */}
+
+                                <SiImessage
+                                  size={25}
+                                  onClick={() => toggleChat(application)}
                                   style={{ color: 'green', cursor: 'pointer' }}
                                 />
                               </div>
