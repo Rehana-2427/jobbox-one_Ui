@@ -18,6 +18,7 @@ import FAQ from './FAQ';
 import Home from './Home';
 import Jobdetails from './Jobdetails';
 import PrivacyPolicy from './PrivacyPolicy';
+import ScrollToTop from './ScrollToTop';
 import AdminRegister from './Session/AdminRegister';
 import CandiSignup from './Session/CandiSignup';
 import ForgetPassword from './Session/ForgetPassword';
@@ -27,7 +28,6 @@ import UserRoute from './Session/UserRoute';
 import UserSignin from './Session/UserSignin';
 import Settings from './Settings';
 import TermsAndConditions from './TermsAndConditions';
-import ScrollToTop from './ScrollToTop';
 
 const PagesRoute = () => {
   return (
@@ -66,6 +66,7 @@ const PagesRoute = () => {
           <Route path='/admin-dashboard/*' element={<AdminDashboardRoute />} />
           <Route path="/candidate-dashboard/job-description" element={<JobDescription />} />
           <Route path='/jobboxCompanyPage/eachCompanyPage/publicJobDetailsPage' element={<PublicJobDetailsPage />} />
+
         </Routes>
       </Router>
     </div>

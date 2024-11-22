@@ -155,8 +155,11 @@ const CandidateDashboard = () => {
     }
   };
 
+  // console.log(nameParts)
+  
   const initials = getInitials(user.userName);
 
+  console.log(initials)
   useEffect(() => {
     fetchApplicationsData(userId);
   }, [userId]);

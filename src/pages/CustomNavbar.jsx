@@ -24,15 +24,26 @@ const CustomNavbar = () => {
 
     useEffect(() => {
         const loggedInUser = JSON.parse(localStorage.getItem('user'));
+        console.log(loggedInUser)
         if (loggedInUser && loggedInUser.userName) {
             setIsLoggedIn(true);
             setUser(loggedInUser);
-            setUsernameInitials(loggedInUser.userName.slice(0, 2).toUpperCase());
+
+            const nameParts = loggedInUser.userName.split(' ');
+            if (nameParts.length > 1) {
+                setUsernameInitials(
+                    (nameParts[0][0] + nameParts[1][0]).toUpperCase()
+                );
+            } else {
+                setUsernameInitials(
+                    (nameParts[0][0] + nameParts[0][1]).toUpperCase()
+                );
+            }
         } else {
             setIsLoggedIn(false); // Ensure logout if localStorage is cleared
         }
     }, []);
-    
+
 
     const handleChange = (event) => {
         const value = event.target.value;
