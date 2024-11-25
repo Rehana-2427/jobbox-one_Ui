@@ -5,6 +5,8 @@ import SockJS from "sockjs-client";
 import './ChatComponent.css';
 import { Modal } from "react-bootstrap";
 import { subDays, isBefore } from "date-fns"; // For date manipulation
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 
 const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -16,6 +18,38 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
   const [connected, setConnected] = useState(false); // Connection status
 
   console.log("applicationId -> " + applicationId + " CandidateId -> " + candidateId + " HrId -> " + hrId + " userType -> " + userType);
+
+  const [userName, setUserName] = useState('');
+  useEffect(() => {
+    const fetchUserName = async () => {
+      try {
+        if (userType === 'HR') {
+          const response = await axios.get(`${BASE_API_URL}/getUserName`, {
+            params: {
+              userId: candidateId
+            }
+
+          });
+          setUserName(response.data.userName);
+        }
+        else if (userType === 'Candidate') {
+          const response = await axios.get(`${BASE_API_URL}/getUserName`, {
+            params: {
+              userId: hrId
+            }
+
+          });
+          setUserName(response.data.companyName + ' HR');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        console.error('Error fetching data:');
+      }
+
+    }
+    fetchUserName();
+  }, [userType, hrId, candidateId]); // Runs when userType changes
 
   // Fetch previous messages from backend when the component mounts
   useEffect(() => {
@@ -88,8 +122,8 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
 
     const message = {
       applicationId,
-      hrMessage: hrId ? newMessage : '',
-      candidateMessage: candidateId ? newMessage : '',
+      hrMessage: hrId && userType === 'HR' ? newMessage : '',
+      candidateMessage: candidateId && userType === 'Candidate' ? newMessage : '',
       isHRRead: false, // Add read status logic if required
       isCandidateRead: false, // Add read status logic if required
     };
@@ -124,7 +158,7 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
   return (
     <Modal show={true} onHide={handleClose} style={{ overflowY: 'auto' }}>
       <Modal.Header closeButton>
-        <Modal.Title>Chat</Modal.Title>
+        <Modal.Title>Chat with {userName}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ maxHeight: '400px', overflowY: 'auto' }}> {/* Set max height and overflow */}
         {/* Chat box with scrollable content */}
@@ -134,8 +168,7 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
               key={index}
               className={msg.hrMessage ? (userType === 'HR' ? 'message-left' : 'message-right') : (userType === 'Candidate' ? 'message-left' : 'message-right')}
             >
-              <strong>{msg.hrMessage ? 'HR' : 'Candidate'}: </strong>
-              {msg.hrMessage || msg.candidateMessage}
+              <strong>{msg.hrMessage && userType === 'HR' ? 'You' : msg.candidateMessage && userType === 'Candidate' ? 'You' : userName}: </strong>              {msg.hrMessage || msg.candidateMessage}
             </div>
           ))}
         </div>
@@ -151,7 +184,7 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
             }
           }}
         />
-        <button className="send-chat" onClick={sendMessage} disabled={!connected}>Send</button>
+        <button className="send-chat"  onClick={sendMessage} disabled={!connected} >  <FontAwesomeIcon icon={faPaperPlane} /> {/* Send icon from Font Awesome */}Send</button>
       </Modal.Body>
     </Modal>
 

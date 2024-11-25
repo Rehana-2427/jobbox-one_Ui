@@ -446,6 +446,19 @@ const DreamApplication = () => {
     // Set the chat data for the clicked application
     // Mark messages as read
     axios.put(`${BASE_API_URL}/markCandidateMessagesAsRead?applicationId=${application.applicationId}`);
+
+    const unread = {}; // Initialize unread messages state
+    try {
+
+      const countUnread = fetchCountUnreadMessage(application.applicationId);
+
+      unread[application.applicationId] = countUnread;
+
+    } catch (error) {
+      console.error('Error fetching job status:', error);
+    }
+    setUnreadMessages(unread); // Set unread messages state
+    
     setChatData({
       applicationId: application.applicationId,
       candidateId: application.candidateId,
@@ -764,7 +777,7 @@ const DreamApplication = () => {
         {isChatOpen && (
           <ChatComponent
             applicationId={chatData.applicationId}
-            // candidateId={chatData.candidateId}
+            candidateId={chatData.candidateId}
             hrId={chatData.hrId}
             userType='HR'
             setIsChatOpen={setIsChatOpen}
