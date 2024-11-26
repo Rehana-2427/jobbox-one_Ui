@@ -1,3 +1,5 @@
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Client } from "@stomp/stompjs";
 import axios from "axios";
 import { format, isBefore, isToday, isYesterday, subDays } from "date-fns";
@@ -70,7 +72,12 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
               userId: hrId
             }
           });
-          setUserName(response.data.companyName + ' HR');
+          setUserName(
+            response.data.companyName.charAt(0).toUpperCase() +
+            response.data.companyName.slice(1).toLowerCase() +
+            ' HR'
+          );
+
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -80,9 +87,6 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
     }
     fetchUserName();
   }, [userType, hrId, candidateId]); // Runs when userType changes
-
-
-
 
 
   // Fetching messages on component mount
@@ -119,20 +123,27 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
 
         client.subscribe(`/topic/app`, (messageOutput) => {
           const message = JSON.parse(messageOutput.body);
-          setMessages((prevMessages) => {
-            // Check if the message is an update
-            const existingMessageIndex = prevMessages.findIndex(msg => msg.chatId === message.chatId);
-            if (existingMessageIndex > -1) {
-              // Update the existing message
-              const updatedMessages = [...prevMessages];
-              updatedMessages[existingMessageIndex] = message;
-              return updatedMessages;
-            } else {
-              // If it's a new message, just append it
-              return [...prevMessages, message];
-            }
-          });
+          // setMessages((prevMessages) => {
+
+          //   if (message.chatId) {
+
+          //   }
+          //   // Check if the message is an update
+          //   const existingMessageIndex = prevMessages.findIndex(msg => msg.chatId === message.chatId);
+          //   if (existingMessageIndex > -1) {
+          //     // Update the existing message
+          //     const updatedMessages = [...prevMessages];
+          //     updatedMessages[existingMessageIndex] = message;
+          //     return updatedMessages;
+          //   } else {
+          //     // If it's a new message, just append it
+          //     return [...prevMessages, message];
+          //   }
+          // });
+
         });
+
+
       },
       onDisconnect: () => {
         console.log('Disconnected from WebSocket');
@@ -241,8 +252,8 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
       const updatedMessage = {
         chatId: editMessageId,
         applicationId,
-        hrMessage: hrId ? newMessage : '',
-        candidateMessage: candidateId ? newMessage : '',
+        hrMessage: hrId && userType === 'HR' ? newMessage : '',
+        candidateMessage: candidateId && userType === 'Candidate' ? newMessage : '',
         timestamp: new Date().toISOString(),
       };
 
@@ -342,19 +353,21 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
         <div className="message-actions">
           {editMessageId ? (
             <Button
+              className="send-chat"
               variant="primary"
               onClick={handleUpdateMessage}
               disabled={isSending}
             >
-              {isSending ? 'Updating...' : 'Update Message'}
+             <FontAwesomeIcon icon={faPaperPlane} /> {isSending ? 'Updating...' : 'Update Message'}
             </Button>
           ) : (
             <Button
+              className="send-chat"
               variant="primary"
               onClick={sendMessage}
               disabled={isSending}
             >
-              {isSending ? 'Sending...' : 'Send Message'}
+             <FontAwesomeIcon icon={faPaperPlane} /> {isSending ? 'Sending...' : 'Send Message'}
             </Button>
           )}
         </div>

@@ -9,6 +9,7 @@ const apiClient = axios.create({
 });
 
 // Define API functions
+//contact send message API
 const api = {
   sendMessage: (messageData) => apiClient.post('/savemessage', messageData),
   // Add other API functions here
