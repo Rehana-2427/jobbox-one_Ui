@@ -3,6 +3,7 @@ import { Route, HashRouter as Router, Routes } from 'react-router-dom'; // Use H
 import AdminDashboardRoute from '../Dashboards/AdminDashboardpages/AdminDashboardRoute';
 import CandidateDashbaordRoute from '../Dashboards/CandidateDashboardpages/CandidateDashbaordRoute';
 import JobDescription from '../Dashboards/CandidateDashboardpages/JobDescription';
+import ChatComponent from '../Dashboards/ChatComponent';
 import HrDashbaordRoute from '../Dashboards/HrDashboardpages/HrDashbaordRoute';
 import About from './About';
 import AboutJobbox from './AboutJobbox';
@@ -28,7 +29,6 @@ import UserRoute from './Session/UserRoute';
 import UserSignin from './Session/UserSignin';
 import Settings from './Settings';
 import TermsAndConditions from './TermsAndConditions';
-import ChatComponent from '../Dashboards/ChatComponent';
 
 const PagesRoute = () => {
   return (

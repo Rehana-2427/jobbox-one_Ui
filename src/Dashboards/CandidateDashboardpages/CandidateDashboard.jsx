@@ -1,5 +1,5 @@
 
-import { faBars, faBuilding, faEye, faFileAlt, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faBuilding, faEye, faFileAlt, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -239,6 +239,7 @@ const CandidateDashboard = () => {
   };
   return (
     <div className='dashboard-container'>
+
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
         <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
       </div>

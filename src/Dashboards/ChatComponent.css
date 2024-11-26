@@ -12,6 +12,7 @@
     padding: 8px;
     border-radius: 5px;
     max-width: 60%;
+    text-align: end;
   }
   
   /* Right-aligned messages (HR's or Candidate's message when userType is HR) */
@@ -21,6 +22,7 @@
     padding: 8px;
     border-radius: 5px;
     max-width: 60%;
+    text-align: start;
   }
   
   /* Style for the textarea */
@@ -47,4 +49,35 @@
     background-color: #ccc;
     cursor: not-allowed;
   }
+  .message-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   
+  .message-content {
+    flex: 1;
+  }
+  
+  .delete-icon {
+    display: none;
+    cursor: pointer;
+    margin-left: 10px;
+    color: red;
+  }
+  
+  .message-container:hover .delete-icon {
+    display: block;
+  }
+  
+  .edit-icon {
+    display: none;
+    cursor: pointer;
+    margin-left: 10px;
+    color:black;
+  }
+  
+  .message-container:hover .edit-icon {
+    display: block;
+  }
