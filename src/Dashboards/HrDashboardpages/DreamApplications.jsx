@@ -9,6 +9,7 @@ import Pagination from "../../Pagination";
 import ChatComponent from "../ChatComponent";
 import HrLeftSide from "./HrLeftSide";
 import Slider from "./Slider";
+import ChatComponent from "../ChatComponent";
 
 const DreamApplication = () => {
   const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -453,7 +454,41 @@ const DreamApplication = () => {
     // Clean up the event listener on component unmount
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+  // State to track if the ChatComponent is open
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
+  const [chatData, setChatData] = useState({
+    applicationId: null,
+    candidateId: null,
+    hrId: null,
+  });
+
+  // Function to handle chat icon click
+  const toggleChat = (application) => {
+    // Set the chat data for the clicked application
+    // Mark messages as read
+    axios.put(`${BASE_API_URL}/markCandidateMessagesAsRead?applicationId=${application.applicationId}`);
+
+    const unread = {}; // Initialize unread messages state
+    try {
+
+      const countUnread = fetchCountUnreadMessage(application.applicationId);
+
+      unread[application.applicationId] = countUnread;
+
+    } catch (error) {
+      console.error('Error fetching job status:', error);
+    }
+    setUnreadMessages(unread); // Set unread messages state
+    
+    setChatData({
+      applicationId: application.applicationId,
+      candidateId: application.candidateId,
+      hrId: application.hrId,
+    });
+    // Toggle the visibility of the ChatComponent
+    setIsChatOpen(!isChatOpen);
+  };
   return (
     <div className='dashboard-container'>
 
@@ -769,6 +804,16 @@ const DreamApplication = () => {
             )}
           </div>
         </div>
+        {/* Conditionally render the ChatComponent */}
+        {isChatOpen && (
+          <ChatComponent
+            applicationId={chatData.applicationId}
+            candidateId={chatData.candidateId}
+            hrId={chatData.hrId}
+            userType='HR'
+            setIsChatOpen={setIsChatOpen}
+          />
+        )}
       </div>
     </div>
   );

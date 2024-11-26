@@ -8,6 +8,7 @@ import SockJS from "sockjs-client";
 import Swal from "sweetalert2";
 import './ChatComponent.css';
 
+
 const BASE_API_URL = process.env.REACT_APP_API_URL;
 
 const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOpen }) => {
@@ -141,8 +142,8 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
 
     const message = {
       applicationId,
-      hrMessage: hrId ? newMessage : '',
-      candidateMessage: candidateId ? newMessage : '',
+      hrMessage: hrId && userType === 'HR' ? newMessage : '',
+      candidateMessage: candidateId && userType === 'Candidate' ? newMessage : '',
       isHRRead: false,
       isCandidateRead: false,
       timestamp: new Date().toISOString(),
@@ -247,7 +248,7 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
   return (
     <Modal show={true} onHide={handleClose} style={{ overflowY: 'auto' }}>
       <Modal.Header closeButton>
-        <Modal.Title>Chat</Modal.Title>
+        <Modal.Title>Chat with {userName}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ maxHeight: '400px', display: 'flex', flexDirection: 'column' }}>
         <div className="chat-box" ref={chatBoxRef} style={{ flexGrow: 1, overflowY: 'auto' }}>
@@ -269,8 +270,7 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
                   style={{ position: 'relative' }}
                 >
                   <div className="message-content">
-                    <strong>{msg.hrMessage ? 'HR' : 'Candidate'}: </strong>
-                    <span>{msg.hrMessage || msg.candidateMessage}</span>
+                    <strong>{msg.hrMessage && userType === 'HR' ? 'You' : msg.candidateMessage && userType === 'Candidate' ? 'You' : userName}: </strong>                    <span>{msg.hrMessage || msg.candidateMessage}</span>
                     <div className="message-time">
                       <span>{formatMessageDateTime(msg.createdAt)}</span>
                     </div>
