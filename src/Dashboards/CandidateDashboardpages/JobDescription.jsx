@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import Footer from '../../pages/Footer';
 import CandidateLeftSide from './CandidateLeftSide';
 import ResumeSelectionPopup from './ResumeSelectionPopup';
+import HomeFooter from '../../pages/HomeFooter';
 
 const JobDescription = () => {
     // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
@@ -332,7 +333,7 @@ const JobDescription = () => {
                         </Col>
                     </Row>
                 </Container>
-                <Footer />
+                <HomeFooter />
             </div>
         </div>
     );

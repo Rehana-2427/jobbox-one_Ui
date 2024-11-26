@@ -417,7 +417,8 @@ const CandidateJobs = () => {
               <option value="Applied">Applied</option>
             </select>
           </div>
-          <div style={{ overflowY: 'auto', maxHeight: '600px', paddingBottom: '50px' }}>
+          {/* overflowY: 'auto',  */}
+          <div style={{ maxHeight: '600px', paddingBottom: '50px' }}>          
             {jobs.length > 0 && (
               <div>
                 <h2> Regular Jobs For {userName}</h2>
