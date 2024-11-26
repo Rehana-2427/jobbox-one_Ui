@@ -1,63 +1,107 @@
 import { Client } from "@stomp/stompjs";
 import axios from "axios";
-import { useEffect, useState, useRef } from "react";
+import { format, isBefore, isToday, isYesterday, subDays } from "date-fns";
+import { useEffect, useRef, useState } from "react";
+import { Button, Modal } from "react-bootstrap"; // Ensure Button is imported
+import { MdDelete, MdEdit } from "react-icons/md";
 import SockJS from "sockjs-client";
+import Swal from "sweetalert2";
 import './ChatComponent.css';
-import { Modal } from "react-bootstrap";
-import { subDays, isBefore } from "date-fns"; // For date manipulation
-
 
 const BASE_API_URL = process.env.REACT_APP_API_URL;
 
 const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOpen }) => {
-  const [messages, setMessages] = useState([]); // Messages in chat
-  const [newMessage, setNewMessage] = useState(''); // The current message
-  const stompClientRef = useRef(null); // WebSocket client using ref
-  const [connected, setConnected] = useState(false); // Connection status
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
+  const stompClientRef = useRef(null);
+  const [connected, setConnected] = useState(false);
+  const chatBoxRef = useRef(null);
+  const [editMessageId, setEditMessageId] = useState(null); // To track which message is being edited
 
-  console.log("applicationId -> " + applicationId + " CandidateId -> " + candidateId + " HrId -> " + hrId + " userType -> " + userType);
+  // Helper function to format time
+  function formatMessageDateTime(timestamp) {
+    const date = new Date(timestamp);
+    if (isNaN(date.getTime())) {
+      console.error("Invalid date:", timestamp);
+      return "Invalid Date";
+    }
 
-  // Fetch previous messages from backend when the component mounts
+    const hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+
+    return `${formattedHours}:${minutes} ${ampm}`;
+  }
+
+  // Helper function to format date
+  function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    if (isNaN(date.getTime())) {
+      console.error("Invalid date:", timestamp);
+      return "Invalid Date";
+    }
+
+    if (isToday(date)) {
+      return "Today";
+    } else if (isYesterday(date)) {
+      return "Yesterday";
+    } else {
+      return format(date, 'eeee');
+    }
+  }
+
+  // Fetching messages on component mount
   useEffect(() => {
     const fetchMessages = async () => {
       try {
         const response = await axios.get(`${BASE_API_URL}/messages?applicationId=${applicationId}`);
-        const allMessages = response.data
-        // Filter messages to get only the last 2 days of chat
+        const allMessages = response.data;
         const today = new Date();
-        const twoDaysAgo = subDays(today, 1); // Get the date 2 days ago
+        const twoDaysAgo = subDays(today, 2);
 
         const filteredMessages = allMessages.filter(msg => {
           const messageDate = new Date(msg.timestamp);
-          return isBefore(messageDate, twoDaysAgo) === false; // Include messages from the last 2 days
+          return isBefore(messageDate, twoDaysAgo) === false;
         });
 
-        setMessages(filteredMessages); // Set the filtered messages
+        setMessages(filteredMessages);
       } catch (error) {
         console.error('Error fetching messages:', error);
-        if (error.response && error.response.status === 403) {
-          console.error('Access Forbidden: You might not have the necessary permissions.');
-        }
       }
     };
 
     fetchMessages();
 
-    // Initialize WebSocket connection
     const socket = new SockJS(`${BASE_API_URL}/ws`);
     const client = new Client({
       webSocketFactory: () => socket,
       onConnect: () => {
         console.log('Connected to WebSocket');
-        setConnected(true); // Update connection status
+        setConnected(true)
+        //   const message = JSON.parse(messageOutput.body);
+        //   setMessages((prevMessages) => [...prevMessages, message]);
+        // });
 
-        // Subscribe to the correct topic after connection
         client.subscribe(`/topic/app`, (messageOutput) => {
           const message = JSON.parse(messageOutput.body);
-          setMessages((prevMessages) => [...prevMessages, message]);
+          setMessages((prevMessages) => {
+            // Check if the message is an update
+            const existingMessageIndex = prevMessages.findIndex(msg => msg.chatId === message.chatId);
+            if (existingMessageIndex > -1) {
+              // Update the existing message
+              const updatedMessages = [...prevMessages];
+              updatedMessages[existingMessageIndex] = message;
+              return updatedMessages;
+            } else {
+              // If it's a new message, just append it
+              return [...prevMessages, message];
+            }
+          });
         });
       },
       onDisconnect: () => {
+        console.log('Disconnected from WebSocket');
         setConnected(false);
       },
       onStompError: (error) => {
@@ -65,19 +109,28 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
       },
     });
 
-    client.activate(); // Activates WebSocket connection
-    stompClientRef.current = client; // Set the stompClientRef
+    client.activate();
+    stompClientRef.current = client;
 
     return () => {
       if (stompClientRef.current) {
-        stompClientRef.current.deactivate(); // Cleanup on component unmount
+        stompClientRef.current.deactivate();
       }
     };
-  }, [applicationId]); // Removed stompClient from dependency list, it should not cause re-renders
+  }, [applicationId]);
 
-  // Send a message function
+  // Auto scroll the chat to the bottom when new messages arrive
+  useEffect(() => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  const [isSending, setIsSending] = useState(false);
+
+  // Send new message
   const sendMessage = () => {
-    if (!newMessage.trim()) return; // Don't send empty messages
+    if (!newMessage.trim()) return;
 
     const stompClient = stompClientRef.current;
 
@@ -90,34 +143,105 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
       applicationId,
       hrMessage: hrId ? newMessage : '',
       candidateMessage: candidateId ? newMessage : '',
-      isHRRead: false, // Add read status logic if required
-      isCandidateRead: false, // Add read status logic if required
+      isHRRead: false,
+      isCandidateRead: false,
+      timestamp: new Date().toISOString(),
     };
 
-    // Save message to the database using REST API (Axios)
-    // axios.post(`${BASE_API_URL}/messagesPost`, message)
-    //   .then(response => {
-    //     setMessages((prevMessages) => [...prevMessages, response.data]);
-    //     setNewMessage(''); // Clear input field after sending
-    //   })
-    //   .catch(error => {
-    //     console.error('Error saving message:', error);
-    //     if (error.response && error.response.status === 403) {
-    //       console.error('Forbidden: You might not have permission to post messages.');
-    //     }
-    //   });
-
-    // Send the message through WebSocket to other party (Real-time)
-    // stompClient.send('/app/chat', {}, JSON.stringify(message));
-    // Use publish method here, or another alternative
     stompClient.publish({
       destination: '/app/chat',
-      body: JSON.stringify(message)
+      body: JSON.stringify(message),
+    });
+
+    setNewMessage("");
+  };
+
+  // Close chat
+  const handleClose = () => {
+    setIsChatOpen(false);
+  };
+
+  // Delete message with confirmation
+  const handleDelete = (chatId) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you want to delete this message?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteMsg(chatId);
+      }
     });
   };
 
-  const handleClose = () => {
-    setIsChatOpen(false); // Close the modal when close button is clicked
+  // Delete message from server
+  const deleteMsg = async (chatId) => {
+    try {
+      await axios.delete(`${BASE_API_URL}/deleteChatMsg`, { params: { chatId: chatId } });
+      setMessages(messages.filter((msg) => msg.chatId !== chatId));
+      
+      Swal.fire("Deleted!", "Your message has been deleted.", "success");
+    } catch (error) {
+      console.error("Error deleting message:", error);
+      Swal.fire("Error!", "Failed to delete the message.", "error");
+    }
+  };
+
+  // Edit message
+  const handleUpdate = (chatId) => {
+    const messageToEdit = messages.find((msg) => msg.chatId === chatId);
+    if (messageToEdit) {
+      setNewMessage(messageToEdit.hrMessage || messageToEdit.candidateMessage);
+      setEditMessageId(chatId); // Track the ID of the message being edited
+    }
+  };
+
+  const handleUpdateMessage = async () => {
+    setIsSending(true);
+    try {
+      const updatedMessage = {
+        chatId: editMessageId,
+        applicationId,
+        hrMessage: hrId ? newMessage : '',
+        candidateMessage: candidateId ? newMessage : '',
+        timestamp: new Date().toISOString(),
+      };
+
+      // Update the message on the server
+      await axios.put(`${BASE_API_URL}/updateChatMsg`, updatedMessage, {
+        params: { chatId: editMessageId },
+      });
+
+      // Update the message in the local state
+      setMessages((prevMessages) =>
+        prevMessages.map((msg) =>
+          msg.chatId === editMessageId ? { ...msg, ...updatedMessage } : msg
+        )
+      );
+
+      // Publish the updated message to the WebSocket topic
+      const stompClient = stompClientRef.current;
+      if (stompClient && stompClient.connected) {
+        stompClient.publish({
+          destination: '/app/chat',
+          body: JSON.stringify(updatedMessage),
+        });
+      }
+
+      setNewMessage('');
+      setEditMessageId(null);
+      Swal.fire("Updated!", "Your message has been updated.", "success");
+    } catch (error) {
+      console.error("Error updating message:", error);
+      Swal.fire("Error!", "Failed to update the message.", "error");
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -125,35 +249,84 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
       <Modal.Header closeButton>
         <Modal.Title>Chat</Modal.Title>
       </Modal.Header>
-      <Modal.Body style={{ maxHeight: '400px', overflowY: 'auto' }}> {/* Set max height and overflow */}
-        {/* Chat box with scrollable content */}
-        <div className="chat-box" style={{ maxHeight: '100%', overflowY: 'auto' }}>
-          {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={msg.hrMessage ? (userType === 'HR' ? 'message-left' : 'message-right') : (userType === 'Candidate' ? 'message-left' : 'message-right')}
-            >
-              <strong>{msg.hrMessage ? 'HR' : 'Candidate'}: </strong>
-              {msg.hrMessage || msg.candidateMessage}
-            </div>
-          ))}
+      <Modal.Body style={{ maxHeight: '400px', display: 'flex', flexDirection: 'column' }}>
+        <div className="chat-box" ref={chatBoxRef} style={{ flexGrow: 1, overflowY: 'auto' }}>
+          {messages.map((msg, msgIndex) => {
+            const messageDate = formatDate(msg.createdAt);
+
+            return (
+              <div key={msg.chatId}>
+                {msgIndex === 0 || formatDate(messages[msgIndex - 1].createdAt) !== messageDate ? (
+                  <div className="message-date-heading" style={{ textAlign: 'center' }}>
+                    <strong>{messageDate}</strong>
+                  </div>
+                ) : null}
+
+                <div className={`message-container ${msg.hrMessage
+                  ? userType === 'HR' ? 'message-left' : 'message-right'
+                  : userType === 'Candidate' ? 'message-left' : 'message-right'
+                  }`}
+                  style={{ position: 'relative' }}
+                >
+                  <div className="message-content">
+                    <strong>{msg.hrMessage ? 'HR' : 'Candidate'}: </strong>
+                    <span>{msg.hrMessage || msg.candidateMessage}</span>
+                    <div className="message-time">
+                      <span>{formatMessageDateTime(msg.createdAt)}</span>
+                    </div>
+                  </div>
+
+                  {/* Conditionally render edit and delete icons */}
+                  {((userType === 'Candidate' && msg.candidateMessage) || (userType === 'HR' && msg.hrMessage)) && (
+                    <>
+                      <div className="edit-icon" onClick={() => handleUpdate(msg.chatId)}>
+                        <MdEdit size={18} />
+                      </div>
+                      <div className="delete-icon" onClick={() => handleDelete(msg.chatId)}>
+                        <MdDelete size={18} />
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
-        {/* Textarea and send button */}
-        <textarea
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Type a message..."
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && newMessage.trim() !== '') {
-              sendMessage();
-              e.preventDefault();
-            }
-          }}
-        />
-        <button className="send-chat" onClick={sendMessage} disabled={!connected}>Send</button>
+        <div className="message-input">
+          <textarea
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Type your message here"
+            disabled={isSending}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && newMessage.trim() !== '') {
+                sendMessage();
+                e.preventDefault();
+              }
+            }}
+          />
+        </div>
+        <div className="message-actions">
+          {editMessageId ? (
+            <Button
+              variant="primary"
+              onClick={handleUpdateMessage}
+              disabled={isSending}
+            >
+              {isSending ? 'Updating...' : 'Update Message'}
+            </Button>
+          ) : (
+            <Button
+              variant="primary"
+              onClick={sendMessage}
+              disabled={isSending}
+            >
+              {isSending ? 'Sending...' : 'Send Message'}
+            </Button>
+          )}
+        </div>
       </Modal.Body>
     </Modal>
-
   );
 };
 

@@ -6,6 +6,7 @@ import { Button, Col, Form, Modal, Row, Table } from "react-bootstrap";
 import { SiImessage } from "react-icons/si";
 import { useLocation, useNavigate } from "react-router-dom";
 import Pagination from "../../Pagination";
+import ChatComponent from "../ChatComponent";
 import HrLeftSide from "./HrLeftSide";
 import Slider from "./Slider";
 
@@ -101,6 +102,27 @@ const DreamApplication = () => {
 
   };
 
+  // State to track if the ChatComponent is open
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  const [chatData, setChatData] = useState({
+    applicationId: null,
+    candidateId: null,
+    hrId: null,
+  });
+
+  const toggleChat = (application) => {
+    // Set the chat data for the clicked application
+    // Mark messages as read
+    axios.put(`${BASE_API_URL}/markCandidateMessagesAsRead?applicationId=${application.applicationId}`);
+    setChatData({
+      applicationId: application.applicationId,
+      candidateId: application.candidateId,
+      hrId: application.hrId,
+    });
+    // Toggle the visibility of the ChatComponent
+    setIsChatOpen(!isChatOpen);
+  };
   const handleSelect = async (filterStatus, fromDate, toDate) => {
     try {
       const jobId = 0;
@@ -615,6 +637,15 @@ const DreamApplication = () => {
                 </Button>
               </Modal.Footer>
             </Modal>
+            {isChatOpen && (
+              <ChatComponent
+                applicationId={chatData.applicationId}
+                // candidateId={chatData.candidateId}
+                hrId={chatData.hrId}
+                userType='HR'
+                setIsChatOpen={setIsChatOpen}
+              />
+            )}
             {applications.length > 0 && (
               <div>
                 <div className="table-wrapper">

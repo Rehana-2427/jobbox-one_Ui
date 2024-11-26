@@ -1,5 +1,5 @@
 
-import { faBars, faBuilding, faEye, faFileAlt, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faBuilding, faEye, faFileAlt, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -209,7 +209,7 @@ const CandidateDashboard = () => {
     { icon: faStar, title: countOfshortlistedApplications, subtitle: "Shortlist", link: '/candidate-dashboard/my-application', state: { userName, userId, applicationStatus: "Shortlisted" } },
 
   ];
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(false);
+  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
 
   const toggleLeftSide = () => {
     console.log("Toggling left side visibility");
@@ -239,11 +239,7 @@ const CandidateDashboard = () => {
   };
   return (
     <div className='dashboard-container'>
-      <div>
-        <button className="hamburger-icon" onClick={toggleLeftSide} >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
-      </div>
+
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
         <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
       </div>

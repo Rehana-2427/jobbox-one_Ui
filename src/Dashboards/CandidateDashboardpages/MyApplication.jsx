@@ -1,17 +1,15 @@
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
-import { Button, Dropdown, Form, Modal, Table } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Dropdown, Table } from 'react-bootstrap';
 import { MdDelete } from 'react-icons/md';
 import { SiImessage } from 'react-icons/si';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useAuth } from '../../AuthProvider';
 import Pagination from '../../Pagination';
+import ChatComponent from '../ChatComponent';
 import './CandidateDashboard.css';
 import CandidateLeftSide from './CandidateLeftSide';
-import ChatComponent from '../ChatComponent';
 
 const MyApplication = () => {
   const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -154,10 +152,6 @@ const MyApplication = () => {
     }
     setSortedColumn(column);
     setSortOrder(order);
-  };
-
-  const toggleSettings = () => {
-    navigate('/');
   };
 
   const getResumeName = async (resumeId) => {

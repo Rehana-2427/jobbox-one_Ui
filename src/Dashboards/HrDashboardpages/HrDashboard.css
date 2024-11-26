@@ -727,19 +727,7 @@ section {
   margin-bottom: 10px; /* Space between messages */
 }
 
-.message-right {
-  text-align: right; /* Align candidate messages to the right */
-  background-color: #e1ffc7; /* Example background color for candidate messages */
-  border-radius: 5px; /* Rounded corners */
-  padding: 10px; /* Padding for better spacing */
-}
 
-.message-left {
-  text-align: left; /* Align HR messages to the left */
-  background-color: #f1f1f1; /* Example background color for HR messages */
-  border-radius: 5px; /* Rounded corners */
-  padding: 10px; /* Padding for better spacing */
-}
 
 .message-time {
   font-size: 0.8em; /* Smaller font for timestamps */

@@ -1,9 +1,9 @@
 import { faEnvelope, faMapMarkerAlt, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import api from '../apiClient';
 import CustomNavbar from './CustomNavbar';
 
 const Contact = () => {
@@ -48,7 +48,7 @@ const Contact = () => {
     }
 
     try {
-      const response = await axios.post(`${BASE_API_URL}/savemessage`, formData);
+      const response = await api.sendMessage(formData); // Use the API client
       if (response.status === 200) {
         setIsMessageSent(true);
         alert("Mail sent");
