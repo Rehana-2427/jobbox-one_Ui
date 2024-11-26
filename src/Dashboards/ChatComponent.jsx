@@ -52,6 +52,39 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
     }
   }
 
+  const [userName, setUserName] = useState('');
+  useEffect(() => {
+    const fetchUserName = async () => {
+      try {
+        if (userType === 'HR') {
+          const response = await axios.get(`${BASE_API_URL}/getUserName`, {
+            params: {
+              userId: candidateId
+            }
+          });
+          setUserName(response.data.userName);
+        }
+        else if (userType === 'Candidate') {
+          const response = await axios.get(`${BASE_API_URL}/getUserName`, {
+            params: {
+              userId: hrId
+            }
+          });
+          setUserName(response.data.companyName + ' HR');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        console.error('Error fetching data:');
+      }
+    }
+    fetchUserName();
+  }, [userType, hrId, candidateId]); // Runs when userType changes
+
+
+
+
+
   // Fetching messages on component mount
   useEffect(() => {
     const fetchMessages = async () => {
@@ -185,7 +218,7 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
     try {
       await axios.delete(`${BASE_API_URL}/deleteChatMsg`, { params: { chatId: chatId } });
       setMessages(messages.filter((msg) => msg.chatId !== chatId));
-      
+
       Swal.fire("Deleted!", "Your message has been deleted.", "success");
     } catch (error) {
       console.error("Error deleting message:", error);
