@@ -63,8 +63,7 @@ button:disabled {
   word-wrap: break-word; /* or use overflow-wrap: break-word */
   word-break: break-all; /* This will break words at any point to ensure they stay inside */
   max-width: 100%; /* Ensure it's responsive */
-  overflow-wrap: break-word;
-
+  overflow-wrap: break-word
 
 }
 
