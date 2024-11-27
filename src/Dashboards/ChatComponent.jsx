@@ -7,6 +7,8 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import SockJS from "sockjs-client";
 import Swal from "sweetalert2";
 import './ChatComponent.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 
 const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -241,8 +243,8 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
       const updatedMessage = {
         chatId: editMessageId,
         applicationId,
-        hrMessage: hrId ? newMessage : '',
-        candidateMessage: candidateId ? newMessage : '',
+        hrMessage: hrId && userType === 'HR' ? newMessage : '',
+        candidateMessage: candidateId && userType === 'Candidate' ? newMessage : '',
         timestamp: new Date().toISOString(),
       };
 
@@ -312,12 +314,28 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
                   {/* Conditionally render edit and delete icons */}
                   {((userType === 'Candidate' && msg.candidateMessage) || (userType === 'HR' && msg.hrMessage)) && (
                     <>
-                      <div className="edit-icon" onClick={() => handleUpdate(msg.chatId)}>
-                        <MdEdit size={18} />
-                      </div>
+
+
+                      {/* Calculate the time difference */}
+                      {msg.createdAt && (new Date() - new Date(msg.createdAt)) < 15 * 60 * 1000 ? (
+                        // Only show the edit button if it's within 15 minutes private LocalDateTime createdAt;
+                        <div className="edit-icon" onClick={() => handleUpdate(msg.chatId)}>
+                          <MdEdit size={18} />
+                        </div>
+                      ) : (
+                        // Optionally, you can disable the button or show a tooltip
+                        // <div className="edit-icon disabled">
+                        //   <MdEdit size={18} />
+                        // </div>                    
+                        // Don't render the edit button if it's older than 15 minutes
+                        null
+                      )}
+
+                      {/* Delete button, always enabled */}
                       <div className="delete-icon" onClick={() => handleDelete(msg.chatId)}>
                         <MdDelete size={18} />
                       </div>
+
                     </>
                   )}
                 </div>
@@ -342,19 +360,21 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
         <div className="message-actions">
           {editMessageId ? (
             <Button
+              className="send-chat"
               variant="primary"
               onClick={handleUpdateMessage}
               disabled={isSending}
             >
-              {isSending ? 'Updating...' : 'Update Message'}
+              <FontAwesomeIcon icon={faPaperPlane} /> {isSending ? 'Updating...' : 'Update Message'}
             </Button>
           ) : (
             <Button
+              className="send-chat"
               variant="primary"
               onClick={sendMessage}
               disabled={isSending}
             >
-              {isSending ? 'Sending...' : 'Send Message'}
+              <FontAwesomeIcon icon={faPaperPlane} /> {isSending ? 'Sending...' : 'Send Message'}
             </Button>
           )}
         </div>
