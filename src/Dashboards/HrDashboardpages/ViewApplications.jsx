@@ -335,15 +335,15 @@ const ViewApplications = () => {
     const unread = {}; // Initialize unread messages state
     try {
 
-          const countUnread =  fetchCountUnreadMessage(application.applicationId);
+      const countUnread = fetchCountUnreadMessage(application.applicationId);
 
-          unread[application.applicationId] = countUnread;
+      unread[application.applicationId] = countUnread;
 
-        } catch (error) {
-          console.error('Error fetching job status:', error);
-        }
-      
-      setUnreadMessages(unread); // Set unread messages state
+    } catch (error) {
+      console.error('Error fetching job status:', error);
+    }
+
+    setUnreadMessages(unread); // Set unread messages state
     setChatData({
       applicationId: application.applicationId,
       candidateId: application.candidateId,
