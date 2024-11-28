@@ -88,3 +88,9 @@ button:disabled {
 .message-container:hover .edit-icon {
   display: block;
 }
+
+.updated-text {
+  color: gray;
+  font-size: small; /* Adjust as necessary */
+  margin-left: 5px; /* Optional: space between message and updated text */
+}

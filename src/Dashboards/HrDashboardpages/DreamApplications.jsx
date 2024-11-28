@@ -639,15 +639,7 @@ const DreamApplication = () => {
                 </Button>
               </Modal.Footer>
             </Modal>
-            {isChatOpen && (
-              <ChatComponent
-                applicationId={chatData.applicationId}
-                // candidateId={chatData.candidateId}
-                hrId={chatData.hrId}
-                userType='HR'
-                setIsChatOpen={setIsChatOpen}
-              />
-            )}
+          
             {applications.length > 0 && (
               <div>
                 <div className="table-wrapper">

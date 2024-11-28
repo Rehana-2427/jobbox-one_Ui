@@ -1,3 +1,5 @@
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Client } from "@stomp/stompjs";
 import axios from "axios";
 import { format, isBefore, isToday, isYesterday, subDays } from "date-fns";
@@ -7,8 +9,6 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import SockJS from "sockjs-client";
 import Swal from "sweetalert2";
 import './ChatComponent.css';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 
 const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -244,11 +244,10 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
   const handleUpdateMessage = async () => {
     setIsSending(true);
     try {
+      
       const updatedMessage = {
         chatId: editMessageId,
         applicationId,
-        hrMessage: hrId && userType === 'HR' ? newMessage : '',
-        candidateMessage: candidateId && userType === 'Candidate' ? newMessage : '',
         hrMessage: hrId && userType === 'HR' ? newMessage : '',
         candidateMessage: candidateId && userType === 'Candidate' ? newMessage : '',
         timestamp: new Date().toISOString(),
@@ -321,8 +320,6 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
                   {/* Conditionally render edit and delete icons */}
                   {((userType === 'Candidate' && msg.candidateMessage) || (userType === 'HR' && msg.hrMessage)) && (
                     <>
-
-
                       {/* Calculate the time difference */}
                       {msg.createdAt && (new Date() - new Date(msg.createdAt)) < 15 * 60 * 1000 ? (
                         // Only show the edit button if it's within 15 minutes private LocalDateTime createdAt;
@@ -372,7 +369,6 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
               onClick={handleUpdateMessage}
               disabled={isSending}
             >
-              <FontAwesomeIcon icon={faPaperPlane} /> {isSending ? 'Updating...' : 'Update Message'}
               <FontAwesomeIcon icon={faPaperPlane} /> {isSending ? 'Updating...' : 'Update Message'}
             </Button>
           ) : (
