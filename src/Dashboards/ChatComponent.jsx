@@ -244,7 +244,7 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
   const handleUpdateMessage = async () => {
     setIsSending(true);
     try {
-      
+
       const updatedMessage = {
         chatId: editMessageId,
         applicationId,
@@ -321,19 +321,17 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
                   {((userType === 'Candidate' && msg.candidateMessage) || (userType === 'HR' && msg.hrMessage)) && (
                     <>
                       {/* Calculate the time difference */}
-                      {msg.createdAt && (new Date() - new Date(msg.createdAt)) < 15 * 60 * 1000 ? (
-                        // Only show the edit button if it's within 15 minutes private LocalDateTime createdAt;
-                        <div className="edit-icon" onClick={() => handleUpdate(msg.chatId)}>
-                          <MdEdit size={18} />
-                        </div>
-                      ) : (
-                        // Optionally, you can disable the button or show a tooltip
-                        // <div className="edit-icon disabled">
-                        //   <MdEdit size={18} />
-                        // </div>                    
-                        // Don't render the edit button if it's older than 15 minutes
-                        null
-                      )}
+                      {
+                        msg.createdAt && (new Date().toISOString() && (new Date().getTime() - new Date(msg.createdAt).getTime()) < 15 * 60 * 1000) ? (
+                          // Only show the edit button if it's within 15 minutes, using system's current time
+                          <div className="edit-icon" onClick={() => handleUpdate(msg.chatId)}>
+                            <MdEdit size={18} />
+                          </div>
+                        ) : (
+                          null
+                        )
+                      }
+
 
                       {/* Delete button, always enabled */}
                       <div className="delete-icon" onClick={() => handleDelete(msg.chatId)}>
