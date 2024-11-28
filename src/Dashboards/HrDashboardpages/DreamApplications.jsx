@@ -102,27 +102,6 @@ const DreamApplication = () => {
 
   };
 
-  // State to track if the ChatComponent is open
-  const [isChatOpen, setIsChatOpen] = useState(false);
-
-  const [chatData, setChatData] = useState({
-    applicationId: null,
-    candidateId: null,
-    hrId: null,
-  });
-
-  const toggleChat = (application) => {
-    // Set the chat data for the clicked application
-    // Mark messages as read
-    axios.put(`${BASE_API_URL}/markCandidateMessagesAsRead?applicationId=${application.applicationId}`);
-    setChatData({
-      applicationId: application.applicationId,
-      candidateId: application.candidateId,
-      hrId: application.hrId,
-    });
-    // Toggle the visibility of the ChatComponent
-    setIsChatOpen(!isChatOpen);
-  };
   const handleSelect = async (filterStatus, fromDate, toDate) => {
     try {
       const jobId = 0;
@@ -454,8 +433,40 @@ const DreamApplication = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   // State to track if the ChatComponent is open
- 
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
+  const [chatData, setChatData] = useState({
+    applicationId: null,
+    candidateId: null,
+    hrId: null,
+  });
+
+  // Function to handle chat icon click
+  const toggleChat = (application) => {
+    // Set the chat data for the clicked application
+    // Mark messages as read
+    axios.put(`${BASE_API_URL}/markCandidateMessagesAsRead?applicationId=${application.applicationId}`);
+
+    const unread = {}; // Initialize unread messages state
+    try {
+
+      const countUnread = fetchCountUnreadMessage(application.applicationId);
+
+      unread[application.applicationId] = countUnread;
+
+    } catch (error) {
+      console.error('Error fetching job status:', error);
+    }
+    setUnreadMessages(unread); // Set unread messages state
+
+    setChatData({
+      applicationId: application.applicationId,
+      candidateId: application.candidateId,
+      hrId: application.hrId,
+    });
+    // Toggle the visibility of the ChatComponent
+    setIsChatOpen(!isChatOpen);
+  };
   return (
     <div className='dashboard-container'>
 
@@ -473,7 +484,8 @@ const DreamApplication = () => {
               maxHeight: isSmallScreen ? '600px' : '1000px',
               paddingBottom: '100px'
             }}
-          >                  <Row className="mb-4 m-3">
+          >
+            <Row className="mb-4 m-3">
               <Col xs={12} md={6} lg={4}>
                 <label
                   htmlFor="status"
@@ -639,7 +651,6 @@ const DreamApplication = () => {
                 </Button>
               </Modal.Footer>
             </Modal>
-          
             {applications.length > 0 && (
               <div>
                 <div className="table-wrapper">
