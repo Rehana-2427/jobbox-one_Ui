@@ -72,11 +72,7 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
               userId: hrId
             }
           });
-          const formatUserName = (name) => {
-            return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-          };
-
-          setUserName(formatUserName(response.data.companyName) + ' HR');
+          setUserName(response.data.companyName + ' HR');
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -248,7 +244,8 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
         chatId: editMessageId,
         applicationId,
         hrMessage: hrId && userType === 'HR' ? newMessage : '',
-        candidateMessage: candidateId && userType === 'Candidate' ? newMessage : '',       
+        candidateMessage: candidateId && userType === 'Candidate' ? newMessage : '',
+        timestamp: new Date().toISOString(),
       };
 
       // Update the message on the server
@@ -308,8 +305,7 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
                   style={{ position: 'relative' }}
                 >
                   <div className="message-content">
-                    <strong>{msg.hrMessage && userType === 'HR' ? 'You' : msg.candidateMessage && userType === 'Candidate' ? 'You' : userName}: </strong>
-                    <span>{msg.hrMessage || msg.candidateMessage}</span>
+                    <strong>{msg.hrMessage && userType === 'HR' ? 'You' : msg.candidateMessage && userType === 'Candidate' ? 'You' : userName}: </strong>                    <span>{msg.hrMessage || msg.candidateMessage}</span>
                     <div className="message-time">
                       <span>{formatMessageDateTime(msg.createdAt)}</span>
                     </div>
