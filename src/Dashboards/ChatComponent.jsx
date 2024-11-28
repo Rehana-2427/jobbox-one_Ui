@@ -248,10 +248,7 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
         chatId: editMessageId,
         applicationId,
         hrMessage: hrId && userType === 'HR' ? newMessage : '',
-        candidateMessage: candidateId && userType === 'Candidate' ? newMessage : '',
-        hrMessage: hrId && userType === 'HR' ? newMessage : '',
-        candidateMessage: candidateId && userType === 'Candidate' ? newMessage : '',
-        timestamp: new Date().toISOString(),
+        candidateMessage: candidateId && userType === 'Candidate' ? newMessage : '',       
       };
 
       // Update the message on the server
@@ -372,7 +369,6 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
               onClick={handleUpdateMessage}
               disabled={isSending}
             >
-              <FontAwesomeIcon icon={faPaperPlane} /> {isSending ? 'Updating...' : 'Update Message'}
               <FontAwesomeIcon icon={faPaperPlane} /> {isSending ? 'Updating...' : 'Update Message'}
             </Button>
           ) : (
