@@ -29,6 +29,7 @@ import UserRoute from './Session/UserRoute';
 import UserSignin from './Session/UserSignin';
 import Settings from './Settings';
 import TermsAndConditions from './TermsAndConditions';
+import CompanyOverView from './Companies/CompanyOverView';
 
 const PagesRoute = () => {
   return (
@@ -68,6 +69,7 @@ const PagesRoute = () => {
           <Route path="/candidate-dashboard/job-description" element={<JobDescription />} />
           <Route path='/jobboxCompanyPage/eachCompanyPage/publicJobDetailsPage' element={<PublicJobDetailsPage />} />
           <Route path='/chatComponent' element={<ChatComponent />} />
+          <Route path='/companyOverView' element={<CompanyOverView />} />
         </Routes>
       </Router>
     </div>

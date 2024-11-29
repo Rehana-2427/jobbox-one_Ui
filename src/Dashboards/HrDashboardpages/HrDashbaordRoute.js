@@ -21,6 +21,8 @@ import UpdateEvergreenJob from './UpdateEvergreenJob.jsx'
 import UpdateJob from './UpdateJob.jsx'
 import ViewApplications from './ViewApplications.jsx'
 import ViewCandidateDetails from './ViewCandidateDetails.jsx'
+import CompanyViewPage from './CompanyViewPage.jsx'
+
 const HrDashbaordRoute = () => {
   return (
     <div>
@@ -44,6 +46,7 @@ const HrDashbaordRoute = () => {
         <Route path="/my-jobs/addJob/jodAddSuccess" element={<JobAddSuccessful />} />
         <Route path="/dream-applications/viewCandidateDetails" element={<ViewCandidateDetails />} />
         <Route path="/my-jobs/update-job" element={<UpdateJob />} />
+        <Route path="/company-showcase/companyViewPage" element={< CompanyViewPage/>} />
       </Routes>
     </div>
   )

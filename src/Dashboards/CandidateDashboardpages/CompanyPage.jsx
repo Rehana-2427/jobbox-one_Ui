@@ -540,13 +540,13 @@ const CompamyPage = () => {
                               <thead className="table-light">
                                 <tr>
                                   <th scope='col' onClick={() => handleSort('jobTitle')}>
-                                    Job Profile {sortedColumn === 'jobTitle' && (sortOrder === 'asc' ? '▲' : '▼')}
+                                    Job Profile {sortedColumn === 'jobTitle' && (sortOrder === 'asc' ? '?' : '?')}
                                   </th>
                                   <th scope='col' onClick={() => handleSort('applicationDeadline')}>
-                                    Application Deadline {sortedColumn === 'applicationDeadline' && (sortOrder === 'asc' ? '▲' : '▼')}
+                                    Application Deadline {sortedColumn === 'applicationDeadline' && (sortOrder === 'asc' ? '?' : '?')}
                                   </th>
                                   <th scope='col' onClick={() => handleSort('skills')}>
-                                    Skills {sortedColumn === 'skills' && (sortOrder === 'asc' ? '▲' : '▼')}
+                                    Skills {sortedColumn === 'skills' && (sortOrder === 'asc' ? '?' : '?')}
                                   </th>
                                   <th scope='col'>Job Summary</th>
                                   <th scope='col'>Actions</th>

@@ -4,9 +4,10 @@ import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap'
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom'
 import CompanyJobs from './CompanyJobs'
-import CompnayOverview from './CompnayOverview'
 import './HrDashboard.css'
 import HrLeftSide from './HrLeftSide'
+import CompanyViewPage from './CompanyViewPage'
+
 
 const CompanyShowCase = () => {
   // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
@@ -337,7 +338,7 @@ const CompanyShowCase = () => {
               onChange={(e) => handleFileChange('logo', e.target.files[0])}
               accept="image/*"
             />
-          </div>
+          </div>         
         </Card.Body>
       </Card>
 
@@ -394,7 +395,8 @@ const CompanyShowCase = () => {
 
       <Row className="hr-company_page-row3">
         <Col xs={12} md={8}>
-          {activeTab === 'overview' && <CompnayOverview style={{ overflowY: 'scroll' }} />}
+          {/* {activeTab === 'overview' && <CompnayOverview style={{ overflowY: 'scroll' }} />} */}
+          {activeTab === 'overview' && <CompanyViewPage style={{overflowY:'scroll'}} />}
           {activeTab === 'jobs' && <CompanyJobs />}
         </Col>
         <Col xs={12} md={4}>

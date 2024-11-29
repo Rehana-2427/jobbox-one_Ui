@@ -1,3 +1,5 @@
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Client } from "@stomp/stompjs";
 import axios from "axios";
 import { format, isBefore, isToday, isYesterday, subDays } from "date-fns";
@@ -7,8 +9,6 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import SockJS from "sockjs-client";
 import Swal from "sweetalert2";
 import './ChatComponent.css';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 
 const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -240,6 +240,7 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
   const handleUpdateMessage = async () => {
     setIsSending(true);
     try {
+
       const updatedMessage = {
         chatId: editMessageId,
         applicationId,
@@ -314,22 +315,18 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
                   {/* Conditionally render edit and delete icons */}
                   {((userType === 'Candidate' && msg.candidateMessage) || (userType === 'HR' && msg.hrMessage)) && (
                     <>
-
-
                       {/* Calculate the time difference */}
-                      {msg.createdAt && (new Date() - new Date(msg.createdAt)) < 15 * 60 * 1000 ? (
-                        // Only show the edit button if it's within 15 minutes private LocalDateTime createdAt;
-                        <div className="edit-icon" onClick={() => handleUpdate(msg.chatId)}>
-                          <MdEdit size={18} />
-                        </div>
-                      ) : (
-                        // Optionally, you can disable the button or show a tooltip
-                        // <div className="edit-icon disabled">
-                        //   <MdEdit size={18} />
-                        // </div>                    
-                        // Don't render the edit button if it's older than 15 minutes
-                        null
-                      )}
+                      {
+                        msg.createdAt && (new Date().toISOString() && (new Date().getTime() - new Date(msg.createdAt).getTime()) < 15 * 60 * 1000) ? (
+                          // Only show the edit button if it's within 15 minutes, using system's current time
+                          <div className="edit-icon" onClick={() => handleUpdate(msg.chatId)}>
+                            <MdEdit size={18} />
+                          </div>
+                        ) : (
+                          null
+                        )
+                      }
+
 
                       {/* Delete button, always enabled */}
                       <div className="delete-icon" onClick={() => handleDelete(msg.chatId)}>
@@ -351,8 +348,13 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
             disabled={isSending}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && newMessage.trim() !== '') {
-                sendMessage();
-                e.preventDefault();
+                // Check if we're in edit mode and call handleUpdateMessage
+                if (editMessageId) {
+                  handleUpdateMessage();
+                } else {
+                  sendMessage();
+                }
+                e.preventDefault(); // Prevents the default Enter key behavior (new line in textarea)
               }
             }}
           />
@@ -378,6 +380,7 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
             </Button>
           )}
         </div>
+
       </Modal.Body>
     </Modal>
   );
