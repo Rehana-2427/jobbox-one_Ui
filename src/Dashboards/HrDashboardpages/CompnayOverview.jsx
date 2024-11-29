@@ -71,6 +71,7 @@ const CompanyOverview = () => {
             );
             
             console.log("Response from API:", response.data);
+            setCompanyInfo({...companyInfo})
             setCompanyInfoEditMode(false);
         } catch (error) {
             console.error('Error updating company details:', error);
@@ -219,9 +220,10 @@ const CompanyOverview = () => {
                             </Button>
                         </Form>
                     ) : (
+                        
                         <div className='job-details-text'>
                             <h4 className="company-header">
-                                About {companyName} <FaEdit onClick={() => setCompanyInfoEditMode(true)} className="edit-icon" />
+                                About {companyName} <FaEdit onClick={() => setCompanyInfoEditMode(true)}  />
                             </h4>
                             <p className="company-overview">{companyInfo.overView}</p>
                             <h4 className="company-subheader">Website</h4>

@@ -1,14 +1,14 @@
-import { faEye, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
-import { Button, Col, Form, Modal, Row, Table } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Button, Col, Modal, Row, Table } from "react-bootstrap";
 import { SiImessage } from "react-icons/si";
 import { useLocation, useNavigate } from "react-router-dom";
 import Pagination from "../../Pagination";
+import ChatComponent from "../ChatComponent";
 import HrLeftSide from "./HrLeftSide";
 import Slider from "./Slider";
-import ChatComponent from "../ChatComponent";
 
 const ViewApplications = () => {
   const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -231,16 +231,35 @@ const ViewApplications = () => {
       );
     } else if (fileType === 'link') {
       return (
-        <a href={fileName} target="_blank" rel="noopener noreferrer">Click here</a>
+        <a href={fileName} target="_blank" rel="noopener noreferrer" onClick={() => updateViewCount(resumeId, "link")}>Click here</a>
       );
     } else if (fileType === 'brief') {
       return (
-        <Button className="btn-sm" variant="primary" onClick={() => openPopup(fileName)}>Open Brief</Button>
+        <Button className="btn-sm" variant="primary" onClick={() => {
+          updateViewCount(resumeId, "brief");
+          openPopup(fileName);
+        }}>Open Brief</Button>
       );
     } else {
       return null; // Handle other file types as needed
     }
   };
+
+
+  const updateViewCount = async (resumeId, action) => {
+    console.log(resumeId, action);
+    try {
+      await axios.post(`${BASE_API_URL}/resume-increment-view`, null, {
+        params: {
+          resumeId: resumeId,
+          action: action,
+        },
+      });
+    } catch (error) {
+      console.error('Error updating resume view count:', error);
+    }
+  };
+
 
   const [showMessage, setShowMessage] = useState(false);
   const [showBriefSettings, setShowBriefSettings] = useState(false);
@@ -250,7 +269,17 @@ const ViewApplications = () => {
   };
 
   const handleDownload = async (resumeId, fileName) => {
+    const action = "download"
+    console.log(resumeId, action)
     try {
+      // Increment view count
+      await axios.post(`${BASE_API_URL}/resume-increment-view`, null, {
+        params: {
+          resumeId: resumeId,
+          action: action, // Action type
+        },
+      });
+
       const response = await axios.get(`${BASE_API_URL}/downloadResume?resumeId=${resumeId}`, {
         responseType: 'blob'
       });
