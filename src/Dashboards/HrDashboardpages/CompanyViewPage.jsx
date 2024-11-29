@@ -71,6 +71,7 @@ const CompanyViewPage = () => {
             );
             
             console.log("Response from API:", response.data);
+            setCompanyInfo({...companyInfo})
             setCompanyInfoEditMode(false);
         } catch (error) {
             console.error('Error updating company details:', error);
@@ -219,6 +220,7 @@ const CompanyViewPage = () => {
                             </Button>
                         </Form>
                     ) : (
+                        
                         <div className='job-details-text'>
                             <h4 className="company-header">
                                 About {companyName} <FaEdit onClick={() => setCompanyInfoEditMode(true)}/>

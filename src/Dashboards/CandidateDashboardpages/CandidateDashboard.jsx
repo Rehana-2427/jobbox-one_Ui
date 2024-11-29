@@ -54,7 +54,7 @@ const CandidateDashboard = () => {
   const [countOfUnreadNotification, setCountOfUnreadNotification] = useState(0);
   const [unreadNotifications, setUnreadNotifications] = useState([]);
   const [applicationsData, setApplicationsData] = useState([]);
-
+  const [resumeViewCount,setResumeViewCount] = useState(null);
 
   useEffect(() => {
     const fetchData = async (userId) => {
@@ -98,6 +98,14 @@ const CandidateDashboard = () => {
         console.log(notification.data);
         setCountOfUnreadNotification(notification.data.count);
         setUnreadNotifications(notification.data.notifications);
+
+
+        const resumecount  = await axios.get(`${BASE_API_URL}/resume-view-count`,{
+          params:{
+            userId:userId
+          }
+        });
+        setResumeViewCount(resumecount.data)
       } catch (error) {
         console.error('Error fetching Data:', error);
         setCountOfCompanies(null);
@@ -109,10 +117,6 @@ const CandidateDashboard = () => {
   }, [userId]);
 
 
-
-  const toggleSettings = () => {
-    navigate('/');
-  };
   const toggleFullScreen = () => {
     if (document.fullscreenEnabled) {
       if (!document.fullscreenElement) document.documentElement.requestFullscreen();
@@ -205,7 +209,7 @@ const CandidateDashboard = () => {
   const DATA = [
     { icon: faBuilding, title: countOfAppliedCompanies, subtitle: "Applied Companies", link: "/candidate-dashboard/candidate-companies", state: { userName, userId, appliedCompany: true } },
     { icon: faFileAlt, title: countOfResume, subtitle: "Resumes", link: "/candidate-dashboard/resume" },
-    { icon: faEye, title: '250', subtitle: "Resume Views" },
+    { icon: faEye, title: resumeViewCount, subtitle: "Resume Views" },
     { icon: faStar, title: countOfshortlistedApplications, subtitle: "Shortlist", link: '/candidate-dashboard/my-application', state: { userName, userId, applicationStatus: "Shortlisted" } },
 
   ];
