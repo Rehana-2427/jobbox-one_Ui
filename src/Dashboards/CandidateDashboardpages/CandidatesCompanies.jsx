@@ -21,6 +21,8 @@ const CandidatesCompanies = () => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(6);
   const [totalPages, setTotalPages] = useState(0);
+  const [sortedColumn, setSortedColumn] = useState(null); // Track the currently sorted column
+  const [sortOrder, setSortOrder] = useState(' '); // Track the sort order (asc or desc)
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value);
@@ -48,8 +50,16 @@ const CandidatesCompanies = () => {
 
       fetchData();
     }
-  }, [search, page, pageSize]);
+  }, [search, page, pageSize, sortOrder, sortedColumn]);
 
+  const handleSort = (column) => {
+    let order = 'asc';
+    if (sortedColumn === column) {
+      order = sortOrder === 'asc' ? 'desc' : 'asc';
+    }
+    setSortedColumn(column);
+    setSortOrder(order);
+  };
   const fetchDataByAppliedCompanies = async () => {
     try {
       const appliedCompanies = await axios.get(`${BASE_API_URL}/appliedCompanies`, {
@@ -75,7 +85,9 @@ const CandidatesCompanies = () => {
       const params = {
         search,
         page: page,
-        size: pageSize
+        size: pageSize,
+        sortBy: sortedColumn,
+        sortOrder: sortOrder,
       };
 
       console.log("Fetching data with params:", params);
@@ -111,7 +123,6 @@ const CandidatesCompanies = () => {
     navigate("/candidate-dashboard/companyPage", { state: { companyId: companyId, userName: userName, userId: userId } });
   };
 
-
   const user = {
     userName: userName,
     userId: userId,
@@ -139,8 +150,8 @@ const CandidatesCompanies = () => {
 
   const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
   const toggleLeftSide = () => {
-  console.log("Toggling left side visibility");
-  setIsLeftSideVisible(!isLeftSideVisible);
+    console.log("Toggling left side visibility");
+    setIsLeftSideVisible(!isLeftSideVisible);
   };
 
   const { logout } = useAuth(); // Get logout function from context
@@ -237,11 +248,16 @@ const CandidatesCompanies = () => {
           <div className="container mt-4">
             {companies.length > 0 ? (
               <div className='table-details-list table-wrapper'>
+                <h2> Companies For {userName}</h2>
+                <p>
+                  Similar to tables and dark tables, use the modifier classes
+                  <code>.table-light</code> to make <code>thead</code> appear light
+                </p>
                 <Table hover className='text-center'>
                   <thead className="table-light">
                     <tr>
-                      <th>Company Name</th>
-                      <th>Industry</th>
+                      <th scope="col" onClick={() => handleSort('companyName')}>Company Name {sortedColumn === 'companyName' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}</th>
+                      <th scope="col" onClick={() => handleSort('industryService')}>Industry {sortedColumn === 'industryService' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}</th>
                       <th>Actions</th>
                     </tr>
                   </thead>

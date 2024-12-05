@@ -79,7 +79,6 @@ const HrLeftSide = ({ user, onClose }) => {
     const toggleDrawer = (open) => () => {
         setIsDrawerOpen(open);
     };
-
     const renderNavLinks = () => (
         <Nav className="flex-column full-height align-items-center">
             {navLinks.map((link, index) => (

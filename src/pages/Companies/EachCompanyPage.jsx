@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Card, Col, Modal, Row } from 'react-bootstrap';
+import { Button, Card, Col, Modal, Row, Tab, Tabs } from 'react-bootstrap';
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -9,6 +9,9 @@ import HomeFooter from '../HomeFooter';
 import './Company.css';
 import CompanyJobs from './CompanyJobs';
 import CompanyOverView from './CompanyOverView';
+import CustomNavbar from '../CustomNavbar';
+import { toast, ToastContainer } from 'react-toastify';
+import Footer from '../Footer';
 
 const EachCompanyPage = () => {
   // const BASE_API_URL = 'http://51.79.18.21:8082/api/jobbox';
@@ -160,13 +163,24 @@ const EachCompanyPage = () => {
   };
 
   console.log()
-  const handleResumeSelect = async (resumeId) => {
-    if (resumeId) {
-      // If saving is successful, then apply for the job
-      await applyJob(resumeId);
+  // const handleResumeSelect = async (resumeId) => {
+  //   if (resumeId) {
+  //     // If saving is successful, then apply for the job
+  //     await applyJob(resumeId);
 
-      // Close the resume selection popup
-      setShowResumePopup(false);
+  //     // Close the resume selection popup
+  //     setShowResumePopup(false);
+  //   }
+  // };
+  const [resumeId, setResumeId] = useState(0);
+  const [selectedResume, setSelectedResume] = useState(null); // Store selected resume details
+
+  const handleResumeSelect = async (resume) => {
+    const resumeId = resume.target.value
+    setSelectedResume(resumeId);
+    if (resumeId) {
+      setResumeId(resumeId);
+      setShowResumePopup(false);  // Close the resume selection popup
     }
   };
   const handleModalOptionClick = (option) => {
@@ -362,13 +376,32 @@ const EachCompanyPage = () => {
   console.log(userId)
 
   const handleApplyCompany = () => {
-    setShowResumePopup(true);
+    if (companyName.trim() === '') {
+      toast.error('Please enter the company name before selecting a resume.');
+      return;
+    }
+    else if (!resumeId || !userId || !companyName) {
+      toast.error('Please select a resume.');
+      return;
+    }
+    applyJob(resumeId);
   };
-
+  const customTabHeader = (title, icon) => (
+    <div className="d-flex align-items-center">
+      <span className="me-2">
+        <i className={icon} />
+      </span>
+      <span>{title}</span>
+    </div>
+  );
   return (
     <div>
-      <div className='dashboard-container'>
+      <div>
+        <CustomNavbar />
+      </div>
+      <div className='dashboard-container-1'>
         {/* <Container> */}
+
         <div>
           <Row style={{ marginBottom: '20px' }}>
             <div>
@@ -402,52 +435,65 @@ const EachCompanyPage = () => {
             </div>
           </Row>
           <Row className="hr-company_page-row2" style={{ marginTop: '50px' }}>
-        <Col md={2}>
-          <span>
-            <a
-              onClick={() => handleTabClick('overview')}
-              className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
+            {/* <Col md={2}>
+              <span>
+                <a
+                  onClick={() => handleTabClick('overview')}
+                  className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
+                >
+                  About
+                </a>
+              </span>
+            </Col> */}
+            <Col md={2}>
+            <Tabs
+              defaultActiveKey="overview"
+              id="uncontrolled-tab-example"
+              onSelect={(key) => handleTabClick(key)} // This is the correct way to handle tab change
             >
-              About
-            </a>
-          </span>
-        </Col>
-        <Col md={2}>
-          <span>
-            <a
-              onClick={() => handleTabClick('jobs')}
-              className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
-            >
-              Jobs
-            </a>
-          </span>
-        </Col>
-        <Col className="hr-company_page-row2-col3" style={{ textAlign: 'end', marginRight: '20px' }}>
-          <span style={{ marginLeft: '20px' }}>
-            <h4 style={{ paddingRight: '14px' }}><b>{companyName}</b></h4>
-            {socialMediaLinks.facebookLink && (
-              <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
-                <FaFacebook size={24} style={{ margin: '0 5px', color: '#3b5998' }} />
-              </a>
-            )}
-            {socialMediaLinks.twitterLink && (
-              <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
-                <FaTwitter size={24} style={{ margin: '0 5px', color: '#1da1f2' }} />
-              </a>
-            )}
-            {socialMediaLinks.instagramLink && (
-              <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
-                <FaInstagram size={24} style={{ margin: '0 5px', color: '#e4405f' }} />
-              </a>
-            )}
-            {socialMediaLinks.linkedinLink && (
-              <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
-                <FaLinkedin size={24} style={{ margin: '0 5px', color: '#0077b5' }} />
-              </a>
-            )}
-          </span>
-        </Col>
-      </Row>
+              <Tab eventKey="overview" title={customTabHeader("About  ", "i-Atom")}>
+                 
+                </Tab>
+                <Tab eventKey="jobs" title={customTabHeader("Job  ", "i-Shutter")}>
+                 
+                </Tab>
+            </Tabs></Col>
+            {/* <Col md={2}>
+              <span>
+                <a
+                  onClick={() => handleTabClick('jobs')}
+                  className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
+                >
+                  Jobs
+                </a>
+              </span>
+            </Col> */}
+            <Col className="hr-company_page-row2-col3" style={{ textAlign: 'end', marginRight: '20px' }}>
+              <span style={{ marginLeft: '20px' }}>
+                <h4 style={{ paddingRight: '14px' }}><b>{companyName}</b></h4>
+                {socialMediaLinks.facebookLink && (
+                  <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
+                    <FaFacebook size={24} style={{ margin: '0 5px', color: '#3b5998' }} />
+                  </a>
+                )}
+                {socialMediaLinks.twitterLink && (
+                  <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
+                    <FaTwitter size={24} style={{ margin: '0 5px', color: '#1da1f2' }} />
+                  </a>
+                )}
+                {socialMediaLinks.instagramLink && (
+                  <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
+                    <FaInstagram size={24} style={{ margin: '0 5px', color: '#e4405f' }} />
+                  </a>
+                )}
+                {socialMediaLinks.linkedinLink && (
+                  <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
+                    <FaLinkedin size={24} style={{ margin: '0 5px', color: '#0077b5' }} />
+                  </a>
+                )}
+              </span>
+            </Col>
+          </Row>
 
 
 
@@ -508,7 +554,33 @@ const EachCompanyPage = () => {
                               Applied
                             </p>
                           ) : (
-                            <Button variant="success" onClick={handleApplyCompany}>Apply</Button>
+                            <>
+                              <div className="resume-dropdown-container">
+                                <h5 className="fw-bold">Select Resume</h5>
+                                <select
+                                  id="resumeSelect"
+                                  value={selectedResume}
+                                  onChange={handleResumeSelect}
+                                  required
+                                  className="form-select"
+                                >
+                                  <option value="">Select Resume</option>
+                                  {resumes.map((resume) => (
+                                    <option key={resume.id} value={resume.id}>
+                                      {resume.message}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+                              <Button
+                                variant="success"
+                                onClick={handleApplyCompany}
+                                disabled={!selectedResume} // This disables the button if selectedResume is empty
+                              >
+                                Apply
+                              </Button>
+
+                            </>
                           )
                         ) : (
                           <Button
@@ -565,8 +637,9 @@ const EachCompanyPage = () => {
           </Row>
 
           <Row style={{ marginTop: '10px' }} >
-              <HomeFooter />
-            </Row>
+            {/* <HomeFooter /> */}
+            <Footer />
+          </Row>
         </div>
         {/* </Container> */}
 
@@ -621,6 +694,9 @@ const EachCompanyPage = () => {
             )}
           </Modal.Body>
         </Modal>
+      </div>
+      <div>
+        <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
       </div>
     </div >
   );

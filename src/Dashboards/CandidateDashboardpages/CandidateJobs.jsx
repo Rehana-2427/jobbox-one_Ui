@@ -251,14 +251,15 @@ const CandidateJobs = () => {
   };
 
   const handleSort = (column) => {
-    let order = 'asc';
     if (sortedColumn === column) {
-      order = sortOrder === 'asc' ? 'desc' : 'asc';
+      // Toggle sort order if the same column is clicked
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      // Sort by the new column (default to ascending)
+      setSortedColumn(column);
+      setSortOrder('asc');
     }
-    setSortedColumn(column);
-    setSortOrder(order);
   };
-
   const handleCloseModal = () => {
     setSelectedJobSummary(null);
   };
@@ -412,39 +413,49 @@ const CandidateJobs = () => {
               onChange={handleFilterChange}
               value={filterStatus}
             >
-              <option value="all">All</option>
-              <option value="Apply">Apply</option>
-              <option value="Applied">Applied</option>
+              <option value="all">Show all</option>
+              <option value="Apply">Yet to apply</option>
+              <option value="Applied">Already applied</option>
             </select>
           </div>
           {/* overflowY: 'auto',  */}
-          <div style={{ maxHeight: '600px', paddingBottom: '50px' }}>          
+          <div style={{ maxHeight: '600px', paddingBottom: '50px' }}>
             {jobs.length > 0 && (
               <div>
-                <h2> Regular Jobs For {userName}</h2>
+                {/* <h2> Regular Jobs For {userName}</h2> */}
                 <div className="table-details-list table-wrapper">
+                  <h2> Regular Jobs For {userName}</h2>
+                  <p>
+                    Similar to tables and dark tables, use the modifier classes
+                    <code>.table-light</code> to make <code>thead</code> appear light
+                  </p>
                   <Table hover className="text-center">
                     <thead className="table-light">
                       <tr>
                         <th scope="col" onClick={() => handleSort('jobTitle')}>
-                          Job Profile{' '}
-                          {sortedColumn === 'jobTitle' && (sortOrder === 'asc' ? '▲' : '▼')}
+                          Job Profile
+                          {/* Show the sort symbol based on sortedColumn and sortOrder */}
+                          {sortedColumn === 'jobTitle' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
                         </th>
                         <th scope="col" onClick={() => handleSort('companyName')}>
                           Company Name{' '}
-                          {sortedColumn === 'companyName' && (sortOrder === 'asc' ? '▲' : '▼')}
+                          {/* Show the sort symbol based on sortedColumn and sortOrder */}
+                          {sortedColumn === 'companyName' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
                         </th>
                         <th scope="col" onClick={() => handleSort('applicationDeadline')}>
                           Application Deadline{' '}
-                          {sortedColumn === 'applicationDeadline' && (sortOrder === 'asc' ? '▲' : '▼')}
+                          {/* Show the sort symbol based on sortedColumn and sortOrder */}
+                          {sortedColumn === 'applicationDeadline' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
                         </th>
                         <th scope="col" onClick={() => handleSort('skills')}>
                           Skills{' '}
-                          {sortedColumn === 'skills' && (sortOrder === 'asc' ? '▲' : '▼')}
+                          {/* Show the sort symbol based on sortedColumn and sortOrder */}
+                          {sortedColumn === 'skills' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
                         </th>
                         <th scope="col" onClick={() => handleSort('location')}>
                           Location{' '}
-                          {sortedColumn === 'location' && (sortOrder === 'asc' ? '▲' : '▼')}
+                          {/* Show the sort symbol based on sortedColumn and sortOrder */}
+                          {sortedColumn === 'location' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
                         </th>
                         <th scope="col">Job description</th>
                         <th scope="col">Actions</th>

@@ -424,22 +424,27 @@ const MyApplication = () => {
             {applications.length > 0 ? (
               <>
                 <div className='table-details-list table-wrapper'>
+                <h2> My Application -- {userName}</h2>
+                  <p>
+                    Similar to tables and dark tables, use the modifier classes
+                    <code>.table-light</code> to make <code>thead</code> appear light
+                  </p>
                   <Table hover className='text-center'>
                     <thead className="table-light">
                       <tr>
                         <th scope="col" onClick={() => handleSort('companyName')}>
-                          Company Name{sortedColumn === 'companyName' && (sortOrder === 'asc' ? '▲' : '▼')}
+                          Company Name{sortedColumn === 'companyName' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
                         </th>
                         <th scope="col" onClick={() => handleSort('jobRole')}>
-                          Job Title{sortedColumn === 'jobRole' && (sortOrder === 'asc' ? '▲' : '▼')}
+                          Job Title{sortedColumn === 'jobRole' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
                         </th>
                         <th scope="col" onClick={() => handleSort('appliedOn')}>
-                          Applied On{sortedColumn === 'appliedOn' && (sortOrder === 'asc' ? '▲' : '▼')}
+                          Applied On{sortedColumn === 'appliedOn' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
                         </th>
                         <th scope="col">Resume Profile</th>
                         <th scope="col">Job Status</th>
                         <th scope="col" onClick={() => handleSort('applicationStatus')}>
-                          Action {sortedColumn === 'applicationStatus' && (sortOrder === 'asc' ? '▲' : '▼')}
+                          Action {sortedColumn === 'applicationStatus' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
                         </th>
                         <th scope="col">Chat</th>
                         <th scope="col">Delete</th>

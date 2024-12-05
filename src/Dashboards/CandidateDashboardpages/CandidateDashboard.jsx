@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { useAuth } from '../../AuthProvider';
 import CandidateLeftSide from './CandidateLeftSide';
 
+
 const CandidateDashboard = () => {
   const location = useLocation();
   // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
@@ -54,7 +55,7 @@ const CandidateDashboard = () => {
   const [countOfUnreadNotification, setCountOfUnreadNotification] = useState(0);
   const [unreadNotifications, setUnreadNotifications] = useState([]);
   const [applicationsData, setApplicationsData] = useState([]);
-  const [resumeViewCount,setResumeViewCount] = useState(null);
+  const [resumeViewCount, setResumeViewCount] = useState(null);
 
   useEffect(() => {
     const fetchData = async (userId) => {
@@ -100,9 +101,9 @@ const CandidateDashboard = () => {
         setUnreadNotifications(notification.data.notifications);
 
 
-        const resumecount  = await axios.get(`${BASE_API_URL}/resume-view-count`,{
-          params:{
-            userId:userId
+        const resumecount = await axios.get(`${BASE_API_URL}/resume-view-count`, {
+          params: {
+            userId: userId
           }
         });
         setResumeViewCount(resumecount.data)
@@ -160,7 +161,7 @@ const CandidateDashboard = () => {
   };
 
   // console.log(nameParts)
-  
+
   const initials = getInitials(user.userName);
 
   console.log(initials)
@@ -243,12 +244,14 @@ const CandidateDashboard = () => {
   };
   return (
     <div className='dashboard-container'>
-
+     
       <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
         <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
       </div>
       <div className="right-side" style={{ overflowY: 'scroll' }}>
         {/* candidate header icons - full screen icon , user icon , notification */}
+        <div>
+        </div>
         <div className="d-flex justify-content-end align-items-center mb-3 mt-2">
           <Dropdown className="ml-2">
             <Dropdown.Toggle
@@ -288,7 +291,7 @@ const CandidateDashboard = () => {
             </Dropdown.Toggle>
             <Dropdown.Menu className="mt-3">
               <Dropdown.Item as={Link} to="/settings">
-                <i className="i-Data-Settings me-1"/> Account settings
+                <i className="i-Data-Settings me-1" /> Account settings
               </Dropdown.Item>
               <Dropdown.Item as="button" onClick={handleLogout}>
                 <i className="i-Lock-2 me-1" /> Logout

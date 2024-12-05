@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Row, Table } from "react-bootstrap";
+import { Button, Card, Col, Row, Tab, Table, Tabs } from "react-bootstrap";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -8,6 +8,7 @@ import Pagination from "../../Pagination";
 import './CandidateDashboard.css';
 import CandidateLeftSide from "./CandidateLeftSide";
 import ResumeSelectionPopup from "./ResumeSelectionPopup";
+import { toast, ToastContainer } from "react-toastify";
 
 const CompamyPage = () => {
   const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -347,18 +348,37 @@ const CompamyPage = () => {
     setShowResumePopup(true);
   };
 
-  const handleApplyCompany = () => {
-    setShowResumePopup(true);
-  }
-  const handleResumeSelect = async (resumeId) => {
-    if (selectedJobId && resumeId) {
-      await applyJob(selectedJobId, resumeId);
-      setSelectedJobId(null);
-    } else {
-      await applyDreamCompanyJob(resumeId);
+  const [resumeId, setResumeId] = useState(0);
+  const [selectedResume, setSelectedResume] = useState(null); // Store selected resume details
+
+  const handleResumeSelect = async (resume) => {
+    const resumeId = resume.target.value
+setSelectedResume(resumeId);
+    if (resumeId) {
+      setResumeId(resumeId);
+      setShowResumePopup(false);  // Close the resume selection popup
     }
-    setShowResumePopup(false);
   };
+  const handleApplyCompany = () => {
+    // if (companyName.trim() === '' ) {
+    //    toast.error('Please enter the company name before selecting a resume.');
+    //   return;
+    // }
+    if (!resumeId || !userId) {
+      toast.error('Please select a resume.');
+      return;
+    }
+    applyJob(selectedJobId, resumeId);
+  };
+  // const handleResumeSelect = async (resumeId) => {
+  //   if (selectedJobId && resumeId) {
+  //     await applyJob(selectedJobId, resumeId);
+  //     setSelectedJobId(null);
+  //   } else {
+  //     await applyDreamCompanyJob(resumeId);
+  //   }
+  //   setShowResumePopup(false);
+  // };
 
   const [socialMediaLinks, setSocialMediaLinks] = useState({
     facebookLink: '',
@@ -404,6 +424,15 @@ const CompamyPage = () => {
     // Clean up the event listener on component unmount
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  const customTabHeader = (title, icon) => (
+    <div className="d-flex align-items-center">
+      <span className="me-2">
+        <i className={icon} />
+      </span>
+      <span>{title}</span>
+    </div>
+  );
   return (
     <div className='dashboard-container' style={{ background: '#f2f2f2', minHeight: '100vh' }}>
 
@@ -458,10 +487,10 @@ const CompamyPage = () => {
 
 
           <Row className="hr-company_page-row2" style={{ marginTop: '50px' }}>
-            <Col md={2}>
+            {/* <Col md={2}>
               <span>
                 <a
-                   onClick={() => setActiveTab('overview')}
+                  onClick={() => setActiveTab('overview')}
                   className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
                 >
                   About
@@ -471,13 +500,26 @@ const CompamyPage = () => {
             <Col md={2}>
               <span>
                 <a
-                 onClick={() => setActiveTab('jobs')}
+                  onClick={() => setActiveTab('jobs')}
                   className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
                 >
                   Jobs
                 </a>
               </span>
-            </Col>
+            </Col> */}
+             <Col md={2}>
+            <Tabs
+              defaultActiveKey="overview"
+              id="uncontrolled-tab-example"
+              onSelect={(key) => setActiveTab(key)} // This is the correct way to handle tab change
+            >
+              <Tab eventKey="overview" title={customTabHeader("About  ", "i-Atom")}>
+                 
+                </Tab>
+                <Tab eventKey="jobs" title={customTabHeader("Job  ", "i-Shutter")}>
+                 
+                </Tab>
+            </Tabs></Col>
             <Col className="hr-company_page-row2-col3" style={{ textAlign: 'end', marginRight: '20px' }}>
               <span style={{ marginLeft: '20px' }}>
                 <h4 style={{ paddingRight: '14px' }}><b>{company?.companyName}</b></h4>
@@ -501,7 +543,7 @@ const CompamyPage = () => {
                     <FaLinkedin size={24} style={{ margin: '0 5px', color: '#0077b5' }} />
                   </a>
                 )}
-            
+
               </span>
             </Col>
           </Row>
@@ -512,7 +554,7 @@ const CompamyPage = () => {
               {activeTab === 'overview' && (
                 <>
                   <div className='company-overview'>
-                    <Card className="job-details-text" style={{  width: '100%', height: "fit-content" }}>
+                    <Card className="job-details-text" style={{ width: '100%', height: "fit-content" }}>
                       <Card.Body>
                         <h3>About {company?.companyName} </h3>
                         {companyInfo.overView && (
@@ -553,13 +595,13 @@ const CompamyPage = () => {
                                 <thead className="table-light">
                                   <tr>
                                     <th scope='col' onClick={() => handleSort('jobTitle')}>
-                                      Job Profile {sortedColumn === 'jobTitle' && (sortOrder === 'asc' ? '▲' : '▼')}
+                                      Job Profile   {sortedColumn === 'jobTitle' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
                                     </th>
                                     <th scope='col' onClick={() => handleSort('applicationDeadline')}>
-                                      Application Deadline {sortedColumn === 'applicationDeadline' && (sortOrder === 'asc' ? '▲' : '▼')}
+                                      Application Deadline   {sortedColumn === 'applicationDeadline' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
                                     </th>
                                     <th scope='col' onClick={() => handleSort('skills')}>
-                                      Skills {sortedColumn === 'skills' && (sortOrder === 'asc' ? '▲' : '▼')}
+                                      Skills   {sortedColumn === 'skills' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
                                     </th>
                                     <th scope='col'>Job Summary</th>
                                     <th scope='col'>Actions</th>
@@ -663,7 +705,33 @@ const CompamyPage = () => {
                           Applied
                         </p>
                       ) : (
-                        <Button variant="success" onClick={handleApplyCompany}>Apply</Button>
+                        <>
+                          <div className="resume-dropdown-container">
+                            <h5 className="fw-bold">Select Resume</h5>
+                            <select
+                              id="resumeSelect"
+                              value={selectedResume}
+                              onChange={handleResumeSelect}
+                              required
+                              className="form-select"
+                            >
+                              <option value="">Select Resume</option>
+                              {resumes.map((resume) => (
+                                <option key={resume.id} value={resume.id}>
+                                  {resume.message}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                          <Button
+                            variant="success"
+                            onClick={handleApplyCompany}
+                            disabled={!selectedResume} // This disables the button if selectedResume is empty
+                          >
+                            Apply
+                          </Button>
+
+                        </>
                       )}
                     </Col>
                   </Row>
@@ -697,6 +765,9 @@ const CompamyPage = () => {
               </Card>
             </Col>
           </Row>
+        </div>
+        <div>
+          <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
         </div>
       </div>
     </div>
