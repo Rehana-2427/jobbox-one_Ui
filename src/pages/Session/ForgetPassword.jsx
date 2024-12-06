@@ -1,7 +1,7 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import api from '../../apiClient';
 import SocialButtons from './sessions/SocialButtons';
 
 const ForgetPassword = () => {
@@ -13,8 +13,6 @@ const ForgetPassword = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [stage, setStage] = useState('email');
     const [otpEnter, setOtpEnter] = useState();
-    // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
-
 
     const BASE_API_URL = process.env.REACT_APP_API_URL;
     const [passwordMatchError, setPasswordMatchError] = useState(false);
@@ -25,7 +23,7 @@ const ForgetPassword = () => {
 
         e.preventDefault();
         try {
-            const response = await axios.get(`${BASE_API_URL}/generateOTP?userEmail=${userEmail}`);
+            const response = await api.otpGenerate(userEmail)
             if (response.data) {
                 setOtp(response.data);
                 setStage('otp');
@@ -56,7 +54,7 @@ const ForgetPassword = () => {
             return;
         }
         try {
-            const response = await axios.put(`${BASE_API_URL}/updatePassword?userEmail=${userEmail}&newPassword=${newPassword}`);
+            const response = await api.updatePassword(userEmail,newPassword)
             if (response.data) {
                 setSuccessMessage("Password reset successfully! Now You can login with your new password.");
             }

@@ -1,9 +1,9 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
+import api from '../apiClient';
 import './PagesStyle/Pages.css';
 
 const HomeFooter = () => {
@@ -47,7 +47,7 @@ const HomeFooter = () => {
 
         try {
             // Send the form data to the backend API
-            const response = await axios.post(`${BASE_API_URL}/savemessage`, formData);
+            const response = await api.sendMessage(formData);
             if (response.status === 200) {
                 setIsMessageSent(true)
                 toast.success("Message sent successfully!"); // Success toast

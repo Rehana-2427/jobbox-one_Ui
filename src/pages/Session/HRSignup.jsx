@@ -1,5 +1,4 @@
 
-import axios from 'axios'
 import { Field, Form, Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import { Button, Card, Col, Container, Modal, Row } from 'react-bootstrap'
@@ -8,6 +7,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import Swal from 'sweetalert2'
 import * as yup from 'yup'
+import api from '../../apiClient'
 import CustomNavbar from '../CustomNavbar'
 import TextField from './sessions/TextField'
 import './StyleSession/signup.css'
@@ -142,7 +142,7 @@ const HRSignup = () => {
         console.log("User data to be sent:", userData);
 
         try {
-            const response = await axios.post(`${BASE_API_URL}/saveUser`, userData);
+            const response = await api.saveUser(userData)
             console.log("Response from API:", response.data);
 
             if (!response.data || response.data === 'undefined' || response.data === '') {
@@ -205,7 +205,7 @@ const HRSignup = () => {
                         Swal.showLoading();
                     }
                 });
-                const response = await axios.get(`${BASE_API_URL}/validateUserEmail?userEmail=${email}`);
+                const response = await api.validateUserEmail(email)
                 setOtpValue(response.data);
                 setShowOTPModal(true);
                 if (response.data) {
@@ -224,7 +224,7 @@ const HRSignup = () => {
     // Function to update user data (in case of email already exists)
     const updateUserData = async (values) => {
         try {
-            const response = await axios.put(`${BASE_API_URL}/updateUserData`, values);
+            const response = await api.updateUserData(values); // PUT request to update user data
 
             if (response.data) {
                 Swal.fire({
@@ -309,7 +309,7 @@ const HRSignup = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                    
+
                                         </Col>
                                         <Col md={6}>
                                             {/* Name Field */}

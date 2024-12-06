@@ -1,13 +1,13 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Dropdown, Table } from 'react-bootstrap';
+import { Button, Table } from 'react-bootstrap';
 import { MdEdit } from 'react-icons/md';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useAuth } from '../../AuthProvider';
 
 import Pagination from '../../Pagination';
-import HrLeftSide from './HrLeftSide';
+import DashboardLayout from './DashboardLayout ';
 
 const EvergreenJobs = () => {
 
@@ -135,22 +135,8 @@ const EvergreenJobs = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   return (
-    <div className='dashboard-container'>
-
-      <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-        <HrLeftSide user={{ userName, userEmail }} onClose={toggleLeftSide} />
-      </div>
-      <div className="right-side" >
-
-        <div
-          className="small-screen-hr"
-          style={{
-            overflowY: 'auto',
-            maxHeight: isSmallScreen ? '600px' : '1000px',
-            paddingBottom: '100px'
-          }}
-        >                <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-            {/* <div className="search-bar" >
+    <DashboardLayout>  <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
+      {/* <div className="search-bar" >
               <input style={{ borderRadius: '6px', height: '35px' }}
                 type="text"
                 name="search"
@@ -159,87 +145,60 @@ const EvergreenJobs = () => {
                 onChange={handleSearchChange}
               />
             </div> */}
-            <Dropdown className="ml-2">
-              <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
-                <div
-                  className="initials-placeholder"
-                  style={{
-                    width: '30px',
-                    height: '30px',
-                    borderRadius: '50%',
-                    backgroundColor: 'grey',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'white',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {initials}
-                </div>
-              </Dropdown.Toggle>
-              <Dropdown.Menu className="mt-3">
-                <Dropdown.Item as={Link} to="//settings">
-                  <i className="i-Data-Settings me-1" /> Account settings
-                </Dropdown.Item>
-                <Dropdown.Item as="button" onClick={handleLogout}>
-                  <i className="i-Lock-2 me-1" /> Logout
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h2 style={{ textAlign: 'left' }}>Evergreen Jobs</h2>
-            <Button className="add-job-button" style={{ textAlign: 'right', marginBottom: '12px', position: 'relative', bottom: '30px', right: '20px' }}>
-              <Link
-                to={{
-                  pathname: '/hr-dashboard/evergreen-jobs/job-form',
-                  state: { userName, userEmail, jobCategory: 'evergreen' }
-                }}
-                style={{ textDecoration: 'none', color: 'inherit' }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate('/hr-dashboard/evergreen-jobs/job-form', { state: { userName, userEmail, jobCategory: 'evergreen' } });
-                }}
-              >
-                Add Evergreen Job
-              </Link>
-            </Button>
+    </div>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2 style={{ textAlign: 'left' }}>Evergreen Jobs</h2>
+        <Button className="add-job-button" style={{ textAlign: 'right', marginBottom: '12px', position: 'relative', bottom: '30px', right: '20px' }}>
+          <Link
+            to={{
+              pathname: '/hr-dashboard/evergreen-jobs/job-form',
+              state: { userName, userEmail, jobCategory: 'evergreen' }
+            }}
+            style={{ textDecoration: 'none', color: 'inherit' }}
+            onClick={(e) => {
+              e.preventDefault();
+              navigate('/hr-dashboard/evergreen-jobs/job-form', { state: { userName, userEmail, jobCategory: 'evergreen' } });
+            }}
+          >
+            Add Evergreen Job
+          </Link>
+        </Button>
+      </div>
+      {jobs.length > 0 ? (
+        <div>
+          <div className='table-details-list  table-wrapper '>
+            <Table hover className='text-center'>
+              <thead className="table-light">
+                <tr>
+                  <th scope="col" onClick={() => handleSort('jobTitle')}>Job Title{sortedColumn === 'jobTitle' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
+                  <th scope="col" onClick={() => handleSort('jobType')}>Job Type{sortedColumn === 'jobType' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
+                  <th scope="col" onClick={() => handleSort('skills')}>Skills{sortedColumn === 'skills' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
+                  <th>Salary</th>
+                  <th scope="col">Job Description</th>
+                  <th scope="col">Update Job</th>
+                </tr>
+              </thead>
+              <tbody>
+                {jobs.map(job => (
+                  <tr key={job.id}>
+                    <td><a onClick={() => handleViewSummary(job.jobsummary)}>{job.jobTitle}</a></td>
+                    <td>{job.jobType}</td>
+                    <td>{job.skills}</td>
+                    <td>{job.salary}</td>
+                    <td><Button variant="secondary" className='description btn-rounded' onClick={() => handleViewSummary(job.jobsummary)}>Summary</Button></td>
+                    <td>
+                      <span className="cursor-pointer text-success me-2 update" onClick={() => navigate('/hr-dashboard/evergreen-jobs/update', { state: { userName, userEmail, jobId: job.jobId, currentPage: page, currentPageSize: pageSize } })}>
+                        <MdEdit size={18} className="text-success" />
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
           </div>
-          {jobs.length > 0 ? (
-            <div>
-              <div className='table-details-list  table-wrapper '>
-                <Table hover className='text-center'>
-                  <thead className="table-light">
-                    <tr>
-                      <th scope="col" onClick={() => handleSort('jobTitle')}>Job Title{sortedColumn === 'jobTitle' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
-                      <th scope="col" onClick={() => handleSort('jobType')}>Job Type{sortedColumn === 'jobType' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
-                      <th scope="col" onClick={() => handleSort('skills')}>Skills{sortedColumn === 'skills' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
-                      <th>Salary</th>
-                      <th scope="col">Job Description</th>
-                      <th scope="col">Update Job</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {jobs.map(job => (
-                      <tr key={job.id}>
-                        <td><a onClick={() => handleViewSummary(job.jobsummary)}>{job.jobTitle}</a></td>
-                        <td>{job.jobType}</td>
-                        <td>{job.skills}</td>
-                        <td>{job.salary}</td>
-                        <td><Button variant="secondary" className='description btn-rounded' onClick={() => handleViewSummary(job.jobsummary)}>Summary</Button></td>
-                        <td>
-                          <span className="cursor-pointer text-success me-2 update" onClick={() => navigate('/hr-dashboard/evergreen-jobs/update', { state: { userName, userEmail, jobId: job.jobId, currentPage: page, currentPageSize: pageSize } })}>
-                            <MdEdit size={18} className="text-success" />
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </div>
-              {/* {selectedJobSummary && (
+          {/* {selectedJobSummary && (
                 <div className="modal-summary">
                   <div className="modal-content-summary">
                     <span
@@ -263,49 +222,47 @@ const EvergreenJobs = () => {
                   </div>
                 </div>
               )} */}
-              {selectedJobSummary && (
-                <div className="modal fade show" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
-                  <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                      <div className="modal-header">
-                        <h5 className="modal-title">Job Summary</h5>
-                        {/* <button type="button" className="close" onClick={handleCloseModal} aria-label="Close">
+          {selectedJobSummary && (
+            <div className="modal fade show" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">Job Summary</h5>
+                    {/* <button type="button" className="close" onClick={handleCloseModal} aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button> */}
-                      </div>
-                      <div className="modal-body">
-                        <pre className="job-details-text">{selectedJobSummary}</pre>
-                      </div>
-                      <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" onClick={handleCloseModal} onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            handleCloseModal();
-                          }
-                        }}>
-                          Close
-                        </button>
-                      </div>
-                    </div>
+                  </div>
+                  <div className="modal-body">
+                    <pre className="job-details-text">{selectedJobSummary}</pre>
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" onClick={handleCloseModal} onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        handleCloseModal();
+                      }
+                    }}>
+                      Close
+                    </button>
                   </div>
                 </div>
-              )}
-
-              <Pagination
-                page={page}
-                pageSize={pageSize}
-                totalPages={totalPages}
-                handlePageSizeChange={handlePageSizeChange}
-                isPageSizeDisabled={isPageSizeDisabled}
-                handlePageClick={handlePageClick}
-              />
+              </div>
             </div>
-          ) : (
-            <p>No jobs available.</p>
           )}
 
+          <Pagination
+            page={page}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            handlePageSizeChange={handlePageSizeChange}
+            isPageSizeDisabled={isPageSizeDisabled}
+            handlePageClick={handlePageClick}
+          />
         </div>
-      </div>
-    </div>
+      ) : (
+        <p>No jobs available.</p>
+      )}
+
+    </DashboardLayout>
   );
 };
 

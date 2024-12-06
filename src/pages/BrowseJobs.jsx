@@ -1,8 +1,8 @@
-import axios from 'axios';
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Card, Modal, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import api from '../apiClient';
 import Pagination from '../Pagination';
 import './BrowseJobs.css';
 import CustomNavbar from './CustomNavbar';
@@ -42,7 +42,7 @@ const BrowseJobs = () => {
             size: pageSize,
         };
         try {
-            const response = await axios.get(`${BASE_API_URL}/latestJobs`, { params }); // Added { params } here
+            const response = await api.latestJobs(params); // Added { params } here
             setLatestJobs(response.data.content);
             setTotalPages(response.data.totalPages);
             await fetchImages(response.data.content); // Pass the correct job data to fetchImages
@@ -72,10 +72,7 @@ const BrowseJobs = () => {
     // Fetch individual company logo
     const fetchCompanyLogo = async (companyName) => {
         try {
-            const response = await axios.get(`${BASE_API_URL}/logo`, {
-                params: { companyName },
-                responseType: 'arraybuffer',
-            });
+            const response = await api.getLogo(companyName)
             return `data:image/jpeg;base64,${btoa(
                 new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
             )}`;
@@ -93,7 +90,7 @@ const BrowseJobs = () => {
                 sortBy: sortedColumn,
                 sortOrder: sortOrder,
             };
-            const response = await axios.get(`${BASE_API_URL}/searchJobs`, { params });
+            const response = await api.searchJobs(search, page, pageSize, sortedColumn, sortOrder);
             setJobs(response.data.content);
             setTotalPages(response.data.totalPages);
             await fetchImages(response.data.content); // Add this line to fetch logos for search results

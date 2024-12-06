@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { FacebookAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { Field, Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
@@ -7,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import Swal from 'sweetalert2';
 import * as yup from 'yup';
+import api from '../../apiClient';
 import { auth } from '../../firebase/firebaseConfig';
 import CustomNavbar from '../CustomNavbar';
 import SocialButtons from './sessions/SocialButtons';
@@ -85,7 +85,7 @@ const CandiSignup = () => {
     };
 
     try {
-      const response = await axios.post(`${BASE_API_URL}/saveUser`, userData);
+      const response = await api.saveUser(userData)
 
       if (!response.data || response.data === 'undefined' || response.data === '') {
         setEmailExistsError(true);
@@ -173,7 +173,7 @@ const CandiSignup = () => {
             Swal.showLoading();
           }
         });
-        const response = await axios.get(`${BASE_API_URL}/validateUserEmail?userEmail=${email}`);
+        const response = await api.validateUserEmail(email);
         setOtpValue(response.data);
         setShowOTPModal(true);
         if (response.data) {
@@ -206,7 +206,7 @@ const CandiSignup = () => {
   // Function to update user data (in case of email already exists)
   const updateUserData = async (values) => {
     try {
-      const response = await axios.put(`${BASE_API_URL}/updateUserData`, values);
+      const response = await api.updateUserData(values);
 
       if (response.data) {
         Swal.fire({
@@ -266,7 +266,7 @@ const CandiSignup = () => {
       const userEmail = user.email;
 
       // Now proceed with the API call using the correct userEmail
-      const response = await axios.get(`${BASE_API_URL}/checkUser?userEmail=${userEmail}`);
+      const response = await api.checkUser(userEmail);
       const existingUser = response.data;
       if (existingUser) {
         const userId = existingUser.userId;
@@ -295,7 +295,7 @@ const CandiSignup = () => {
         };
 
         // Save new user to the backend
-        const saveResponse = await axios.post(`${BASE_API_URL}/saveUser`, newUser);
+        const saveResponse = await api.saveUser(newUser);
 
         // Log the entire save response to see what is returned from the backend
         console.log("Response from saveUser:", saveResponse.data);
@@ -331,7 +331,7 @@ const CandiSignup = () => {
       const userEmail = user.email;
 
       // Check if the user already exists in the backend
-      const response = await axios.get(`${BASE_API_URL}/checkUser?userEmail=${userEmail}`);
+      const response = await api.checkUser(userEmail);
       const existingUser = response.data;
 
       if (existingUser) {
@@ -362,7 +362,7 @@ const CandiSignup = () => {
         };
 
         // Save new user to the backend
-        const saveResponse = await axios.post(`${BASE_API_URL}/saveUser`, newUser);
+        const saveResponse = await api.saveUser(newUser);
 
         // Log the entire save response to see what is returned from the backend
         console.log("Response from saveUser:", saveResponse.data);

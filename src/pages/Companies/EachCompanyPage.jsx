@@ -1,9 +1,9 @@
-import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Card, Col, Modal, Row } from 'react-bootstrap';
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import api from '../../apiClient';
 import ResumeSelectionPopup from '../../Dashboards/CandidateDashboardpages/ResumeSelectionPopup';
 import HomeFooter from '../HomeFooter';
 import './Company.css';
@@ -11,26 +11,11 @@ import CompanyJobs from './CompanyJobs';
 import CompanyOverView from './CompanyOverView';
 
 const EachCompanyPage = () => {
-  // const BASE_API_URL = 'http://51.79.18.21:8082/api/jobbox';
   const BASE_API_URL = process.env.REACT_APP_API_URL;
   const location = useLocation();
   const { state } = location;
   const { companyId, scrollToJobs } = state || {}; // Destructure the state
 
-  // const [queryParams, setQueryParams] = React.useState({});
-
-  // React.useEffect(() => {
-  //     const queryString = window.location.href.split('#')[0].split('?')[1];
-  //     const params = new URLSearchParams(queryString);
-
-  //     const companyName1 = params.get('companyName');
-  //     const companyId = params.get('companyId');
-
-
-  //     setQueryParams({ companyName, companyId });
-  // }, [location]);
-
-  // const { companyName1, companyId} = queryParams;
   const [activeTab, setActiveTab] = useState('overview');
   const [company, setCompany] = useState(null);
   const [countOfApplications, setCountOfApplications] = useState(0);
@@ -58,7 +43,7 @@ const EachCompanyPage = () => {
 
   const fetchCompany = async () => {
     try {
-      const response = await axios.get(`${BASE_API_URL}/displayCompanyById?companyId=${companyId}`);
+      const response = await api.getDisplayCompanyDetailsById(companyId);
       const companyData = response.data;
 
       // Now use companyData instead of company directly
@@ -81,18 +66,16 @@ const EachCompanyPage = () => {
 
   const fetchData = async () => {
     try {
-      const fetchCountOfApplicationByCompany = await axios.get(`${BASE_API_URL}/countOfApplicationsByCompany?companyId=${companyId}`);
+      const fetchCountOfApplicationByCompany = await api.getCountOfApplicationsByCompany(companyId);
       setCountOfApplications(fetchCountOfApplicationByCompany.data);
 
-      const fetchCountOfHRByCompany = await axios.get(`${BASE_API_URL}/countOfHRByCompany?companyId=${companyId}`);
+      const fetchCountOfHRByCompany = await api.getCountOfHRByCompany(companyId);
       setCountOfHR(fetchCountOfHRByCompany.data);
 
-      const countOfJobsByCompany = await axios.get(`${BASE_API_URL}/countOfJobsByCompany?companyId=${companyId}`);
+      const countOfJobsByCompany = await api.getCountOfActiveJobsByCompany(companyId);
       setCountOfJobs(countOfJobsByCompany.data);
 
-      const fetchCountOfTotalJobsByCompany = await axios.get(
-        `${BASE_API_URL}/countOfTotalJobsByCompany?companyId=${companyId}`
-      );
+      const fetchCountOfTotalJobsByCompany = await api.getCountOfTotalJobsByCompany(companyId);
       setCountOfTotalJobs(fetchCountOfTotalJobsByCompany.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -101,7 +84,7 @@ const EachCompanyPage = () => {
 
   const fetchCompanyLogo = async (companyName) => {
     try {
-      const response = await axios.get(`${BASE_API_URL}/logo`, { params: { companyName }, responseType: 'arraybuffer' });
+      const response = await api.getLogo(companyName);
       const image = `data:image/jpeg;base64,${btoa(
         new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
       )}`;
@@ -113,7 +96,7 @@ const EachCompanyPage = () => {
   };
   const fetchCompanyBanner = async (companyName) => {
     try {
-      const response = await axios.get(`${BASE_API_URL}/banner`, { params: { companyName }, responseType: 'arraybuffer' });
+      const response = await api.getBanner(companyName);
       const image = `data:image/jpeg;base64,${btoa(
         new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
       )}`;
@@ -202,9 +185,7 @@ const EachCompanyPage = () => {
   });
   const fetchSocialMediaLinks = async (companyName) => {
     try {
-      const response = await axios.get(`${BASE_API_URL}/getSocialMediaLinks`, {
-        params: { companyName },
-      });
+      const response = await api.getSocialMediaLinks(companyName);
       const { facebookLink, twitterLink, instagramLink, linkedinLink } = response.data;
       setSocialMediaLinks({
         facebookLink,
@@ -262,7 +243,7 @@ const EachCompanyPage = () => {
 
   useEffect(() => {
     if (userId) { // Only fetch resumes if the user is logged in
-      axios.get(`${BASE_API_URL}/getResume?userId=${userId}`)
+      api.getResume(userId)
         .then(response => {
           setResumes(response.data);
         })
@@ -301,7 +282,7 @@ const EachCompanyPage = () => {
       const formattedDate = `${year}-${month}-${day}`;
 
       // Call the backend to apply for the job
-      const response = await axios.put(`${BASE_API_URL}/applyDreamCompany?userId=${userId}&companyName=${companyName}&formattedDate=${formattedDate}&resumeId=${resumeId}`);
+      const response = await api.applyDreamCompany(userId, companyName, formattedDate, resumeId);
 
       if (response.data) {
         Swal.close();
@@ -348,10 +329,7 @@ const EachCompanyPage = () => {
     try {
       if (!userId || !companyName) return; // Ensure both userId and companyName are present
 
-      const response = await axios.get(`${BASE_API_URL}/applicationDreamAplied`, {
-        params: { userId: userId, companyName: companyName }
-      });
-
+      const response = await api.checkDreamCompanyAppliedOrNot(userId, companyName)
       setHasDreamApplied(response.data); // Set the result (true or false)
     } catch (error) {
       console.error('Error checking application:', error);
@@ -402,52 +380,52 @@ const EachCompanyPage = () => {
             </div>
           </Row>
           <Row className="hr-company_page-row2" style={{ marginTop: '50px' }}>
-        <Col md={2}>
-          <span>
-            <a
-              onClick={() => handleTabClick('overview')}
-              className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
-            >
-              About
-            </a>
-          </span>
-        </Col>
-        <Col md={2}>
-          <span>
-            <a
-              onClick={() => handleTabClick('jobs')}
-              className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
-            >
-              Jobs
-            </a>
-          </span>
-        </Col>
-        <Col className="hr-company_page-row2-col3" style={{ textAlign: 'end', marginRight: '20px' }}>
-          <span style={{ marginLeft: '20px' }}>
-            <h4 style={{ paddingRight: '14px' }}><b>{companyName}</b></h4>
-            {socialMediaLinks.facebookLink && (
-              <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
-                <FaFacebook size={24} style={{ margin: '0 5px', color: '#3b5998' }} />
-              </a>
-            )}
-            {socialMediaLinks.twitterLink && (
-              <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
-                <FaTwitter size={24} style={{ margin: '0 5px', color: '#1da1f2' }} />
-              </a>
-            )}
-            {socialMediaLinks.instagramLink && (
-              <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
-                <FaInstagram size={24} style={{ margin: '0 5px', color: '#e4405f' }} />
-              </a>
-            )}
-            {socialMediaLinks.linkedinLink && (
-              <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
-                <FaLinkedin size={24} style={{ margin: '0 5px', color: '#0077b5' }} />
-              </a>
-            )}
-          </span>
-        </Col>
-      </Row>
+            <Col md={2}>
+              <span>
+                <a
+                  onClick={() => handleTabClick('overview')}
+                  className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
+                >
+                  About
+                </a>
+              </span>
+            </Col>
+            <Col md={2}>
+              <span>
+                <a
+                  onClick={() => handleTabClick('jobs')}
+                  className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
+                >
+                  Jobs
+                </a>
+              </span>
+            </Col>
+            <Col className="hr-company_page-row2-col3" style={{ textAlign: 'end', marginRight: '20px' }}>
+              <span style={{ marginLeft: '20px' }}>
+                <h4 style={{ paddingRight: '14px' }}><b>{companyName}</b></h4>
+                {socialMediaLinks.facebookLink && (
+                  <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
+                    <FaFacebook size={24} style={{ margin: '0 5px', color: '#3b5998' }} />
+                  </a>
+                )}
+                {socialMediaLinks.twitterLink && (
+                  <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
+                    <FaTwitter size={24} style={{ margin: '0 5px', color: '#1da1f2' }} />
+                  </a>
+                )}
+                {socialMediaLinks.instagramLink && (
+                  <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
+                    <FaInstagram size={24} style={{ margin: '0 5px', color: '#e4405f' }} />
+                  </a>
+                )}
+                {socialMediaLinks.linkedinLink && (
+                  <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
+                    <FaLinkedin size={24} style={{ margin: '0 5px', color: '#0077b5' }} />
+                  </a>
+                )}
+              </span>
+            </Col>
+          </Row>
 
 
 
@@ -565,8 +543,8 @@ const EachCompanyPage = () => {
           </Row>
 
           <Row style={{ marginTop: '10px' }} >
-              <HomeFooter />
-            </Row>
+            <HomeFooter />
+          </Row>
         </div>
         {/* </Container> */}
 

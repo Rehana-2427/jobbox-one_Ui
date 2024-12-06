@@ -810,6 +810,7 @@ section {
 
   .right-side {
     margin-left: 0;
+    margin-top: 100px;
     padding-top: 60px;
     overflow-y: auto;
     /* Allow vertical scrolling */
@@ -1393,7 +1394,6 @@ section {
 }
 @media (max-width: 900px) {
   .hr-company_page-row2 {
-    height: 125px;
     position: relative;
     bottom:20px;
   }
@@ -1431,4 +1431,46 @@ section {
   .small-screen-hr {
       max-height: 600px;
   }
+}
+
+/* Styling for the paragraph description */
+.documents-description {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  color: #555;
+  word-break: break-all;
+  word-wrap: break-word; /* Ensures that long words will break and wrap to the next line */
+  overflow-wrap: break-word; /* Ensures compatibility with other browsers */
+  max-width: 100%;
+}
+
+
+.main-header {
+  position: fixed; /* Ensure Navbar stays at the top */
+  top: 0;
+  width: 100%;
+  z-index: 1050; /* Higher than HrLeftSide */
+  background-color: white; /* Ensure background doesn't overlap */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Add this CSS to your styles */
+.sidebar-left {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 150px; /* Width when open */
+  height: 100vh;
+  overflow-x: hidden;
+  transition: transform 0.3s ease-in-out; /* Add transition for sliding effect */
+  transform: translateX(-100%); /* Initially hidden */
+}
+
+.sidebar-left.open {
+  transform: translateX(0); /* Slide in */
+}
+
+.sidebar-left.closed {
+  transform: translateX(-100%); /* Slide out */
 }

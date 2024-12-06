@@ -7,7 +7,7 @@ import { SiImessage } from "react-icons/si";
 import { useLocation, useNavigate } from "react-router-dom";
 import Pagination from "../../Pagination";
 import ChatComponent from "../ChatComponent";
-import HrLeftSide from "./HrLeftSide";
+import DashboardLayout from "./DashboardLayout ";
 import Slider from "./Slider";
 
 const ViewApplications = () => {
@@ -383,238 +383,224 @@ const ViewApplications = () => {
   };
 
   return (
-    <div className='dashboard-container'>
-
-      <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-        <HrLeftSide user={{ userName, userEmail }} onClose={toggleLeftSide} />
-      </div>
-      <div md={10} className="right-side" >
-        <div
-          className="small-screen-hr"
-          style={{
-            overflowY: 'auto',
-            maxHeight: isSmallScreen ? '600px' : '1000px',
-            paddingBottom: '100px'
-          }}
-        >
-          <div className="application-div">
-            <Row className="mb-4 m-3">
-              <Col xs={12} md={6} lg={4}>
+    <DashboardLayout>
+      <div className="application-div">
+        <Row className="mb-4 m-3">
+          <Col xs={12} md={6} lg={4}>
+            <label
+              htmlFor="status"
+              className="form-label"
+              style={{ color: '#6c5b7b' }} // Purple color for the label
+            >
+              Filter by Status:
+            </label>
+            <select
+              id="status"
+              onChange={handleFilterChange}
+              value={filterStatus}
+              className="form-select form-select-sm fs-5" // Adjust the fs-* class as needed
+              style={{ borderColor: '#6c5b7b' }} // Purple border color
+            >
+              <option value="all">All</option>
+              <option value="Shortlisted">Shortlisted</option>
+              <option value="Not Seen">Not Seen</option>
+              <option value="Not Shortlisted">Not Shortlisted</option>
+            </select>
+          </Col>
+          <Col xs={12} md={6} lg={4}>
+            <label
+              htmlFor="date"
+              className="form-label"
+              style={{ color: '#6c5b7b' }} // Purple color for the label
+            >
+              Filter by Date:
+            </label>
+            <div className="d-flex align-items-center gap-3">
+              <div className="d-flex flex-row ">
                 <label
-                  htmlFor="status"
-                  className="form-label"
+                  htmlFor="fromDate"
+                  className="form-label mb-1"
                   style={{ color: '#6c5b7b' }} // Purple color for the label
                 >
-                  Filter by Status:
+                  From:
                 </label>
-                <select
-                  id="status"
-                  onChange={handleFilterChange}
-                  value={filterStatus}
-                  className="form-select form-select-sm fs-5" // Adjust the fs-* class as needed
-                  style={{ borderColor: '#6c5b7b' }} // Purple border color
-                >
-                  <option value="all">All</option>
-                  <option value="Shortlisted">Shortlisted</option>
-                  <option value="Not Seen">Not Seen</option>
-                  <option value="Not Shortlisted">Not Shortlisted</option>
-                </select>
-              </Col>
-              <Col xs={12} md={6} lg={4}>
+                <input
+                  type="date"
+                  id="fromDate"
+                  value={fromDate}
+                  onChange={(e) => handleFromDateChange(e.target.value)}
+                  className="form-control form-control-sm fs-7"
+                  style={{
+                    maxWidth: '150px',
+                    borderColor: '#6c5b7b', // Purple border color
+                    boxShadow: 'none'
+                  }}
+                />
+              </div>
+              <div className="d-flex flex-row ">
                 <label
-                  htmlFor="date"
-                  className="form-label"
+                  htmlFor="toDate"
+                  className="form-label mb-1"
                   style={{ color: '#6c5b7b' }} // Purple color for the label
                 >
-                  Filter by Date:
+                  To:
                 </label>
-                <div className="d-flex align-items-center gap-3">
-                  <div className="d-flex flex-row ">
-                    <label
-                      htmlFor="fromDate"
-                      className="form-label mb-1"
-                      style={{ color: '#6c5b7b' }} // Purple color for the label
-                    >
-                      From:
-                    </label>
-                    <input
-                      type="date"
-                      id="fromDate"
-                      value={fromDate}
-                      onChange={(e) => handleFromDateChange(e.target.value)}
-                      className="form-control form-control-sm fs-7"
-                      style={{
-                        maxWidth: '150px',
-                        borderColor: '#6c5b7b', // Purple border color
-                        boxShadow: 'none'
-                      }}
-                    />
-                  </div>
-                  <div className="d-flex flex-row ">
-                    <label
-                      htmlFor="toDate"
-                      className="form-label mb-1"
-                      style={{ color: '#6c5b7b' }} // Purple color for the label
-                    >
-                      To:
-                    </label>
-                    <input
-                      type="date"
-                      id="toDate"
-                      value={toDate}
-                      onChange={(e) => handleToDateChange(e.target.value)}
-                      className="form-control form-control-sm fs-7"
-                      style={{
-                        maxWidth: '150px',
-                        borderColor: '#6c5b7b', // Purple border color
-                        boxShadow: 'none'
-                      }}
-                    />
-                  </div>
-                </div>
-              </Col >
-              <Col xs={12} md={12} lg={4}>
-                <h4>Action:</h4>
-                <p><b><span class="circle gray"></span> By default - Not Seen</b></p>
-                <p><b><span class="circle red"></span> Slide Left Side - Not Shortlisted</b></p>
-                <p><b><span class="circle green"></span> Slide Right Side - Shortlisted</b></p>
-
-              </Col>
-            </Row>
-            {showBriefSettings && (
-              <Modal show={showBriefSettings} onHide={() => setShowBriefSettings(false)}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Brief Resume</Modal.Title>
-                </Modal.Header>
-                <Modal.Body style={{ overflowY: 'auto' }}>{showMessage}</Modal.Body>
-              </Modal>
-            )}
-
-
-            <div>
-              {loading ? (
-                <div className="d-flex justify-content-center align-items-center">
-                  <div className="spinner-bubble spinner-bubble-primary m-5" />
-                  <span>Loading...</span>
-                </div>
-              ) : applications.length === 0 ? (
-                <section>
-                  <h2>Sorry, you haven't received any applications yet.</h2>
-                </section>
-              ) : (
-                <>
-                  <div className='table-details-list  table-wrapper '>
-                    <Table hover className='text-center'>
-                      <thead className="table-light">
-                        <tr>
-                          <th scope="col">Job Title</th>
-                          <th scope="col">Candidate Name</th>
-                          <th scope="col">Candidate Email</th>
-                          <th scope="col">Resume ID</th>
-                          <th scope="col" onClick={() => handleSort('appliedOn')}>
-                            Date {sortedColumn === 'appliedOn' && (sortOrder === 'asc' ? '▲' : '▼')}
-                          </th>
-                          <th scope="col">View Details</th>
-                          <th scope="col">Action</th>
-                          <th scope="col">Chat</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {applications.map((application) => (
-                          <tr key={application.applicationId}>
-                            <td>{application.jobRole}</td>
-                            <td>{candidateName[application.candidateId]}</td>
-                            <td>{candidateEmail[application.candidateId]}</td>
-                            <td>{renderResumeComponent(application.resumeId)}</td>
-                            <td>{application.appliedOn}</td>
-                            <td>
-                              <FontAwesomeIcon onClick={(e) => {
-                                e.preventDefault();
-                                navigate('/hr-dashboard/hr-applications/view-applications/applicationDetails', {
-                                  state: { userEmail, applicationId: application.applicationId, candidateId: application.candidateId, userName, currentApplicationPage: page, jobId, currentApplicationPageSize: pageSize },
-                                });
-                              }}
-                                icon={faEye}
-                                style={{ cursor: 'pointer', fontSize: '20px', color: 'black' }}
-                              />
-                            </td>
-                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <Slider
-                                  initialStatus={application.applicationStatus}
-                                  onChangeStatus={(newStatus) => updateStatus(application.applicationId, newStatus)}
-                                />
-                              </div>
-                            </td>
-                            <td>
-                              <div style={{ position: 'relative', display: 'inline-block' }}>
-                                {unreadMessages[application.applicationId] > 0 && (
-                                  <span
-                                    style={{
-                                      position: 'absolute',
-                                      top: '-5px',
-                                      right: '-15px',
-                                      backgroundColor: 'red',
-                                      color: 'white',
-                                      borderRadius: '50%',
-                                      width: '20px',
-                                      height: '20px',
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      justifyContent: 'center',
-                                      fontSize: '12px',
-                                      fontWeight: 'bold',
-                                      zIndex: 1, // Ensure notification badge is above SiImessage icon
-                                    }}
-                                  >
-                                    {unreadMessages[application.applicationId]}
-                                  </span>
-                                )}
-
-                                {/* Chat icon, click to toggle the ChatComponent */}
-                                <SiImessage
-                                  size={25}
-                                  onClick={() => toggleChat(application)}
-                                  style={{ color: 'green', cursor: 'pointer' }}
-                                />
-
-
-                              </div>
-                            </td>
-
-                          </tr>
-                        ))}
-                      </tbody>
-                    </Table>
-
-                  </div>
-                  {/* Pagination */}
-                  <Pagination
-                    page={page}
-                    pageSize={pageSize}
-                    totalPages={totalPages}
-                    handlePageSizeChange={handlePageSizeChange}
-                    isPageSizeDisabled={isPageSizeDisabled}
-                    handlePageClick={handlePageClick}
-                  />
-                </>
-              )}
-              <Button variant='primary' onClick={handleBack}>Back</Button>
+                <input
+                  type="date"
+                  id="toDate"
+                  value={toDate}
+                  onChange={(e) => handleToDateChange(e.target.value)}
+                  className="form-control form-control-sm fs-7"
+                  style={{
+                    maxWidth: '150px',
+                    borderColor: '#6c5b7b', // Purple border color
+                    boxShadow: 'none'
+                  }}
+                />
+              </div>
             </div>
-          </div>
-        </div>
-        {/* Conditionally render the ChatComponent */}
-        {isChatOpen && (
-          <ChatComponent
-            applicationId={chatData.applicationId}
-            candidateId={chatData.candidateId}
-            hrId={chatData.hrId}
-            userType='HR'
-            setIsChatOpen={setIsChatOpen}
-          />
+          </Col >
+          <Col xs={12} md={12} lg={4}>
+            <h4>Action:</h4>
+            <p><b><span class="circle gray"></span> By default - Not Seen</b></p>
+            <p><b><span class="circle red"></span> Slide Left Side - Not Shortlisted</b></p>
+            <p><b><span class="circle green"></span> Slide Right Side - Shortlisted</b></p>
+
+          </Col>
+        </Row>
+        {showBriefSettings && (
+          <Modal show={showBriefSettings} onHide={() => setShowBriefSettings(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Brief Resume</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ overflowY: 'auto' }}>{showMessage}</Modal.Body>
+          </Modal>
         )}
-      </div >
-    </div>
+
+
+        <div>
+          {loading ? (
+            <div className="d-flex justify-content-center align-items-center">
+              <div className="spinner-bubble spinner-bubble-primary m-5" />
+              <span>Loading...</span>
+            </div>
+          ) : applications.length === 0 ? (
+            <section>
+              <h2>Sorry, you haven't received any applications yet.</h2>
+            </section>
+          ) : (
+            <>
+              <div className='table-details-list  table-wrapper '>
+                <Table hover className='text-center'>
+                  <thead className="table-light">
+                    <tr>
+                      <th scope="col">Job Title</th>
+                      <th scope="col">Candidate Name</th>
+                      <th scope="col">Candidate Email</th>
+                      <th scope="col">Resume ID</th>
+                      <th scope="col" onClick={() => handleSort('appliedOn')}>
+                        Date {sortedColumn === 'appliedOn' && (sortOrder === 'asc' ? '▲' : '▼')}
+                      </th>
+                      <th scope="col">View Details</th>
+                      <th scope="col">Action</th>
+                      <th scope="col">Chat</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {applications.map((application) => (
+                      <tr key={application.applicationId}>
+                        <td>{application.jobRole}</td>
+                        <td>{candidateName[application.candidateId]}</td>
+                        <td>{candidateEmail[application.candidateId]}</td>
+                        <td>{renderResumeComponent(application.resumeId)}</td>
+                        <td>{application.appliedOn}</td>
+                        <td>
+                          <FontAwesomeIcon onClick={(e) => {
+                            e.preventDefault();
+                            navigate('/hr-dashboard/hr-applications/view-applications/applicationDetails', {
+                              state: { userEmail, applicationId: application.applicationId, candidateId: application.candidateId, userName, currentApplicationPage: page, jobId, currentApplicationPageSize: pageSize },
+                            });
+                          }}
+                            icon={faEye}
+                            style={{ cursor: 'pointer', fontSize: '20px', color: 'black' }}
+                          />
+                        </td>
+                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <Slider
+                              initialStatus={application.applicationStatus}
+                              onChangeStatus={(newStatus) => updateStatus(application.applicationId, newStatus)}
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <div style={{ position: 'relative', display: 'inline-block' }}>
+                            {unreadMessages[application.applicationId] > 0 && (
+                              <span
+                                style={{
+                                  position: 'absolute',
+                                  top: '-5px',
+                                  right: '-15px',
+                                  backgroundColor: 'red',
+                                  color: 'white',
+                                  borderRadius: '50%',
+                                  width: '20px',
+                                  height: '20px',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  fontSize: '12px',
+                                  fontWeight: 'bold',
+                                  zIndex: 1, // Ensure notification badge is above SiImessage icon
+                                }}
+                              >
+                                {unreadMessages[application.applicationId]}
+                              </span>
+                            )}
+
+                            {/* Chat icon, click to toggle the ChatComponent */}
+                            <SiImessage
+                              size={25}
+                              onClick={() => toggleChat(application)}
+                              style={{ color: 'green', cursor: 'pointer' }}
+                            />
+
+
+                          </div>
+                        </td>
+
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+
+              </div>
+              {/* Pagination */}
+              <Pagination
+                page={page}
+                pageSize={pageSize}
+                totalPages={totalPages}
+                handlePageSizeChange={handlePageSizeChange}
+                isPageSizeDisabled={isPageSizeDisabled}
+                handlePageClick={handlePageClick}
+              />
+            </>
+          )}
+          <Button variant='primary' onClick={handleBack}>Back</Button>
+        </div>
+      </div>
+
+      {/* Conditionally render the ChatComponent */}
+      {isChatOpen && (
+        <ChatComponent
+          applicationId={chatData.applicationId}
+          candidateId={chatData.candidateId}
+          hrId={chatData.hrId}
+          userType='HR'
+          setIsChatOpen={setIsChatOpen}
+        />
+      )}
+    </DashboardLayout>
   );
 };
 

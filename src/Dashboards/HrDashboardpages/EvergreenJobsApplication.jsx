@@ -7,7 +7,7 @@ import { SiImessage } from 'react-icons/si';
 import { useLocation } from 'react-router-dom';
 import Pagination from '../../Pagination';
 import ChatComponent from '../ChatComponent';
-import HrLeftSide from './HrLeftSide';
+import DashboardLayout from './DashboardLayout ';
 import Slider from './Slider';
 
 const EvergreenJobsApplication = () => {
@@ -387,132 +387,116 @@ const EvergreenJobsApplication = () => {
         setIsChatOpen(!isChatOpen);
     };
     return (
-        <div className='dashboard-container'>
+        <DashboardLayout>         <Row className="mb-4 m-3">
+            <Col xs={12} md={6} lg={5}>
+                <div>
+                    <label htmlFor="jobRoleFilter">Filter by Job Role:</label>
+                    <select
+                        id="jobRoleFilter"
+                        className="form-select form-select fs-5" // Adjust the fs-* class as needed
+                        style={{ borderColor: '#6c5b7b' }} // Purple border color
+                        value={selectedRole}
+                        onChange={handleRoleChange} // Use the new handler here
+                    >
+                        <option value="all">All</option>
+                        {jobRoles.map(role => (
+                            <option key={role} value={role}>{role}</option>
+                        ))}
+                    </select>
+                </div>
+            </Col>
+            <Col xs={12} md={6} lg={2}>
+            </Col>
+            <Col xs={12} md={6} lg={4}>
+                <div
+                    style={{ width: '100%', backgroundColor: '#f4f4f9' }}>
+                    <h4>Action:</h4>
+                    <p><b><span class="circle gray"></span> By default - Not Seen</b></p>
+                    <p><b><span class="circle red"></span> Slide Left Side - Not Shortlisted</b></p>
+                    <p><b><span class="circle green"></span> Slide Right Side - Shortlisted</b></p>
+                </div>
+            </Col>
+        </Row>
+            {applications.length > 0 && (
+                <div>
 
-            <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-                <HrLeftSide user={{ userName, userEmail }} onClose={toggleLeftSide} />
-            </div>
-            <div className="right-side">
-                {/* Render your data here, for example: */}
-                <div className="application-div">
+                    <div className="table-wrapper">
+                        <Table hover className='text-center'>
+                            <thead>
+                                <tr style={{ textAlign: 'center' }}>
+                                    <th scope="col" onClick={() => handleSort('jobRole')}> Job Role {sortedColumn === 'jobRole' && sortOrder === 'asc' && '▲'}
+                                        {sortedColumn === 'jobRole' && sortOrder === 'desc' && '▼'}</th>
+                                    <th>Candidate Name</th>
+                                    <th>Candidate Email</th>
+                                    <th>Resume ID</th>
+                                    <th scope="col" onClick={() => handleSort('appliedOn')}>Applied On {sortedColumn === 'appliedOn' && sortOrder === 'asc' && '▲'}
+                                        {sortedColumn === 'appliedOn' && sortOrder === 'desc' && '▼'}</th>
+                                    <th>Action</th>
+                                    <th scope="col">Chat</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filterApplications.map((application) => (
+                                    <tr key={application.id}>
+                                        <td>{application.jobRole}</td>
+                                        <td>{candidateName[application.candidateId]}</td>
+                                        <td
+                                            onClick={() => handleClick(application.candidateId)}
+                                            style={{
+                                                color: 'purple',              // Dark grey text color
+                                                padding: '10px',            // Adding some padding
+                                                borderRadius: '5px',        // Rounded corners
+                                                cursor: 'pointer',           // Changing cursor to pointer on hover
+                                                textDecoration: 'underline'
+                                            }}
+                                        >
+                                            {candidateEmail[application.candidateId]}
+                                        </td>
 
-                    <div
-                        className="small-screen-hr"
-                        style={{
-                            overflowY: 'auto',
-                            maxHeight: isSmallScreen ? '600px' : '1000px',
-                            paddingBottom: '100px'
-                        }}
-                    >                              <Row className="mb-4 m-3">
-                            <Col xs={12} md={6} lg={5}>
-                                <div>
-                                    <label htmlFor="jobRoleFilter">Filter by Job Role:</label>
-                                    <select
-                                        id="jobRoleFilter"
-                                        className="form-select form-select fs-5" // Adjust the fs-* class as needed
-                                        style={{ borderColor: '#6c5b7b' }} // Purple border color
-                                        value={selectedRole}
-                                        onChange={handleRoleChange} // Use the new handler here
-                                    >
-                                        <option value="all">All</option>
-                                        {jobRoles.map(role => (
-                                            <option key={role} value={role}>{role}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </Col>
-                            <Col xs={12} md={6} lg={2}>
-                            </Col>
-                            <Col xs={12} md={6} lg={4}>
-                                <div
-                                    style={{ width: '100%', backgroundColor: '#f4f4f9' }}>
-                                    <h4>Action:</h4>
-                                    <p><b><span class="circle gray"></span> By default - Not Seen</b></p>
-                                    <p><b><span class="circle red"></span> Slide Left Side - Not Shortlisted</b></p>
-                                    <p><b><span class="circle green"></span> Slide Right Side - Shortlisted</b></p>
-                                </div>
-                            </Col>
-                        </Row>
-                        {applications.length > 0 && (
-                            <div>
-
-                                <div className="table-wrapper">
-                                    <Table hover className='text-center'>
-                                        <thead>
-                                            <tr style={{ textAlign: 'center' }}>
-                                                <th scope="col" onClick={() => handleSort('jobRole')}> Job Role {sortedColumn === 'jobRole' && sortOrder === 'asc' && '▲'}
-                                                    {sortedColumn === 'jobRole' && sortOrder === 'desc' && '▼'}</th>
-                                                <th>Candidate Name</th>
-                                                <th>Candidate Email</th>
-                                                <th>Resume ID</th>
-                                                <th scope="col" onClick={() => handleSort('appliedOn')}>Applied On {sortedColumn === 'appliedOn' && sortOrder === 'asc' && '▲'}
-                                                    {sortedColumn === 'appliedOn' && sortOrder === 'desc' && '▼'}</th>
-                                                <th>Action</th>
-                                                <th scope="col">Chat</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {filterApplications.map((application) => (
-                                                <tr key={application.id}>
-                                                    <td>{application.jobRole}</td>
-                                                    <td>{candidateName[application.candidateId]}</td>
-                                                    <td
-                                                        onClick={() => handleClick(application.candidateId)}
-                                                        style={{
-                                                            color: 'purple',              // Dark grey text color
-                                                            padding: '10px',            // Adding some padding
-                                                            borderRadius: '5px',        // Rounded corners
-                                                            cursor: 'pointer',           // Changing cursor to pointer on hover
-                                                            textDecoration: 'underline'
-                                                        }}
-                                                    >
-                                                        {candidateEmail[application.candidateId]}
-                                                    </td>
-
-                                                    <td>{renderResumeComponent(application.resumeId)}</td>
-                                                    <td>{application.appliedOn}</td>
-                                                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                                                        {application.applicationStatus === "Shortlisted" && hrEmail[application.hrId] !== userEmail ? (
-                                                            <div>
-                                                                Shortlisted by {hrName[application.hrId] || 'Unknown HR'} of {application.companyName}
-                                                            </div>
-                                                        ) : (
-                                                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                                                <Slider
-                                                                    initialStatus={application.applicationStatus}
-                                                                    onChangeStatus={(newStatus) => updateStatus(application.applicationId, newStatus, application.hrId)}
-                                                                />
-                                                            </div>
-                                                        )}
-                                                    </td>
+                                        <td>{renderResumeComponent(application.resumeId)}</td>
+                                        <td>{application.appliedOn}</td>
+                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                            {application.applicationStatus === "Shortlisted" && hrEmail[application.hrId] !== userEmail ? (
+                                                <div>
+                                                    Shortlisted by {hrName[application.hrId] || 'Unknown HR'} of {application.companyName}
+                                                </div>
+                                            ) : (
+                                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                    <Slider
+                                                        initialStatus={application.applicationStatus}
+                                                        onChangeStatus={(newStatus) => updateStatus(application.applicationId, newStatus, application.hrId)}
+                                                    />
+                                                </div>
+                                            )}
+                                        </td>
 
 
-                                                    <td >
-                                                        {hrEmail[application.hrId] === userEmail ? (
-                                                            <div style={{ position: 'relative', display: 'inline-block' }}>
-                                                                {unreadMessages[application.applicationId] > 0 && (
-                                                                    <span
-                                                                        style={{
-                                                                            position: 'absolute',
-                                                                            top: '-5px',
-                                                                            right: '-15px',
-                                                                            backgroundColor: 'red',
-                                                                            color: 'white',
-                                                                            borderRadius: '50%',
-                                                                            width: '20px',
-                                                                            height: '20px',
-                                                                            display: 'flex',
-                                                                            alignItems: 'center',
-                                                                            justifyContent: 'center',
-                                                                            fontSize: '12px',
-                                                                            fontWeight: 'bold',
-                                                                            zIndex: 1, // Ensure notification badge is above SiImessage icon
-                                                                        }}
-                                                                    >
-                                                                        {unreadMessages[application.applicationId]}
-                                                                    </span>
-                                                                )}
-                                                                {/* <SiImessage
+                                        <td >
+                                            {hrEmail[application.hrId] === userEmail ? (
+                                                <div style={{ position: 'relative', display: 'inline-block' }}>
+                                                    {unreadMessages[application.applicationId] > 0 && (
+                                                        <span
+                                                            style={{
+                                                                position: 'absolute',
+                                                                top: '-5px',
+                                                                right: '-15px',
+                                                                backgroundColor: 'red',
+                                                                color: 'white',
+                                                                borderRadius: '50%',
+                                                                width: '20px',
+                                                                height: '20px',
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'center',
+                                                                fontSize: '12px',
+                                                                fontWeight: 'bold',
+                                                                zIndex: 1, // Ensure notification badge is above SiImessage icon
+                                                            }}
+                                                        >
+                                                            {unreadMessages[application.applicationId]}
+                                                        </span>
+                                                    )}
+                                                    {/* <SiImessage
                                                                     size={25}
                                                                     onClick={() => {
                                                                         handleChatClick(application.applicationId, candidateName[application.candidateId]);
@@ -521,127 +505,131 @@ const EvergreenJobsApplication = () => {
                                                                     style={{ color: 'green', cursor: 'pointer' }}
                                                                 />
                                                                 {/* Chat icon, click to toggle the ChatComponent */}
-                                                                <SiImessage
-                                                                    size={25}
-                                                                    onClick={() => toggleChat(application)}
-                                                                    style={{ color: 'green', cursor: 'pointer' }}
-                                                                />
-                                                            </div>
+                                                    <SiImessage
+                                                        size={25}
+                                                        onClick={() => toggleChat(application)}
+                                                        style={{ color: 'green', cursor: 'pointer' }}
+                                                    />
+                                                </div>
 
-                                                        ) : (
-                                                            <SiImessage
-                                                                size={25}
-                                                                style={{ color: 'grey', cursor: 'not-allowed' }}
-                                                            />
-                                                        )
-                                                        }
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </Table>
-                                </div>
-
-                                {/* Pagination */}
-
-                                <Pagination
-                                    page={page}
-                                    pageSize={pageSize}
-                                    totalPages={totalPages}
-                                    handlePageSizeChange={handlePageSizeChange}
-                                    isPageSizeDisabled={isPageSizeDisabled}
-                                    handlePageClick={handlePageClick}
-                                />
-                            </div>
-                        )}
-                        {applications.length === 0 && (
-                            <section class=''>
-                                <h2>Sorry, you haven't received any applications yet.</h2>
-                            </section>
-                        )}
-
+                                            ) : (
+                                                <SiImessage
+                                                    size={25}
+                                                    style={{ color: 'grey', cursor: 'not-allowed' }}
+                                                />
+                                            )
+                                            }
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
                     </div>
-                    {showBriefSettings && (
-                        <Modal show={showBriefSettings} onHide={() => setShowBriefSettings(false)}>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Brief Resume</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body style={{ overflowY: 'auto' }}>{showMessage}</Modal.Body>
-                        </Modal>
-                    )}
 
-                    <Modal show={showModal} onHide={handleCloseModal} className="custom-modal">
-                        <Modal.Header closeButton>
-                            <Modal.Title>Chat with {chatWith}</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body ref={modalBodyRef}>
-                            <div className="chat-messages">
-                                {chats ? (
-                                    chats.map((chat, index) => (
-                                        <div key={chat.id} className="chat-message">
-                                            {index === 0 || isDifferentDay(chats[index - 1].createdAt, chat.createdAt) && (
-                                                <div className="d-flex justify-content-center align-items-center text-center font-weight-bold my-3">
-                                                    {formatDate(chat.createdAt)}
-                                                </div>
+                    {/* Pagination */}
 
-                                            )}
-                                            {chat.candidateMessage && (
-                                                <div className="message-right">
-                                                    {chat.candidateMessage}
-                                                    <div className="message-time">
-                                                        {formatMessageDateTime(chat.createdAt)}
-                                                    </div>
-                                                </div>
-                                            )}
-
-                                            {/* Render HR message if present */}
-                                            {chat.hrMessage && (
-                                                <div className="message-left">
-                                                    {chat.hrMessage}
-                                                    <div className="message-time">
-                                                        {formatMessageDateTime(chat.createdAt)}
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p>Loading...</p>
-                                )}
-                            </div>
-                            {/* Message input section */}
-
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Form.Group controlId="messageInput" className="mb-3">
-                                {/* <Form.Label>Message:</Form.Label> */}
-                                <Form.Control
-                                    as='textarea'
-                                    type="text"
-                                    placeholder="Enter your message"
-                                    value={inputValue}
-                                    onChange={handleInputChange}
-                                    style={{ width: '350px' }} // Custom styles to increase size
-                                />
-                            </Form.Group>
-                            <Button variant="primary" onClick={handleSend}>
-                                <FontAwesomeIcon icon={faPaperPlane} /> {/* Send icon from Font Awesome */}
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
+                    <Pagination
+                        page={page}
+                        pageSize={pageSize}
+                        totalPages={totalPages}
+                        handlePageSizeChange={handlePageSizeChange}
+                        isPageSizeDisabled={isPageSizeDisabled}
+                        handlePageClick={handlePageClick}
+                    />
                 </div>
-            </div>
-            {/* Conditionally render the ChatComponent */}
-            {isChatOpen && (
-                <ChatComponent
-                    applicationId={chatData.applicationId}
-                    candidateId={chatData.candidateId}
-                    hrId={chatData.hrId}
-                    userType='HR'
-                    setIsChatOpen={setIsChatOpen}
-                />
             )}
-        </div>
+            {applications.length === 0 && (
+                <section class=''>
+                    <h2>Sorry, you haven't received any applications yet.</h2>
+                </section>
+            )}
+
+            {
+                showBriefSettings && (
+                    <Modal show={showBriefSettings} onHide={() => setShowBriefSettings(false)}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Brief Resume</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body style={{ overflowY: 'auto' }}>{showMessage}</Modal.Body>
+                    </Modal>
+                )
+            }
+
+            <Modal show={showModal} onHide={handleCloseModal} className="custom-modal">
+                <Modal.Header closeButton>
+                    <Modal.Title>Chat with {chatWith}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body ref={modalBodyRef}>
+                    <div className="chat-messages">
+                        {chats ? (
+                            chats.map((chat, index) => (
+                                <div key={chat.id} className="chat-message">
+                                    {index === 0 || isDifferentDay(chats[index - 1].createdAt, chat.createdAt) && (
+                                        <div className="d-flex justify-content-center align-items-center text-center font-weight-bold my-3">
+                                            {formatDate(chat.createdAt)}
+                                        </div>
+
+                                    )}
+                                    {chat.candidateMessage && (
+                                        <div className="message-right">
+                                            {chat.candidateMessage}
+                                            <div className="message-time">
+                                                {formatMessageDateTime(chat.createdAt)}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Render HR message if present */}
+                                    {chat.hrMessage && (
+                                        <div className="message-left">
+                                            {chat.hrMessage}
+                                            <div className="message-time">
+                                                {formatMessageDateTime(chat.createdAt)}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            ))
+                        ) : (
+                            <p>Loading...</p>
+                        )}
+                    </div>
+                    {/* Message input section */}
+
+                </Modal.Body>
+                <Modal.Footer>
+                    <Form.Group controlId="messageInput" className="mb-3">
+                        {/* <Form.Label>Message:</Form.Label> */}
+                        <Form.Control
+                            as='textarea'
+                            type="text"
+                            placeholder="Enter your message"
+                            value={inputValue}
+                            onChange={handleInputChange}
+                            style={{ width: '350px' }} // Custom styles to increase size
+                        />
+                    </Form.Group>
+                    <Button variant="primary" onClick={handleSend}>
+                        <FontAwesomeIcon icon={faPaperPlane} /> {/* Send icon from Font Awesome */}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+
+            {/* Conditionally render the ChatComponent */}
+            {
+                isChatOpen && (
+                    <ChatComponent
+                        applicationId={chatData.applicationId}
+                        candidateId={chatData.candidateId}
+                        hrId={chatData.hrId}
+                        userType='HR'
+                        setIsChatOpen={setIsChatOpen}
+                    />
+                )
+            }
+
+        </DashboardLayout >
     );
 };
 

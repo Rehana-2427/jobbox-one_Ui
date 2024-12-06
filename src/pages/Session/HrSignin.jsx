@@ -1,10 +1,10 @@
-import axios from 'axios';
 import { Formik } from 'formik';
 import React, { useState } from 'react';
 import { Button, Card, Col, Nav, Row } from 'react-bootstrap';
 import { FaCheckCircle } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
+import api from '../../apiClient';
 import CustomNavbar from '../CustomNavbar';
 import TextField from './sessions/TextField';
 
@@ -21,7 +21,7 @@ const HrSignin = () => {
     const handleSubmit = async (values, { setSubmitting }) => {
         console.log('Form submitted with values:', values); // Log submitted values
         try {
-            const response = await axios.get(`${BASE_API_URL}/login?userEmail=${values.userEmail}&password=${values.password}`);
+            const response = await api.userLogin(values.userEmail,values.password)
             const user = response.data.user;
             const token = response.data.token;
             localStorage.setItem('user', JSON.stringify(user));

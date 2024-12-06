@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { FacebookAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
@@ -7,6 +6,7 @@ import { FaCheckCircle } from 'react-icons/fa';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import * as yup from 'yup';
+import api from '../../apiClient';
 import { auth } from '../../firebase/firebaseConfig';
 import CustomNavbar from '../CustomNavbar';
 import SocialButtons from './sessions/SocialButtons';
@@ -28,7 +28,7 @@ const UserSignin = () => {
     const handleSubmit = async (values, { setSubmitting }) => {
 
         try {
-            const response = await axios.get(`${BASE_API_URL}/login?userEmail=${values.userEmail}&password=${values.password}`);
+            const response = await api.userLogin(values.userEmail, values.password);
             const user = response.data.user;
             const token = response.data.token;
 
@@ -78,13 +78,12 @@ const UserSignin = () => {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
             const userEmail = user.email;
-            const response = await axios.get(`${BASE_API_URL}/checkUser?userEmail=${userEmail}`);
-
+            const response = await api.checkUser(userEmail)
             const existingUser = response.data;
             // Log existingUser to check if it's undefined
             console.log("Existing User:", existingUser);
-             // Save user and token in localStorage (or in a global state like context)
-             localStorage.setItem('user', JSON.stringify(existingUser));
+            // Save user and token in localStorage (or in a global state like context)
+            localStorage.setItem('user', JSON.stringify(existingUser));
             if (existingUser) {
                 const userId = existingUser.userId;
                 console.log("Existing User ID:", userId);
@@ -111,8 +110,7 @@ const UserSignin = () => {
                 };
 
                 // Save new user to the backend
-                const saveResponse = await axios.post(`${BASE_API_URL}/saveUser`, newUser);
-
+                const saveResponse = await api.saveUser(newUser);
                 // Log the entire save response to see what is returned from the backend
                 console.log("Response from saveUser:", saveResponse.data);
 
@@ -188,7 +186,7 @@ const UserSignin = () => {
             const userEmail = user.email;
 
             // Check if the user already exists in the backend
-            const response = await axios.get(`${BASE_API_URL}/checkUser?userEmail=${userEmail}`);
+            const response = await api.checkUser(userEmail)
             const existingUser = response.data;
 
             if (existingUser) {
@@ -218,8 +216,7 @@ const UserSignin = () => {
                 };
 
                 // Save new user to the backend
-                const saveResponse = await axios.post(`${BASE_API_URL}/saveUser`, newUser);
-
+                const saveResponse = await api.saveUser(newUser);
                 // Log the entire save response to see what is returned from the backend
                 console.log("Response from saveUser:", saveResponse.data);
 
@@ -256,7 +253,7 @@ const UserSignin = () => {
     return (
         <div>
             <CustomNavbar />
-            <div className="auth-layout-wrap" style={{ maxHeight: '100vh', overflowY: 'auto'}}>
+            <div className="auth-layout-wrap" style={{ maxHeight: '100vh', overflowY: 'auto' }}>
                 <div className="auth-content candidate-login" style={{ position: 'relative', padding: '20px' }}>
                     <Card className="o-hidden user_regi_signin">
                         <Row>

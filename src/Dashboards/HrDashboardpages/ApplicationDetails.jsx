@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./ApplicationDetails.css";
-import HrLeftSide from "./HrLeftSide";
+import DashboardLayout from "./DashboardLayout ";
 
 const ApplicationDetails = () => {
 
@@ -67,51 +67,38 @@ const ApplicationDetails = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
     return (
-        <div className='dashboard-container'>
-            <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-                <HrLeftSide user={{ userName, userEmail }} onClose={toggleLeftSide} />
-            </div>
-            <div className="right-side">
-                <div
-                    className="small-screen-hr"
-                    style={{
-                        overflowY: 'auto',
-                        maxHeight: isSmallScreen ? '600px' : '1000px',
-                        paddingBottom: '20px'
-                    }}
-                >              <Button variant='primary' onClick={handleBack}>Back</Button>
-                    <div className="application-details-container" style={{ overflowY: 'scroll' }}>
-                        {job && (
-                            <div className="jobdetails">
-                                <h2>Job Details</h2>
-                                <p><b>Job Title:</b> {job.jobTitle}</p>
-                                <p><b>Job Type:</b> {job.jobType}</p>
-                                <p><b>Requirements:</b> {job.skills}</p>
-                                <p><b>Position:</b> {job.numberOfPosition}</p>
-                                <p><b>Skills:</b> {job.skills}</p>
-                                <p><b>Location:</b> {job.location}</p>
-                                <b>Job Description:</b><pre className="job-details-text"> {job.jobsummary}</pre>
-                            </div>
-                        )}
-                        {candidate && (
-                            <div className="candidatedetails">
-                                {/* Log candidate details to console */}
-                                {console.log("Candidate Details:", candidate)}
-
-                                <h2>Candidate Details</h2>
-                                <p><b>Name:</b> {candidate.userName}</p>
-                                <p><b>Email:</b> {candidate.userEmail}</p>
-                                <p><b>Phone:</b> {candidate.phone}</p>
-                                <p><strong>Skills:</strong> {candidate.skills}</p>
-                                <p><strong>Education:</strong> {candidate.education}</p>
-                                <p><strong>Experience:</strong> {candidate.experience}</p>
-                            </div>
-                        )}
-
+        <DashboardLayout>
+            <Button variant='primary' onClick={handleBack}>Back</Button>
+            <div className="application-details-container" style={{ overflowY: 'scroll' }}>
+                {job && (
+                    <div className="jobdetails">
+                        <h2>Job Details</h2>
+                        <p><b>Job Title:</b> {job.jobTitle}</p>
+                        <p><b>Job Type:</b> {job.jobType}</p>
+                        <p><b>Requirements:</b> {job.skills}</p>
+                        <p><b>Position:</b> {job.numberOfPosition}</p>
+                        <p><b>Skills:</b> {job.skills}</p>
+                        <p><b>Location:</b> {job.location}</p>
+                        <b>Job Description:</b><pre className="job-details-text"> {job.jobsummary}</pre>
                     </div>
-                </div>
+                )}
+                {candidate && (
+                    <div className="candidatedetails">
+                        {/* Log candidate details to console */}
+                        {console.log("Candidate Details:", candidate)}
+
+                        <h2>Candidate Details</h2>
+                        <p><b>Name:</b> {candidate.userName}</p>
+                        <p><b>Email:</b> {candidate.userEmail}</p>
+                        <p><b>Phone:</b> {candidate.phone}</p>
+                        <p><strong>Skills:</strong> {candidate.skills}</p>
+                        <p><strong>Education:</strong> {candidate.education}</p>
+                        <p><strong>Experience:</strong> {candidate.experience}</p>
+                    </div>
+                )}
+
             </div>
-        </div>
+        </DashboardLayout>
     );
 };
 

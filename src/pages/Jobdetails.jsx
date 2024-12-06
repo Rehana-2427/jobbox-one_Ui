@@ -1,8 +1,8 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Container, Modal, Row } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import api from '../apiClient';
 import ResumeSelectionPopup from '../Dashboards/CandidateDashboardpages/ResumeSelectionPopup';
 import CustomNavbar from './CustomNavbar';
 
@@ -50,7 +50,7 @@ const Jobdetails = () => {
     console.log(companyName)
     const fetchCompanyLogo = async (companyName) => {
         try {
-            const response = await axios.get(`${BASE_API_URL}/logo`, { params: { companyName }, responseType: 'arraybuffer' });
+            const response = await api.getLogo(companyName);
             const image = `data:image/jpeg;base64,${btoa(
                 new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
             )}`;
@@ -61,7 +61,7 @@ const Jobdetails = () => {
     };
     const fetchCompanyBanner = async (companyName) => {
         try {
-            const response = await axios.get(`${BASE_API_URL}/banner`, { params: { companyName }, responseType: 'arraybuffer' });
+            const response = await api.getBanner(companyName);
             const image = `data:image/jpeg;base64,${btoa(
                 new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
             )}`;
@@ -77,7 +77,7 @@ const Jobdetails = () => {
     }, [jobId]);
     const fetchJobDetails = async (id) => {
         try {
-            const response = await axios.get(`${BASE_API_URL}/getJob`, { params: { jobId: id } });
+            const response = await api.getJob(id)
             setJobDetails(response.data);
         } catch (error) {
             console.error('Error fetching job details:', error);
@@ -85,7 +85,7 @@ const Jobdetails = () => {
     };
     const fetchJobsByCompany = async (companyName) => {
         try {
-            const response = await axios.get(`${BASE_API_URL}/getLatest5JobsByCompany`, { params: { companyName } });
+            const response = await api.getLatest5JobsByCompany(companyName);
             setJobs(response.data);
         } catch (error) {
             console.error('Error fetching jobs by company:', error);
@@ -172,9 +172,7 @@ const Jobdetails = () => {
 
             const formattedDate = `${year}-${month}-${day}`;
 
-            const response = await axios.put(`${BASE_API_URL}/applyJob`, null, {
-                params: { jobId, userId, formattedDate, resumeId },
-            });
+            const response = await api.applyJob(jobId, userId, formattedDate, resumeId);
 
             if (response.data) {
                 setApplyJobs((prevApplyJobs) => [...prevApplyJobs, { jobId, formattedDate }]);
@@ -209,9 +207,8 @@ const Jobdetails = () => {
             }
         }
     };
-
     useEffect(() => {
-        axios.get(`${BASE_API_URL}/getResume`, { params: { userId } })
+        api.getResume(userId)
             .then(response => {
                 setResumes(response.data);
             })
@@ -219,6 +216,7 @@ const Jobdetails = () => {
                 console.error('Error fetching resumes:', error);
             });
     }, [userId]);
+    
 
     useEffect(() => {
         checkHasUserApplied();
@@ -228,9 +226,7 @@ const Jobdetails = () => {
         const applications = {};
         try {
             for (const job of jobs) {
-                const response = await axios.get(`${BASE_API_URL}/applicationApplied`, {
-                    params: { jobId: job.jobId, userId }
-                });
+                const response = await api.checkJobAppliedOrNot(job.jobId,userId)
                 applications[job.jobId] = response.data;
             }
             setHasUserApplied(applications);

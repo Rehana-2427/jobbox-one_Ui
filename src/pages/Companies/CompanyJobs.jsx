@@ -1,8 +1,8 @@
-import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Pagination from '../../Pagination';
+import api from '../../apiClient';
 
 const CompanyJobs = ({ companyId }) => {
   const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -43,7 +43,7 @@ const CompanyJobs = ({ companyId }) => {
         sortOrder: sortOrder,
       };
 
-      const response = await axios.get(`${BASE_API_URL}/jobsPostedCompany`, { params });
+      const response = await api.getJobsPostedByCompany(companyId, page, pageSize, sortedColumn, sortOrder);
       setJobs(response.data.content);
       setTotalPages(response.data.totalPages);
     } catch (error) {
@@ -58,7 +58,7 @@ const CompanyJobs = ({ companyId }) => {
   const handleBackToList = () => {
     setSelectedJob(null); // Reset selectedJob to show the job list again
   };
- 
+
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
   return (

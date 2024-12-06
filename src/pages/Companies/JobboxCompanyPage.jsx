@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
+import api from "../../apiClient";
 import Pagination from "../../Pagination";
 import CustomNavbar from "../CustomNavbar";
 import HomeFooter from "../HomeFooter";
@@ -32,13 +32,13 @@ const JobboxCompanyPage = () => {
   useEffect(() => {
     const fetchFilterData = async () => {
       try {
-        const companyTypesResponse = await axios.get(`${BASE_API_URL}/companyTypes`);
+        const companyTypesResponse = await api.getCompanyTypes();
         setCompanyTypes(companyTypesResponse.data);
 
-        const industryTypesResponse = await axios.get(`${BASE_API_URL}/industryTypes`);
+        const industryTypesResponse = await api.getIndustryTypes();
         setIndustryTypes(industryTypesResponse.data);
 
-        const locationsResponse = await axios.get(`${BASE_API_URL}/locations`);
+        const locationsResponse = await api.getLocationBasedCompanies();
         setLocations(locationsResponse.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -78,42 +78,27 @@ const JobboxCompanyPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url;
-
-        if (search) {
-          url = `${BASE_API_URL}/searchCompany`;
-        } else if (companyType || industryType || location) { // Assuming companyType is the new condition
-          url = `${BASE_API_URL}/companiesByType`;
-        } else {
-          url = `${BASE_API_URL}/companiesList`;
-        }
-
-
-        const params = {
-          search,
-          page,
-          size: pageSize,
-          companyType,
-          industryType,
-          location
-        };
-
-        console.log("Fetching data with params:", params);
 
         const storedPage = localStorage.getItem('currentCompanyPage');
         const storedPageSize = localStorage.getItem('currentCompanyPageSize');
 
         if (storedPage) {
-          params.page = Number(storedPage);
           setPage(Number(storedPage));
         }
 
         if (storedPageSize) {
-          params.size = Number(storedPageSize);
           setPageSize(Number(storedPageSize));
         }
 
-        const response = await axios.get(url, { params });
+
+        const response = await api.fetchCompanies({
+          search,
+          page: storedPage ? Number(storedPage) : page,
+          pageSize: storedPageSize ? Number(storedPageSize) : pageSize,
+          companyType,
+          industryType,
+          location,
+        });
         if (response.data.content.length === 0) {
           Swal.fire({
             icon: "error",

@@ -1,6 +1,6 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../apiClient';
 import './CircularImageSlider.css'; // Import the CSS file for styling
 
 const CircularImageSlider = () => {
@@ -12,7 +12,7 @@ const CircularImageSlider = () => {
     useEffect(() => {
         const fetchImages = async () => {
             try {
-                const response = await axios.get(`${BASE_API_URL}/companylogos`);
+                const response = await api.getCompanyLogos()
                 const imagesMap = response.data;
 
                 // Convert the response data into an array of images

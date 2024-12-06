@@ -8,7 +8,10 @@
     box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.1),
       inset 0 2px 0 0 $green;
   }
-  width: 800px;
+  width: 100%;
+  // word-wrap: break-word; /* Ensures that long words break and wrap onto the next line */
+  // overflow-wrap: break-word; /* Provides better browser compatibility */
+  text-wrap: auto;
 }
 
 .accordion-button {

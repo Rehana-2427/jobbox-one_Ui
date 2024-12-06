@@ -1,22 +1,21 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap'
+import { Card, Col, Row } from 'react-bootstrap'
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom'
 import CompanyJobs from './CompanyJobs'
-import './HrDashboard.css'
-import HrLeftSide from './HrLeftSide'
+import CompanyPolicies from './CompanyPolicies'
 import CompanyViewPage from './CompanyViewPage'
+import DashboardLayout from './DashboardLayout '
+import './HrDashboard.css'
+import SocialMediaLinks from './SocialMediaLinks'
 
 
 const CompanyShowCase = () => {
-  // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
-
   const BASE_API_URL = process.env.REACT_APP_API_URL;
   const location = useLocation();
   const userName = location.state?.userName || '';
   const userEmail = location.state?.userEmail || '';
-  const [activeTab, setActiveTab] = useState('overview'); // State to control the active tab
   const [userData, setUserData] = useState({});
   const [countOfHr, setCountOfHR] = useState();
   const [countOfApplications, setCountOfApplications] = useState(0);
@@ -27,10 +26,17 @@ const CompanyShowCase = () => {
   const [companyLogo, setCompanyLogo] = useState("");
   const [companyBanner, setCompanyBanner] = useState("");
 
+  const savedTab = localStorage.getItem('activeTab') || 'overview';
+  const [activeTab, setActiveTab] = useState(savedTab);
+  // Update localStorage whenever activeTab changes
+  useEffect(() => {
+    localStorage.setItem('activeTab', activeTab);
+  }, [activeTab]);
+
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-
+  console.log(savedTab)
   useEffect(() => {
     if (userEmail) {
       getUser(userEmail);
@@ -193,7 +199,6 @@ const CompanyShowCase = () => {
     }
   };
 
-  const [showModal, setShowModal] = useState(false);
   const [socialMediaLinks, setSocialMediaLinks] = useState({
     facebookLink: '',
     twitterLink: '',
@@ -201,14 +206,7 @@ const CompanyShowCase = () => {
     linkedinLink: ''
   });
 
-  const handleCloseModal = () => setShowModal(false);
-  const handleSocialInputChange = (e) => {
-    const { name, value } = e.target;
-    setSocialMediaLinks((prevLinks) => ({
-      ...prevLinks,
-      [name]: value,
-    }));
-  };
+
 
   const fetchSocialMediaLinks = async (companyName) => {
     try {
@@ -226,25 +224,7 @@ const CompanyShowCase = () => {
       console.error('Error fetching social media links:', error);
     }
   };
-  const handleSaveLinks = async () => {
-    try {
-      await axios.put(`${BASE_API_URL}/updateSocialMediaLinks?companyName=${userData.companyName}`, {
-        facebookLink: socialMediaLinks.facebookLink,
-        twitterLink: socialMediaLinks.twitterLink,
-        instagramLink: socialMediaLinks.instagramLink,
-        linkedinLink: socialMediaLinks.linkedinLink
-      });
-      setSocialMediaLinks({
-        facebookLink: socialMediaLinks.facebookLink,
-        twitterLink: socialMediaLinks.twitterLink,
-        instagramLink: socialMediaLinks.instagramLink,
-        linkedinLink: socialMediaLinks.linkedinLink
-      });
-      handleCloseModal();
-    } catch (error) {
-      console.error('Error updating social media links:', error.response ? error.response.data : error.message);
-    }
-  };
+
   const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
 
   const toggleLeftSide = () => {
@@ -261,21 +241,54 @@ const CompanyShowCase = () => {
     // Clean up the event listener on component unmount
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  return (
-    <div className="dashboard-container" style={{ background: '#f2f2f2', minHeight: '100vh' }}>
-  <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-    <HrLeftSide user={{ userName, userEmail }} onClose={toggleLeftSide} />
-  </div>
 
-  <div className="right-side">
-    <div
-      className="small-screen-hr"
-      style={{
-        overflowY: 'auto',
-        maxHeight: isSmallScreen ? '600px' : '1000px',
-        paddingBottom: '20px',
-      }}
-    >
+
+
+
+
+
+  const [documents, setDocuments] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // useEffect should always be called unconditionally
+  useEffect(() => {
+    if (companyName) {
+      const fetchDocuments = async () => {
+        setLoading(true);
+        try {
+          const response = await axios.get(
+            `${BASE_API_URL}/getDocumentsByCompany`,
+            { params: { companyName } }
+          );
+          if (response.data) {
+            setDocuments(response.data); // Set documents data to state
+          }
+        } catch (err) {
+          setError('Failed to fetch documents.');
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchDocuments();
+    }
+  }, [companyName]); // Effect will run whenever companyName changes
+
+  if (loading) {
+    return <div>Loading documents...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+
+
+
+  return (
+    <DashboardLayout>
       <Card style={{ width: '100%', height: '60%' }}>
         <Card.Body style={{ padding: 0, position: 'relative' }}>
           <div style={{ position: 'relative', height: '55%' }}>
@@ -338,12 +351,42 @@ const CompanyShowCase = () => {
               onChange={(e) => handleFileChange('logo', e.target.files[0])}
               accept="image/*"
             />
-          </div>         
+          </div>
         </Card.Body>
       </Card>
 
-      <Row className="hr-company_page-row2" style={{ marginTop: '50px' }}>
-        <Col md={2}>
+
+      <Row style={{ marginTop: '50px', alignItems: 'center' }}>
+        <Col md={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <h2 style={{ margin: 0 }}><b>{userData.companyName}</b></h2>
+        </Col>
+        <Col md={10} style={{ display: 'flex', alignItems: 'center' }}>
+          {socialMediaLinks.facebookLink && (
+            <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
+              <FaFacebook size={30} style={{ margin: '0 5px', color: '#3b5998' }} />
+            </a>
+          )}
+          {socialMediaLinks.twitterLink && (
+            <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
+              <FaTwitter size={30} style={{ margin: '0 5px', color: '#1da1f2' }} />
+            </a>
+          )}
+          {socialMediaLinks.instagramLink && (
+            <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
+              <FaInstagram size={30} style={{ margin: '0 5px', color: '#e4405f' }} />
+            </a>
+          )}
+          {socialMediaLinks.linkedinLink && (
+            <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
+              <FaLinkedin size={30} style={{ margin: '0 5px', color: '#0077b5' }} />
+            </a>
+          )}
+        </Col>
+      </Row>
+
+      <br></br>
+      <Row className="hr-company_page-row2" style={{ marginTop: '5px' }}>
+        <Col md={2} >
           <span>
             <a
               onClick={() => handleTabClick('overview')}
@@ -353,7 +396,7 @@ const CompanyShowCase = () => {
             </a>
           </span>
         </Col>
-        <Col md={2}>
+        <Col md={2} >
           <span>
             <a
               onClick={() => handleTabClick('jobs')}
@@ -363,47 +406,40 @@ const CompanyShowCase = () => {
             </a>
           </span>
         </Col>
-        <Col className="hr-company_page-row2-col3" style={{ textAlign: 'end', marginRight: '20px' }}>
-          <span style={{ marginLeft: '20px' }}>
-            <h4 style={{ paddingRight: '14px' }}><b>{userData.companyName}</b></h4>
-            {socialMediaLinks.facebookLink && (
-              <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
-                <FaFacebook size={24} style={{ margin: '0 5px', color: '#3b5998' }} />
-              </a>
-            )}
-            {socialMediaLinks.twitterLink && (
-              <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
-                <FaTwitter size={24} style={{ margin: '0 5px', color: '#1da1f2' }} />
-              </a>
-            )}
-            {socialMediaLinks.instagramLink && (
-              <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
-                <FaInstagram size={24} style={{ margin: '0 5px', color: '#e4405f' }} />
-              </a>
-            )}
-            {socialMediaLinks.linkedinLink && (
-              <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
-                <FaLinkedin size={24} style={{ margin: '0 5px', color: '#0077b5' }} />
-              </a>
-            )}
-            <div style={{ paddingBottom: '10px', paddingTop: '10px' }}>
-              <Button variant="primary" onClick={setShowModal}>Add Social Media Links</Button>
-            </div>
+        <Col md={4} >
+          <span>
+            <a
+              onClick={() => handleTabClick('Company-Policy-Form')}
+              className={`tab-link ${activeTab === 'Company-Policy-Form' ? 'active' : ''}`}
+            >
+              Add Company Policies
+            </a>
+          </span>
+        </Col>
+        <Col md={4}>
+          <span>
+            <a
+              onClick={() => handleTabClick('social-media-links')}
+              className={`tab-link ${activeTab === 'social-media-links' ? 'active' : ''}`}
+            >
+              Add Social Media Links
+            </a>
           </span>
         </Col>
       </Row>
 
       <Row className="hr-company_page-row3">
         <Col xs={12} md={8}>
-          {/* {activeTab === 'overview' && <CompnayOverview style={{ overflowY: 'scroll' }} />} */}
-          {activeTab === 'overview' && <CompanyViewPage style={{overflowY:'scroll'}} />}
+          {activeTab === 'overview' && <CompanyViewPage style={{ overflowY: 'scroll' }} />}
           {activeTab === 'jobs' && <CompanyJobs />}
+          {activeTab === 'Company-Policy-Form' && <CompanyPolicies />}
+          {activeTab === 'social-media-links' && <SocialMediaLinks />}
         </Col>
-        <Col xs={12} md={4}>
-          <Card className="key-stats" style={{ width: '80%', height: 'fit-content' }}>
+        <Col xs={12} md={4} style={{ paddingRight: '30px' }}>
+          <Card className="key-stats" style={{ width: '100%', height: 'fit-content' }}>
             <Card.Body>
               <Row className="mb-3">
-                <h1>Other Information</h1>
+                <h3><b>Other Information</b></h3>
               </Row>
               <Row className="mb-2">
                 <Col>
@@ -428,78 +464,36 @@ const CompanyShowCase = () => {
               </Row>
             </Card.Body>
           </Card>
+          <Card className="key-stats" style={{ width: '100%', height: 'fit-content' }}>
+            <Card.Body>
+              <h3><b>Company Policy Documents</b></h3>
+              {documents.length === 0 ? (
+                <p>No documents available for this company.</p>
+              ) : (
+                <div>
+                  {documents.map((document) => (
+                    <div key={document.documentId} style={{ marginBottom: '10px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <strong>{document.documentTitle}:</strong>
+                        <a
+                          href={`data:application/octet-stream;base64,${document.documentFile}`}
+                          download={document.documentTitle}
+                          className="btn btn-primary"
+                          style={{ marginLeft: '10px' }}>
+                          Download
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card.Body>
+
+
+          </Card>
         </Col>
       </Row>
-    </div>
-
-    {/* <Button
-      variant="primary"
-      onClick={() => setShowModal(true)}
-      className="thq-button-filled cta-button"
-      style={{ marginTop: '5px' }}
-    >
-      Add Social Media Links
-    </Button> */}
-  </div>
-
-  <Modal show={showModal} onHide={handleCloseModal}>
-    <Modal.Header closeButton>
-      <Modal.Title>Add Social Media Links</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-      <Form>
-        <Form.Group controlId="facebookLink">
-          <Form.Label>Facebook</Form.Label>
-          <Form.Control
-            type="text"
-            name="facebookLink"
-            value={socialMediaLinks.facebookLink}
-            onChange={handleSocialInputChange}
-            placeholder="Enter Facebook link"
-          />
-        </Form.Group>
-        <Form.Group controlId="twitterLink">
-          <Form.Label>Twitter</Form.Label>
-          <Form.Control
-            type="text"
-            name="twitterLink"
-            value={socialMediaLinks.twitterLink}
-            onChange={handleSocialInputChange}
-            placeholder="Enter Twitter link"
-          />
-        </Form.Group>
-        <Form.Group controlId="instagramLink">
-          <Form.Label>Instagram</Form.Label>
-          <Form.Control
-            type="text"
-            name="instagramLink"
-            value={socialMediaLinks.instagramLink}
-            onChange={handleSocialInputChange}
-            placeholder="Enter Instagram link"
-          />
-        </Form.Group>
-        <Form.Group controlId="linkedinLink">
-          <Form.Label>LinkedIn</Form.Label>
-          <Form.Control
-            type="text"
-            name="linkedinLink"
-            value={socialMediaLinks.linkedinLink}
-            onChange={handleSocialInputChange}
-            placeholder="Enter LinkedIn link"
-          />
-        </Form.Group>
-      </Form>
-    </Modal.Body>
-    <Modal.Footer>
-      <Button variant="secondary" onClick={handleCloseModal}>
-        Close
-      </Button>
-      <Button variant="primary" onClick={handleSaveLinks}>
-        Save Changes
-      </Button>
-    </Modal.Footer>
-  </Modal>
-</div>
+    </DashboardLayout>
 
   )
 }

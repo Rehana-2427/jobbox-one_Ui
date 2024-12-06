@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Dropdown, Table } from 'react-bootstrap';
+import { Button, Table } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useAuth } from '../../AuthProvider';
 
 import Pagination from '../../Pagination';
-import HrLeftSide from './HrLeftSide';
+import DashboardLayout from './DashboardLayout ';
 
 const Applications = () => {
   const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -177,128 +177,85 @@ const Applications = () => {
     // Clean up the event listener on component unmount
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  
+
   return (
-    <div className='dashboard-container'>
-      <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-        <HrLeftSide user={{ userName, userEmail }} onClose={toggleLeftSide} />
-      </div>
-
-      <div className="right-side">
-      <div
-          className="small-screen-hr"
-          style={{
-            overflowY: 'auto',
-            maxHeight: isSmallScreen ? '600px' : '1000px',
-            paddingBottom: '100px'
-          }}
-        >  
-        <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-          <div className="search-bar">
-            <input
-              style={{ borderRadius: '6px', height: '35px' }}
-              type="text"
-              name="search"
-              placeholder="Search"
-              value={search}
-              onChange={handleSearchChange}
-            />
-          </div>
-          <Dropdown className="ml-2">
-            <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
-              <div
-                className="initials-placeholder"
-                style={{
-                  width: '30px',
-                  height: '30px',
-                  borderRadius: '50%',
-                  backgroundColor: 'grey',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'white',
-                  fontWeight: 'bold',
-                }}
-              >
-                {initials}
-              </div>
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="mt-3">
-              <Dropdown.Item as={Link} to="/settings">
-                <i className="i-Data-Settings me-1" /> Account settings
-              </Dropdown.Item>
-              <Dropdown.Item as="button" onClick={handleLogout}>
-                <i className="i-Lock-2 me-1" /> Logout
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+    <DashboardLayout>
+      <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
+        <div className="search-bar">
+          <input
+            style={{ borderRadius: '6px', height: '35px' }}
+            type="text"
+            name="search"
+            placeholder="Search"
+            value={search}
+            onChange={handleSearchChange}
+          />
         </div>
-        {loading ? (
-          <div className="d-flex justify-content-center align-items-center">
-            <div className="spinner-bubble spinner-bubble-primary m-5" />
-            <span>Loading...</span>
-          </div>
-        ) : jobs.length > 0 ? (
-          <>
-            <div className='table-details-list  table-wrapper '>
-              <Table hover className='text-center'>
-                <thead className="table-light">
-                  <tr>
-                    <th scope="col" onClick={() => handleSort('jobTitle')}>
-                      Job Title {sortedColumn === 'jobTitle' && sortOrder === 'asc' && '▲'}
-                      {sortedColumn === 'jobTitle' && sortOrder === 'desc' && '▼'}
-                    </th>
-                    <th scope="col" onClick={() => handleSort('applicationDeadline')}>Application DeadLine{sortedColumn === 'applicationDeadline' && sortOrder === 'asc' && '▲'}
-                      {sortedColumn === 'applicationDeadline' && sortOrder === 'desc' && '▼'}</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {jobs.map(job => (
-                    (
-                      <tr key={job.jobId}>
-                        <td>{job.jobTitle}</td>
-                        <td>
-                          {job.applicationDeadline ? job.applicationDeadline : <span style={{ color: 'green' }}>Evengreen Job</span>}
-                        </td>
-                        <td>
-                          <Link
-                            to="/hr-dashboard/hr-applications/view-applications"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              navigate('/hr-dashboard/hr-applications/view-applications', { state: { userName: userName, userEmail: userEmail, jobId: job.jobId, currentJobApplicationPage: page, currentJobApplicationPageSize: pageSize } });
-                            }}
-                            className="nav-link"
-                          >
-                            <Button>View Application</Button>
-                          </Link>
-                        </td>
-                      </tr>
-                    )
-                  ))}
-                </tbody>
-              </Table>
-            </div>
-
-            {/* Pagination */}
-            <Pagination
-              page={page}
-              pageSize={pageSize}
-              totalPages={totalPages}
-              handlePageSizeChange={handlePageSizeChange}
-              isPageSizeDisabled={isPageSizeDisabled}
-              handlePageClick={handlePageClick}
-            />
-          </>
-        ) : (
-          <section>
-            <h2>You have not posted any jobs yet. Post Now</h2>
-          </section>
-        )}
+     
       </div>
-    </div>
-    </div >
+      {loading ? (
+        <div className="d-flex justify-content-center align-items-center">
+          <div className="spinner-bubble spinner-bubble-primary m-5" />
+          <span>Loading...</span>
+        </div>
+      ) : jobs.length > 0 ? (
+        <>
+          <div className='table-details-list  table-wrapper '>
+            <Table hover className='text-center'>
+              <thead className="table-light">
+                <tr>
+                  <th scope="col" onClick={() => handleSort('jobTitle')}>
+                    Job Title {sortedColumn === 'jobTitle' && sortOrder === 'asc' && '▲'}
+                    {sortedColumn === 'jobTitle' && sortOrder === 'desc' && '▼'}
+                  </th>
+                  <th scope="col" onClick={() => handleSort('applicationDeadline')}>Application DeadLine{sortedColumn === 'applicationDeadline' && sortOrder === 'asc' && '▲'}
+                    {sortedColumn === 'applicationDeadline' && sortOrder === 'desc' && '▼'}</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {jobs.map(job => (
+                  (
+                    <tr key={job.jobId}>
+                      <td>{job.jobTitle}</td>
+                      <td>
+                        {job.applicationDeadline ? job.applicationDeadline : <span style={{ color: 'green' }}>Evengreen Job</span>}
+                      </td>
+                      <td>
+                        <Link
+                          to="/hr-dashboard/hr-applications/view-applications"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigate('/hr-dashboard/hr-applications/view-applications', { state: { userName: userName, userEmail: userEmail, jobId: job.jobId, currentJobApplicationPage: page, currentJobApplicationPageSize: pageSize } });
+                          }}
+                          className="nav-link"
+                        >
+                          <Button>View Application</Button>
+                        </Link>
+                      </td>
+                    </tr>
+                  )
+                ))}
+              </tbody>
+            </Table>
+          </div>
 
+          {/* Pagination */}
+          <Pagination
+            page={page}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            handlePageSizeChange={handlePageSizeChange}
+            isPageSizeDisabled={isPageSizeDisabled}
+            handlePageClick={handlePageClick}
+          />
+        </>
+      ) : (
+        <section>
+          <h2>You have not posted any jobs yet. Post Now</h2>
+        </section>
+      )}
+    </DashboardLayout>
   );
 }
 

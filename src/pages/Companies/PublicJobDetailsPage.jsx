@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
+import api from "../../apiClient";
 
 const PublicJobDetailsPage = () => {
-    // const BASE_API_URL = 'http://51.79.18.21:8082/api/jobbox';
     const BASE_API_URL = process.env.REACT_APP_API_URL;
     const [companyLogo, setCompanyLogo] = useState("");
     const [companyBanner, setCompanyBanner] = useState("");
@@ -42,7 +42,7 @@ const PublicJobDetailsPage = () => {
     }, [companyId]);
     const fetchJobDetails = async (id) => {
         try {
-            const response = await axios.get(`${BASE_API_URL}/getJob`, { params: { jobId: id } });
+            const response = await api.getJob(id)
             setJobDetails(response.data);
         } catch (error) {
             console.error('Error fetching job details:', error);
