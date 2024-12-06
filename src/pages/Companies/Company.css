@@ -16,3 +16,11 @@
     }
   }
   
+.dashboard-container-1 {
+  padding-top: 120px;
+}
+@media(max-width: 990px) {
+  .dashboard-container-1 {
+    padding-top: 0px;
+  }
+}

@@ -31,6 +31,10 @@ import Settings from './Settings';
 import TermsAndConditions from './TermsAndConditions';
 import CompanyOverView from './Companies/CompanyOverView';
 
+
+
+
+
 const PagesRoute = () => {
   return (
     <div>
@@ -70,6 +74,7 @@ const PagesRoute = () => {
           <Route path='/jobboxCompanyPage/eachCompanyPage/publicJobDetailsPage' element={<PublicJobDetailsPage />} />
           <Route path='/chatComponent' element={<ChatComponent />} />
           <Route path='/companyOverView' element={<CompanyOverView />} />
+         
         </Routes>
       </Router>
     </div>

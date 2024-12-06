@@ -53,22 +53,32 @@ const DreamJob = () => {
     });
   };
 
-  const handleApplyButtonClick = () => {
+  const [resumeId, setResumeId] = useState(0);
+  const [selectedResume, setSelectedResume] = useState(null); // Store selected resume details
+
+  const handleResumeSelect = async (resume) => {
+    const resumeId = resume.target.value
+
+    if (resumeId) {
+      setResumeId(resumeId);
+      setShowResumePopup(false);  // Close the resume selection popup
+    }
+  };
+
+  const handleApplyButtonClick = async() => {
     if (jobRole.trim() === '' || companies.size === 0) {
       setErrorMessage('Please enter the company name and job role before selecting a resume.');
       return;
     }
+   
+    else if (!resumeId) {
+      setErrorMessage('Please select a resume.');
+      return;
+    }
+    await applyJob(resumeId, Array.from(companies));
     setErrorMessage(''); // Clear any previous error message
     setShowResumePopup(true);
   };
-
-  const handleResumeSelect = async (resumeId) => {
-    if (resumeId) {
-      await applyJob(resumeId, Array.from(companies));
-      setShowResumePopup(false);
-    }
-  };
-
   const applyJob = async (resumeId, companies) => {
     let loadingPopup;
     try {
@@ -189,19 +199,17 @@ const DreamJob = () => {
       </div>
 
       <div className="right-side">
-        <Container className='d-flex justify-content-center'>
+      <Container className="d-flex justify-content-center py-5">
+          <div className="content-wrapper w-100" style={{ maxWidth: '600px' }}>
+            {/* Header Section */}
+            <div className="header-section text-center mb-4">
+              <h2 className="display-6 display-sm-5 display-md-4 display-lg-3">Dream Company Application</h2>
+              <p className="lead text-wrap">Where you can apply to your dream position by selecting your resume only.</p>
+            </div>
 
-          <div className="centered-content" style={{ minHeight: 'fit-content', Width: '100%' }} >
-            {showResumePopup && (
-              <ResumeSelectionPopup
-                resumes={resumes}
-                onSelectResume={handleResumeSelect}
-                onClose={() => setShowResumePopup(false)}
-              />
-            )}
 
-            <Card className="center-container-card" >
-              <Form onSubmit={handleSubmit} className="center-form-card" style={{ maxWidth: '350px' }}>
+            {/* Responsive Form Section */}
+            <Form onSubmit={handleSubmit} className="center-form-card p-4 shadow-sm rounded">
                 <Form.Group>
                   <Form.Label htmlFor="jobRole">Job Title:</Form.Label>
                   <Form.Control
@@ -273,9 +281,34 @@ const DreamJob = () => {
                 </div>
                 <br />
                 <Form.Group>
-                  <Form.Label htmlFor="resume">Resume:</Form.Label>
-                  <Button onClick={handleApplyButtonClick}>Select Resume</Button>
+                  {/* <Form.Label htmlFor="resume">Resume:</Form.Label> */}
+                  {/* <Button onClick={handleApplyButtonClick}>Select Resume</Button> */}
+
+                  <div className="resume-dropdown-container">
+                  <h5 className="fw-bold">Select Resume</h5>
+                  <select
+                    id="resumeSelect"
+                    value={selectedResume}
+                    onChange={handleResumeSelect}
+                    required
+                    className="form-select"
+                  >
+                    <option value="">Select Resume</option>
+                    {resumes.map((resume) => (
+                      <option key={resume.id} value={resume.id}>
+                        {resume.message}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 </Form.Group>
+                <Button
+                variant="primary"
+                onClick={handleApplyButtonClick}
+                className="w-50 py-1 mt-3 fw-bold fs-6"
+              >
+                Apply
+              </Button>
               </Form>
 
 
@@ -285,11 +318,19 @@ const DreamJob = () => {
                 </p>
               }
 
-            </Card>
+        
 
           </div>
         </Container>
       </div>
+
+      {/* {showResumePopup && (
+              <ResumeSelectionPopup
+                resumes={resumes}
+                onSelectResume={handleResumeSelect}
+                onClose={() => setShowResumePopup(false)}
+              />
+            )} */}
     </div>
   );
 };

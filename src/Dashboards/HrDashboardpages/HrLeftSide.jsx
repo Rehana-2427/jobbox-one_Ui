@@ -65,7 +65,6 @@ const HrLeftSide = ({ user, isOpen }) => {
         setActiveLink(to); // Set the active link
         navigate(to, { state: { userName, userEmail } });
     };
-
     const renderNavLinks = () => (
         <Nav className="flex-column full-height align-items-center">
             {navLinks.map((link, index) => (

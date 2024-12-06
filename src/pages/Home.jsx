@@ -7,6 +7,7 @@ import './PagesStyle/Pages.css';
 import ServicesCard from './ServicesCard';
 import Testimonials from './Testimonials';
 import Welcome from './Welcome';
+import Footer from './Footer';
 
 const Home = () => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -82,8 +83,11 @@ const Home = () => {
       <div>
         <Testimonials />
       </div>
-      <div>
+      {/* <div>
         <HomeFooter />
+      </div> */}
+      <div>
+        <Footer/>
       </div>
 
     </div>
