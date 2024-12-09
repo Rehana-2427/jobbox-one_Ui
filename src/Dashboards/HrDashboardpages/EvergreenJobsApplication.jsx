@@ -423,15 +423,13 @@ const EvergreenJobsApplication = () => {
                     <div>
                         <div className='table-details-list  table-wrapper '>
                             <Table hover className='text-center'>
-                                <thead>
+                                <thead className="table-light">
                                     <tr style={{ textAlign: 'center' }}>
-                                        <th scope="col" onClick={() => handleSort('jobRole')}> Job Role {sortedColumn === 'jobRole' && sortOrder === 'asc' && '▲'}
-                                            {sortedColumn === 'jobRole' && sortOrder === 'desc' && '▼'}</th>
+                                        <th>Job Role</th>
                                         <th>Candidate Name</th>
                                         <th>Candidate Email</th>
                                         <th>Resume ID</th>
-                                        <th scope="col" onClick={() => handleSort('appliedOn')}>Applied On {sortedColumn === 'appliedOn' && sortOrder === 'asc' && '▲'}
-                                            {sortedColumn === 'appliedOn' && sortOrder === 'desc' && '▼'}</th>
+                                        <th>Applied On</th>
                                         <th>Action</th>
                                         <th scope="col">Chat</th>
                                     </tr>

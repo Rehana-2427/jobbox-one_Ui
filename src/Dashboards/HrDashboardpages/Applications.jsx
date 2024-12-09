@@ -133,7 +133,7 @@ const Applications = () => {
           <Col md={3} className="d-flex align-items-left">
             <div className="search-bar" style={{ flex: 1 }}>
               <input
-                style={{ borderRadius: '6px', height: '35px', width: '70%' , marginRight:'20px'}}
+                style={{ borderRadius: '6px', height: '35px', width: '70%', marginRight: '20px' }}
                 type="text"
                 name="search"
                 placeholder="Search"
@@ -155,15 +155,58 @@ const Applications = () => {
               <Table hover className='text-center'>
                 <thead className="table-light">
                   <tr>
-                    <th scope="col" onClick={() => handleSort('jobTitle')}>
-                      Job Title {sortedColumn === 'jobTitle' && sortOrder === 'asc' && '▲'}
-                      {sortedColumn === 'jobTitle' && sortOrder === 'desc' && '▼'}
+                    <th
+                      scope="col"
+                      onClick={() => handleSort('jobTitle')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      Job Title{' '}
+                      <span>
+                        <span
+                          style={{
+                            color: sortedColumn === 'jobTitle' && sortOrder === 'asc' ? 'black' : 'gray',
+                          }}
+                        >
+                          ↑
+                        </span>{' '}
+                        <span
+                          style={{
+                            color: sortedColumn === 'jobTitle' && sortOrder === 'desc' ? 'black' : 'gray',
+                          }}
+                        >
+                          ↓
+                        </span>
+                      </span>
                     </th>
-                    <th scope="col" onClick={() => handleSort('applicationDeadline')}>Application DeadLine{sortedColumn === 'applicationDeadline' && sortOrder === 'asc' && '▲'}
-                      {sortedColumn === 'applicationDeadline' && sortOrder === 'desc' && '▼'}</th>
+
+                    <th
+                      scope="col"
+                      onClick={() => handleSort('applicationDeadline')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      Application Deadline{' '}
+                      <span>
+                        <span
+                          style={{
+                            color: sortedColumn === 'applicationDeadline' && sortOrder === 'asc' ? 'black' : 'gray',
+                          }}
+                        >
+                          ↑
+                        </span>{' '}
+                        <span
+                          style={{
+                            color: sortedColumn === 'applicationDeadline' && sortOrder === 'desc' ? 'black' : 'gray',
+                          }}
+                        >
+                          ↓
+                        </span>
+                      </span>
+                    </th>
+
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
+
                 <tbody>
                   {jobs.map(job => (
                     (

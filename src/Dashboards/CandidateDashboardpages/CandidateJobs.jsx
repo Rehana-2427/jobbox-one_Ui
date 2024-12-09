@@ -1,13 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Dropdown, Table } from 'react-bootstrap';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Button, Table } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { useAuth } from '../../AuthProvider';
 import Pagination from '../../Pagination';
-import CandidateLeftSide from './CandidateLeftSide';
-import ResumeSelectionPopup from './ResumeSelectionPopup';
 import DashboardLayout from './DashboardLayout';
+import ResumeSelectionPopup from './ResumeSelectionPopup';
 
 const CandidateJobs = () => {
   const BASE_API_URL = process.env.REACT_APP_API_URL;

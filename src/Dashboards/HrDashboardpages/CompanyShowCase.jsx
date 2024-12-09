@@ -364,97 +364,50 @@ const CompanyShowCase = () => {
         </Card>
 
 
-      <Row style={{ marginTop: '50px', alignItems: 'center' }}>
-        <Col md={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <h2 style={{ margin: 0 }}><b>{userData.companyName}</b></h2>
-        </Col>
-        <Col md={10} style={{ display: 'flex', alignItems: 'center' }}>
-          {socialMediaLinks.facebookLink && (
-            <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
-              <FaFacebook size={30} style={{ margin: '0 5px', color: '#3b5998' }} />
-            </a>
-          )}
-          {socialMediaLinks.twitterLink && (
-            <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
-              <FaTwitter size={30} style={{ margin: '0 5px', color: '#1da1f2' }} />
-            </a>
-          )}
-          {socialMediaLinks.instagramLink && (
-            <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
-              <FaInstagram size={30} style={{ margin: '0 5px', color: '#e4405f' }} />
-            </a>
-          )}
-          {socialMediaLinks.linkedinLink && (
-            <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
-              <FaLinkedin size={30} style={{ margin: '0 5px', color: '#0077b5' }} />
-            </a>
-          )}
-        </Col>
-      </Row>
+        <Row style={{ marginTop: '50px', alignItems: 'center' }}>
+          <Col md={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <h2 style={{ margin: 0 }}><b>{userData.companyName}</b></h2>
+          </Col>
+          <Col md={10} style={{ display: 'flex', alignItems: 'center' }}>
+            {socialMediaLinks.facebookLink && (
+              <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
+                <FaFacebook size={30} style={{ margin: '0 5px', color: '#3b5998' }} />
+              </a>
+            )}
+            {socialMediaLinks.twitterLink && (
+              <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
+                <FaTwitter size={30} style={{ margin: '0 5px', color: '#1da1f2' }} />
+              </a>
+            )}
+            {socialMediaLinks.instagramLink && (
+              <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
+                <FaInstagram size={30} style={{ margin: '0 5px', color: '#e4405f' }} />
+              </a>
+            )}
+            {socialMediaLinks.linkedinLink && (
+              <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
+                <FaLinkedin size={30} style={{ margin: '0 5px', color: '#0077b5' }} />
+              </a>
+            )}
+          </Col>
+        </Row>
 
-      <br></br>
-      <Row className="hr-company_page-row2" style={{ marginTop: '5px' }}>
-      <Col>
+        <hr style={{ border: '1px solid black', margin: '30px 0' }} />
+
+        <Row className="hr-company_page-row2" style={{ marginTop: '5px' }}>
+          <Col>
             <Tabs
               defaultActiveKey="overview"
               id="uncontrolled-tab-example"
               onSelect={(key) => setActiveTab(key)} // This is the correct way to handle tab change
             >
-              <Tab eventKey="overview" title={customTabHeader("About  ", "i-Atom")}>
-                 
-                </Tab>
-                <Tab eventKey="jobs" title={customTabHeader("Job  ", "i-Shutter")}>
-                 
-                </Tab>
-
-                <Tab eventKey="Company-Policy-Form" title={customTabHeader("Add Company Policies ", "i-Atom")}>
-                 
-                 </Tab>
-                 <Tab eventKey="social-media-links" title={customTabHeader(" Add Social Media Links  ", "i-Shutter")}>
-                  
-                 </Tab>
-            </Tabs></Col>
-        {/* <Col md={2} >
-          <span>
-            <a
-              onClick={() => handleTabClick('overview')}
-              className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
-            >
-              About
-            </a>
-          </span>
-        </Col>
-        <Col md={2} >
-          <span>
-            <a
-              onClick={() => handleTabClick('jobs')}
-              className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
-            >
-              Jobs
-            </a>
-          </span>
-        </Col>
-        <Col md={4} >
-          <span>
-            <a
-              onClick={() => handleTabClick('Company-Policy-Form')}
-              className={`tab-link ${activeTab === 'Company-Policy-Form' ? 'active' : ''}`}
-            >
-              Add Company Policies
-            </a>
-          </span>
-        </Col>
-        <Col md={4}>
-          <span>
-            <a
-              onClick={() => handleTabClick('social-media-links')}
-              className={`tab-link ${activeTab === 'social-media-links' ? 'active' : ''}`}
-            >
-              Add Social Media Links
-            </a>
-          </span>
-        </Col> */}
-      </Row>
+              <Tab eventKey="overview" title={customTabHeader("About  ", "i-Atom")}></Tab>
+              <Tab eventKey="jobs" title={customTabHeader("Job  ", "i-Shutter")}></Tab>
+              <Tab eventKey="Company-Policy-Form" title={customTabHeader("Add Company Policies ", "i-Atom")}> </Tab>
+              <Tab eventKey="social-media-links" title={customTabHeader(" Add Social Media Links  ", "i-Shutter")}></Tab>
+            </Tabs>
+          </Col>
+        </Row>
 
         <Row className="hr-company_page-row3">
           <Col xs={12} md={8}>

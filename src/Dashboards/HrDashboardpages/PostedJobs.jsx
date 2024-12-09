@@ -119,7 +119,7 @@ const PostedJobs = () => {
             {/* Search Bar */}
             <div className="search-bar" style={{ flex: 1 }}>
               <input
-                style={{ borderRadius: '6px', height: '35px', width: '70%' , marginRight:'20px'}}
+                style={{ borderRadius: '6px', height: '35px', width: '70%', marginRight: '20px' }}
                 type="text"
                 name="search"
                 placeholder="Search"
@@ -136,16 +136,133 @@ const PostedJobs = () => {
               <Table hover className='text-center'>
                 <thead className="table-light">
                   <tr>
-                    <th scope="col" onClick={() => handleSort('hrName')}>Hr Name{sortedColumn === 'hrName' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
+                    <th scope="col">Hr Name</th>
                     <th scope="col">Company Name</th>
-                    <th scope="col" onClick={() => handleSort('jobTitle')}>Job Title{sortedColumn === 'jobTitle' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
-                    <th scope="col" onClick={() => handleSort('jobType')}>Job Type{sortedColumn === 'jobType' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
-                    <th scope="col" onClick={() => handleSort('skills')}>Skills{sortedColumn === 'skills' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
-                    <th scope="col" onClick={() => handleSort('numberOfPosition')}>Vacancy{sortedColumn === 'numberOfPosition' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
+
+                    <th
+                      scope="col"
+                      onClick={() => handleSort('jobTitle')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      Job Title{' '}
+                      <span>
+                        <span
+                          style={{
+                            color: sortedColumn === 'jobTitle' && sortOrder === 'asc' ? 'black' : 'gray',
+                          }}
+                        >
+                          ↑
+                        </span>{' '}
+                        <span
+                          style={{
+                            color: sortedColumn === 'jobTitle' && sortOrder === 'desc' ? 'black' : 'gray',
+                          }}
+                        >
+                          ↓
+                        </span>
+                      </span>
+                    </th>
+
+                    <th
+                      scope="col"
+                      onClick={() => handleSort('jobType')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      Job Type{' '}
+                      <span>
+                        <span
+                          style={{
+                            color: sortedColumn === 'jobType' && sortOrder === 'asc' ? 'black' : 'gray',
+                          }}
+                        >
+                          ↑
+                        </span>{' '}
+                        <span
+                          style={{
+                            color: sortedColumn === 'jobType' && sortOrder === 'desc' ? 'black' : 'gray',
+                          }}
+                        >
+                          ↓
+                        </span>
+                      </span>
+                    </th>
+
+                    <th
+                      scope="col"
+                      onClick={() => handleSort('skills')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      Skills{' '}
+                      <span>
+                        <span
+                          style={{
+                            color: sortedColumn === 'skills' && sortOrder === 'asc' ? 'black' : 'gray',
+                          }}
+                        >
+                          ↑
+                        </span>{' '}
+                        <span
+                          style={{
+                            color: sortedColumn === 'skills' && sortOrder === 'desc' ? 'black' : 'gray',
+                          }}
+                        >
+                          ↓
+                        </span>
+                      </span>
+                    </th>
+
+                    <th
+                      scope="col"
+                      onClick={() => handleSort('numberOfPosition')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      Vacancy{' '}
+                      <span>
+                        <span
+                          style={{
+                            color: sortedColumn === 'numberOfPosition' && sortOrder === 'asc' ? 'black' : 'gray',
+                          }}
+                        >
+                          ↑
+                        </span>{' '}
+                        <span
+                          style={{
+                            color: sortedColumn === 'numberOfPosition' && sortOrder === 'desc' ? 'black' : 'gray',
+                          }}
+                        >
+                          ↓
+                        </span>
+                      </span>
+                    </th>
+
                     <th scope="col">Job Description</th>
-                    <th scope="col" onClick={() => handleSort('applicationDeadline')}>Application Deadline{sortedColumn === 'applicationDeadline' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
+
+                    <th
+                      scope="col"
+                      onClick={() => handleSort('applicationDeadline')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      Application Deadline{' '}
+                      <span>
+                        <span
+                          style={{
+                            color: sortedColumn === 'applicationDeadline' && sortOrder === 'asc' ? 'black' : 'gray',
+                          }}
+                        >
+                          ↑
+                        </span>{' '}
+                        <span
+                          style={{
+                            color: sortedColumn === 'applicationDeadline' && sortOrder === 'desc' ? 'black' : 'gray',
+                          }}
+                        >
+                          ↓
+                        </span>
+                      </span>
+                    </th>
                   </tr>
                 </thead>
+
                 <tbody>
                   {jobs.map(job => (
                     <tr key={job.id}>

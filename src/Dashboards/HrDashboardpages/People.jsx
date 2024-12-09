@@ -71,7 +71,7 @@ const People = () => {
             <div className="main-content">
                 <Row>
                     <Col md={4}>
-                       <h2><div className="left-text">HR Details</div></h2>
+                        <h2><div className="left-text">HR Details</div></h2>
                     </Col>
                 </Row>
                 {people.length > 0 && (
@@ -80,19 +80,56 @@ const People = () => {
                             <Table hover className='text-center'>
                                 <thead className="table-light">
                                     <tr>
-                                        <th scope="col" onClick={() => handleSort('userName')}>
-                                            HR Name {sortedColumn === 'userName' && (
-                                                sortOrder === 'asc' ? '▲' : '▼'
-                                            )}
+                                        <th
+                                            scope="col"
+                                            onClick={() => handleSort('userName')}
+                                            style={{ cursor: 'pointer' }}
+                                        >
+                                            HR Name
+                                            <span>
+                                                <span
+                                                    style={{
+                                                        color: sortedColumn === 'userName' && sortOrder === 'asc' ? 'black' : 'gray',
+                                                    }}
+                                                >
+                                                    ↑
+                                                </span>
+                                                <span
+                                                    style={{
+                                                        color: sortedColumn === 'userName' && sortOrder === 'desc' ? 'black' : 'gray',
+                                                    }}
+                                                >
+                                                    ↓
+                                                </span>
+                                            </span>
                                         </th>
-                                        <th scope="col" onClick={() => handleSort('userEmail')}>
-                                            Email {sortedColumn === 'userEmail' && (
-                                                sortOrder === 'asc' ? '▲' : '▼'
-                                            )}
+                                        <th
+                                            scope="col"
+                                            onClick={() => handleSort('userEmail')}
+                                            style={{ cursor: 'pointer' }}
+                                        >
+                                            Email
+                                            <span>
+                                                <span
+                                                    style={{
+                                                        color: sortedColumn === 'userEmail' && sortOrder === 'asc' ? 'black' : 'gray',
+                                                    }}
+                                                >
+                                                    ↑
+                                                </span>
+                                                <span
+                                                    style={{
+                                                        color: sortedColumn === 'userEmail' && sortOrder === 'desc' ? 'black' : 'gray',
+                                                    }}
+                                                >
+                                                    ↓
+                                                </span>
+                                            </span>
                                         </th>
-                                        <th scope="col">Company Name </th>
+                                        <th scope="col">Company Name</th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
                                     {people.map(person => (
                                         <tr key={person.userId}>

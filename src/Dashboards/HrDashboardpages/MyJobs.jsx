@@ -212,26 +212,166 @@ const MyJobs = () => {
                 <Table hover className="text-center">
                   <thead className="table-light">
                     <tr>
-                      <th scope="col" onClick={() => handleSort('jobTitle')}>
-                        Job Title {sortedColumn === 'jobTitle' && (sortOrder === 'asc' ? '▲' : '▼')}
+                      <th
+                        scope="col"
+                        onClick={() => handleSort('jobTitle')}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        Job Title{' '}
+                        <span>
+                          <span
+                            style={{
+                              color: sortedColumn === 'jobTitle' && sortOrder === 'asc' ? 'black' : 'gray',
+                            }}
+                          >
+                            ↑
+                          </span>{' '}
+                          <span
+                            style={{
+                              color: sortedColumn === 'jobTitle' && sortOrder === 'desc' ? 'black' : 'gray',
+                            }}
+                          >
+                            ↓
+                          </span>
+                        </span>
                       </th>
-                      <th scope="col" onClick={() => handleSort('jobType')}>
-                        Job Type {sortedColumn === 'jobType' && (sortOrder === 'asc' ? '▲' : '▼')}
+                      <th
+                        scope="col"
+                        onClick={() => handleSort('jobType')}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        Job Type{' '}
+                        <span>
+                          <span
+                            style={{
+                              color: sortedColumn === 'jobType' && sortOrder === 'asc' ? 'black' : 'gray',
+                            }}
+                          >
+                            ↑
+                          </span>{' '}
+                          <span
+                            style={{
+                              color: sortedColumn === 'jobType' && sortOrder === 'desc' ? 'black' : 'gray',
+                            }}
+                          >
+                            ↓
+                          </span>
+                        </span>
                       </th>
-                      <th scope="col" onClick={() => handleSort('postingDate')}>
-                        Posting Date {sortedColumn === 'postingDate' && (sortOrder === 'asc' ? '▲' : '▼')}
+                      <th
+                        scope="col"
+                        onClick={() => handleSort('postingDate')}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        Posting Date{' '}
+                        <span>
+                          <span
+                            style={{
+                              color: sortedColumn === 'postingDate' && sortOrder === 'asc' ? 'black' : 'gray',
+                            }}
+                          >
+                            ↑
+                          </span>{' '}
+                          <span
+                            style={{
+                              color: sortedColumn === 'postingDate' && sortOrder === 'desc' ? 'black' : 'gray',
+                            }}
+                          >
+                            ↓
+                          </span>
+                        </span>
                       </th>
-                      <th scope="col" onClick={() => handleSort('skills')}>
-                        Skills {sortedColumn === 'skills' && (sortOrder === 'asc' ? '▲' : '▼')}
+                      <th
+                        scope="col"
+                        onClick={() => handleSort('skills')}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        Skills{' '}
+                        <span>
+                          <span
+                            style={{
+                              color: sortedColumn === 'skills' && sortOrder === 'asc' ? 'black' : 'gray',
+                            }}
+                          >
+                            ↑
+                          </span>{' '}
+                          <span
+                            style={{
+                              color: sortedColumn === 'skills' && sortOrder === 'desc' ? 'black' : 'gray',
+                            }}
+                          >
+                            ↓
+                          </span>
+                        </span>
                       </th>
-                      <th scope="col" onClick={() => handleSort('numberOfPosition')}>
-                        No of Position {sortedColumn === 'numberOfPosition' && (sortOrder === 'asc' ? '▲' : '▼')}
+                      <th
+                        scope="col"
+                        onClick={() => handleSort('numberOfPosition')}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        No of Position{' '}
+                        <span>
+                          <span
+                            style={{
+                              color: sortedColumn === 'numberOfPosition' && sortOrder === 'asc' ? 'black' : 'gray',
+                            }}
+                          >
+                            ↑
+                          </span>{' '}
+                          <span
+                            style={{
+                              color: sortedColumn === 'numberOfPosition' && sortOrder === 'desc' ? 'black' : 'gray',
+                            }}
+                          >
+                            ↓
+                          </span>
+                        </span>
                       </th>
-                      <th scope="col" onClick={() => handleSort('salary')}>
-                        Salary {sortedColumn === 'salary' && (sortOrder === 'asc' ? '▲' : '▼')}
+                      <th
+                        scope="col"
+                        onClick={() => handleSort('salary')}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        Salary{' '}
+                        <span>
+                          <span
+                            style={{
+                              color: sortedColumn === 'salary' && sortOrder === 'asc' ? 'black' : 'gray',
+                            }}
+                          >
+                            ↑
+                          </span>{' '}
+                          <span
+                            style={{
+                              color: sortedColumn === 'salary' && sortOrder === 'desc' ? 'black' : 'gray',
+                            }}
+                          >
+                            ↓
+                          </span>
+                        </span>
                       </th>
-                      <th scope="col" onClick={() => handleSort('applicationDeadline')}>
-                        Application Deadline {sortedColumn === 'applicationDeadline' && (sortOrder === 'asc' ? '▲' : '▼')}
+                      <th
+                        scope="col"
+                        onClick={() => handleSort('applicationDeadline')}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        Application Deadline{' '}
+                        <span>
+                          <span
+                            style={{
+                              color: sortedColumn === 'applicationDeadline' && sortOrder === 'asc' ? 'black' : 'gray',
+                            }}
+                          >
+                            ↑
+                          </span>{' '}
+                          <span
+                            style={{
+                              color: sortedColumn === 'applicationDeadline' && sortOrder === 'desc' ? 'black' : 'gray',
+                            }}
+                          >
+                            ↓
+                          </span>
+                        </span>
                       </th>
                       <th scope="col">Job Description</th>
                       <th scope="col">Action</th>
@@ -247,7 +387,7 @@ const MyJobs = () => {
                         <td>{job.numberOfPosition}</td>
                         <td>{job.salary}</td>
                         <td>
-                          {job.jobCategory === "evergreen" && !job.applicationDeadline ? (
+                          {job.jobCategory === 'evergreen' && !job.applicationDeadline ? (
                             <span style={{ color: 'green', fontWeight: 'bold' }} title="This position is always open for hiring, feel free to apply anytime!">
                               Evergreen Job - No Due Date
                             </span>
@@ -255,13 +395,24 @@ const MyJobs = () => {
                             job.applicationDeadline || 'Not Specified'
                           )}
                         </td>
-                        <td><Button variant="secondary" className='description btn-rounded' onClick={() => handleViewSummary(job.jobsummary)}>Summary</Button></td>
+                        <td>
+                          <Button variant="secondary" className="description btn-rounded" onClick={() => handleViewSummary(job.jobsummary)}>
+                            Summary
+                          </Button>
+                        </td>
                         <td>
                           <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <span className="cursor-pointer text-success me-2 update" onClick={() => navigate('/hr-dashboard/my-jobs/update-job', { state: { userName, userEmail, jobId: job.jobId, currentPage: page, currentPageSize: pageSize } })}>
+                            <span
+                              className="cursor-pointer text-success me-2 update"
+                              onClick={() =>
+                                navigate('/hr-dashboard/my-jobs/update-job', {
+                                  state: { userName, userEmail, jobId: job.jobId, currentPage: page, currentPageSize: pageSize },
+                                })
+                              }
+                            >
                               <MdEdit size={18} className="text-success" />
                             </span>
-                            <span className='delete cursor-pointer text-danger me-2' onClick={() => handleDelete(job.jobId)}>
+                            <span className="delete cursor-pointer text-danger me-2" onClick={() => handleDelete(job.jobId)}>
                               <MdDelete className="text-danger" size={18} />
                             </span>
                           </div>
@@ -271,6 +422,8 @@ const MyJobs = () => {
                   </tbody>
                 </Table>
               </div>
+
+
             </div>
             {/* Pagination */}
             <Pagination
@@ -284,7 +437,7 @@ const MyJobs = () => {
           </>
         ) : (
           <section className="no-jobs-message">
-            
+
           </section>
         )}
         {selectedJobSummary && (
