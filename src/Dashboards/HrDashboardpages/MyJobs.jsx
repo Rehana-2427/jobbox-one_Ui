@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
-import { Button, Pagination, Table } from 'react-bootstrap';
+import { Button, Col, Row, Table } from 'react-bootstrap';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { default as swal, default as Swal } from 'sweetalert2';
-import { useAuth } from '../../AuthProvider';
+import { default as swal } from 'sweetalert2';
+import Pagination from '../../Pagination';
 import DashboardLayout from './DashboardLayout ';
 import './HrDashboard.css';
 
@@ -14,19 +14,15 @@ const MyJobs = () => {
   const userEmail = location.state?.userEmail;
   const userName = location.state?.userName;
   const [jobs, setJobs] = useState([]);
-
   const [selectedJobSummary, setSelectedJobSummary] = useState('');
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
-
   const [sortedColumn, setSortedColumn] = useState(null); // Track the currently sorted column
   const [sortOrder, setSortOrder] = useState(' '); // Track the sort order (asc or desc)
-
   const currentPage = location.state?.currentPage || 0;
   const [page, setPage] = useState(currentPage);
-
   const currentPageSize = location.state?.currentPageSize || 6; // Default page size
   const [pageSize, setPageSize] = useState(currentPageSize); // Default to 5 items per page
 
@@ -137,22 +133,6 @@ const MyJobs = () => {
     }
   }, [fetchJobBySearch, fetchJobs, search]);
 
-  const convertToUpperCase = (str) => {
-    return String(str).toUpperCase();
-  };
-
-  const getInitials = (name) => {
-    if (!name) return '';
-    const nameParts = name.split(' ');
-    if (nameParts.length > 1) {
-      return convertToUpperCase(nameParts[0][0] + nameParts[1][0]);
-    } else {
-      return convertToUpperCase(nameParts[0][0] + nameParts[0][1]);
-    }
-  };
-
-  const initials = getInitials(userName);
-
   const handleViewSummary = (summary) => {
     setSelectedJobSummary(summary);
   };
@@ -173,85 +153,52 @@ const MyJobs = () => {
     const selectedPage = data.selected;
     setPage(selectedPage);
 
-  }; const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
-
-  const toggleLeftSide = () => {
-    console.log("Toggling left side visibility");
-    setIsLeftSideVisible(!isLeftSideVisible);
   };
 
-
-
-  const { logout } = useAuth(); // Get logout function from context
-
-  const handleLogout = () => {
-    Swal.fire({
-      title: 'Are you sure you want to logout?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, logout!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        logout(); // Call the logout function
-        // Clear user data from localStorage
-        localStorage.removeItem(`userName_${userEmail}`);
-        // Navigate to the login page or home page
-        navigate('/'); // Update with the appropriate path for your login page
-      }
-    });
-  };
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
-
-  useEffect(() => {
-    // Update the `isSmallScreen` state based on screen resizing
-    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
-
-    window.addEventListener('resize', handleResize);
-
-    // Clean up the event listener on component unmount
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
   return (
     <DashboardLayout>
       <div className="main-content">
-
-        <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-          <div className="search-bar">
-            <input
-              style={{ borderRadius: '6px', height: '35px' }}
-              type="text"
-              name="search"
-              placeholder="Search"
-              value={search}
-              onChange={handleSearchChange}
-            />
-            <i className="search-icon text-muted i-Magnifi-Glass1" />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h2 style={{ textAlign: 'left' }}>
-              {jobs.length === 0
-                ? 'You have not posted any jobs yet. Post Now'
-                : `Jobs posted by ${userName}`}
+        <Row>
+          <Col md={4}>
+            <h2>
+              {jobs.length === 0 ? (
+                <div style={{ color: 'red', textAlign: 'center' }}>
+                  {search
+                    ? `There is no job with this "${search}"`
+                    : 'You have not posted any jobs yet. Post Now'}
+                </div>
+              ) : (
+                <div className="left-text">Jobs posted by {userName}</div>
+              )}
             </h2>
-            <Button
-              className="add-job-button"
-              style={{ textAlign: 'right', marginBottom: '12px', position: 'relative', bottom: '30px', right: '20px' }}
-            >
+          </Col>
+
+          <Col md={4} className="d-flex align-items-left">
+            {/* Search Bar */}
+            <div className="search-bar" style={{ flex: 1 }}>
+              <input
+                style={{ borderRadius: '6px', height: '35px', width: '100%' }}
+                type="text"
+                name="search"
+                placeholder="Search"
+                value={search}
+                onChange={handleSearchChange}
+              />
+            </div>
+            <Button style={{ marginRight: '20px' }}>
               <Link
                 to={{ pathname: '/hr-dashboard/my-jobs/addJob', state: { userName, userEmail } }}
                 onClick={(e) => {
                   e.preventDefault();
                   navigate('/hr-dashboard/my-jobs/addJob', { state: { userName, userEmail } });
                 }}
+                style={{ textDecoration: 'none', color: 'inherit' }} // removes default link styling
               >
                 Add Job
               </Link>
             </Button>
-          </div>
-        </div>
+          </Col>
+        </Row>
 
         {loading ? (
           <div className="d-flex justify-content-center align-items-center">
@@ -261,8 +208,8 @@ const MyJobs = () => {
         ) : jobs.length > 0 ? (
           <>
             <div>
-              <div className='table-details-list table-wrapper'>
-                <Table hover className='text-center' >
+              <div className="table-details-list table-wrapper">
+                <Table hover className="text-center">
                   <thead className="table-light">
                     <tr>
                       <th scope="col" onClick={() => handleSort('jobTitle')}>
@@ -325,7 +272,7 @@ const MyJobs = () => {
                 </Table>
               </div>
             </div>
-
+            {/* Pagination */}
             <Pagination
               page={page}
               pageSize={pageSize}
@@ -336,8 +283,8 @@ const MyJobs = () => {
             />
           </>
         ) : (
-          <section>
-            {/* <h2>You have not posted any jobs yet. Post Now</h2> */}
+          <section className="no-jobs-message">
+            
           </section>
         )}
         {selectedJobSummary && (
@@ -367,5 +314,4 @@ const MyJobs = () => {
     </DashboardLayout>
   );
 };
-
 export default MyJobs;

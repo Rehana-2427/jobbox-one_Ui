@@ -390,8 +390,6 @@ const DreamApplication = () => {
       modalBodyRef.current.scrollTop = modalBodyRef.current.scrollHeight;
     }
   }, [chats]);
-
-
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
   const navigate = useNavigate();
@@ -413,28 +411,8 @@ const DreamApplication = () => {
 
   console.log(filterStatus)
 
-
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
-
-  const toggleLeftSide = () => {
-    console.log("Toggling left side visibility");
-    setIsLeftSideVisible(!isLeftSideVisible);
-  };
-
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
-
-  useEffect(() => {
-    // Update the `isSmallScreen` state based on screen resizing
-    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
-
-    window.addEventListener('resize', handleResize);
-
-    // Clean up the event listener on component unmount
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
   // State to track if the ChatComponent is open
   const [isChatOpen, setIsChatOpen] = useState(false);
-
   const [chatData, setChatData] = useState({
     applicationId: null,
     candidateId: null,
@@ -443,333 +421,325 @@ const DreamApplication = () => {
 
   // Function to handle chat icon click
   const toggleChat = (application) => {
-    // Set the chat data for the clicked application
-    // Mark messages as read
     axios.put(`${BASE_API_URL}/markCandidateMessagesAsRead?applicationId=${application.applicationId}`);
-
     const unread = {}; // Initialize unread messages state
     try {
-
       const countUnread = fetchCountUnreadMessage(application.applicationId);
-
       unread[application.applicationId] = countUnread;
-
     } catch (error) {
       console.error('Error fetching job status:', error);
     }
     setUnreadMessages(unread); // Set unread messages state
-
     setChatData({
       applicationId: application.applicationId,
       candidateId: application.candidateId,
       hrId: application.hrId,
     });
-    // Toggle the visibility of the ChatComponent
     setIsChatOpen(!isChatOpen);
   };
+
   return (
-
     <DashboardLayout>
-      <Row className="mb-4 m-3">
-        <Col xs={12} md={6} lg={4}>
-          <label
-            htmlFor="status"
-            className="form-label"
-            style={{ color: '#6c5b7b' }} // Purple color for the label
-          >
-            Filter by Status:
-          </label>
-          <select
-            id="status"
-            onChange={handleFilterChange}
-            value={filterStatus}
-            className="form-select form-select-sm fs-5" // Adjust the fs-* class as needed
-            style={{ borderColor: '#6c5b7b' }} // Purple border color
-          >
-            <option value="all">All</option>
-            <option value="Shortlisted">Shortlisted</option>
-            <option value="Not Seen">Not Seen</option>
-            <option value="Not Shortlisted">Not Shortlisted</option>
-          </select>
-        </Col>
-        <Col
-          xs={12} md={6} lg={4} >
-          <label
-            htmlFor="date"
-            className="form-label"
-            style={{ color: '#6c5b7b' }} // Purple color for the label
-          >
-            Filter by Date:
-          </label>
-          <div className="date-filter d-flex align-items-center gap-3">
-            <div className="date-input-group d-flex flex-row align-items-center">
-              <label
-                htmlFor="fromDate"
-                className="form-label mb-1"
-                style={{ color: '#6c5b7b' }} // Purple color for the label
-              >
-                From:
-              </label>
-              <input
-                type="date"
-                id="fromDate"
-                value={fromDate}
-                onChange={(e) => handleFromDateChange(e.target.value)}
-                className="form-control form-control-sm fs-7"
-                style={{
-                  maxWidth: '150px',
-                  borderColor: '#6c5b7b', // Purple border color
-                  boxShadow: 'none',
-                }}
-              />
+      <div className="main-content">
+        <Row className="mb-4 m-3">
+          <Col xs={12} md={6} lg={4}>
+            <label
+              htmlFor="status"
+              className="form-label"
+              style={{ color: '#6c5b7b' }} // Purple color for the label
+            >
+              Filter by Status:
+            </label>
+            <select
+              id="status"
+              onChange={handleFilterChange}
+              value={filterStatus}
+              className="form-select form-select-sm fs-5" // Adjust the fs-* class as needed
+              style={{ borderColor: '#6c5b7b' }} // Purple border color
+            >
+              <option value="all">All</option>
+              <option value="Shortlisted">Shortlisted</option>
+              <option value="Not Seen">Not Seen</option>
+              <option value="Not Shortlisted">Not Shortlisted</option>
+            </select>
+          </Col>
+          <Col
+            xs={12} md={6} lg={4} >
+            <label
+              htmlFor="date"
+              className="form-label"
+              style={{ color: '#6c5b7b' }} // Purple color for the label
+            >
+              Filter by Date:
+            </label>
+            <div className="date-filter d-flex align-items-center gap-3">
+              <div className="date-input-group d-flex flex-row align-items-center">
+                <label
+                  htmlFor="fromDate"
+                  className="form-label mb-1"
+                  style={{ color: '#6c5b7b' }} // Purple color for the label
+                >
+                  From:
+                </label>
+                <input
+                  type="date"
+                  id="fromDate"
+                  value={fromDate}
+                  onChange={(e) => handleFromDateChange(e.target.value)}
+                  className="form-control form-control-sm fs-7"
+                  style={{
+                    maxWidth: '150px',
+                    borderColor: '#6c5b7b', // Purple border color
+                    boxShadow: 'none',
+                  }}
+                />
+              </div>
+              <div className="date-input-group d-flex flex-row">
+                <label
+                  htmlFor="toDate"
+                  className="form-label mb-1"
+                  style={{ color: '#6c5b7b' }} // Purple color for the label
+                >
+                  To:
+                </label>
+                <input
+                  type="date"
+                  id="toDate"
+                  value={toDate}
+                  onChange={(e) => handleToDateChange(e.target.value)}
+                  className="form-control form-control-sm fs-7"
+                  style={{
+                    maxWidth: '150px',
+                    borderColor: '#6c5b7b', // Purple border color
+                    boxShadow: 'none',
+                  }}
+                />
+              </div>
             </div>
-            <div className="date-input-group d-flex flex-row">
-              <label
-                htmlFor="toDate"
-                className="form-label mb-1"
-                style={{ color: '#6c5b7b' }} // Purple color for the label
-              >
-                To:
-              </label>
-              <input
-                type="date"
-                id="toDate"
-                value={toDate}
-                onChange={(e) => handleToDateChange(e.target.value)}
-                className="form-control form-control-sm fs-7"
-                style={{
-                  maxWidth: '150px',
-                  borderColor: '#6c5b7b', // Purple border color
-                  boxShadow: 'none',
-                }}
-              />
+          </Col>
+          <Col xs={12} md={12} lg={4}>
+            <div
+              style={{ width: '100%', backgroundColor: '#f4f4f9' }}>
+              <h4>Action:</h4>
+              <p><b><span class="circle gray"></span> By default - Not Seen</b></p>
+              <p><b><span class="circle red"></span> Slide Left Side - Not Shortlisted</b></p>
+              <p><b><span class="circle green"></span> Slide Right Side - Shortlisted</b></p>
             </div>
-          </div>
-        </Col>
-        <Col xs={12} md={12} lg={4}>
-          <div
-            style={{ width: '100%', backgroundColor: '#f4f4f9' }}>
-            <h4>Action:</h4>
-            <p><b><span class="circle gray"></span> By default - Not Seen</b></p>
-            <p><b><span class="circle red"></span> Slide Left Side - Not Shortlisted</b></p>
-            <p><b><span class="circle green"></span> Slide Right Side - Shortlisted</b></p>
-          </div>
-          <div className="search-bar">
-            <input
-              style={{ borderRadius: '6px', height: '35px' }}
-              type="text"
-              name="search"
-              placeholder="Search Candidate By Skills"
-              value={search}
-              onChange={handleSearchChange}
-            />
-          </div>
+          </Col>
+        </Row>
 
-        </Col>
-      </Row>
-
-      {showBriefSettings && (
-        <Modal show={showBriefSettings} onHide={() => setShowBriefSettings(false)}>
-          <Modal.Header closeButton>
-            <Modal.Title>Brief Resume</Modal.Title>
-          </Modal.Header>
-          <Modal.Body style={{ overflowY: 'auto' }}>{showMessage}</Modal.Body>
-        </Modal>
-      )}
-
-      <Modal show={showModal} onHide={handleCloseModal} className="custom-modal">
-        <Modal.Header closeButton>
-          <Modal.Title>Chat with {chatWith}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body ref={modalBodyRef}>
-          <div className="chat-messages">
-            {chats ? (
-              chats.map((chat, index) => (
-                <div key={chat.id} className="chat-message">
-                  {index === 0 || isDifferentDay(chats[index - 1].createdAt, chat.createdAt) && (
-                    <div className="d-flex justify-content-center align-items-center text-center font-weight-bold my-3">
-                      {formatDate(chat.createdAt)}
-                    </div>
-
-                  )}
-                  {chat.candidateMessage && (
-                    <div className="message-right">
-                      {chat.candidateMessage}
-                      <div className="message-time">
-                        {formatMessageDateTime(chat.createdAt)}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Render HR message if present */}
-                  {chat.hrMessage && (
-                    <div className="message-left">
-                      {chat.hrMessage}
-                      <div className="message-time">
-                        {formatMessageDateTime(chat.createdAt)}
-                      </div>
-                    </div>
-                  )}
+        <Row>
+          <Col md={6}>
+            <h2>
+              {applications.length === 0 ? (
+                <div style={{ color: 'red', textAlign: 'center' }}>
+                  {search
+                    ? `There is no Dream job application for "${search}"`
+                    : 'Sorry, you haven’t received any applications yet.'}
                 </div>
-              ))
-            ) : (
-              <p>Loading...</p>
-            )}
-          </div>
-          {/* Message input section */}
+              ) : (
+                <div className="left-text">Applicants of Dream Company Applications</div>
+              )}
+            </h2>
 
-        </Modal.Body>
-        <Modal.Footer>
-          <Form.Group controlId="messageInput" className="mb-3">
-            {/* <Form.Label>Message:</Form.Label> */}
-            <Form.Control
-              as='textarea'
-              type="text"
-              placeholder="Enter your message"
-              value={inputValue}
-              onChange={handleInputChange}
-              style={{ width: '350px' }} // Custom styles to increase size
-            />
-          </Form.Group>
-          <Button variant="primary" onClick={handleSend}>
-            <FontAwesomeIcon icon={faPaperPlane} /> {/* Send icon from Font Awesome */}
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      {applications.length > 0 && (
-        <div>
-          <div className="table-wrapper">
-            <Table hover className='text-center'>
-              <thead className="table-light">
-                <tr style={{ textAlign: 'center' }}>
-                  <th>Candidate Name</th>
-                  <th>Candidate Email</th>
-                  <th>Resume ID</th>
-                  <th scope="col" onClick={() => handleSort('appliedOn')}> Date {sortedColumn === 'appliedOn' && sortOrder === 'asc' && '▲'}
-                    {sortedColumn === 'appliedOn' && sortOrder === 'desc' && '▼'}</th>
-                  <th>Action</th>
-                  <th scope="col">Chat</th>
-                </tr>
-              </thead>
-              <tbody>
-                {applications.map(application => (
-                  <tr key={application.id}>
-                    <td>{candidateName[application.candidateId]}</td>
-                    <td
-                      onClick={() => handleClick(application.candidateId)}
-                      style={{
-                        color: 'purple',              // Dark grey text color
-                        padding: '10px',            // Adding some padding
-                        borderRadius: '5px',        // Rounded corners
-                        cursor: 'pointer',           // Changing cursor to pointer on hover
-                        textDecoration: 'underline'
-                      }}
-                    >
-                      {candidateEmail[application.candidateId]}
-                    </td>
+          </Col>
+          <Col md={4} className="d-flex align-items-left">
+            <div className="search-bar" style={{ flex: 1 }}>
+              <input
+                style={{ borderRadius: '6px', height: '35px', width: '70%', marginRight: '20px' }}
+                type="text"
+                name="search"
+                placeholder="Search Candidate By Skills"
+                value={search}
+                onChange={handleSearchChange}
+              />
+            </div>
 
-                    <td>{renderResumeComponent(application.resumeId)}</td>
-                    <td>{application.appliedOn}</td>
-                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                      {application.applicationStatus === "Shortlisted" && hrEmail[application.hrId] !== userEmail ? (
-                        <div>
-                          Shortlisted by {hrName[application.hrId] || 'Unknown HR'} of {application.companyName}
+          </Col>
+        </Row>
+        {showBriefSettings && (
+          <Modal show={showBriefSettings} onHide={() => setShowBriefSettings(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Brief Resume</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ overflowY: 'auto' }}>{showMessage}</Modal.Body>
+          </Modal>
+        )}
+
+        <Modal show={showModal} onHide={handleCloseModal} className="custom-modal">
+          <Modal.Header closeButton>
+            <Modal.Title>Chat with {chatWith}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body ref={modalBodyRef}>
+            <div className="chat-messages">
+              {chats ? (
+                chats.map((chat, index) => (
+                  <div key={chat.id} className="chat-message">
+                    {index === 0 || isDifferentDay(chats[index - 1].createdAt, chat.createdAt) && (
+                      <div className="d-flex justify-content-center align-items-center text-center font-weight-bold my-3">
+                        {formatDate(chat.createdAt)}
+                      </div>
+
+                    )}
+                    {chat.candidateMessage && (
+                      <div className="message-right">
+                        {chat.candidateMessage}
+                        <div className="message-time">
+                          {formatMessageDateTime(chat.createdAt)}
                         </div>
-                      ) : (
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                          <Slider
-                            initialStatus={application.applicationStatus}
-                            onChangeStatus={(newStatus) => updateStatus(application.applicationId, newStatus, application.hrId)}
-                          />
+                      </div>
+                    )}
+
+                    {/* Render HR message if present */}
+                    {chat.hrMessage && (
+                      <div className="message-left">
+                        {chat.hrMessage}
+                        <div className="message-time">
+                          {formatMessageDateTime(chat.createdAt)}
                         </div>
-                      )}
-                    </td>
+                      </div>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <p>Loading...</p>
+              )}
+            </div>
+            {/* Message input section */}
 
+          </Modal.Body>
+          <Modal.Footer>
+            <Form.Group controlId="messageInput" className="mb-3">
+              {/* <Form.Label>Message:</Form.Label> */}
+              <Form.Control
+                as='textarea'
+                type="text"
+                placeholder="Enter your message"
+                value={inputValue}
+                onChange={handleInputChange}
+                style={{ width: '350px' }} // Custom styles to increase size
+              />
+            </Form.Group>
+            <Button variant="primary" onClick={handleSend}>
+              <FontAwesomeIcon icon={faPaperPlane} /> {/* Send icon from Font Awesome */}
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        {applications.length > 0 && (
+          <div>
+            <div className='table-details-list  table-wrapper '>
+              <Table hover className='text-center'>
+                <thead className="table-light">
+                  <tr style={{ textAlign: 'center' }}>
+                    <th>Candidate Name</th>
+                    <th>Candidate Email</th>
+                    <th>Resume ID</th>
+                    <th scope="col" onClick={() => handleSort('appliedOn')}> Date {sortedColumn === 'appliedOn' && sortOrder === 'asc' && '▲'}
+                      {sortedColumn === 'appliedOn' && sortOrder === 'desc' && '▼'}</th>
+                    <th>Action</th>
+                    <th scope="col">Chat</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {applications.map(application => (
+                    <tr key={application.id}>
+                      <td>{candidateName[application.candidateId]}</td>
+                      <td
+                        onClick={() => handleClick(application.candidateId)}
+                        style={{
+                          color: 'purple',              // Dark grey text color
+                          padding: '10px',            // Adding some padding
+                          borderRadius: '5px',        // Rounded corners
+                          cursor: 'pointer',           // Changing cursor to pointer on hover
+                          textDecoration: 'underline'
+                        }}
+                      >
+                        {candidateEmail[application.candidateId]}
+                      </td>
 
-                    <td >
-                      {hrEmail[application.hrId] === userEmail ? (
-                        <div style={{ position: 'relative', display: 'inline-block' }}>
-                          {unreadMessages[application.applicationId] > 0 && (
-                            <span
-                              style={{
-                                position: 'absolute',
-                                top: '-5px',
-                                right: '-15px',
-                                backgroundColor: 'red',
-                                color: 'white',
-                                borderRadius: '50%',
-                                width: '20px',
-                                height: '20px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '12px',
-                                fontWeight: 'bold',
-                                zIndex: 1, // Ensure notification badge is above SiImessage icon
-                              }}
-                            >
-                              {unreadMessages[application.applicationId]}
-                            </span>
-                          )}
-                          {/* <SiImessage
-                                  size={25}
-                                  onClick={() => {
-                                    handleChatClick(application.applicationId, candidateName[application.candidateId]);
-                                    setShowModal(true);
-                                  }}
-                                  style={{ color: 'green', cursor: 'pointer' }}
-                                /> */}
-
+                      <td>{renderResumeComponent(application.resumeId)}</td>
+                      <td>{application.appliedOn}</td>
+                      <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                        {application.applicationStatus === "Shortlisted" && hrEmail[application.hrId] !== userEmail ? (
+                          <div>
+                            Shortlisted by {hrName[application.hrId] || 'Unknown HR'} of {application.companyName}
+                          </div>
+                        ) : (
+                          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <Slider
+                              initialStatus={application.applicationStatus}
+                              onChangeStatus={(newStatus) => updateStatus(application.applicationId, newStatus, application.hrId)}
+                            />
+                          </div>
+                        )}
+                      </td>
+                      <td >
+                        {hrEmail[application.hrId] === userEmail ? (
+                          <div style={{ position: 'relative', display: 'inline-block' }}>
+                            {unreadMessages[application.applicationId] > 0 && (
+                              <span
+                                style={{
+                                  position: 'absolute',
+                                  top: '-5px',
+                                  right: '-15px',
+                                  backgroundColor: 'red',
+                                  color: 'white',
+                                  borderRadius: '50%',
+                                  width: '20px',
+                                  height: '20px',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  fontSize: '12px',
+                                  fontWeight: 'bold',
+                                  zIndex: 1, // Ensure notification badge is above SiImessage icon
+                                }}
+                              >
+                                {unreadMessages[application.applicationId]}
+                              </span>
+                            )}
+                            <SiImessage
+                              size={25}
+                              onClick={() => toggleChat(application)}
+                              style={{ color: 'green', cursor: 'pointer' }}
+                            />
+                          </div>
+                        ) : (
                           <SiImessage
                             size={25}
-                            onClick={() => toggleChat(application)}
-                            style={{ color: 'green', cursor: 'pointer' }}
+                            style={{ color: 'grey', cursor: 'not-allowed' }}
                           />
-                        </div>
-                      ) : (
-                        <SiImessage
-                          size={25}
-                          style={{ color: 'grey', cursor: 'not-allowed' }}
-                        />
-                      )
-                      }
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+                        )
+                        }
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
+            <Pagination
+              page={page}
+              pageSize={pageSize}
+              totalPages={totalPages}
+              handlePageSizeChange={handlePageSizeChange}
+              isPageSizeDisabled={isPageSizeDisabled}
+              handlePageClick={handlePageClick}
+            />
           </div>
-
-          {/* Pagination */}
-
-          <Pagination
-            page={page}
-            pageSize={pageSize}
-            totalPages={totalPages}
-            handlePageSizeChange={handlePageSizeChange}
-            isPageSizeDisabled={isPageSizeDisabled}
-            handlePageClick={handlePageClick}
-          />
-        </div>
-      )}
-      {applications.length === 0 && (
-        <section class=''>
-          <h2>Sorry, you haven't received any applications yet.</h2>
-        </section>
-      )}
-
-      {/* Conditionally render the ChatComponent */}
-      {
-        isChatOpen && (
-          <ChatComponent
-            applicationId={chatData.applicationId}
-            candidateId={chatData.candidateId}
-            hrId={chatData.hrId}
-            userType='HR'
-            setIsChatOpen={setIsChatOpen}
-          />
-        )
-      }
+        )}
+        {/* Conditionally render the ChatComponent */}
+        {
+          isChatOpen && (
+            <ChatComponent
+              applicationId={chatData.applicationId}
+              candidateId={chatData.candidateId}
+              hrId={chatData.hrId}
+              userType='HR'
+              setIsChatOpen={setIsChatOpen}
+            />
+          )
+        }
+      </div>
     </DashboardLayout >
   );
 };

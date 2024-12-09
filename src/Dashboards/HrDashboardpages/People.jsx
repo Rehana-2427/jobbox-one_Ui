@@ -1,9 +1,7 @@
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
-import { useLocation, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import { useAuth } from '../../AuthProvider';
+import { Col, Row, Table } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
 import Pagination from '../../Pagination';
 import DashboardLayout from './DashboardLayout ';
 const People = () => {
@@ -57,117 +55,70 @@ const People = () => {
         setSortedColumn(column);
         setSortOrder(order);
     };
-    const navigate = useNavigate();
     const handlePageClick = (data) => {
         const selectedPage = data.selected;
         setPage(selectedPage);
     };
-    const convertToUpperCase = (str) => {
-        return String(str).toUpperCase();
-    };
-    const getInitials = (name) => {
-        const nameParts = name.split(' ');
-        if (nameParts.length > 1) {
-            return convertToUpperCase(nameParts[0][0] + nameParts[1][0]);
-        } else {
-            return convertToUpperCase(nameParts[0][0] + nameParts[0][1]);
-        }
-    };
-    const initials = getInitials(userName);
+
     const handlePageSizeChange = (e) => {
         const size = parseInt(e.target.value);
         setPageSize(size);
         setPage(0); // Reset page when page size change
     };
 
-    const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
-
-    const toggleLeftSide = () => {
-        console.log("Toggling left side visibility");
-        setIsLeftSideVisible(!isLeftSideVisible);
-    };
-    const { logout } = useAuth(); // Get logout function from context
-    const handleLogout = () => {
-        Swal.fire({
-            title: 'Are you sure you want to logout?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085D6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, logout!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                logout();
-                localStorage.removeItem(`userName_${userEmail}`);
-                navigate('/'); // Update with the appropriate path for your login page
-            }
-        });
-    };
-
-    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
-
-    useEffect(() => {
-        // Update the `isSmallScreen` state based on screen resizing
-        const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
-
-        window.addEventListener('resize', handleResize);
-
-        // Clean up the event listener on component unmount
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
     return (
         <DashboardLayout>
-            <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-
-             
-            </div>
-            {people.length > 0 && (
-                <div>
-                    <div className='table-details-list'>
-                        <Table hover className='text-center'>
-                            <thead className="table-light">
-                                <tr>
-
-                                    <th scope="col" onClick={() => handleSort('userName')}>
-                                        HR Name {sortedColumn === 'userName' && (
-                                            sortOrder === 'asc' ? '▲' : '▼'
-                                        )}
-                                    </th>
-                                    <th scope="col" onClick={() => handleSort('userEmail')}>
-                                        Email {sortedColumn === 'userEmail' && (
-                                            sortOrder === 'asc' ? '▲' : '▼'
-                                        )}
-                                    </th>
-                                    <th scope="col">Company Name </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {people.map(person => (
-                                    <tr key={person.userId}>
-
-                                        <td>{person.userName}</td>
-                                        <td>
-                                            <a href={`mailto:${person.userEmail}`}>{person.userEmail}</a>
-                                        </td>
-                                        <td>{person.companyName}</td>
+            <div className="main-content">
+                <Row>
+                    <Col md={4}>
+                       <h2><div className="left-text">HR Details</div></h2>
+                    </Col>
+                </Row>
+                {people.length > 0 && (
+                    <div>
+                        <div className='table-details-list table-wrapper'>
+                            <Table hover className='text-center'>
+                                <thead className="table-light">
+                                    <tr>
+                                        <th scope="col" onClick={() => handleSort('userName')}>
+                                            HR Name {sortedColumn === 'userName' && (
+                                                sortOrder === 'asc' ? '▲' : '▼'
+                                            )}
+                                        </th>
+                                        <th scope="col" onClick={() => handleSort('userEmail')}>
+                                            Email {sortedColumn === 'userEmail' && (
+                                                sortOrder === 'asc' ? '▲' : '▼'
+                                            )}
+                                        </th>
+                                        <th scope="col">Company Name </th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </Table>
-                    </div>
-                    {/* Pagination */}
+                                </thead>
+                                <tbody>
+                                    {people.map(person => (
+                                        <tr key={person.userId}>
+                                            <td>{person.userName}</td>
+                                            <td>
+                                                <a href={`mailto:${person.userEmail}`}>{person.userEmail}</a>
+                                            </td>
+                                            <td>{person.companyName}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </Table>
+                        </div>
 
-                    <Pagination
-                        page={page}
-                        pageSize={pageSize}
-                        totalPages={totalPages}
-                        handlePageSizeChange={handlePageSizeChange}
-                        isPageSizeDisabled={isPageSizeDisabled}
-                        handlePageClick={handlePageClick}
-                    />
-                </div>
-            )}
+                        {/* Pagination */}
+                        <Pagination
+                            page={page}
+                            pageSize={pageSize}
+                            totalPages={totalPages}
+                            handlePageSizeChange={handlePageSizeChange}
+                            isPageSizeDisabled={isPageSizeDisabled}
+                            handlePageClick={handlePageClick}
+                        />
+                    </div>
+                )}
+            </div>
         </DashboardLayout>
     );
 }

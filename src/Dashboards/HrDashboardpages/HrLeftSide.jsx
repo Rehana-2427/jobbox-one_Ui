@@ -21,13 +21,13 @@ const HrLeftSide = ({ user, isOpen }) => {
             label: 'All Jobs',
             icon: <FontAwesomeIcon icon={faBriefcase} style={{ fontSize: '1.7rem' }} />,
             subLinks: [
-                { to: '/hr-dashboard/posted-jobs', label: 'Posted Jobs' },
+                { to: '/hr-dashboard/posted-jobs', label: 'Regular Jobs' },
                 { to: '/hr-dashboard/evergreen-jobs', label: 'Evergreen Jobs' }
             ]
         },
         { to: '/hr-dashboard/hr-applications', label: 'Applicants', icon: <FontAwesomeIcon icon={faAddressCard} style={{ fontSize: '1.7rem' }} /> },
         { to: '/hr-dashboard/people', label: 'HR Team', icon: <FontAwesomeIcon icon={faUsers} style={{ fontSize: '1.7rem' }} /> },
-        { to: '/hr-dashboard/hr-profile', label: 'Profile', icon: <FontAwesomeIcon icon={faUser } style={{ fontSize: '1.7rem' }} /> },
+        { to: '/hr-dashboard/hr-profile', label: 'Profile', icon: <FontAwesomeIcon icon={faUser} style={{ fontSize: '1.7rem' }} /> },
         { to: '/hr-dashboard/company-showcase', label: 'Company', icon: <FontAwesomeIcon icon={faBuilding} style={{ fontSize: '1.7rem' }} /> },
         { to: '/contact', label: 'Contact', icon: <FontAwesomeIcon icon={faEnvelope} style={{ fontSize: '1.7rem' }} /> }
     ];
@@ -62,9 +62,22 @@ const HrLeftSide = ({ user, isOpen }) => {
     }, [location]);
 
     const handleLinkClick = (to) => {
+        if (to === activeLink) {
+            // Prevent navigation and maintain the current scroll position
+            return;
+        }
         setActiveLink(to); // Set the active link
+        sessionStorage.setItem('scrollPosition', scrollContainerRef.current.scrollTop);
         navigate(to, { state: { userName, userEmail } });
     };
+
+    useEffect(() => {
+        const savedScrollPosition = sessionStorage.getItem('scrollPosition');
+        if (savedScrollPosition && scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTop = parseInt(savedScrollPosition, 10);
+        }
+    }, [location]);
+
     const renderNavLinks = () => (
         <Nav className="flex-column full-height align-items-center">
             {navLinks.map((link, index) => (
@@ -77,23 +90,17 @@ const HrLeftSide = ({ user, isOpen }) => {
                                     e.preventDefault();
                                     handleLinkClick(link.to);
                                 }}
-                                className={`nav-link d-flex align-items-center active${activeLink === link.to ? 'active' : ''}`}
+                                className={`nav-link d-flex align-items-center ${activeLink === link.to ? 'active' : ''}`}
                                 style={{
                                     fontSize: '1.1rem',
-                                    transition: 'color 0 .3s',
-                                    color: activeLink === link.to ? '#663399' : '#332e38',
-                                    position: 'relative',
+                                    transition: 'color 0.3s',
+                                    color: activeLink === link.to ? 'purple' : '#332e38',
                                 }}
                             >
                                 <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
                                     {link.icon && <span style={{ marginRight: '10px' }}>{link.icon}</span>}
                                     {link.label}
                                 </div>
-                                {activeLink === link.to && (
-                                    <div
-                                        className="triangle"
-                                    />
-                                )}
                             </Link>
                         </div>
                     ) : (
@@ -107,7 +114,7 @@ const HrLeftSide = ({ user, isOpen }) => {
                                 style={{
                                     fontSize: '1.1rem',
                                     transition: 'color 0.3s',
-                                    color: 'black',
+                                    color: link.subLinks.some((subLink) => activeLink === subLink.to) ? 'purple' : '#332e38',
                                     cursor: 'pointer',
                                     backgroundColor: 'transparent',
                                 }}
@@ -128,7 +135,9 @@ const HrLeftSide = ({ user, isOpen }) => {
                                                 handleLinkClick(subLink.to);
                                             }}
                                             className={`dropdown-item ${activeLink === subLink.to ? 'active' : ''}`}
-                                            style={{ textAlign: 'start' }}
+                                            style={{
+                                                textAlign: 'start',
+                                            }}
                                         >
                                             {subLink.label}
                                         </Link>
@@ -145,20 +154,21 @@ const HrLeftSide = ({ user, isOpen }) => {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     useEffect(() => {
-        const loggedInUser  = JSON.parse(localStorage.getItem('user'));
-        if (loggedInUser  && loggedInUser .userName) {
+        const loggedInUser = JSON.parse(localStorage.getItem('user'));
+        if (loggedInUser && loggedInUser.userName) {
             setIsLoggedIn(true);
         }
     }, []);
 
     return (
         <div
+            ref={scrollContainerRef}
             className={`sidebar-left ${isOpen ? 'open' : 'closed'}`}
             style={{
                 position: 'fixed',
                 top: '80px',
                 left: isOpen ? '0' : '-150px',
-                width: '150px',
+                width: '180px',
                 height: '100vh',
                 backgroundColor: '#f4f4f4',
                 overflowX: 'hidden',

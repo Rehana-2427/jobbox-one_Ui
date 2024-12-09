@@ -1,12 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import { useAuth } from '../../AuthProvider';
+import { useLocation } from 'react-router-dom';
 import DashboardLayout from './DashboardLayout ';
 
 const HrProfile = () => {
-  // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
   const BASE_API_URL = process.env.REACT_APP_API_URL;
   const [userData, setUserData] = useState({});
   const location = useLocation();
@@ -28,62 +25,6 @@ const HrProfile = () => {
     }
   };
 
-  const navigate = useNavigate();
-
-  const convertToUpperCase = (str) => {
-    return String(str).toUpperCase();
-  };
-
-  const getInitials = (name) => {
-    const nameParts = name.split(' ');
-    if (nameParts.length > 1) {
-      return convertToUpperCase(nameParts[0][0] + nameParts[1][0]);
-    } else {
-      return convertToUpperCase(nameParts[0][0] + nameParts[0][1]);
-    }
-  };
-
-  const initials = getInitials(userName);
-
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
-
-  const toggleLeftSide = () => {
-    console.log("Toggling left side visibility");
-    setIsLeftSideVisible(!isLeftSideVisible);
-  };
-
-  const { logout } = useAuth(); // Get logout function from context
-
-  const handleLogout = () => {
-    Swal.fire({
-      title: 'Are you sure you want to logout?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, logout!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        logout(); // Call the logout function
-        // Clear user data from localStorage
-        localStorage.removeItem(`userName_${userEmail}`);
-        // Navigate to the login page or home page
-        navigate('/'); // Update with the appropriate path for your login page
-      }
-    });
-  };
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
-
-  useEffect(() => {
-    // Update the `isSmallScreen` state based on screen resizing
-    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
-
-    window.addEventListener('resize', handleResize);
-
-    // Clean up the event listener on component unmount
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
   return (
     <DashboardLayout>
       <div className="d-flex justify-content-end align-items-center mb-3 mt-12">

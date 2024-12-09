@@ -33,28 +33,9 @@ const ViewCandidateDetails = () => {
         navigate('/hr-dashboard/dream-applications', { state: { userEmail, userName, candidateId, currentDreamAppPage, currentDreamAppPageSize, dreamAppStatus, dreamAppFromDate, dreamAppToDate, dreamAppSearch } });
     };
 
-    const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
-
-    const toggleLeftSide = () => {
-        console.log("Toggling left side visibility");
-        setIsLeftSideVisible(!isLeftSideVisible);
-    };
-    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
-
-    useEffect(() => {
-        // Update the `isSmallScreen` state based on screen resizing
-        const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
-
-        window.addEventListener('resize', handleResize);
-
-        // Clean up the event listener on component unmount
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
     return (
         <DashboardLayout>
-
             <Button variant='primary' onClick={handleBack}>Back</Button>
-
             {candidateDetails ? (
                 <div className='candidate-details'>
                     <h2>Candidate Details</h2>

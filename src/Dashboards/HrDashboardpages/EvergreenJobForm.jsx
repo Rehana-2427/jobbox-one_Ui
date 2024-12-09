@@ -90,115 +90,125 @@ const EvergreenJobForm = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
     return (
-        <DashboardLayout>                      <h3 className='text-center'>Post Job</h3>
+        <DashboardLayout>
+            <div className="main-content">
+                <Card style={{ marginTop: '5px', width: '98%', marginLeft: '10px' }}>
+                    <Card.Header>
+                        <Card.Title className="mb-0" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <h3 style={{ fontSize: '25px', margin: 0 }}>Post Evergreen Job</h3>
+                            <p style={{ margin: 0 }}>
+                                (Create a job posting that remains open indefinitely, always open for hiring with no due date)
+                            </p>
+                        </Card.Title>
+                    </Card.Header>
 
-            <Card style={{ marginTop: '5px', width: '98%', marginLeft: '10px' }}>
-                <Form onSubmit={handleSubmit}>
-                    <Card.Body>
-                        <Row style={{ marginBottom: '24px' }}>
-                            <Col md={6}>
-                                <Form.Group controlId="jobTitle">
-                                    <Form.Label>Job Title:</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name="jobTitle"
-                                        value={formData.jobTitle}
-                                        onChange={handleChange}
-                                        placeholder='Eg: Java Developer , Software Developer , Full Stack Developer'
-                                        required
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                                <Form.Group controlId="jobType">
-                                    <Form.Label>Job Type:</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name="jobType"
-                                        value={formData.jobType}
-                                        onChange={handleChange}
-                                        placeholder='Eg: FullTime , Contract , Internship'
-                                        required
-                                    />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <Row style={{ marginBottom: '24px' }}>
-                            <Col md={6}>
-                                <Form.Group controlId="postingDate">
-                                    <Form.Label>Posting Date:</Form.Label>
-                                    <Form.Control
-                                        type="date"
-                                        name="postingDate"
-                                        value={formData.postingDate}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                                <Form.Group controlId="skills">
-                                    <Form.Label>Skills:</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name="skills"
-                                        value={formData.skills}
-                                        onChange={handleChange}
-                                        required
-                                        placeholder='Eg: Java , Python , C , C++ , React , Node'
-                                    />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <Row style={{ marginBottom: '24px' }}>
-                            <Col md={6}>
-                                <Form.Group controlId="salary">
-                                    <Form.Label>Salary:</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name="salary"
-                                        value={formData.salary}
-                                        onChange={handleChange}
-                                        required
-                                        placeholder='Enter Salary'
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                                <Form.Group controlId="location">
-                                    <Form.Label>Location :</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name="location"
-                                        value={formData.location}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <Form.Group controlId="jobsummary">
-                            <Form.Label>Job summary: (Add Additional Information)</Form.Label>
-                            <Form.Control
-                                as="textarea"
-                                name="jobsummary"
-                                value={formData.jobsummary}
-                                onChange={handleChange}
-                                className="fullWidthTextarea"
-                                style={{ minHeight: '150px' }}
-                            />
-                        </Form.Group>
-                    </Card.Body>
-                    <Card.Footer>
-                        <div className="d-flex justify-content-center">
-                            <Button type="submit" className="btn btn-primary m-1">
-                                Post Job
-                            </Button>
-                            <Button className="btn btn-light m-1" onClick={handleBack}>Back</Button>
-                        </div>
-                    </Card.Footer>
-                </Form>
-            </Card>
+                    <Form onSubmit={handleSubmit}>
+                        <Card.Body>
+                            <Row style={{ marginBottom: '24px' }}>
+                                <Col md={6}>
+                                    <Form.Group controlId="jobTitle">
+                                        <Form.Label>Job Title:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="jobTitle"
+                                            value={formData.jobTitle}
+                                            onChange={handleChange}
+                                            placeholder='Eg: Java Developer , Software Developer , Full Stack Developer'
+                                            required
+                                        />
+                                    </Form.Group>
+                                </Col>
+                                <Col md={6}>
+                                    <Form.Group controlId="jobType">
+                                        <Form.Label>Job Type:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="jobType"
+                                            value={formData.jobType}
+                                            onChange={handleChange}
+                                            placeholder='Eg: FullTime , Contract , Internship'
+                                            required
+                                        />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row style={{ marginBottom: '24px' }}>
+                                <Col md={6}>
+                                    <Form.Group controlId="postingDate">
+                                        <Form.Label>Posting Date:</Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            name="postingDate"
+                                            value={formData.postingDate}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </Form.Group>
+                                </Col>
+                                <Col md={6}>
+                                    <Form.Group controlId="skills">
+                                        <Form.Label>Skills:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="skills"
+                                            value={formData.skills}
+                                            onChange={handleChange}
+                                            required
+                                            placeholder='Eg: Java , Python , C , C++ , React , Node'
+                                        />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row style={{ marginBottom: '24px' }}>
+                                <Col md={6}>
+                                    <Form.Group controlId="salary">
+                                        <Form.Label>Salary:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="salary"
+                                            value={formData.salary}
+                                            onChange={handleChange}
+                                            required
+                                            placeholder='Enter Salary'
+                                        />
+                                    </Form.Group>
+                                </Col>
+                                <Col md={6}>
+                                    <Form.Group controlId="location">
+                                        <Form.Label>Location :</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="location"
+                                            value={formData.location}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Form.Group controlId="jobsummary">
+                                <Form.Label>Job summary: (Add Additional Information)</Form.Label>
+                                <Form.Control
+                                    as="textarea"
+                                    name="jobsummary"
+                                    value={formData.jobsummary}
+                                    onChange={handleChange}
+                                    className="fullWidthTextarea"
+                                    style={{ minHeight: '150px' }}
+                                />
+                            </Form.Group>
+                        </Card.Body>
+                        <Card.Footer>
+                            <div className="d-flex justify-content-center">
+                                <Button type="submit" className="btn btn-primary m-1">
+                                    Post Job
+                                </Button>
+                                <Button className="btn btn-light m-1" onClick={handleBack}>Back</Button>
+                            </div>
+                        </Card.Footer>
+                    </Form>
+                </Card>
+            </div>
         </DashboardLayout>
     );
 }

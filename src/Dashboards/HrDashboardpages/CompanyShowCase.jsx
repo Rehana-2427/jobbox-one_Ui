@@ -289,210 +289,211 @@ const CompanyShowCase = () => {
 
   return (
     <DashboardLayout>
-      <Card style={{ width: '100%', height: '60%' }}>
-        <Card.Body style={{ padding: 0, position: 'relative' }}>
-          <div style={{ position: 'relative', height: '55%' }}>
-            <img
-              src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
-              alt="Company Banner"
-              className="banner-image"
-              onClick={() => handleCameraIconClick('banner')}
-              style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
-            />
-            <img
-              src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain"
-              alt="Edit Banner"
-              className="banner-edit-icon"
-              style={{
-                position: 'absolute',
-                top: '185px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
-                opacity: 0.7,
-              }}
-              onClick={() => handleCameraIconClick('banner')}
-            />
-            <input
-              id="bannerInput"
-              type="file"
-              style={{ display: 'none' }}
-              onChange={(e) => handleFileChange('banner', e.target.files[0])}
-              accept="image/*"
-            />
-          </div>
+      <div className='main-container'>
+        <Card style={{ width: '100%', height: '60%' }}>
+          <Card.Body style={{ padding: 0, position: 'relative' }}>
+            <div style={{ position: 'relative', height: '55%' }}>
+              <img
+                src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
+                alt="Company Banner"
+                className="banner-image"
+                onClick={() => handleCameraIconClick('banner')}
+                style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
+              />
+              <img
+                src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain"
+                alt="Edit Banner"
+                className="banner-edit-icon"
+                style={{
+                  position: 'absolute',
+                  top: '185px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
+                  opacity: 0.7,
+                }}
+                onClick={() => handleCameraIconClick('banner')}
+              />
+              <input
+                id="bannerInput"
+                type="file"
+                style={{ display: 'none' }}
+                onChange={(e) => handleFileChange('banner', e.target.files[0])}
+                accept="image/*"
+              />
+            </div>
 
-          <div style={{ position: 'absolute', top: '90%', left: '50px', transform: 'translateY(-50%)' }}>
-            <img
-              src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
-              alt="Company Logo"
-              className="logo-image"
-              style={{
-                width: '200px',
-                height: '120px',
-                cursor: 'pointer',
-                clipPath: 'ellipse(50% 50% at 50% 50%)',
-                objectFit: 'cover',
-              }}
-              onClick={() => handleCameraIconClick('logo')}
-            />
-            <img
-              src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain"
-              alt="Edit Logo"
-              className="logo-edit-icon"
-              style={{
-                position: 'absolute',
-                bottom: '10px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
-                opacity: 0.7,
-              }}
-              onClick={() => handleCameraIconClick('logo')}
-            />
-            <input
-              id="logoInput"
-              type="file"
-              style={{ display: 'none' }}
-              onChange={(e) => handleFileChange('logo', e.target.files[0])}
-              accept="image/*"
-            />
-          </div>
-        </Card.Body>
-      </Card>
+            <div style={{ position: 'absolute', top: '95%', left: '50px', transform: 'translateY(-50%)' }}>
+              <img
+                src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
+                alt="Company Logo"
+                className="logo-image"
+                style={{
+                  width: '200px',
+                  height: '120px',
+                  cursor: 'pointer',
+                  clipPath: 'ellipse(50% 50% at 50% 50%)',
+                  objectFit: 'cover',
+                }}
+                onClick={() => handleCameraIconClick('logo')}
+              />
+              <img
+                src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain"
+                alt="Edit Logo"
+                className="logo-edit-icon"
+                style={{
+                  position: 'absolute',
+                  bottom: '10px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
+                  opacity: 0.7,
+                }}
+                onClick={() => handleCameraIconClick('logo')}
+              />
+              <input
+                id="logoInput"
+                type="file"
+                style={{ display: 'none' }}
+                onChange={(e) => handleFileChange('logo', e.target.files[0])}
+                accept="image/*"
+              />
+            </div>
+          </Card.Body>
+        </Card>
 
 
-      <Row style={{ marginTop: '50px', alignItems: 'center' }}>
-        <Col md={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <h2 style={{ margin: 0 }}><b>{userData.companyName}</b></h2>
-        </Col>
-        <Col md={10} style={{ display: 'flex', alignItems: 'center' }}>
-          {socialMediaLinks.facebookLink && (
-            <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
-              <FaFacebook size={30} style={{ margin: '0 5px', color: '#3b5998' }} />
-            </a>
-          )}
-          {socialMediaLinks.twitterLink && (
-            <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
-              <FaTwitter size={30} style={{ margin: '0 5px', color: '#1da1f2' }} />
-            </a>
-          )}
-          {socialMediaLinks.instagramLink && (
-            <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
-              <FaInstagram size={30} style={{ margin: '0 5px', color: '#e4405f' }} />
-            </a>
-          )}
-          {socialMediaLinks.linkedinLink && (
-            <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
-              <FaLinkedin size={30} style={{ margin: '0 5px', color: '#0077b5' }} />
-            </a>
-          )}
-        </Col>
-      </Row>
+        <Row style={{ marginTop: '70px', alignItems: 'center' }}>
+          <Col md={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <h2 style={{ margin: 0 }}><b>{userData.companyName}</b></h2>
+          </Col>
+          <Col md={10} style={{ display: 'flex', alignItems: 'center' }}>
+            {socialMediaLinks.facebookLink && (
+              <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
+                <FaFacebook size={30} style={{ margin: '0 5px', color: '#3b5998' }} />
+              </a>
+            )}
+            {socialMediaLinks.twitterLink && (
+              <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
+                <FaTwitter size={30} style={{ margin: '0 5px', color: '#1da1f2' }} />
+              </a>
+            )}
+            {socialMediaLinks.instagramLink && (
+              <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
+                <FaInstagram size={30} style={{ margin: '0 5px', color: '#e4405f' }} />
+              </a>
+            )}
+            {socialMediaLinks.linkedinLink && (
+              <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
+                <FaLinkedin size={30} style={{ margin: '0 5px', color: '#0077b5' }} />
+              </a>
+            )}
+          </Col>
+        </Row>
+        <hr style={{ border: '1px solid black', margin: '20px 0' }} />
+        <Row className="hr-company_page-row2" >
+          <Col md={2} >
+            <span>
+              <a
+                onClick={() => handleTabClick('overview')}
+                className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
+              >
+                About
+              </a>
+            </span>
+          </Col>
+          <Col md={2} >
+            <span>
+              <a
+                onClick={() => handleTabClick('jobs')}
+                className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
+              >
+                Jobs
+              </a>
+            </span>
+          </Col>
+          <Col md={4} >
+            <span>
+              <a
+                onClick={() => handleTabClick('Company-Policy-Form')}
+                className={`tab-link ${activeTab === 'Company-Policy-Form' ? 'active' : ''}`}
+              >
+                Add Company Policies
+              </a>
+            </span>
+          </Col>
+          <Col md={4}>
+            <span>
+              <a
+                onClick={() => handleTabClick('social-media-links')}
+                className={`tab-link ${activeTab === 'social-media-links' ? 'active' : ''}`}
+              >
+                Add Social Media Links
+              </a>
+            </span>
+          </Col>
+        </Row>
 
-      <br></br>
-      <Row className="hr-company_page-row2" style={{ marginTop: '5px' }}>
-        <Col md={2} >
-          <span>
-            <a
-              onClick={() => handleTabClick('overview')}
-              className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
-            >
-              About
-            </a>
-          </span>
-        </Col>
-        <Col md={2} >
-          <span>
-            <a
-              onClick={() => handleTabClick('jobs')}
-              className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
-            >
-              Jobs
-            </a>
-          </span>
-        </Col>
-        <Col md={4} >
-          <span>
-            <a
-              onClick={() => handleTabClick('Company-Policy-Form')}
-              className={`tab-link ${activeTab === 'Company-Policy-Form' ? 'active' : ''}`}
-            >
-              Add Company Policies
-            </a>
-          </span>
-        </Col>
-        <Col md={4}>
-          <span>
-            <a
-              onClick={() => handleTabClick('social-media-links')}
-              className={`tab-link ${activeTab === 'social-media-links' ? 'active' : ''}`}
-            >
-              Add Social Media Links
-            </a>
-          </span>
-        </Col>
-      </Row>
-
-      <Row className="hr-company_page-row3">
-        <Col xs={12} md={8}>
-          {activeTab === 'overview' && <CompanyViewPage style={{ overflowY: 'scroll' }} />}
-          {activeTab === 'jobs' && <CompanyJobs />}
-          {activeTab === 'Company-Policy-Form' && <CompanyPolicies />}
-          {activeTab === 'social-media-links' && <SocialMediaLinks />}
-        </Col>
-        <Col xs={12} md={4} style={{ paddingRight: '30px' }}>
-          <Card className="key-stats" style={{ width: '100%', height: 'fit-content' }}>
-            <Card.Body>
-              <Row className="mb-3">
-                <h3><b>Other Information</b></h3>
-              </Row>
-              <Row className="mb-2">
-                <Col>
-                  <h5>Applicants: {countOfApplications}</h5>
-                </Col>
-              </Row>
-              <Row className="mb-2">
-                <Col>
-                  <h5>Total HR's: {countOfHr}</h5>
-                </Col>
-              </Row>
-              <Row className="mb-2">
-                <Col>
-                  <h5>Key Stats:</h5>
-                  <ul>
-                    <li>Active Job Postings: {countOfActiveJobs}</li>
-                    <li>Shortlisted Candidates: {countOfShortlistedCandiCompany}</li>
-                    <li>Avg. Time to Fill a Job: 7 days</li>
-                    <li>Dream Applications: {countOfDreamApplicationsInCompany}</li>
-                  </ul>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-          <Card className="key-stats" style={{ width: '100%', height: 'fit-content' }}>
-            <Card.Body>
-              <h3><b>Company Policy Documents</b></h3>
-              {documents.length === 0 ? (
-                <p>No documents available for this company.</p>
-              ) : (
-                <div>
-                  {documents.map((document) => (
-                    <div key={document.documentId} style={{ marginBottom: '10px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <strong>{document.documentTitle}:</strong>
-                        <a
-                          href={`data:application/octet-stream;base64,${document.documentFile}`}
-                          download={document.documentTitle}
-                          className="btn btn-primary"
-                          style={{ marginLeft: '10px' }}>
-                          Download
-                        </a>
+        <Row className="hr-company_page-row3">
+          <Col xs={12} md={8}>
+            {activeTab === 'overview' && <CompanyViewPage style={{ overflowY: 'scroll' }} />}
+            {activeTab === 'jobs' && <CompanyJobs />}
+            {activeTab === 'Company-Policy-Form' && <CompanyPolicies />}
+            {activeTab === 'social-media-links' && <SocialMediaLinks />}
+          </Col>
+          <Col xs={12} md={4} style={{ paddingRight: '30px' }}>
+            <Card className="key-stats" style={{ width: '100%', height: 'fit-content' }}>
+              <Card.Body>
+                <Row className="mb-3">
+                  <h3><b>Other Information</b></h3>
+                </Row>
+                <Row className="mb-2">
+                  <Col>
+                    <h5>Applicants: {countOfApplications}</h5>
+                  </Col>
+                </Row>
+                <Row className="mb-2">
+                  <Col>
+                    <h5>Total HR's: {countOfHr}</h5>
+                  </Col>
+                </Row>
+                <Row className="mb-2">
+                  <Col>
+                    <h5>Key Stats:</h5>
+                    <ul>
+                      <li>Active Job Postings: {countOfActiveJobs}</li>
+                      <li>Shortlisted Candidates: {countOfShortlistedCandiCompany}</li>
+                      <li>Avg. Time to Fill a Job: 7 days</li>
+                      <li>Dream Applications: {countOfDreamApplicationsInCompany}</li>
+                    </ul>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+            <Card className="key-stats" style={{ width: '100%', height: 'fit-content' }}>
+              <Card.Body>
+                <h3><b>Company Policy Documents</b></h3>
+                {documents.length === 0 ? (
+                  <p>No documents available for this company.</p>
+                ) : (
+                  <div>
+                    {documents.map((document) => (
+                      <div key={document.documentId} style={{ marginBottom: '10px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <strong>{document.documentTitle}:</strong>
+                          <a
+                            href={`data:application/octet-stream;base64,${document.documentFile}`}
+                            download={document.documentTitle}
+                            className="btn btn-primary"
+                            style={{ marginLeft: '10px' }}>
+                            Download
+                          </a>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </Card.Body>
+                    ))}
+                  </div>
+                )}
+              </Card.Body>
 
 
-          </Card>
-        </Col>
-      </Row>
+            </Card>
+          </Col>
+        </Row>
+      </div>
     </DashboardLayout>
 
   )

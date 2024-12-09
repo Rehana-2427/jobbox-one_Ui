@@ -1,9 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Table } from 'react-bootstrap';
+import { Button, Col, Row, Table } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import { useAuth } from '../../AuthProvider';
 
 import Pagination from '../../Pagination';
 import DashboardLayout from './DashboardLayout ';
@@ -119,142 +117,96 @@ const Applications = () => {
     setSortOrder(order);
   };
 
-
-  const convertToUpperCase = (str) => {
-    return String(str).toUpperCase();
-  };
-  const getInitials = (name) => {
-    const nameParts = name.split(' ');
-    if (nameParts.length > 1) {
-      return convertToUpperCase(nameParts[0][0] + nameParts[1][0]);
-    } else {
-      return convertToUpperCase(nameParts[0][0] + nameParts[0][1]);
-    }
-  };
   const state1 = location.state || {};
   console.log(state1)
   console.log("current page from update job")
 
-  const initials = getInitials(userName);
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
-
-  const toggleLeftSide = () => {
-    console.log("Toggling left side visibility");
-    setIsLeftSideVisible(!isLeftSideVisible);
-  };
-
-
-  const { logout } = useAuth(); // Get logout function from context
-
-  const handleLogout = () => {
-    Swal.fire({
-      title: 'Are you sure you want to logout?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, logout!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        logout(); // Call the logout function
-        // Clear user data from localStorage
-        localStorage.removeItem(`userName_${userEmail}`);
-        // Navigate to the login page or home page
-        navigate('/'); // Update with the appropriate path for your login page
-      }
-    });
-  };
-
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
-
-  useEffect(() => {
-    // Update the `isSmallScreen` state based on screen resizing
-    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
-
-    window.addEventListener('resize', handleResize);
-
-    // Clean up the event listener on component unmount
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   return (
     <DashboardLayout>
-      <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-        <div className="search-bar">
-          <input
-            style={{ borderRadius: '6px', height: '35px' }}
-            type="text"
-            name="search"
-            placeholder="Search"
-            value={search}
-            onChange={handleSearchChange}
-          />
-        </div>
-     
-      </div>
-      {loading ? (
-        <div className="d-flex justify-content-center align-items-center">
-          <div className="spinner-bubble spinner-bubble-primary m-5" />
-          <span>Loading...</span>
-        </div>
-      ) : jobs.length > 0 ? (
-        <>
-          <div className='table-details-list  table-wrapper '>
-            <Table hover className='text-center'>
-              <thead className="table-light">
-                <tr>
-                  <th scope="col" onClick={() => handleSort('jobTitle')}>
-                    Job Title {sortedColumn === 'jobTitle' && sortOrder === 'asc' && '▲'}
-                    {sortedColumn === 'jobTitle' && sortOrder === 'desc' && '▼'}
-                  </th>
-                  <th scope="col" onClick={() => handleSort('applicationDeadline')}>Application DeadLine{sortedColumn === 'applicationDeadline' && sortOrder === 'asc' && '▲'}
-                    {sortedColumn === 'applicationDeadline' && sortOrder === 'desc' && '▼'}</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {jobs.map(job => (
-                  (
-                    <tr key={job.jobId}>
-                      <td>{job.jobTitle}</td>
-                      <td>
-                        {job.applicationDeadline ? job.applicationDeadline : <span style={{ color: 'green' }}>Evengreen Job</span>}
-                      </td>
-                      <td>
-                        <Link
-                          to="/hr-dashboard/hr-applications/view-applications"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            navigate('/hr-dashboard/hr-applications/view-applications', { state: { userName: userName, userEmail: userEmail, jobId: job.jobId, currentJobApplicationPage: page, currentJobApplicationPageSize: pageSize } });
-                          }}
-                          className="nav-link"
-                        >
-                          <Button>View Application</Button>
-                        </Link>
-                      </td>
-                    </tr>
-                  )
-                ))}
-              </tbody>
-            </Table>
-          </div>
+      <div className="main-content">
+        <Row>
+          <Col md={4}>
+            <h2>
+              <div className="left-text">Applications </div>
+            </h2>
+          </Col>
+          <Col md={3} className="d-flex align-items-left">
+            <div className="search-bar" style={{ flex: 1 }}>
+              <input
+                style={{ borderRadius: '6px', height: '35px', width: '70%' , marginRight:'20px'}}
+                type="text"
+                name="search"
+                placeholder="Search"
+                value={search}
+                onChange={handleSearchChange}
+              />
+            </div>
 
-          {/* Pagination */}
-          <Pagination
-            page={page}
-            pageSize={pageSize}
-            totalPages={totalPages}
-            handlePageSizeChange={handlePageSizeChange}
-            isPageSizeDisabled={isPageSizeDisabled}
-            handlePageClick={handlePageClick}
-          />
-        </>
-      ) : (
-        <section>
-          <h2>You have not posted any jobs yet. Post Now</h2>
-        </section>
-      )}
+          </Col>
+        </Row>
+        {loading ? (
+          <div className="d-flex justify-content-center align-items-center">
+            <div className="spinner-bubble spinner-bubble-primary m-5" />
+            <span>Loading...</span>
+          </div>
+        ) : jobs.length > 0 ? (
+          <>
+            <div className='table-details-list  table-wrapper '>
+              <Table hover className='text-center'>
+                <thead className="table-light">
+                  <tr>
+                    <th scope="col" onClick={() => handleSort('jobTitle')}>
+                      Job Title {sortedColumn === 'jobTitle' && sortOrder === 'asc' && '▲'}
+                      {sortedColumn === 'jobTitle' && sortOrder === 'desc' && '▼'}
+                    </th>
+                    <th scope="col" onClick={() => handleSort('applicationDeadline')}>Application DeadLine{sortedColumn === 'applicationDeadline' && sortOrder === 'asc' && '▲'}
+                      {sortedColumn === 'applicationDeadline' && sortOrder === 'desc' && '▼'}</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {jobs.map(job => (
+                    (
+                      <tr key={job.jobId}>
+                        <td>{job.jobTitle}</td>
+                        <td>
+                          {job.applicationDeadline ? job.applicationDeadline : <span style={{ color: 'green' }}>Evengreen Job</span>}
+                        </td>
+                        <td>
+                          <Link
+                            to="/hr-dashboard/hr-applications/view-applications"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              navigate('/hr-dashboard/hr-applications/view-applications', { state: { userName: userName, userEmail: userEmail, jobId: job.jobId, currentJobApplicationPage: page, currentJobApplicationPageSize: pageSize } });
+                            }}
+                            className="nav-link"
+                          >
+                            <Button>View Application</Button>
+                          </Link>
+                        </td>
+                      </tr>
+                    )
+                  ))}
+                </tbody>
+              </Table>
+            </div>
+
+            {/* Pagination */}
+            <Pagination
+              page={page}
+              pageSize={pageSize}
+              totalPages={totalPages}
+              handlePageSizeChange={handlePageSizeChange}
+              isPageSizeDisabled={isPageSizeDisabled}
+              handlePageClick={handlePageClick}
+            />
+          </>
+        ) : (
+          <section>
+            <h2>No Applications</h2>
+          </section>
+        )}
+      </div>
     </DashboardLayout>
   );
 }
