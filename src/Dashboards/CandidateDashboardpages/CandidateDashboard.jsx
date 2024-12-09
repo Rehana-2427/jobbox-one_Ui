@@ -9,6 +9,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useAuth } from '../../AuthProvider';
 import CandidateLeftSide from './CandidateLeftSide';
+import DashboardLayout from './DashboardLayout';
 
 
 const CandidateDashboard = () => {
@@ -52,8 +53,6 @@ const CandidateDashboard = () => {
   const [countOfCompanies, setCountOfCompanies] = useState(null);
   const [countOfAppliedCompanies, setCountOfAppliedCompanies] = useState(null);
   const [countOfshortlistedApplications, setCountOfshortlistedApplications] = useState(null);
-  const [countOfUnreadNotification, setCountOfUnreadNotification] = useState(0);
-  const [unreadNotifications, setUnreadNotifications] = useState([]);
   const [applicationsData, setApplicationsData] = useState([]);
   const [resumeViewCount, setResumeViewCount] = useState(null);
 
@@ -91,16 +90,6 @@ const CandidateDashboard = () => {
         console.log(shortlist.data);
         setCountOfshortlistedApplications(shortlist.data);
 
-        const notification = await axios.get(`${BASE_API_URL}/getUnreadNotifications`, {
-          params: {
-            userId: userId
-          }
-        });
-        console.log(notification.data);
-        setCountOfUnreadNotification(notification.data.count);
-        setUnreadNotifications(notification.data.notifications);
-
-
         const resumecount = await axios.get(`${BASE_API_URL}/resume-view-count`, {
           params: {
             userId: userId
@@ -110,8 +99,6 @@ const CandidateDashboard = () => {
       } catch (error) {
         console.error('Error fetching Data:', error);
         setCountOfCompanies(null);
-        setCountOfUnreadNotification(0);
-        setUnreadNotifications([]);
       }
     };
     fetchData(userId);
@@ -125,21 +112,7 @@ const CandidateDashboard = () => {
     }
   };
 
-  const markNotificationAsRead = async (notificationId) => {
-    try {
-      await axios.post(`${BASE_API_URL}/markNotificationsAsRead`, null, {
-        params: { userId: userId, notificationId: notificationId }
-      });
-      // Update state to reflect the notification as read
-      const updatedNotifications = unreadNotifications.map(notification =>
-        notification.id === notificationId ? { ...notification, read: true } : notification
-      );
-      setUnreadNotifications(updatedNotifications);
-      setCountOfUnreadNotification(prevCount => prevCount - 1); // Decrease unread count
-    } catch (error) {
-      console.error('Error marking notification as read:', error);
-    }
-  };
+
 
   const user = {
     userName: userName,
@@ -185,7 +158,7 @@ const CandidateDashboard = () => {
       id: 'chart1',
       type: 'line',
       zoom: {
-        enabled: true,
+      enabled: true,
       },
     },
     xaxis: {
@@ -221,139 +194,66 @@ const CandidateDashboard = () => {
     setIsLeftSideVisible(!isLeftSideVisible);
   };
 
-  const { logout } = useAuth(); // Get logout function from context
-
-  const handleLogout = () => {
-    Swal.fire({
-      title: 'Are you sure you want to logout?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, logout!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        logout(); // Call the logout function
-        // Clear user data from localStorage
-        localStorage.removeItem(`userName_${userId}`);
-        // Navigate to the login page or home page
-        navigate('/'); // Update with the appropriate path for your login page
-      }
-    });
-  };
+ 
+ 
   return (
-    <div className='dashboard-container'>
-     
-      <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-        <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
-      </div>
-      <div className="right-side" style={{ overflowY: 'scroll' }}>
-        {/* candidate header icons - full screen icon , user icon , notification */}
-        <div>
-        </div>
-        <div className="d-flex justify-content-end align-items-center mb-3 mt-2">
-          <Dropdown className="ml-2">
-            <Dropdown.Toggle
-              as="div"
-              id="dropdownNotification"
-              className="badge-top-container toggle-hidden ml-2"
-            >
-              <span className="badge bg-primary cursor-pointer">
-                {countOfUnreadNotification}
-              </span>
-              <i className="i-Bell text-muted header-icon" />
-            </Dropdown.Toggle>
-            {countOfUnreadNotification > 0 ? (
-              <Dropdown.Menu>
-                {unreadNotifications.length === 0 ? (
-                  <Dropdown.Item>No new notifications</Dropdown.Item>
-                ) : (
-                  unreadNotifications.map((notification, index) => (
-                    <Dropdown.Item
-                      key={index}
-                      onClick={() => markNotificationAsRead(notification.id)}
-                      className={notification.read ? 'read-notification' : 'unread-notification'}
-                    >
-                      {notification.message}
-                    </Dropdown.Item>
-                  ))
-                )}
-              </Dropdown.Menu>
-            ) : null}
-          </Dropdown>
-          <i datafullscreen="true" onClick={toggleFullScreen} className="i-Full-Screen header-icon d-none d-lg-inline-block" />
-          <Dropdown className="ml-2">
-            <Dropdown.Toggle as="span" className="toggle-hidden">
-              <div className="initials-placeholder">
-                {initials}
-              </div>
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="mt-3">
-              <Dropdown.Item as={Link} to="/settings">
-                <i className="i-Data-Settings me-1" /> Account settings
-              </Dropdown.Item>
-              <Dropdown.Item as="button" onClick={handleLogout}>
-                <i className="i-Lock-2 me-1" /> Logout
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-        <Container>
-          <h3 className='status-info text-center bg-light'>My Application Status</h3>
-          <Row className="dashboard d-flex mt-4">
-            {DATA.map((item, index) => (
-              <Col lg={3} sm={6} className="mb-4" key={index}>
-                <Card className="card-icon-bg gap-3 card-icon-bg-primary o-hidden mb-4" style={{ maxWidth: '260px' }}>
-                  <Card.Body className="align-items-center gap-4">
-                    <FontAwesomeIcon icon={item.icon} className="text-primary mb-2 text-24" />
-                    {item.link ? (
-                      <Link
-                        to={{
-                          pathname: item.link,
-                          state: item.state ? item.state : { userName, userId }
-                        }}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          navigate(item.link, { state: item.state ? item.state : { userName, userId } });
-                        }}
-                        className="nav-link"
-                      >
-                        <h4 className="text-primary mb-0">
-                          {item.subtitle}
-                          <span className="d-block mt-2">{item.title !== null ? item.title : 'Loading...'}</span>
-                        </h4>
-                      </Link>
-                    ) : (
-                      <div>
-                        <h4 className="text-primary mb-0">
-                          {item.subtitle}
-                          <span className="d-block mt-2">{item.title !== null ? item.title : 'Loading...'}</span>
-                        </h4>
-                      </div>
-                    )}
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-          <Row className="justify-content-center mb-4">
-            <Col xs={24} md={8} className='mb-4'>  {/* Adjust the column size */}
-              <div className="chart-card">
-                <Card.Title className="text-center">Applications per Day</Card.Title>
-                <Chart
-                  style={{ height: '200px', width: '120%' }}  // Set width to 100%
-                  options={options}
-                  series={options.series}
-                  type={options.chart.type}
-                />
-              </div>
-            </Col>
 
-          </Row>
-        </Container>
+    <DashboardLayout>
+      <div className="main-content">
+        <h3 className='status-info text-center bg-light'>My Application Status</h3>
+        <Row className="dashboard d-flex mt-4">
+          {DATA.map((item, index) => (
+            <Col lg={3} sm={6} className="mb-4" key={index}>
+              <Card className="card-icon-bg gap-3 card-icon-bg-primary o-hidden mb-4" style={{ maxWidth: '260px' }}>
+                <Card.Body className="align-items-center gap-4">
+                  <FontAwesomeIcon icon={item.icon} className="text-primary mb-2 text-24" />
+                  {item.link ? (
+                    <Link
+                      to={{
+                        pathname: item.link,
+                        state: item.state ? item.state : { userName, userId }
+                      }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate(item.link, { state: item.state ? item.state : { userName, userId } });
+                      }}
+                      className="nav-link"
+                    >
+                      <h4 className="text-primary mb-0">
+                        {item.subtitle}
+                        <span className="d-block mt-2">{item.title !== null ? item.title : 'Loading...'}</span>
+                      </h4>
+                    </Link>
+                  ) : (
+                    <div>
+                      <h4 className="text-primary mb-0">
+                        {item.subtitle}
+                        <span className="d-block mt-2">{item.title !== null ? item.title : 'Loading...'}</span>
+                      </h4>
+                    </div>
+                  )}
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+        <Row className="justify-content-center mb-4">
+          <Col xs={24} md={8} className='mb-4'>  {/* Adjust the column size */}
+            <div className="chart-card">
+              <Card.Title className="text-center">Applications per Day</Card.Title>
+              <Chart
+                style={{ height: '200px', width: '120%' }}  // Set width to 100%
+                options={options}
+                series={options.series}
+                type={options.chart.type}
+              />
+            </div>
+          </Col>
+
+        </Row>
       </div>
-    </div>
+
+    </DashboardLayout>
   );
 };
 

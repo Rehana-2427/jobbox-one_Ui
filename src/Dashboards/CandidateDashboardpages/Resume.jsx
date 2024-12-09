@@ -6,6 +6,7 @@ import { default as swal, default as Swal } from 'sweetalert2'; // Import SweetA
 import { useAuth } from '../../AuthProvider';
 import './CandidateDashboard.css';
 import CandidateLeftSide from './CandidateLeftSide';
+import DashboardLayout from './DashboardLayout';
 
 const Resume = () => {
   // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
@@ -61,24 +62,6 @@ const Resume = () => {
     navigate('/');
   };
 
-  const deleteResume = async (resumeId) => {
-    try {
-      await axios.delete(`${BASE_API_URL}/deleteResume?resumeId=${resumeId}`);
-      setResumes(prevResumes => prevResumes.filter(resume => resume.resumeId !== resumeId));
-      swal.fire(
-        'Deleted!',
-        'The resume has been deleted.',
-        'success'
-      );
-    } catch (error) {
-      console.error('Error deleting resume:', error);
-      swal.fire(
-        'Error!',
-        'An error occurred while deleting the resume.',
-        'error'
-      );
-    }
-  };
   const handleDelete = async (resumeId, message) => {
     const result = await swal.fire({
       title: 'Are you sure?',
@@ -105,112 +88,11 @@ const Resume = () => {
     }
   };
 
-
-  const convertToUpperCase = (str) => {
-    return String(str).toUpperCase();
-  };
-
-  const getInitials = (name) => {
-    if (!name) return ''; // Handle case where name is undefined
-    const nameParts = name.split(' ');
-    if (nameParts.length > 1) {
-      return convertToUpperCase(nameParts[0][0] + nameParts[1][0]);
-    } else {
-      return convertToUpperCase(nameParts[0][0] + nameParts[0][1]);
-    }
-  };
-
-  const initials = getInitials(userName);
-
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
-  const toggleLeftSide = () => {
-    console.log("Toggling left side visibility");
-    setIsLeftSideVisible(!isLeftSideVisible);
-  };
-
   console.log(userName, userId)
 
-  const { logout } = useAuth(); // Get logout function from context
-
-  const handleLogout = () => {
-    Swal.fire({
-      title: 'Are you sure you want to logout?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, logout!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        logout(); // Call the logout function
-        // Clear user data from localStorage
-        localStorage.removeItem(`userName_${userId}`);
-        // Navigate to the login page or home page
-        navigate('/'); // Update with the appropriate path for your login page
-      }
-    });
-  };
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
-
-  useEffect(() => {
-    // Update the `isSmallScreen` state based on screen resizing
-    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
-
-    window.addEventListener('resize', handleResize);
-
-    // Clean up the event listener on component unmount
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
   return (
-    <div className='dashboard-container'>
-      {/* Left Side with Hamburger */}
 
-      <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-        <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
-      </div>
-
-      {/* Right Side */}
-      <div className="right-side">
-        {/* Top bar with dropdown */}
-        <div
-          style={{
-            overflowY: 'auto',
-            maxHeight: isSmallScreen ? '600px' : '1000px',
-            paddingBottom: '20px'
-          }}
-        >
-          <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-            <Dropdown className="ml-2">
-              <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
-                <div
-                  className="initials-placeholder"
-                  style={{
-                    width: '30px',
-                    height: '30px',
-                    borderRadius: '50%',
-                    backgroundColor: 'grey',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'white',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {initials}
-                </div>
-              </Dropdown.Toggle>
-              <Dropdown.Menu className="mt-3">
-                <Dropdown.Item as={Link} to="/settings">
-                  <i className="i-Data-Settings me-1" /> Account settings
-                </Dropdown.Item>
-                <Dropdown.Item as="button" onClick={handleLogout}>
-                  <i className="i-Lock-2 me-1" /> Logout
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
-
+<DashboardLayout>
           {/* Brief Modal */}
           {showBriefSettings && (
             <Modal show={showBriefSettings} onHide={() => setShowBriefSettings(false)}>
@@ -276,9 +158,7 @@ const Resume = () => {
               <Button>ADD NEW RESUME</Button>
             </Link>
           </div>
-        </div>
-      </div>
-    </div>
+          </DashboardLayout>
   );
 };
 

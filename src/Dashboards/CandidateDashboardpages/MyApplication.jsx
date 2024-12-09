@@ -10,6 +10,7 @@ import Pagination from '../../Pagination';
 import ChatComponent from '../ChatComponent';
 import './CandidateDashboard.css';
 import CandidateLeftSide from './CandidateLeftSide';
+import DashboardLayout from './DashboardLayout';
 
 const MyApplication = () => {
   const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -229,22 +230,6 @@ const MyApplication = () => {
       console.error("Error fetching chats:", error);
     }
   }
-  const convertToUpperCase = (str) => {
-    return String(str).toUpperCase();
-  };
-
-  const getInitials = (name) => {
-    if (!name) return ''; // Handle case where name is undefined
-    const nameParts = name.split(' ');
-    if (nameParts.length > 1) {
-      return convertToUpperCase(nameParts[0][0] + nameParts[1][0]);
-    } else {
-      return convertToUpperCase(nameParts[0][0] + nameParts[0][1]);
-    }
-  };
-
-  const initials = getInitials(userName);
-
 
   const fetchChat = async (applicationId) => {
 
@@ -275,45 +260,7 @@ const MyApplication = () => {
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
 
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
-  const toggleLeftSide = () => {
-    console.log("Toggling left side visibility");
-    setIsLeftSideVisible(!isLeftSideVisible);
-  };
-
-  const { logout } = useAuth(); // Get logout function from context
-
-  const handleLogout = () => {
-    Swal.fire({
-      title: 'Are you sure you want to logout?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, logout!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        logout(); // Call the logout function
-        // Clear user data from localStorage
-        localStorage.removeItem(`userName_${userId}`);
-        // Navigate to the login page or home page
-        navigate('/'); // Update with the appropriate path for your login page
-      }
-    });
-  };
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
-
-  useEffect(() => {
-    // Update the `isSmallScreen` state based on screen resizing
-    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
-
-    window.addEventListener('resize', handleResize);
-
-    // Clean up the event listener on component unmount
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
+ 
   // State to track if the ChatComponent is open
   const [isChatOpen, setIsChatOpen] = useState(false);
 
@@ -327,7 +274,7 @@ const MyApplication = () => {
   const toggleChat = (application) => {
     // Mark messages as read
     axios.put(`${BASE_API_URL}/markHRMessagesAsRead?applicationId=${application.applicationId}`);
-    
+
     const unread = {}; // Initialize unread messages state
     try {
 
@@ -351,209 +298,165 @@ const MyApplication = () => {
   };
 
   return (
-    <div className='dashboard-container'>
 
-      <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-        <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
+    <DashboardLayout>
+      <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
+        <div className="search-bar">
+          <input
+            style={{ borderRadius: '6px', height: '35px' }}
+            type="text"
+            name="search"
+            placeholder="Search"
+            value={search}
+            onChange={handleSearchChange}
+          />
+        </div>
       </div>
-      <div className="right-side">
+      <div className="filter p-3 border rounded shadow-sm"
+        style={{ maxWidth: '30%', backgroundColor: '#f4f4f9' }}>
+        <label htmlFor="status" className="form-label"
+          style={{ color: '#6c5b7b' }}>Filter by Actions:</label>
+        <select id="status" className="form-select form-select-sm fs-6" // Adjust the fs-* class as needed
+          style={{ borderColor: '#6c5b7b' }} onChange={handleFilterChange} value={filter}>
+          <option value="all">All</option>
+          <option value="Regular Jobs">Regular Jobs</option>
+          <option value="Dream Applications">Dream Application</option>
+          <option value="EverGreen Jobs">EverGreen Jobs</option>
+        </select>
+      </div>
+      <div>
+        {applications.length > 0 ? (
+          <>
+            <div className='table-details-list table-wrapper'>
+              <h2> My Application -- {userName}</h2>
+              <p>
+                Similar to tables and dark tables, use the modifier classes
+                <code>.table-light</code> to make <code>thead</code> appear light
+              </p>
+              <Table hover className='text-center'>
+                <thead className="table-light">
+                  <tr>
+                    <th scope="col" onClick={() => handleSort('companyName')}>
+                      Company Name{sortedColumn === 'companyName' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
+                    </th>
+                    <th scope="col" onClick={() => handleSort('jobRole')}>
+                      Job Title{sortedColumn === 'jobRole' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
+                    </th>
+                    <th scope="col" onClick={() => handleSort('appliedOn')}>
+                      Applied On{sortedColumn === 'appliedOn' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
+                    </th>
+                    <th scope="col">Resume Profile</th>
+                    <th scope="col">Job Status</th>
+                    <th scope="col" onClick={() => handleSort('applicationStatus')}>
+                      Action {sortedColumn === 'applicationStatus' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
+                    </th>
+                    <th scope="col">Chat</th>
+                    <th scope="col">Delete</th>
+                  </tr>
+                </thead>
 
-        <div
-          style={{
-            overflowY: 'auto',
-            maxHeight: isSmallScreen ? '600px' : '1000px',
-            paddingBottom: '20px'
-          }}
-        >
-          <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-            <div className="search-bar">
-              <input
-                style={{ borderRadius: '6px', height: '35px' }}
-                type="text"
-                name="search"
-                placeholder="Search"
-                value={search}
-                onChange={handleSearchChange}
-              />
+                <tbody>
+                  {applications.map((application, index) => (
+                    <tr key={index}>
+                      <td>{application.companyName}</td>
+                      <td>{application.jobRole || 'Dream application'}</td>
+                      <td>{application.appliedOn}</td>
+                      <td>{resumeNames[application.resumeId]}</td>
+                      <td style={{ color: renderJobStatus(application.applicationId) === 'Evergreen' ? 'green' : 'black' }}>
+                        {renderJobStatus(application.applicationId)}
+                      </td>
+
+                      <td>{application.applicationStatus}</td>
+
+                      <td>
+                        {chats[index] && chats[index].length > 0 ? (
+                          <div style={{ position: 'relative', display: 'inline-block' }}>
+                            {unreadMessages[application.applicationId] > 0 && (
+                              <span
+                                style={{
+                                  position: 'absolute',
+                                  top: '-5px',
+                                  right: '-15px',
+                                  backgroundColor: 'red',
+                                  color: 'white',
+                                  borderRadius: '50%',
+                                  width: '20px',
+                                  height: '20px',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  fontSize: '12px',
+                                  fontWeight: 'bold',
+                                  zIndex: 1, // Ensure notification badge is above SiImessage icon
+                                }}
+                              >
+                                {unreadMessages[application.applicationId]}
+                              </span>
+                            )}
+
+                            <SiImessage
+                              size={25}
+                              onClick={() => toggleChat(application)}
+                              style={{ color: 'green', cursor: 'pointer' }}
+                            />
+                          </div>
+
+                        ) : (
+                          <SiImessage
+                            size={25}
+                            style={{ color: 'grey', cursor: 'not-allowed' }}
+                          />
+                        )}
+                      </td>
+                      <td>
+                        <span className='delete cursor-pointer text-danger me-2' onClick={() => {
+                          Swal.fire({
+                            title: "Are you sure?",
+                            text: "You won't be able to revert this!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes, delete it!"
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              handleDelete(application.applicationId);
+                            }
+                          });
+                        }}>
+                          <MdDelete className="text-danger" size={18} />
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
             </div>
 
-            <Dropdown className="ml-2">
-              <Dropdown.Toggle as="span" className="toggle-hidden cursor-pointer">
-                <div
-                  className="initials-placeholder"
-                  style={{
-                    width: '30px',
-                    height: '30px',
-                    borderRadius: '50%',
-                    backgroundColor: 'grey',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'white',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {initials}
-                </div>
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu className="mt-3">
-                <Dropdown.Item as={Link} to="/settings">
-                  <i className="i-Data-Settings me-1" /> Account settings
-                </Dropdown.Item>
-                <Dropdown.Item as="button" onClick={handleLogout}>
-                  <i className="i-Lock-2 me-1" /> Logout
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
-
-          <div className="filter p-3 border rounded shadow-sm"
-            style={{ maxWidth: '30%', backgroundColor: '#f4f4f9' }}>
-            <label htmlFor="status" className="form-label"
-              style={{ color: '#6c5b7b' }}>Filter by Actions:</label>
-            <select id="status" className="form-select form-select-sm fs-6" // Adjust the fs-* class as needed
-              style={{ borderColor: '#6c5b7b' }} onChange={handleFilterChange} value={filter}>
-              <option value="all">All</option>
-              <option value="Regular Jobs">Regular Jobs</option>
-              <option value="Dream Applications">Dream Application</option>
-              <option value="EverGreen Jobs">EverGreen Jobs</option>
-            </select>
-          </div>
-          <div>
-            {applications.length > 0 ? (
-              <>
-                <div className='table-details-list table-wrapper'>
-                <h2> My Application -- {userName}</h2>
-                  <p>
-                    Similar to tables and dark tables, use the modifier classes
-                    <code>.table-light</code> to make <code>thead</code> appear light
-                  </p>
-                  <Table hover className='text-center'>
-                    <thead className="table-light">
-                      <tr>
-                        <th scope="col" onClick={() => handleSort('companyName')}>
-                          Company Name{sortedColumn === 'companyName' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
-                        </th>
-                        <th scope="col" onClick={() => handleSort('jobRole')}>
-                          Job Title{sortedColumn === 'jobRole' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
-                        </th>
-                        <th scope="col" onClick={() => handleSort('appliedOn')}>
-                          Applied On{sortedColumn === 'appliedOn' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
-                        </th>
-                        <th scope="col">Resume Profile</th>
-                        <th scope="col">Job Status</th>
-                        <th scope="col" onClick={() => handleSort('applicationStatus')}>
-                          Action {sortedColumn === 'applicationStatus' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
-                        </th>
-                        <th scope="col">Chat</th>
-                        <th scope="col">Delete</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {applications.map((application, index) => (
-                        <tr key={index}>
-                          <td>{application.companyName}</td>
-                          <td>{application.jobRole || 'Dream application'}</td>
-                          <td>{application.appliedOn}</td>
-                          <td>{resumeNames[application.resumeId]}</td>
-                          <td style={{ color: renderJobStatus(application.applicationId) === 'Evergreen' ? 'green' : 'black' }}>
-                            {renderJobStatus(application.applicationId)}
-                          </td>
-
-                          <td>{application.applicationStatus}</td>
-
-                          <td>
-                            {chats[index] && chats[index].length > 0 ? (
-                              <div style={{ position: 'relative', display: 'inline-block' }}>
-                                {unreadMessages[application.applicationId] > 0 && (
-                                  <span
-                                    style={{
-                                      position: 'absolute',
-                                      top: '-5px',
-                                      right: '-15px',
-                                      backgroundColor: 'red',
-                                      color: 'white',
-                                      borderRadius: '50%',
-                                      width: '20px',
-                                      height: '20px',
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      justifyContent: 'center',
-                                      fontSize: '12px',
-                                      fontWeight: 'bold',
-                                      zIndex: 1, // Ensure notification badge is above SiImessage icon
-                                    }}
-                                  >
-                                    {unreadMessages[application.applicationId]}
-                                  </span>
-                                )}
-
-                                <SiImessage
-                                  size={25}
-                                  onClick={() => toggleChat(application)}
-                                  style={{ color: 'green', cursor: 'pointer' }}
-                                />
-                              </div>
-
-                            ) : (
-                              <SiImessage
-                                size={25}
-                                style={{ color: 'grey', cursor: 'not-allowed' }}
-                              />
-                            )}
-                          </td>
-                          <td>
-                            <span className='delete cursor-pointer text-danger me-2' onClick={() => {
-                              Swal.fire({
-                                title: "Are you sure?",
-                                text: "You won't be able to revert this!",
-                                icon: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#3085d6",
-                                cancelButtonColor: "#d33",
-                                confirmButtonText: "Yes, delete it!"
-                              }).then((result) => {
-                                if (result.isConfirmed) {
-                                  handleDelete(application.applicationId);
-                                }
-                              });
-                            }}>
-                              <MdDelete className="text-danger" size={18} />
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </div>
-
-                <Pagination
-                  page={page}
-                  pageSize={pageSize}
-                  totalPages={totalPages}
-                  handlePageSizeChange={handlePageSizeChange}
-                  isPageSizeDisabled={isPageSizeDisabled}
-                  handlePageClick={handlePageClick}
-                />
-              </>
-            ) : (
-              <h4 className='text-center'>No Applications Found..!!</h4>
-            )}
-          </div>
-        </div>
-        {isChatOpen && (
-          <ChatComponent
-            applicationId={chatData.applicationId}
-            candidateId={chatData.candidateId}
-            hrId={chatData.hrId}
-            userType='Candidate'
-            setIsChatOpen={setIsChatOpen}
-          />
+            <Pagination
+              page={page}
+              pageSize={pageSize}
+              totalPages={totalPages}
+              handlePageSizeChange={handlePageSizeChange}
+              isPageSizeDisabled={isPageSizeDisabled}
+              handlePageClick={handlePageClick}
+            />
+          </>
+        ) : (
+          <h4 className='text-center'>No Applications Found..!!</h4>
         )}
       </div>
-    </div >
+
+      {isChatOpen && (
+        <ChatComponent
+          applicationId={chatData.applicationId}
+          candidateId={chatData.candidateId}
+          hrId={chatData.hrId}
+          userType='Candidate'
+          setIsChatOpen={setIsChatOpen}
+        />
+      )}
+    </DashboardLayout>
   );
 };
 

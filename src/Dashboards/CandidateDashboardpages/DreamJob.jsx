@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import CandidateLeftSide from './CandidateLeftSide';
 import ResumeSelectionPopup from './ResumeSelectionPopup';
+import DashboardLayout from './DashboardLayout';
 
 const BASE_API_URL = process.env.REACT_APP_API_URL;
 
@@ -14,8 +15,6 @@ const DreamJob = () => {
   const location = useLocation();
   const userName = location.state?.userName;
   const userId = location.state?.userId;
-
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
   const [jobRole, setJobRole] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [companyInput, setCompanyInput] = useState('');
@@ -187,18 +186,9 @@ const DreamJob = () => {
     event.preventDefault();
   };
 
-  const toggleLeftSide = () => {
-    setIsLeftSideVisible(prev => !prev);
-  };
 
   return (
-    <div className='dashboard-container'>
-
-      <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-        <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
-      </div>
-
-      <div className="right-side">
+    <DashboardLayout>
       <Container className="d-flex justify-content-center py-5">
           <div className="content-wrapper w-100" style={{ maxWidth: '600px' }}>
             {/* Header Section */}
@@ -318,20 +308,20 @@ const DreamJob = () => {
                 </p>
               }
 
-        
-
-          </div>
-        </Container>
-      </div>
-
-      {/* {showResumePopup && (
+         {/* {showResumePopup && (
               <ResumeSelectionPopup
                 resumes={resumes}
                 onSelectResume={handleResumeSelect}
                 onClose={() => setShowResumePopup(false)}
               />
             )} */}
-    </div>
+
+          </div>
+        </Container>
+        </DashboardLayout>
+
+     
+    
   );
 };
 

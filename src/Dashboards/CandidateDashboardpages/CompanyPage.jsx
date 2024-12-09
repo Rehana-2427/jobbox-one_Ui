@@ -9,6 +9,7 @@ import './CandidateDashboard.css';
 import CandidateLeftSide from "./CandidateLeftSide";
 import ResumeSelectionPopup from "./ResumeSelectionPopup";
 import { toast, ToastContainer } from "react-toastify";
+import DashboardLayout from "./DashboardLayout";
 
 const CompamyPage = () => {
   const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -407,23 +408,9 @@ setSelectedResume(resumeId);
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
 
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
-  const toggleLeftSide = () => {
-    console.log("Toggling left side visibility");
-    setIsLeftSideVisible(!isLeftSideVisible);
-  };
+  
 
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
-
-  useEffect(() => {
-    // Update the `isSmallScreen` state based on screen resizing
-    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
-
-    window.addEventListener('resize', handleResize);
-
-    // Clean up the event listener on component unmount
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  
 
   const customTabHeader = (title, icon) => (
     <div className="d-flex align-items-center">
@@ -434,17 +421,12 @@ setSelectedResume(resumeId);
     </div>
   );
   return (
-    <div className='dashboard-container' style={{ background: '#f2f2f2', minHeight: '100vh' }}>
-
-      <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-        <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
-      </div>
-
-      <div className="right-side">
+   <DashboardLayout>
         {showResumePopup && (
           <ResumeSelectionPopup
             resumes={resumes}
             onSelectResume={handleResumeSelect}
+            show={true}
             onClose={() => setShowResumePopup(false)}
           />
         )}
@@ -452,7 +434,6 @@ setSelectedResume(resumeId);
           className="small-screen-hr"
           style={{
             overflowY: 'auto',
-            maxHeight: isSmallScreen ? '600px' : '1000px',
             paddingBottom: '20px',
           }}
         >
@@ -487,26 +468,7 @@ setSelectedResume(resumeId);
 
 
           <Row className="hr-company_page-row2" style={{ marginTop: '50px' }}>
-            {/* <Col md={2}>
-              <span>
-                <a
-                  onClick={() => setActiveTab('overview')}
-                  className={`tab-link ${activeTab === 'overview' ? 'active' : ''}`}
-                >
-                  About
-                </a>
-              </span>
-            </Col>
-            <Col md={2}>
-              <span>
-                <a
-                  onClick={() => setActiveTab('jobs')}
-                  className={`tab-link ${activeTab === 'jobs' ? 'active' : ''}`}
-                >
-                  Jobs
-                </a>
-              </span>
-            </Col> */}
+       
              <Col md={2}>
             <Tabs
               defaultActiveKey="overview"
@@ -769,8 +731,7 @@ setSelectedResume(resumeId);
         <div>
           <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
         </div>
-      </div>
-    </div>
+        </DashboardLayout>
   );
 };
 export default CompamyPage;

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Card, Col, Row } from 'react-bootstrap'
+import { Card, Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom'
 import CompanyJobs from './CompanyJobs'
@@ -283,7 +283,14 @@ const CompanyShowCase = () => {
   if (error) {
     return <div>{error}</div>;
   }
-
+  const customTabHeader = (title, icon) => (
+    <div className="d-flex align-items-center">
+      <span className="me-2">
+        <i className={icon} />
+      </span>
+      <span>{title}</span>
+    </div>
+  );
 
 
 
@@ -386,7 +393,27 @@ const CompanyShowCase = () => {
 
       <br></br>
       <Row className="hr-company_page-row2" style={{ marginTop: '5px' }}>
-        <Col md={2} >
+      <Col>
+            <Tabs
+              defaultActiveKey="overview"
+              id="uncontrolled-tab-example"
+              onSelect={(key) => setActiveTab(key)} // This is the correct way to handle tab change
+            >
+              <Tab eventKey="overview" title={customTabHeader("About  ", "i-Atom")}>
+                 
+                </Tab>
+                <Tab eventKey="jobs" title={customTabHeader("Job  ", "i-Shutter")}>
+                 
+                </Tab>
+
+                <Tab eventKey="Company-Policy-Form" title={customTabHeader("Add Company Policies ", "i-Atom")}>
+                 
+                 </Tab>
+                 <Tab eventKey="social-media-links" title={customTabHeader(" Add Social Media Links  ", "i-Shutter")}>
+                  
+                 </Tab>
+            </Tabs></Col>
+        {/* <Col md={2} >
           <span>
             <a
               onClick={() => handleTabClick('overview')}
@@ -425,7 +452,7 @@ const CompanyShowCase = () => {
               Add Social Media Links
             </a>
           </span>
-        </Col>
+        </Col> */}
       </Row>
 
       <Row className="hr-company_page-row3">

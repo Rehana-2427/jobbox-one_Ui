@@ -6,6 +6,7 @@ import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './CandidateDashboard.css';
 import CandidateLeftSide from './CandidateLeftSide';
+import DashboardLayout from './DashboardLayout';
 
 const ResumeAdd = () => {
   const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -134,38 +135,15 @@ const ResumeAdd = () => {
     navigate('/candidate-dashboard/resume', { state: { userName, userId } }); // Navigate back to previous page
   };
 
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
-  const toggleLeftSide = () => {
-    console.log("Toggling left side visibility");
-    setIsLeftSideVisible(!isLeftSideVisible);
-  };
+
 
   console.log(userName, userId)
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
 
-  useEffect(() => {
-    // Update the `isSmallScreen` state based on screen resizing
-    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
 
-    window.addEventListener('resize', handleResize);
 
-    // Clean up the event listener on component unmount
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
   return (
-    <div className='dashboard-container'>
-
-      <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-        <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
-      </div>
-      <div className="right-side">
-        <div
-          style={{
-            overflowY: 'auto',
-            maxHeight: isSmallScreen ? '600px' : '1000px',
-            paddingBottom: '20px'
-          }}
-        >
+  
+    <DashboardLayout>
           <Col xs={6}>
             <Button onClick={handleBack} variant="secondary">
               <FontAwesomeIcon icon={faArrowLeft} />
@@ -293,9 +271,7 @@ const ResumeAdd = () => {
 
             {successMessage && <p>{successMessage}</p>}
           </Col>
-        </div>
-      </div>
-    </div>
+          </DashboardLayout>
   );
 };
 

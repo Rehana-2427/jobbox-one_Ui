@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import Pagination from '../../Pagination';
 import CandidateLeftSide from './CandidateLeftSide';
 import ResumeSelectionPopup from './ResumeSelectionPopup';
+import DashboardLayout from './DashboardLayout';
 
 
 const ViewMoreJobs = () => {
@@ -42,7 +43,7 @@ const ViewMoreJobs = () => {
     const [showResumePopup, setShowResumePopup] = useState(false);
     const [search, setSearch] = useState('');
     const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
-    
+
 
     console.log(companyName);
     const toggleLeftSide = () => {
@@ -54,17 +55,17 @@ const ViewMoreJobs = () => {
         if (search) {
             fetchJobBySearch();
         }
-        else{
+        else {
             fetchCompanyJobs()
         }
     }, [page, pageSize, search, sortedColumn, sortOrder, filterStatus, companyName]);
 
-    useEffect(()=>{
-        if(companyName){
+    useEffect(() => {
+        if (companyName) {
             fetchCompanyBanner(companyName)
             fetchCompanyLogo(companyName)
         }
-    },[companyName])
+    }, [companyName])
     async function fetchCompanyJobs() {
         try {
             const params = {
@@ -108,7 +109,7 @@ const ViewMoreJobs = () => {
     };
     const handleSearchChange = (event) => {
         setSearch(event.target.value);
-      };
+    };
 
     const handleSort = (column) => {
         let order = 'asc';
@@ -138,29 +139,29 @@ const ViewMoreJobs = () => {
     const isPageSizeDisabled = isLastPage;
     const fetchJobBySearch = async () => {
         try {
-          const params = {
-            search: search,
-            page: page,
-            size: pageSize,
-            sortBy: sortedColumn,
-            sortOrder: sortOrder,
-            companyName:companyName
-          };
-          const response = await axios.get(`${BASE_API_URL}/searchJobsInCompany`, { params });
-          setJobs(response.data.content);
-          setTotalPages(response.data.totalPages);
-    
-          const statuses = await Promise.all(response.data.content.map(job => hasUserApplied(job.jobId, userId)));
-          const statusesMap = {};
-          response.data.content.forEach((job, index) => {
-            statusesMap[job.jobId] = statuses[index];
-          });
-    
+            const params = {
+                search: search,
+                page: page,
+                size: pageSize,
+                sortBy: sortedColumn,
+                sortOrder: sortOrder,
+                companyName: companyName
+            };
+            const response = await axios.get(`${BASE_API_URL}/searchJobsInCompany`, { params });
+            setJobs(response.data.content);
+            setTotalPages(response.data.totalPages);
+
+            const statuses = await Promise.all(response.data.content.map(job => hasUserApplied(job.jobId, userId)));
+            const statusesMap = {};
+            response.data.content.forEach((job, index) => {
+                statusesMap[job.jobId] = statuses[index];
+            });
+
         } catch (error) {
-          console.log("No data Found" + error);
+            console.log("No data Found" + error);
         }
         console.log("Search submitted:", search);
-      };
+    };
 
     const applyJob = async (jobId, resumeId) => {
         let loadingPopup;
@@ -256,148 +257,142 @@ const ViewMoreJobs = () => {
         }
     };
 
-   
+
     return (
-        <div className='dashboard-container'>
-           
-            <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-                <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
+
+        <DashboardLayout>
+            {showResumePopup && (
+                <ResumeSelectionPopup
+                    resumes={resumes}
+                    onSelectResume={handleResumeSelect}
+                    onClose={() => setShowResumePopup(false)}
+                />
+            )}
+            <div>
+                <Card style={{ width: '100%', height: '60%' }}>
+                    <Card.Body style={{ padding: 0, position: 'relative' }}>
+                        <div style={{ position: 'relative', height: '55%' }}>
+                            <img
+                                src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
+                                alt="Company Banner"
+                                className="banner-image"
+                                style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
+                            />
+                        </div>
+                        <div style={{ position: 'absolute', top: '100%', left: '50px', transform: 'translateY(-50%)' }}>
+                            <img
+                                src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
+                                alt="Company Logo"
+                                className="logo-image"
+                                style={{
+                                    width: '200px', // Fixed width
+                                    height: '120px', // Fixed height
+                                    cursor: 'pointer',
+                                    // border: '5px solid white',
+                                    clipPath: 'ellipse(50% 50% at 50% 50%)', // Creates a horizontal oval
+                                    objectFit: 'cover', // Ensures the image covers the dimensions without distortion
+                                }}
+                            />
+                        </div>
+                    </Card.Body>
+                </Card>
+            </div><br></br><br></br>
+
+            <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
+                <div className="search-bar" >
+                    <input style={{ borderRadius: '6px', height: '35px' }}
+                        type="text"
+                        name="search"
+                        placeholder="Search"
+                        value={search}
+                        onChange={handleSearchChange}
+                    />
+                </div>
             </div>
 
-            <div className="right-side" style={{ overflowY: 'scroll' }}>
-                {showResumePopup && (
-                    <ResumeSelectionPopup
-                        resumes={resumes}
-                        onSelectResume={handleResumeSelect}
-                        onClose={() => setShowResumePopup(false)}
-                    />
-                )}
+            {jobs.length > 0 && (
                 <div>
-                    <Card style={{ width: '100%', height: '60%' }}>
-                        <Card.Body style={{ padding: 0, position: 'relative' }}>
-                            <div style={{ position: 'relative', height: '55%' }}>
-                                <img
-                                    src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
-                                    alt="Company Banner"
-                                    className="banner-image"
-                                    style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
-                                />
-                            </div>
-                            <div style={{ position: 'absolute', top: '100%', left: '50px', transform: 'translateY(-50%)' }}>
-                                <img
-                                    src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
-                                    alt="Company Logo"
-                                    className="logo-image"
-                                    style={{
-                                        width: '200px', // Fixed width
-                                        height: '120px', // Fixed height
-                                        cursor: 'pointer',
-                                        // border: '5px solid white',
-                                        clipPath: 'ellipse(50% 50% at 50% 50%)', // Creates a horizontal oval
-                                        objectFit: 'cover', // Ensures the image covers the dimensions without distortion
-                                    }}
-                                />
-                            </div>
-                        </Card.Body>
-                    </Card>
-                </div><br></br><br></br>
-
-                <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-                    <div className="search-bar" >
-                        <input style={{ borderRadius: '6px', height: '35px' }}
-                            type="text"
-                            name="search"
-                            placeholder="Search"
-                            value={search}
-                            onChange={handleSearchChange}
-                        />
-                    </div>
-                </div>
-
-                {jobs.length > 0 && (
-                    <div>
-                        <h2>{companyName} Jobs</h2>
-                        <div className='table-details-list table-wrapper'>
-                            <Table hover className='text-center'>
-                                <thead className="table-light">
-                                    <tr>
-                                        <th scope='col' onClick={() => handleSort('jobTitle')}>
-                                            Job Profile {sortedColumn === 'jobTitle' && (sortOrder === 'asc' ? '▲' : '▼')}
-                                        </th>
-                                        <th scope='col' onClick={() => handleSort('applicationDeadline')}>
-                                            Application Deadline {sortedColumn === 'applicationDeadline' && (sortOrder === 'asc' ? '▲' : '▼')}
-                                        </th>
-                                        <th scope='col' onClick={() => handleSort('skills')}>
-                                            Skills {sortedColumn === 'skills' && (sortOrder === 'asc' ? '▲' : '▼')}
-                                        </th>
-                                        <th scope='col' onClick={() => handleSort('location')}>
-                                            Location {sortedColumn === 'location' && (sortOrder === 'asc' ? '▲' : '▼')}
-                                        </th>
-                                        <th scope='col'>Job description</th>
-                                        <th scope='col'>Actions</th>
+                    <h2>{companyName} Jobs</h2>
+                    <div className='table-details-list table-wrapper'>
+                        <Table hover className='text-center'>
+                            <thead className="table-light">
+                                <tr>
+                                    <th scope='col' onClick={() => handleSort('jobTitle')}>
+                                        Job Profile {sortedColumn === 'jobTitle' && (sortOrder === 'asc' ? '▲' : '▼')}
+                                    </th>
+                                    <th scope='col' onClick={() => handleSort('applicationDeadline')}>
+                                        Application Deadline {sortedColumn === 'applicationDeadline' && (sortOrder === 'asc' ? '▲' : '▼')}
+                                    </th>
+                                    <th scope='col' onClick={() => handleSort('skills')}>
+                                        Skills {sortedColumn === 'skills' && (sortOrder === 'asc' ? '▲' : '▼')}
+                                    </th>
+                                    <th scope='col' onClick={() => handleSort('location')}>
+                                        Location {sortedColumn === 'location' && (sortOrder === 'asc' ? '▲' : '▼')}
+                                    </th>
+                                    <th scope='col'>Job description</th>
+                                    <th scope='col'>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {jobs.map(job => (
+                                    <tr key={job.id} id='job-table-list'>
+                                        <td>{job.jobTitle}</td>
+                                        <td>{job.applicationDeadline}</td>
+                                        <td>{job.skills}</td>
+                                        <td>{job.location}</td>
+                                        <td>
+                                            <Button
+                                                variant="secondary"
+                                                className='description btn-rounded'
+                                                onClick={() => {
+                                                    const url = new URL('/#/candidate-dashboard/job-description', window.location.origin);
+                                                    url.searchParams.append('companyName', encodeURIComponent(job.companyName || ''));
+                                                    url.searchParams.append('jobId', encodeURIComponent(job.jobId || ''));
+                                                    url.searchParams.append('userId', encodeURIComponent(userId || ''));
+                                                    url.searchParams.append('userName', encodeURIComponent(userName || ''));
+                                                    window.open(url.toString(), '_blank', 'noopener,noreferrer');
+                                                }}
+                                            >
+                                                View
+                                            </Button>
+                                        </td>
+                                        <td>
+                                            {hasUserApplied[job.jobId] === true || (applyjobs && applyjobs.jobId === job.jobId) ? (
+                                                <p>Applied</p>
+                                            ) : (
+                                                <Button onClick={() => handleApplyButtonClick(job.jobId)}>Apply</Button>
+                                            )}
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {jobs.map(job => (
-                                        <tr key={job.id} id='job-table-list'>
-                                            <td>{job.jobTitle}</td>
-                                            <td>{job.applicationDeadline}</td>
-                                            <td>{job.skills}</td>
-                                            <td>{job.location}</td>
-                                            <td>
-                                                <Button
-                                                    variant="secondary"
-                                                    className='description btn-rounded'
-                                                    onClick={() => {
-                                                        const url = new URL('/#/candidate-dashboard/job-description', window.location.origin);
-                                                        url.searchParams.append('companyName', encodeURIComponent(job.companyName || ''));
-                                                        url.searchParams.append('jobId', encodeURIComponent(job.jobId || ''));
-                                                        url.searchParams.append('userId', encodeURIComponent(userId || ''));
-                                                        url.searchParams.append('userName', encodeURIComponent(userName || ''));
-                                                        window.open(url.toString(), '_blank', 'noopener,noreferrer');
-                                                    }}
-                                                >
-                                                    View
-                                                </Button>
-                                            </td>
-                                            <td>
-                                                {hasUserApplied[job.jobId] === true || (applyjobs && applyjobs.jobId === job.jobId) ? (
-                                                    <p>Applied</p>
-                                                ) : (
-                                                    <Button onClick={() => handleApplyButtonClick(job.jobId)}>Apply</Button>
-                                                )}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </Table>
-                        </div>
-                        {selectedJobSummary && (
-                            <div className="modal-summary">
-                                <div className="modal-content-summary">
-                                    <span className="close" onClick={handleCloseModal}>&times;</span>
-                                    <div className="job-summary">
-                                        <h3>Job Summary</h3>
-                                        <pre className='job-details-text'>{selectedJobSummary}</pre>
-                                    </div>
+                                ))}
+                            </tbody>
+                        </Table>
+                    </div>
+                    {selectedJobSummary && (
+                        <div className="modal-summary">
+                            <div className="modal-content-summary">
+                                <span className="close" onClick={handleCloseModal}>&times;</span>
+                                <div className="job-summary">
+                                    <h3>Job Summary</h3>
+                                    <pre className='job-details-text'>{selectedJobSummary}</pre>
                                 </div>
                             </div>
-                        )}
+                        </div>
+                    )}
 
-                        <Pagination
-                            page={page}
-                            pageSize={pageSize}
-                            totalPages={totalPages}
-                            handlePageSizeChange={handlePageSizeChange}
-                            isPageSizeDisabled={isPageSizeDisabled}
-                            handlePageClick={handlePageClick}
-                        />
-                    </div>
-                )}
+                    <Pagination
+                        page={page}
+                        pageSize={pageSize}
+                        totalPages={totalPages}
+                        handlePageSizeChange={handlePageSizeChange}
+                        isPageSizeDisabled={isPageSizeDisabled}
+                        handlePageClick={handlePageClick}
+                    />
+                </div>
+            )}
 
-                {jobs.length === 0 && <h1>No jobs found.</h1>}
-            </div>
-        </div>
+            {jobs.length === 0 && <h1>No jobs found.</h1>}
+        </DashboardLayout>
     )
 }
 

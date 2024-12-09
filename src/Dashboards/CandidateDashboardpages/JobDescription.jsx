@@ -7,6 +7,7 @@ import Footer from '../../pages/Footer';
 import CandidateLeftSide from './CandidateLeftSide';
 import ResumeSelectionPopup from './ResumeSelectionPopup';
 import HomeFooter from '../../pages/HomeFooter';
+import DashboardLayout from './DashboardLayout';
 
 const JobDescription = () => {
     // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
@@ -192,22 +193,12 @@ const JobDescription = () => {
         checkIfApplied(jobId, userId);
     };
 
-    const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
-    const toggleLeftSide = () => {
-        console.log("Toggling left side visibility");
-        setIsLeftSideVisible(!isLeftSideVisible);
-    };
 
     const navigate = useNavigate();
     console.log(companyName)
     console.log(userId)
     return (
-        <div className='dashboard-container'>
-          
-            <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-                <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
-            </div>
-            <div className="right-side" style={{ overflowY: 'scroll' }}>
+        <DashboardLayout>
                 {showResumePopup && (
                     <ResumeSelectionPopup
                         resumes={resumes}
@@ -334,8 +325,7 @@ const JobDescription = () => {
                     </Row>
                 </Container>
                 <HomeFooter />
-            </div>
-        </div>
+                </DashboardLayout>
     );
 };
 export default JobDescription;

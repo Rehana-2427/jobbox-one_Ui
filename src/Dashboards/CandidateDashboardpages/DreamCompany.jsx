@@ -1,11 +1,13 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Container, Form } from 'react-bootstrap';
+import { Button, Card, Container, Form, ListGroup } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import './CandidateDashboard.css';
 import CandidateLeftSide from './CandidateLeftSide';
-import ResumeSelectionPopup from './ResumeSelectionPopup';
+import DashboardLayout from './DashboardLayout';
+import { toast, ToastContainer } from 'react-toastify';
+
 
 const BASE_API_URL = process.env.REACT_APP_API_URL;
 
@@ -32,17 +34,46 @@ const DreamCompany = () => {
   };
 
   const handleApplyButtonClick = () => {
-    if (!selectedCompany) {
-      setErrorMessage('Please select a valid company.');
+    // Check if no company is selected or entered
+    if (!selectedCompany && !companyName.trim()) {
+      toast.error("Please select or enter a valid company.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeButton: true,
+      });
       return;
     }
+  
+    // Use the entered company name if no selection is made
+    const companyToApply = selectedCompany ? selectedCompany.companyName : companyName.trim();
+  
+    if (!companyToApply) {
+      toast.error("Please select or enter a valid company.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeButton: true,
+      });
+      return;
+    }
+  
     if (!resumeId) {
-      setErrorMessage('Please select a resume.');
+      toast.error("Please select a resume.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeButton: true,
+      });
       return;
     }
-    applyJob(resumeId);
+  
+    // Proceed to apply the job
+    applyJob(resumeId, companyToApply);  
     setErrorMessage('');
   };
+  
+  
 
   const [resumes, setResumes] = useState([]);
   useEffect(() => {
@@ -58,7 +89,7 @@ const DreamCompany = () => {
   const handleCompanySearch = async (e) => {
     const query = e.target.value;
     setCompanyName(query);
-    
+
     if (query.trim() === '') {
       setCompanySuggestions([]); // Clear suggestions if input is empty
       return;
@@ -79,7 +110,7 @@ const DreamCompany = () => {
     setCompanySuggestions([]); // Clear suggestions after selection
   };
 
-  const applyJob = async (resumeId) => {
+  const applyJob = async (resumeId, companyToApply) => {
     let loadingPopup;
 
     try {
@@ -99,7 +130,7 @@ const DreamCompany = () => {
 
       const formattedDate = `${year}-${month}-${day}`;
 
-      const response = await axios.put(`${BASE_API_URL}/applyDreamCompany?userId=${userId}&companyName=${selectedCompany.companyName}&formattedDate=${formattedDate}&resumeId=${resumeId}`);
+      const response = await axios.put(`${BASE_API_URL}/applyDreamCompany?userId=${userId}&companyName=${companyToApply}&formattedDate=${formattedDate}&resumeId=${resumeId}`);
 
       if (response.data) {
         Swal.close();
@@ -108,7 +139,7 @@ const DreamCompany = () => {
         await Swal.fire({
           icon: 'warning',
           title: 'Application Failed',
-          text: `You have already applied for ${selectedCompany.companyName}`,
+          text: `You have already applied for ${companyToApply}`,
         });
       }
 
@@ -142,96 +173,97 @@ const DreamCompany = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
   };
-
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
-  const toggleLeftSide = () => {
-    setIsLeftSideVisible(!isLeftSideVisible);
+  const getRandomVariant = (index) => {
+    const variants = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
+    return variants[index % variants.length]; // Cycle through the variants
   };
+  
 
   return (
-    <div className='dashboard-container'>
-      <div className={`left-side ${isLeftSideVisible ? 'visible' : ''}`}>
-        <CandidateLeftSide user={{ userName, userId }} onClose={toggleLeftSide} />
-      </div>
-
-      <div className="right-side">
-        <Container className="d-flex justify-content-center py-5">
-          <div className="content-wrapper w-100" style={{ maxWidth: '600px' }}>
-            {/* Header Section */}
-            <div className="header-section text-center mb-4">
-              <h2 className="display-6 display-sm-5 display-md-4 display-lg-3">Dream Company Application</h2>
-              <p className="lead text-wrap">Where you can apply to your dream company by selecting your resume only.</p>
-            </div>
-
-            {/* Responsive Form Section */}
-            <Form onSubmit={handleSubmit} className="center-form-card p-4 shadow-sm rounded">
-              {/* Company Name Input */}
-              <Form.Group className="mb-3">
-                <Form.Label htmlFor="companyName"><h5 className="fw-bold">Company Name:</h5></Form.Label>
-                <Form.Control
-                  type="text"
-                  id="companyName"
-                  name="companyName"
-                  value={companyName}
-                  onChange={handleCompanySearch} // Trigger company search on input change
-                  required
-                  className="form-control"
-                  placeholder="Enter your company name"
-                />
-              </Form.Group>
-
-              {/* Display company suggestions */}
-              {companySuggestions.length > 0 && (
-                <div className="suggestions-list">
-                  {companySuggestions.map((company) => (
-                    <div
-                      key={company.id}
-                      className="suggestion-item"
-                      onClick={() => handleSelectCompany(company)} // Select company when clicked
-                    >
-                      {company.companyName}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Resume Selection */}
-              <Form.Group className="mb-3">
-                <div className="resume-dropdown-container">
-                  <h5 className="fw-bold">Select Resume</h5>
-                  <select
-                    id="resumeSelect"
-                    value={selectedResume}
-                    onChange={handleResumeSelect}
-                    required
-                    className="form-select"
+    <DashboardLayout>
+    <Container className="d-flex justify-content-center py-5">
+      <div className="content-wrapper w-100" style={{ maxWidth: '600px' }}>
+        {/* Header Section */}
+        <div className="header-section text-center mb-4">
+          <h2 className="display-6 display-sm-5 display-md-4 display-lg-3 text-primary">Dream Company Application</h2>
+          <p className="lead text-muted">Where you can apply to your dream company by selecting your resume only.</p>
+        </div>
+  
+        {/* Responsive Form Section */}
+        <Form onSubmit={handleSubmit} className="center-form-card p-4 shadow-sm rounded bg-white position-relative">
+          
+          {/* Company Name Input */}
+          <Form.Group className="mb-3 position-relative">
+            <Form.Label htmlFor="companyName"><h5 className="fw-bold">Company Name:</h5></Form.Label>
+            <Form.Control
+              type="text"
+              id="companyName"
+              name="companyName"
+              value={companyName}
+              onChange={handleCompanySearch}
+              required
+              className="form-control"
+              placeholder="Enter your company name"
+            />
+            
+            {/* Display company suggestions */}
+            {companySuggestions.length > 0 && (
+              <ListGroup className="suggestions-list bg-white border rounded p-2 position-absolute w-100" style={{ top: '100%', left: '0', zIndex: '10' }}>
+                {companySuggestions.map((company, index) => (
+                  <ListGroup.Item
+                    key={company.id}
+                    as="div"
+                    action
+                    onClick={() => handleSelectCompany(company)} // Select company when clicked
+                    variant={getRandomVariant(index)} // Apply different colors for each item
+                    className="cursor-pointer"
                   >
-                    <option value="">Select Resume</option>
-                    {resumes.map((resume) => (
-                      <option key={resume.id} value={resume.id}>
-                        {resume.message}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </Form.Group>
-
-              {/* Apply Button */}
-              <Button
-                variant="primary"
-                onClick={handleApplyButtonClick}
-                className="w-50 py-1 mt-3 fw-bold fs-6"
+                    {company.companyName}
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            )}
+          </Form.Group>
+  
+          {/* Resume Selection */}
+          <Form.Group className="mb-3">
+            <div className="resume-dropdown-container">
+              <h5 className="fw-bold">Select Resume</h5>
+              <select
+                id="resumeSelect"
+                value={selectedResume}
+                onChange={handleResumeSelect}
+                required
+                className="form-select"
               >
-                Apply
-              </Button>
-            </Form>
-
-            {/* Error Message Display */}
-            {errorMessage && <p className="error-message text-danger text-center mt-3">{errorMessage}</p>}
-          </div>
-        </Container>
+                <option value="">Select Resume</option>
+                {resumes.map((resume) => (
+                  <option key={resume.id} value={resume.id}>
+                    {resume.message}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </Form.Group>
+  
+          {/* Apply Button */}
+          <Button
+            variant="primary"
+            onClick={handleApplyButtonClick}
+            className="w-50 py-2 mt-4 fw-bold fs-6 d-block mx-auto"
+          >
+            Apply
+          </Button>
+        </Form>
+  
+        {/* Error Message Display */}
+      {/* Toast */}
+      <ToastContainer />
       </div>
-    </div>
+    </Container>
+  </DashboardLayout>
+  
+
   );
 };
 

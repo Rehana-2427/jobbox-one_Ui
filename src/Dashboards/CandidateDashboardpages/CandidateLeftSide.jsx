@@ -1,6 +1,7 @@
 import { faBuilding, faEnvelope, faFile, faFileLines, faLayerGroup, faMoneyCheckDollar, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Box } from '@mui/material';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import React, { useEffect, useRef, useState } from 'react';
@@ -8,7 +9,7 @@ import { Container, Nav, Navbar } from 'react-bootstrap';
 import { RxDashboard } from 'react-icons/rx';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-function CandidateLeftSide({ user, onClose }) {
+function CandidateLeftSide({ user, isOpen }) {
 
     const { userName, userId } = user;
     const navigate = useNavigate();
@@ -81,9 +82,7 @@ function CandidateLeftSide({ user, onClose }) {
                             onClick={(e) => {
                                 e.preventDefault();
                                 navigate(link.to, { state: { userName, userId } });
-                                if (isSmallScreen) {
-                                    onClose();
-                                }
+                               
                             }}
                             className="nav-link d-flex align-items-center"
                             style={{
@@ -127,9 +126,7 @@ function CandidateLeftSide({ user, onClose }) {
                                             onClick={(e) => {
                                                 e.preventDefault();
                                                 navigate(subLink.to, { state: { userName, userId } });
-                                                if (isSmallScreen) {
-                                                    onClose();
-                                                }
+                                            
                                             }}
                                             className="dropdown-item"
                                             style={{ textAlign: 'start' }}
@@ -148,62 +145,30 @@ function CandidateLeftSide({ user, onClose }) {
     );
 
     return (
-        <div>
-            {isSmallScreen ? (
-                <>
-                    <IconButton onClick={toggleDrawer(true)} style={{ marginLeft: '12px' }}>
-                        <MenuIcon />
-                    </IconButton>
-                    <Drawer
-                        anchor="left"
-                        open={isDrawerOpen}
-                        onClose={toggleDrawer(false)}
-                        elevation={0}
-                        PaperProps={{
-                            sx: {
-                                boxShadow: 'none', // Removes any potential shadow
-                                border: 'none',    // Ensures no border or shadow effect
-                            },
-                            style: {
-                                boxShadow: 'none', // Ensures no shadow on the Drawer paper itself
-                                color: 'black'
-                            },
-                        }}
-                        BackdropProps={{ invisible: true }}
-                    >
-                        <div style={{ width: 250, padding: '10px' }}>
-                            <Navbar.Brand>
-                                <a href="/">
-                                    <img src="/jb_logo.png" alt="jobboxlogo" className="auth-logo" style={{ backgroundColor: 'white' }} />
-                                </a>
-                            </Navbar.Brand>
-                            <Navbar.Text>
-                                <h2 style={{ color: 'black' }}>{userName}</h2>
-                            </Navbar.Text>
-                            <div ref={scrollContainerRef} style={{ height: 'calc(100vh - 170px)', overflowY: 'auto', paddingRight: '10px', color: 'gray' }}>
-                                {renderNavLinks()}
-                            </div>
-                        </div>
-                    </Drawer>
-                </>
-            ) : (
-                <Navbar expand="lg" className="flex-column align-items-center" style={{ height: '100vh', backgroundColor: 'white', textAlign: 'center' }}>
-                    <Container fluid className="flex-column">
-                        <Navbar.Brand>
-                            <a href="/">
-                                <img src="/jb_logo.png" alt="jobboxlogo" className="auth-logo" style={{ backgroundColor: 'white' }} />
-                            </a>
-                        </Navbar.Brand>
-                        <Navbar.Text>
-                            <h2 style={{ color: 'black' }}>{userName}</h2>
-                        </Navbar.Text>
-                        <div ref={scrollContainerRef} className="scrollbar-container" style={{overflowY:'auto', height: 'calc(100vh - 170px)', overflowY: 'auto', paddingRight: '10px', color: 'gray',paddingBottom:"20px" }}>
-                            {renderNavLinks()}
-                        </div>
-                    </Container>
-                </Navbar>
-            )}
-        </div>
+        <div
+        className={`sidebar-left ${isOpen ? 'open' : 'closed'}`}
+        style={{
+            position: 'fixed',
+            top: '80px',
+            left: isOpen ? '0' : '-150px',
+            width: '150px',
+            height: '100vh',
+            backgroundColor: '#f4f4f4',
+            overflowX: 'hidden',
+            overflowY: 'auto',
+            boxShadow: isOpen ? '2px 0 5px rgba(0,0,0,0.1)' : 'none',
+            transition: 'left 0.3s ease-in-out',
+            padding: '10px',
+        }}
+    >
+        <Navbar.Text>
+            <Box sx={{ textAlign: 'center', marginBottom: '16px' }}>
+                <Box sx={{ fontSize: '24px', fontWeight: 'bold' }}>{user.userName}</Box>
+                <Box sx={{ borderBottom: '1px solid gray', marginTop: '8px', marginX: 'auto', width: '80%' }} />
+            </Box>
+        </Navbar.Text>
+        {renderNavLinks()}
+    </div>
     );
 }
 export default CandidateLeftSide;
