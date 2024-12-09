@@ -327,24 +327,6 @@ const ViewApplications = () => {
   };
 
 
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
-  const toggleLeftSide = () => {
-    console.log("Toggling left side visibility");
-    setIsLeftSideVisible(!isLeftSideVisible);
-  };
-
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
-
-  useEffect(() => {
-    // Update the `isSmallScreen` state based on screen resizing
-    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
-
-    window.addEventListener('resize', handleResize);
-
-    // Clean up the event listener on component unmount
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
 
 
   // State to track if the ChatComponent is open
@@ -384,9 +366,9 @@ const ViewApplications = () => {
 
   return (
     <DashboardLayout>
-      <div className="application-div">
-        <Row className="mb-4 m-3">
-          <Col xs={12} md={6} lg={4}>
+      <div className="main-content">
+        <Row >
+          <Col>
             <label
               htmlFor="status"
               className="form-label"
@@ -407,7 +389,7 @@ const ViewApplications = () => {
               <option value="Not Shortlisted">Not Shortlisted</option>
             </select>
           </Col>
-          <Col xs={12} md={6} lg={4}>
+          <Col>
             <label
               htmlFor="date"
               className="form-label"
@@ -460,23 +442,26 @@ const ViewApplications = () => {
               </div>
             </div>
           </Col >
-          <Col xs={12} md={12} lg={4}>
+          <Col className="align-items-left">
             <h4>Action:</h4>
             <p><b><span class="circle gray"></span> By default - Not Seen</b></p>
-            <p><b><span class="circle red"></span> Slide Left Side - Not Shortlisted</b></p>
-            <p><b><span class="circle green"></span> Slide Right Side - Shortlisted</b></p>
+            <p><b><span class="circle red"></span> Slide Left - Not Shortlisted</b></p>
+            <p><b><span class="circle green"></span> Slide Right - Shortlisted</b></p>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col md={4}>
+            <h2>
+              {applications.length === 0 ? (
+                <div  style={{ textAlign: 'center' }}>There are no applicants for this job application</div>
+              ) : (
+                <div className="left-text">Applicants of applications</div>
+              )}
+            </h2>
 
           </Col>
         </Row>
-        {showBriefSettings && (
-          <Modal show={showBriefSettings} onHide={() => setShowBriefSettings(false)}>
-            <Modal.Header closeButton>
-              <Modal.Title>Brief Resume</Modal.Title>
-            </Modal.Header>
-            <Modal.Body style={{ overflowY: 'auto' }}>{showMessage}</Modal.Body>
-          </Modal>
-        )}
-
 
         <div>
           {loading ? (
@@ -484,96 +469,93 @@ const ViewApplications = () => {
               <div className="spinner-bubble spinner-bubble-primary m-5" />
               <span>Loading...</span>
             </div>
-          ) : applications.length === 0 ? (
-            <section>
-              <h2>Sorry, you haven't received any applications yet.</h2>
-            </section>
-          ) : (
+          ) : applications.length > 0 ? (
             <>
-              <div className='table-details-list  table-wrapper '>
-                <Table hover className='text-center'>
-                  <thead className="table-light">
-                    <tr>
-                      <th scope="col">Job Title</th>
-                      <th scope="col">Candidate Name</th>
-                      <th scope="col">Candidate Email</th>
-                      <th scope="col">Resume ID</th>
-                      <th scope="col" onClick={() => handleSort('appliedOn')}>
-                        Date {sortedColumn === 'appliedOn' && (sortOrder === 'asc' ? '▲' : '▼')}
-                      </th>
-                      <th scope="col">View Details</th>
-                      <th scope="col">Action</th>
-                      <th scope="col">Chat</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {applications.map((application) => (
-                      <tr key={application.applicationId}>
-                        <td>{application.jobRole}</td>
-                        <td>{candidateName[application.candidateId]}</td>
-                        <td>{candidateEmail[application.candidateId]}</td>
-                        <td>{renderResumeComponent(application.resumeId)}</td>
-                        <td>{application.appliedOn}</td>
-                        <td>
-                          <FontAwesomeIcon onClick={(e) => {
-                            e.preventDefault();
-                            navigate('/hr-dashboard/hr-applications/view-applications/applicationDetails', {
-                              state: { userEmail, applicationId: application.applicationId, candidateId: application.candidateId, userName, currentApplicationPage: page, jobId, currentApplicationPageSize: pageSize },
-                            });
-                          }}
-                            icon={faEye}
-                            style={{ cursor: 'pointer', fontSize: '20px', color: 'black' }}
-                          />
-                        </td>
-                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                            <Slider
-                              initialStatus={application.applicationStatus}
-                              onChangeStatus={(newStatus) => updateStatus(application.applicationId, newStatus)}
-                            />
-                          </div>
-                        </td>
-                        <td>
-                          <div style={{ position: 'relative', display: 'inline-block' }}>
-                            {unreadMessages[application.applicationId] > 0 && (
-                              <span
-                                style={{
-                                  position: 'absolute',
-                                  top: '-5px',
-                                  right: '-15px',
-                                  backgroundColor: 'red',
-                                  color: 'white',
-                                  borderRadius: '50%',
-                                  width: '20px',
-                                  height: '20px',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  fontSize: '12px',
-                                  fontWeight: 'bold',
-                                  zIndex: 1, // Ensure notification badge is above SiImessage icon
-                                }}
-                              >
-                                {unreadMessages[application.applicationId]}
-                              </span>
-                            )}
-
-                            {/* Chat icon, click to toggle the ChatComponent */}
-                            <SiImessage
-                              size={25}
-                              onClick={() => toggleChat(application)}
-                              style={{ color: 'green', cursor: 'pointer' }}
-                            />
-
-
-                          </div>
-                        </td>
-
+              <div>
+                <div className='table-details-list  table-wrapper '>
+                  <Table hover className='text-center'>
+                    <thead className="table-light">
+                      <tr>
+                        <th scope="col">Job Title</th>
+                        <th scope="col">Candidate Name</th>
+                        <th scope="col">Candidate Email</th>
+                        <th scope="col">Resume ID</th>
+                        <th scope="col" onClick={() => handleSort('appliedOn')}>
+                          Date {sortedColumn === 'appliedOn' && (sortOrder === 'asc' ? '▲' : '▼')}
+                        </th>
+                        <th scope="col">View Details</th>
+                        <th scope="col">Action</th>
+                        <th scope="col">Chat</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </Table>
+                    </thead>
+                    <tbody>
+                      {applications.map((application) => (
+                        <tr key={application.applicationId}>
+                          <td>{application.jobRole}</td>
+                          <td>{candidateName[application.candidateId]}</td>
+                          <td>{candidateEmail[application.candidateId]}</td>
+                          <td>{renderResumeComponent(application.resumeId)}</td>
+                          <td>{application.appliedOn}</td>
+                          <td>
+                            <FontAwesomeIcon onClick={(e) => {
+                              e.preventDefault();
+                              navigate('/hr-dashboard/hr-applications/view-applications/applicationDetails', {
+                                state: { userEmail, applicationId: application.applicationId, candidateId: application.candidateId, userName, currentApplicationPage: page, jobId, currentApplicationPageSize: pageSize },
+                              });
+                            }}
+                              icon={faEye}
+                              style={{ cursor: 'pointer', fontSize: '20px', color: 'black' }}
+                            />
+                          </td>
+                          <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                              <Slider
+                                initialStatus={application.applicationStatus}
+                                onChangeStatus={(newStatus) => updateStatus(application.applicationId, newStatus)}
+                              />
+                            </div>
+                          </td>
+                          <td>
+                            <div style={{ position: 'relative', display: 'inline-block' }}>
+                              {unreadMessages[application.applicationId] > 0 && (
+                                <span
+                                  style={{
+                                    position: 'absolute',
+                                    top: '-5px',
+                                    right: '-15px',
+                                    backgroundColor: 'red',
+                                    color: 'white',
+                                    borderRadius: '50%',
+                                    width: '20px',
+                                    height: '20px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontSize: '12px',
+                                    fontWeight: 'bold',
+                                    zIndex: 1, // Ensure notification badge is above SiImessage icon
+                                  }}
+                                >
+                                  {unreadMessages[application.applicationId]}
+                                </span>
+                              )}
 
+                              {/* Chat icon, click to toggle the ChatComponent */}
+                              <SiImessage
+                                size={25}
+                                onClick={() => toggleChat(application)}
+                                style={{ color: 'green', cursor: 'pointer' }}
+                              />
+
+                            </div>
+                          </td>
+
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+
+                </div>
               </div>
               {/* Pagination */}
               <Pagination
@@ -585,21 +567,35 @@ const ViewApplications = () => {
                 handlePageClick={handlePageClick}
               />
             </>
+          ) : (
+            <section className="no-jobs-message">
+
+            </section>
           )}
           <Button variant='primary' onClick={handleBack}>Back</Button>
         </div>
-      </div>
 
-      {/* Conditionally render the ChatComponent */}
-      {isChatOpen && (
-        <ChatComponent
-          applicationId={chatData.applicationId}
-          candidateId={chatData.candidateId}
-          hrId={chatData.hrId}
-          userType='HR'
-          setIsChatOpen={setIsChatOpen}
-        />
-      )}
+        {showBriefSettings && (
+          <Modal show={showBriefSettings} onHide={() => setShowBriefSettings(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Brief Resume</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ overflowY: 'auto' }}>{showMessage}</Modal.Body>
+          </Modal>
+        )}
+
+
+        {/* Conditionally render the ChatComponent */}
+        {isChatOpen && (
+          <ChatComponent
+            applicationId={chatData.applicationId}
+            candidateId={chatData.candidateId}
+            hrId={chatData.hrId}
+            userType='HR'
+            setIsChatOpen={setIsChatOpen}
+          />
+        )}
+      </div>
     </DashboardLayout>
   );
 };
