@@ -212,29 +212,14 @@ const MyJobs = () => {
                 <Table hover className="text-center">
                   <thead className="table-light">
                     <tr>
-                      <th
-                        scope="col"
-                        onClick={() => handleSort('jobTitle')}
-                        style={{ cursor: 'pointer' }}
-                      >
+                      <th scope="col" onClick={() => handleSort('jobTitle')} style={{ cursor: 'pointer' }}>
                         Job Title{' '}
                         <span>
-                          <span
-                            style={{
-                              color: sortedColumn === 'jobTitle' && sortOrder === 'asc' ? 'black' : 'gray',
-                            }}
-                          >
-                            ↑
-                          </span>{' '}
-                          <span
-                            style={{
-                              color: sortedColumn === 'jobTitle' && sortOrder === 'desc' ? 'black' : 'gray',
-                            }}
-                          >
-                            ↓
-                          </span>
+                          <span style={{ color: sortedColumn === 'jobTitle' && sortOrder === 'asc' ? 'black' : 'gray', }}>↑</span>{' '}
+                          <span style={{ color: sortedColumn === 'jobTitle' && sortOrder === 'desc' ? 'black' : 'gray', }}>↓</span>
                         </span>
                       </th>
+
                       <th
                         scope="col"
                         onClick={() => handleSort('jobType')}

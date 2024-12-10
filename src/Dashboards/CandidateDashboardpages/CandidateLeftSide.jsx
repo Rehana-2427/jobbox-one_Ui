@@ -1,11 +1,8 @@
 import { faBuilding, faEnvelope, faFile, faFileLines, faLayerGroup, faMoneyCheckDollar, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import MenuIcon from '@mui/icons-material/Menu';
 import { Box } from '@mui/material';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
 import React, { useEffect, useRef, useState } from 'react';
-import { Container, Nav, Navbar } from 'react-bootstrap';
+import { Nav, Navbar } from 'react-bootstrap';
 import { RxDashboard } from 'react-icons/rx';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
@@ -151,7 +148,7 @@ function CandidateLeftSide({ user, isOpen }) {
             position: 'fixed',
             top: '80px',
             left: isOpen ? '0' : '-150px',
-            width: '150px',
+            width: '180px',
             height: '100vh',
             backgroundColor: '#f4f4f4',
             overflowX: 'hidden',
