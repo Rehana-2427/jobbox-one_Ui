@@ -87,10 +87,8 @@ const StatusGraph = () => {
                             }}
                         />
                     </Card.Body>
-
                 </Card>
             </Col>
-
         </Row>
 
     )

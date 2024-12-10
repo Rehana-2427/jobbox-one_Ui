@@ -1,13 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Dropdown, Table } from 'react-bootstrap';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Button, Col, Row, Table } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { useAuth } from '../../AuthProvider';
 import Pagination from '../../Pagination';
-import CandidateLeftSide from './CandidateLeftSide';
-import ResumeSelectionPopup from './ResumeSelectionPopup';
 import DashboardLayout from './DashboardLayout';
+import ResumeSelectionPopup from './ResumeSelectionPopup';
 
 const CandidateJobs = () => {
   const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -281,7 +279,7 @@ const CandidateJobs = () => {
       }
     }
   }, [totalPages]);
- 
+
 
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
@@ -289,22 +287,9 @@ const CandidateJobs = () => {
 
   return (
     <DashboardLayout>
-       <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-             <div className="search-bar">
-              <input
-                style={{ borderRadius: '6px', height: '35px' }}
-                type="text"
-                name="search"
-                placeholder="Search"
-                value={search}
-                onChange={handleSearchChange}
-              />
-            </div>
-            </div>
-          <div
-            className="filter p-3 border rounded shadow-sm"
-            style={{ maxWidth: '30%', backgroundColor: '#f4f4f9' }}
-          >
+      <div className="main-content">
+        <Row>
+          <Col md={4} style={{ paddingTop: '10px' }}>
             <label htmlFor="status" className="form-label" style={{ color: '#6c5b7b' }}>
               Filter by Actions:
             </label>
@@ -319,164 +304,173 @@ const CandidateJobs = () => {
               <option value="Apply">Yet to apply</option>
               <option value="Applied">Already applied</option>
             </select>
-          </div>
-          {/* overflowY: 'auto',  */}
-          <div style={{ maxHeight: '600px', paddingBottom: '50px' }}>
-            {jobs.length > 0 && (
-              <div>
-                {/* <h2> Regular Jobs For {userName}</h2> */}
-                <div className="table-details-list table-wrapper">
-                  <h2> Regular Jobs For {userName}</h2>
-                  <p>
-                    Similar to tables and dark tables, use the modifier classes
-                    <code>.table-light</code> to make <code>thead</code> appear light
-                  </p>
-                  <Table hover className="text-center">
-                    <thead className="table-light">
-                      <tr>
-                        <th scope="col" onClick={() => handleSort('jobTitle')}>
-                          Job Profile
-                          {/* Show the sort symbol based on sortedColumn and sortOrder */}
-                          {sortedColumn === 'jobTitle' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
-                        </th>
-                        <th scope="col" onClick={() => handleSort('companyName')}>
-                          Company Name{' '}
-                          {/* Show the sort symbol based on sortedColumn and sortOrder */}
-                          {sortedColumn === 'companyName' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
-                        </th>
-                        <th scope="col" onClick={() => handleSort('applicationDeadline')}>
-                          Application Deadline{' '}
-                          {/* Show the sort symbol based on sortedColumn and sortOrder */}
-                          {sortedColumn === 'applicationDeadline' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
-                        </th>
-                        <th scope="col" onClick={() => handleSort('skills')}>
-                          Skills{' '}
-                          {/* Show the sort symbol based on sortedColumn and sortOrder */}
-                          {sortedColumn === 'skills' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
-                        </th>
-                        <th scope="col" onClick={() => handleSort('location')}>
-                          Location{' '}
-                          {/* Show the sort symbol based on sortedColumn and sortOrder */}
-                          {sortedColumn === 'location' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
-                        </th>
-                        <th scope="col">Job description</th>
-                        <th scope="col">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {jobs.map((job) => (
-                        <tr key={job.id} id="job-table-list">
-                          <td
-                            title={
-                              job.jobCategory === 'evergreen' && !job.applicationDeadline
-                                ? 'This position is always open for hiring, feel free to apply anytime!'
-                                : ''
-                            }
-                          >
-                            {job.jobTitle}
-                          </td>
-                          <td>{job.companyName}</td>
-                          <td>
-                            {job.jobCategory === 'evergreen' && !job.applicationDeadline ? (
-                              <span
-                                style={{ color: 'green', fontWeight: 'bold' }}
-                                title="This position is always open for hiring, feel free to apply anytime!"
-                              >
-                                Evergreen Job - No Due Date
-                              </span>
-                            ) : (
-                              job.applicationDeadline || 'Not Specified'
-                            )}
-                          </td>
-                          <td>{job.skills}</td>
-                          <td>{job.location}</td>
-                          <td>
-                            <Button
-                              variant="secondary"
-                              className="description btn-rounded"
-                              onClick={() => {
-                                const url = new URL('/#/candidate-dashboard/job-description', window.location.origin);
-                                url.searchParams.append('companyName', encodeURIComponent(job.companyName || ''));
-                                url.searchParams.append('jobId', encodeURIComponent(job.jobId || ''));
-                                url.searchParams.append('userId', encodeURIComponent(userId || ''));
-                                url.searchParams.append('userName', encodeURIComponent(userName || ''));
-                                window.open(url.toString(), '_blank', 'noopener,noreferrer');
-                              }}
-                            >
-                              View
-                            </Button>
-                          </td>
-                          <td>
-                            {hasUserApplied[job.jobId] === true || (applyjobs && applyjobs.jobId === job.jobId) ? (
-                              <p>Applied</p>
-                            ) : (
-                              <Button onClick={() => handleApplyButtonClick(job.jobId)}>Apply</Button>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </div>
-                {selectedJobSummary && (
-                  <div className="modal-summary">
-                    <div className="modal-content-summary">
-                      <span className="close" onClick={handleCloseModal}>
-                        &times;
-                      </span>
-                      <div className="job-summary">
-                        <h3>Job Summary</h3>
-                        <pre className="job-details-text">{selectedJobSummary}</pre>
-                      </div>
-                    </div>
-                  </div>
-                )}
+          </Col>
+          <Col md={3} className="d-flex align-items-left" style={{ paddingTop: '30px' }}>
+            {/* Search Bar */}
+            <div className="search-bar" style={{ flex: 1 }}>
+              <input
+                style={{ borderRadius: '6px', height: '40px', width: '100%' }}
+                type="text"
+                name="search"
+                placeholder="Search"
+                value={search}
+                onChange={handleSearchChange}
+              />
+            </div>
+          </Col>
 
-                <Pagination
-                  page={page}
-                  pageSize={pageSize}
-                  totalPages={totalPages}
-                  handlePageSizeChange={handlePageSizeChange}
-                  isPageSizeDisabled={isPageSizeDisabled}
-                  handlePageClick={handlePageClick}
-                />
+        </Row>
+        <Col md={4}>
+          <h2 className='text-start'>Jobs For {userName}</h2>
+        </Col>
+        {jobs.length > 0 && (
+          <div>
+            <div className="table-details-list table-wrapper">
+              <Table hover className="text-center">
+                <thead className="table-light">
+                  <tr>
+                    <th scope="col" onClick={() => handleSort('jobTitle')} style={{ cursor: 'pointer' }}>
+                      Job Profile{' '}
+                      <span>
+                        <span style={{ color: sortedColumn === 'jobTitle' && sortOrder === 'asc' ? 'black' : 'gray', }}>↑</span>{' '}
+                        <span style={{ color: sortedColumn === 'jobTitle' && sortOrder === 'desc' ? 'black' : 'gray', }}>↓</span>
+                      </span>
+                    </th>
+                    <th scope="col" onClick={() => handleSort('companyName')} style={{ cursor: 'pointer' }}>
+                      Company Name{' '}
+                      <span>
+                        <span style={{ color: sortedColumn === 'companyName' && sortOrder === 'asc' ? 'black' : 'gray', }}>↑</span>{' '}
+                        <span style={{ color: sortedColumn === 'companyName' && sortOrder === 'desc' ? 'black' : 'gray', }}>↓</span>
+                      </span>
+                    </th>
+                    <th scope="col" onClick={() => handleSort('applicationDeadline')} style={{ cursor: 'pointer' }}>
+                      Application Deadline{' '}
+                      <span>
+                        <span style={{ color: sortedColumn === 'applicationDeadline' && sortOrder === 'asc' ? 'black' : 'gray', }}>↑</span>{' '}
+                        <span style={{ color: sortedColumn === 'applicationDeadline' && sortOrder === 'desc' ? 'black' : 'gray', }}>↓</span>
+                      </span>
+                    </th>
+                    <th scope="col" onClick={() => handleSort('skills')} style={{ cursor: 'pointer' }}>
+                      Skills{' '}
+                      <span>
+                        <span style={{ color: sortedColumn === 'skills' && sortOrder === 'asc' ? 'black' : 'gray', }}>↑</span>{' '}
+                        <span style={{ color: sortedColumn === 'skills' && sortOrder === 'desc' ? 'black' : 'gray', }}>↓</span>
+                      </span>
+                    </th>
+                    <th scope="col" onClick={() => handleSort('location')} style={{ cursor: 'pointer' }}>
+                      Location{' '}
+                      <span>
+                        <span style={{ color: sortedColumn === 'location' && sortOrder === 'asc' ? 'black' : 'gray', }}>↑</span>{' '}
+                        <span style={{ color: sortedColumn === 'location' && sortOrder === 'desc' ? 'black' : 'gray', }}>↓</span>
+                      </span>
+                    </th>
+                    <th scope="col">Job description</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {jobs.map((job) => (
+                    <tr key={job.id} id="job-table-list">
+                      <td title={job.jobCategory === 'evergreen' && !job.applicationDeadline ? 'This position is always open for hiring, feel free to apply anytime!' : ''}>
+                        {job.jobTitle}
+                      </td>
+                      <td>{job.companyName}</td>
+                      <td>
+                        {job.jobCategory === 'evergreen' && !job.applicationDeadline ? (
+                          <span style={{ color: 'green', fontWeight: 'bold' }} title="This position is always open for hiring, feel free to apply anytime!">
+                            Evergreen Job - No Due Date
+                          </span>
+                        ) : (
+                          job.applicationDeadline || 'Not Specified'
+                        )}
+                      </td>
+                      <td>{job.skills}</td>
+                      <td>{job.location}</td>
+                      <td>
+                        <Button
+                          variant="secondary"
+                          className="description btn-rounded"
+                          onClick={() => {
+                            const url = new URL('/#/candidate-dashboard/job-description', window.location.origin);
+                            url.searchParams.append('companyName', encodeURIComponent(job.companyName || ''));
+                            url.searchParams.append('jobId', encodeURIComponent(job.jobId || ''));
+                            url.searchParams.append('userId', encodeURIComponent(userId || ''));
+                            url.searchParams.append('userName', encodeURIComponent(userName || ''));
+                            window.open(url.toString(), '_blank', 'noopener,noreferrer');
+                          }}
+                        >
+                          View
+                        </Button>
+                      </td>
+                      <td>
+                        {hasUserApplied[job.jobId] === true || (applyjobs && applyjobs.jobId === job.jobId) ? (
+                          <p>Applied</p>
+                        ) : (
+                          <Button onClick={() => handleApplyButtonClick(job.jobId)}>Apply</Button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
+            {selectedJobSummary && (
+              <div className="modal-summary">
+                <div className="modal-content-summary">
+                  <span className="close" onClick={handleCloseModal}>
+                    &times;
+                  </span>
+                  <div className="job-summary">
+                    <h3>Job Summary</h3>
+                    <pre className="job-details-text">{selectedJobSummary}</pre>
+                  </div>
+                </div>
               </div>
             )}
 
-            {jobs.length === 0 && <h1>No jobs found.</h1>}
+            <Pagination
+              page={page}
+              pageSize={pageSize}
+              totalPages={totalPages}
+              handlePageSizeChange={handlePageSizeChange}
+              isPageSizeDisabled={isPageSizeDisabled}
+              handlePageClick={handlePageClick}
+            />
+          </div>
+        )}
+        {jobs.length === 0 && <h1>No jobs found.</h1>}
+        <div className="dream p-3">
+          <p className="text-center responsive-text">
+            Can't find your dream company or dream job? Don't worry, you can still apply to them.
+          </p>
+          <p className="text-center responsive-text">
+            Just add the name of your dream company and job role and apply to them directly.
+          </p>
+          <div className="app d-flex flex-column flex-md-row justify-content-center align-items-center gap-3">
+            <Button
+              variant="primary"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/candidate-dashboard/dream-company', { state: { userName, userId } });
+              }}
+              className="w-md-auto"
+            >
+              Apply to your dream company
+            </Button>
 
-            <div className="dream p-3">
-              <p className="text-center responsive-text">
-                Can't find your dream company or dream job? Don't worry, you can still apply to them.
-              </p>
-              <p className="text-center responsive-text">
-                Just add the name of your dream company and job role and apply to them directly.
-              </p>
-              <div className="app d-flex flex-column flex-md-row justify-content-center align-items-center gap-3">
-                <Button
-                  variant="primary"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate('/candidate-dashboard/dream-company', { state: { userName, userId } });
-                  }}
-                  className="w-md-auto"
-                >
-                  Apply to your dream company
-                </Button>
-
-                <Button
-                  variant="success"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate('/candidate-dashboard/dream-job', { state: { userName, userId } });
-                  }}
-                  className="w-md-auto"
-                >
-                  Apply to your dream job
-                </Button>
-              </div>
-            </div>
-            {showResumePopup && (
+            <Button
+              variant="success"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/candidate-dashboard/dream-job', { state: { userName, userId } });
+              }}
+              className="w-md-auto"
+            >
+              Apply to your dream job
+            </Button>
+          </div>
+        </div>
+        {showResumePopup && (
           <ResumeSelectionPopup
             resumes={resumes}
             onSelectResume={handleResumeSelect}
@@ -484,8 +478,8 @@ const CandidateJobs = () => {
             onClose={() => setShowResumePopup(false)}
           />
         )}
-          </div>
-          </DashboardLayout>
+      </div>
+    </DashboardLayout>
 
   );
 };

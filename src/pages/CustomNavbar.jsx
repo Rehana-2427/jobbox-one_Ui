@@ -170,7 +170,7 @@ const CustomNavbar = () => {
                                 )}
                                 <Tab
                                     component={Link}
-                                    to="/jobdbcompanies"
+                                    to="/jobboxcompanies"
                                     label="Companies"
                                     sx={{ borderBottom: value === (currentPath !== '/' ? 4 : 3) ? '3px solid purple' : 'none' }} // Adjust for the companies tab
                                 />

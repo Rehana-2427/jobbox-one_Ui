@@ -454,7 +454,7 @@ const ViewApplications = () => {
           <Col md={4}>
             <h2>
               {applications.length === 0 ? (
-                <div  style={{ textAlign: 'center' }}>There are no applicants for this job application</div>
+                <div style={{ textAlign: 'center' }}>There are no applicants for this job application</div>
               ) : (
                 <div className="left-text">Applicants of applications</div>
               )}
@@ -480,8 +480,28 @@ const ViewApplications = () => {
                         <th scope="col">Candidate Name</th>
                         <th scope="col">Candidate Email</th>
                         <th scope="col">Resume ID</th>
-                        <th scope="col" onClick={() => handleSort('appliedOn')}>
-                          Date {sortedColumn === 'appliedOn' && (sortOrder === 'asc' ? '▲' : '▼')}
+                        <th
+                          scope="col"
+                          onClick={() => handleSort('appliedOn')}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          Date{' '}
+                          <span>
+                            <span
+                              style={{
+                                color: sortedColumn === 'appliedOn' && sortOrder === 'asc' ? 'black' : 'gray',
+                              }}
+                            >
+                              ↑
+                            </span>{' '}
+                            <span
+                              style={{
+                                color: sortedColumn === 'appliedOn' && sortOrder === 'desc' ? 'black' : 'gray',
+                              }}
+                            >
+                              ↓
+                            </span>
+                          </span>
                         </th>
                         <th scope="col">View Details</th>
                         <th scope="col">Action</th>

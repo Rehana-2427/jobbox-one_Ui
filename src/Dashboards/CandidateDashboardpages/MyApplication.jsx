@@ -1,15 +1,13 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Dropdown, Table } from 'react-bootstrap';
+import { Col, Row, Table } from 'react-bootstrap';
 import { MdDelete } from 'react-icons/md';
 import { SiImessage } from 'react-icons/si';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { useAuth } from '../../AuthProvider';
 import Pagination from '../../Pagination';
 import ChatComponent from '../ChatComponent';
 import './CandidateDashboard.css';
-import CandidateLeftSide from './CandidateLeftSide';
 import DashboardLayout from './DashboardLayout';
 
 const MyApplication = () => {
@@ -260,7 +258,7 @@ const MyApplication = () => {
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
 
- 
+
   // State to track if the ChatComponent is open
   const [isChatOpen, setIsChatOpen] = useState(false);
 
@@ -298,164 +296,183 @@ const MyApplication = () => {
   };
 
   return (
-
     <DashboardLayout>
-      <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-        <div className="search-bar">
-          <input
-            style={{ borderRadius: '6px', height: '35px' }}
-            type="text"
-            name="search"
-            placeholder="Search"
-            value={search}
-            onChange={handleSearchChange}
-          />
-        </div>
-      </div>
-      <div className="filter p-3 border rounded shadow-sm"
-        style={{ maxWidth: '30%', backgroundColor: '#f4f4f9' }}>
-        <label htmlFor="status" className="form-label"
-          style={{ color: '#6c5b7b' }}>Filter by Actions:</label>
-        <select id="status" className="form-select form-select-sm fs-6" // Adjust the fs-* class as needed
-          style={{ borderColor: '#6c5b7b' }} onChange={handleFilterChange} value={filter}>
-          <option value="all">All</option>
-          <option value="Regular Jobs">Regular Jobs</option>
-          <option value="Dream Applications">Dream Application</option>
-          <option value="EverGreen Jobs">EverGreen Jobs</option>
-        </select>
-      </div>
-      <div>
-        {applications.length > 0 ? (
-          <>
-            <div className='table-details-list table-wrapper'>
-              <h2> My Application -- {userName}</h2>
-              <p>
-                Similar to tables and dark tables, use the modifier classes
-                <code>.table-light</code> to make <code>thead</code> appear light
-              </p>
-              <Table hover className='text-center'>
-                <thead className="table-light">
-                  <tr>
-                    <th scope="col" onClick={() => handleSort('companyName')}>
-                      Company Name{sortedColumn === 'companyName' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
-                    </th>
-                    <th scope="col" onClick={() => handleSort('jobRole')}>
-                      Job Title{sortedColumn === 'jobRole' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
-                    </th>
-                    <th scope="col" onClick={() => handleSort('appliedOn')}>
-                      Applied On{sortedColumn === 'appliedOn' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
-                    </th>
-                    <th scope="col">Resume Profile</th>
-                    <th scope="col">Job Status</th>
-                    <th scope="col" onClick={() => handleSort('applicationStatus')}>
-                      Action {sortedColumn === 'applicationStatus' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
-                    </th>
-                    <th scope="col">Chat</th>
-                    <th scope="col">Delete</th>
-                  </tr>
-                </thead>
+      <div className="main-content">
+        <Row>
+          <Col md={4} style={{ paddingTop: '10px' }}>
+            <label htmlFor="status" className="form-label"
+              style={{ color: '#6c5b7b' }}>Filter by Actions:</label>
+            <select id="status" className="form-select form-select-sm fs-6" // Adjust the fs-* class as needed
+              style={{ borderColor: '#6c5b7b' }} onChange={handleFilterChange} value={filter}>
+              <option value="all">All</option>
+              <option value="Regular Jobs">Regular Jobs</option>
+              <option value="Dream Applications">Dream Application</option>
+              <option value="EverGreen Jobs">EverGreen Jobs</option>
+            </select>
+          </Col>
+          <Col md={3} className="d-flex align-items-left" style={{ paddingTop: '30px' }}>
+            {/* Search Bar */}
+            <div className="search-bar" style={{ flex: 1 }}>
+              <input
+                style={{ borderRadius: '6px', height: '40px', width: '100%' }}
+                type="text"
+                name="search"
+                placeholder="Search"
+                value={search}
+                onChange={handleSearchChange}
+              />
+            </div>
+          </Col>
 
-                <tbody>
-                  {applications.map((application, index) => (
-                    <tr key={index}>
-                      <td>{application.companyName}</td>
-                      <td>{application.jobRole || 'Dream application'}</td>
-                      <td>{application.appliedOn}</td>
-                      <td>{resumeNames[application.resumeId]}</td>
-                      <td style={{ color: renderJobStatus(application.applicationId) === 'Evergreen' ? 'green' : 'black' }}>
-                        {renderJobStatus(application.applicationId)}
-                      </td>
+        </Row>
+        <Col md={4}>
+          <h2 className='text-start'> My Applications</h2>
+        </Col>
 
-                      <td>{application.applicationStatus}</td>
+        <div>
+          {applications.length > 0 ? (
+            <>
+              <div className='table-details-list table-wrapper'>
+                <Table hover className='text-center'>
+                  <thead className="table-light">
+                    <tr>
+                      <th scope="col" onClick={() => handleSort('companyName')} style={{ cursor: 'pointer' }}>
+                        Company Name{' '}
+                        <span>
+                          <span style={{ color: sortedColumn === 'companyName' && sortOrder === 'asc' ? 'black' : 'gray' }}>↑</span>{' '}
+                          <span style={{ color: sortedColumn === 'companyName' && sortOrder === 'desc' ? 'black' : 'gray' }}>↓</span>
+                        </span>
+                      </th>
+                      <th scope="col" onClick={() => handleSort('jobRole')} style={{ cursor: 'pointer' }}>
+                        Job Title{' '}
+                        <span>
+                          <span style={{ color: sortedColumn === 'jobRole' && sortOrder === 'asc' ? 'black' : 'gray' }}>↑</span>{' '}
+                          <span style={{ color: sortedColumn === 'jobRole' && sortOrder === 'desc' ? 'black' : 'gray' }}>↓</span>
+                        </span>
+                      </th>
+                      <th scope="col" onClick={() => handleSort('appliedOn')} style={{ cursor: 'pointer' }}>
+                        Applied On{' '}
+                        <span>
+                          <span style={{ color: sortedColumn === 'appliedOn' && sortOrder === 'asc' ? 'black' : 'gray' }}>↑</span>{' '}
+                          <span style={{ color: sortedColumn === 'appliedOn' && sortOrder === 'desc' ? 'black' : 'gray' }}>↓</span>
+                        </span>
+                      </th>
+                      <th scope="col">Resume Profile</th>
+                      <th scope="col">Job Status</th>
+                      <th scope="col" onClick={() => handleSort('applicationStatus')} style={{ cursor: 'pointer' }}>
+                        Action{' '}
+                        <span>
+                          <span style={{ color: sortedColumn === 'applicationStatus' && sortOrder === 'asc' ? 'black' : 'gray' }}>↑</span>{' '}
+                          <span style={{ color: sortedColumn === 'applicationStatus' && sortOrder === 'desc' ? 'black' : 'gray' }}>↓</span>
+                        </span>
+                      </th>
+                      <th scope="col">Chat</th>
+                      <th scope="col">Delete</th>
+                    </tr>
+                  </thead>
 
-                      <td>
-                        {chats[index] && chats[index].length > 0 ? (
-                          <div style={{ position: 'relative', display: 'inline-block' }}>
-                            {unreadMessages[application.applicationId] > 0 && (
-                              <span
-                                style={{
-                                  position: 'absolute',
-                                  top: '-5px',
-                                  right: '-15px',
-                                  backgroundColor: 'red',
-                                  color: 'white',
-                                  borderRadius: '50%',
-                                  width: '20px',
-                                  height: '20px',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  fontSize: '12px',
-                                  fontWeight: 'bold',
-                                  zIndex: 1, // Ensure notification badge is above SiImessage icon
-                                }}
-                              >
-                                {unreadMessages[application.applicationId]}
-                              </span>
-                            )}
+                  <tbody>
+                    {applications.map((application, index) => (
+                      <tr key={index}>
+                        <td>{application.companyName}</td>
+                        <td>{application.jobRole || 'Dream application'}</td>
+                        <td>{application.appliedOn}</td>
+                        <td>{resumeNames[application.resumeId]}</td>
+                        <td style={{ color: renderJobStatus(application.applicationId) === 'Evergreen' ? 'green' : 'black' }}>
+                          {renderJobStatus(application.applicationId)}
+                        </td>
 
+                        <td>{application.applicationStatus}</td>
+
+                        <td>
+                          {chats[index] && chats[index].length > 0 ? (
+                            <div style={{ position: 'relative', display: 'inline-block' }}>
+                              {unreadMessages[application.applicationId] > 0 && (
+                                <span
+                                  style={{
+                                    position: 'absolute',
+                                    top: '-5px',
+                                    right: '-15px',
+                                    backgroundColor: 'red',
+                                    color: 'white',
+                                    borderRadius: '50%',
+                                    width: '20px',
+                                    height: '20px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontSize: '12px',
+                                    fontWeight: 'bold',
+                                    zIndex: 1, // Ensure notification badge is above SiImessage icon
+                                  }}
+                                >
+                                  {unreadMessages[application.applicationId]}
+                                </span>
+                              )}
+
+                              <SiImessage
+                                size={25}
+                                onClick={() => toggleChat(application)}
+                                style={{ color: 'green', cursor: 'pointer' }}
+                              />
+                            </div>
+
+                          ) : (
                             <SiImessage
                               size={25}
-                              onClick={() => toggleChat(application)}
-                              style={{ color: 'green', cursor: 'pointer' }}
+                              style={{ color: 'grey', cursor: 'not-allowed' }}
                             />
-                          </div>
+                          )}
+                        </td>
+                        <td>
+                          <span className='delete cursor-pointer text-danger me-2' onClick={() => {
+                            Swal.fire({
+                              title: "Are you sure?",
+                              text: "You won't be able to revert this!",
+                              icon: "warning",
+                              showCancelButton: true,
+                              confirmButtonColor: "#3085d6",
+                              cancelButtonColor: "#d33",
+                              confirmButtonText: "Yes, delete it!"
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                handleDelete(application.applicationId);
+                              }
+                            });
+                          }}>
+                            <MdDelete className="text-danger" size={18} />
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
 
-                        ) : (
-                          <SiImessage
-                            size={25}
-                            style={{ color: 'grey', cursor: 'not-allowed' }}
-                          />
-                        )}
-                      </td>
-                      <td>
-                        <span className='delete cursor-pointer text-danger me-2' onClick={() => {
-                          Swal.fire({
-                            title: "Are you sure?",
-                            text: "You won't be able to revert this!",
-                            icon: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3085d6",
-                            cancelButtonColor: "#d33",
-                            confirmButtonText: "Yes, delete it!"
-                          }).then((result) => {
-                            if (result.isConfirmed) {
-                              handleDelete(application.applicationId);
-                            }
-                          });
-                        }}>
-                          <MdDelete className="text-danger" size={18} />
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </div>
+              <Pagination
+                page={page}
+                pageSize={pageSize}
+                totalPages={totalPages}
+                handlePageSizeChange={handlePageSizeChange}
+                isPageSizeDisabled={isPageSizeDisabled}
+                handlePageClick={handlePageClick}
+              />
+            </>
+          ) : (
+            <h4 className='text-center'>No Applications Found..!!</h4>
+          )}
+        </div>
 
-            <Pagination
-              page={page}
-              pageSize={pageSize}
-              totalPages={totalPages}
-              handlePageSizeChange={handlePageSizeChange}
-              isPageSizeDisabled={isPageSizeDisabled}
-              handlePageClick={handlePageClick}
-            />
-          </>
-        ) : (
-          <h4 className='text-center'>No Applications Found..!!</h4>
+        {isChatOpen && (
+          <ChatComponent
+            applicationId={chatData.applicationId}
+            candidateId={chatData.candidateId}
+            hrId={chatData.hrId}
+            userType='Candidate'
+            setIsChatOpen={setIsChatOpen}
+          />
         )}
       </div>
-
-      {isChatOpen && (
-        <ChatComponent
-          applicationId={chatData.applicationId}
-          candidateId={chatData.candidateId}
-          hrId={chatData.hrId}
-          userType='Candidate'
-          setIsChatOpen={setIsChatOpen}
-        />
-      )}
     </DashboardLayout>
   );
 };

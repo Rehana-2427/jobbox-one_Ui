@@ -2,14 +2,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Row, Tab, Table, Tabs } from "react-bootstrap";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import Swal from "sweetalert2";
+import api from "../../apiClient";
 import Pagination from "../../Pagination";
 import './CandidateDashboard.css';
-import CandidateLeftSide from "./CandidateLeftSide";
-import ResumeSelectionPopup from "./ResumeSelectionPopup";
-import { toast, ToastContainer } from "react-toastify";
 import DashboardLayout from "./DashboardLayout";
+import ResumeSelectionPopup from "./ResumeSelectionPopup";
 
 const CompamyPage = () => {
   const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -47,44 +47,39 @@ const CompamyPage = () => {
     year: '',
     specialties: '',
   });
+  const { companyName } = useParams();  // Get companyName from URL
+
   const [selectedJob, setSelectedJob] = useState(null);
   console.log(companyId)
-  const fetchCompany = async () => {
+
+  const fetchCompany = async (companyName) => {
     try {
-      const response = await axios.get(
-        `${BASE_API_URL}/displayCompanyById?companyId=${companyId}`
-      );
-      setCompany(response.data);
+      const response = await api.getCompanyByCompanyName(companyName);  // Fetch company data using API
+      const companyData = response.data;
+      setCompanyInfo(response.data)
+      setCompany(companyData);
+      setCompanyLogo(companyData.companyLogo);
+      setCompanyBanner(companyData.companyBanner);
+      fetchCompanyLogo(companyName);
+      fetchCompanyBanner(companyName);
+      fetchSocialMediaLinks(companyName);
     } catch (error) {
       console.error('Error fetching company details:', error);
     }
   };
-  console.log(company?.companyName)
 
-  const fetchCompanyDetails = async () => {
-    try {
-      const response = await axios.get(`${BASE_API_URL}/getCompanyByName?companyName=${company?.companyName}`);
-      setCompanyInfo(response.data);
-    } catch (error) {
-      console.error('Error fetching company details:', error);
-    }
-  };
-
+  console.log(companyInfo)
   useEffect(() => {
-    fetchCompany();
-  }, [companyId]);
-
-
-  useEffect(() => {
-    if (company?.companyName) {
-      fetchCompanyDetails();
-      fetchCompanyLogo(company?.companyName);
-      fetchCompanyBanner(company?.companyName);
-      fetchSocialMediaLinks(company?.companyName)
-      fetchCountOfShortlistedCandidatesByCompany(userId, company?.companyName)
+    if (companyName) {
+      fetchData()
+      fetchCompany(companyName);
+      fetchCompanyLogo(companyName);
+      fetchCompanyBanner(companyName);
+      fetchSocialMediaLinks(companyName)
+      fetchCountOfShortlistedCandidatesByCompany(userId, companyName)
       checkHasUserDreamApplied();
     }
-  }, [company?.companyName, userId]);
+  }, [companyName, userId]);
 
 
   const fetchCompanyLogo = async (companyName) => {
@@ -111,67 +106,34 @@ const CompamyPage = () => {
     }
   };
 
-  const fetchCountOfApplicationByCompany = async () => {
+  const fetchData = async () => {
     try {
-      const response = await axios.get(
-        `${BASE_API_URL}/countOfApplicationsByCompany?companyId=${companyId}`
-      );
-      setCountOfApplications(response.data);
-    } catch (error) {
-      console.error('Error fetching count of applications:', error);
-    }
-  };
+      const fetchCountOfApplicationByCompany = await api.getCountOfApplicationsByCompany(companyName);
+      setCountOfApplications(fetchCountOfApplicationByCompany.data);
 
-  const fetchCountOfHRByCompany = async () => {
-    try {
-      const response = await axios.get(
-        `${BASE_API_URL}/countOfHRByCompany?companyId=${companyId}`
-      );
-      setCountOfHR(response.data);
-    } catch (error) {
-      console.error('Error fetching count of HRs:', error);
-    }
-  };
+      const fetchCountOfHRByCompany = await api.getCountOfHRByCompany(companyName);
+      setCountOfHR(fetchCountOfHRByCompany.data);
 
-  const fetchCountOfJobsByCompany = async () => {
-    try {
-      const response = await axios.get(
-        `${BASE_API_URL}/countOfJobsByCompany?companyId=${companyId}`
-      );
-      setCountOfJobs(response.data);
-    } catch (error) {
-      console.error('Error fetching count of jobs:', error);
-    }
-  };
+      const countOfJobsByCompany = await api.getCountOfActiveJobsByCompany(companyName);
+      setCountOfJobs(countOfJobsByCompany.data);
 
-  const fetchCountOfTotalJobsByCompany = async () => {
-    try {
-      const response = await axios.get(
-        `${BASE_API_URL}/countOfTotalJobsByCompany?companyId=${companyId}`
-      );
-      setCountOfTotalJobs(response.data);
+      const fetchCountOfTotalJobsByCompany = await api.getCountOfTotalJobsByCompany(companyName);
+      setCountOfTotalJobs(fetchCountOfTotalJobsByCompany.data);
     } catch (error) {
-      console.error('Error fetching count of jobs:', error);
+      console.error('Error fetching data:', error);
     }
   };
 
   const fetchCountOfShortlistedCandidatesByCompany = async () => {
     try {
       const response = await axios.get(
-        `${BASE_API_URL}/getCountOfTotalShortlistedApplicationCompany?userId=${userId}&companyName=${company?.companyName}`
+        `${BASE_API_URL}/getCountOfTotalShortlistedApplicationCompany?userId=${userId}&companyName=${companyName}`
       );
       setCountOfshortlistedApplications(response.data);
     } catch (error) {
       console.error('Error fetching count of jobs:', error);
     }
   };
-
-  useEffect(() => {
-    fetchCountOfApplicationByCompany();
-    fetchCountOfHRByCompany();
-    fetchCountOfJobsByCompany();
-    fetchCountOfTotalJobsByCompany()
-  }, [companyId]);
 
   const handlePageSizeChange = (e) => {
     const size = parseInt(e.target.value);
@@ -203,12 +165,12 @@ const CompamyPage = () => {
 
   useEffect(() => {
     fetchJobsByCompany();
-  }, [company?.companyName, page, pageSize, sortedColumn, sortOrder]);
+  }, [companyName, page, pageSize, sortedColumn, sortOrder]);
 
   async function fetchJobsByCompany() {
     try {
       const params = {
-        companyName: company?.companyName,
+        companyName: companyName,
         page: page,
         size: pageSize,
         sortBy: sortedColumn,
@@ -230,7 +192,7 @@ const CompamyPage = () => {
     const formattedDate = `${year}-${month}-${day}`;
     console.log(formattedDate); // Output: 2024-07-09 (example for today's date)
     try {
-      const response = await axios.put(`${BASE_API_URL}/applyDreamCompany?userId=${userId}&companyName=${company?.companyName}&formattedDate=${formattedDate}&resumeId=${resumeId}`);
+      const response = await axios.put(`${BASE_API_URL}/applyDreamCompany?userId=${userId}&companyName=${companyName}&formattedDate=${formattedDate}&resumeId=${resumeId}`);
       console.log(response.data);
       if (response.data) {
         Swal.close();
@@ -336,7 +298,7 @@ const CompamyPage = () => {
   const checkHasUserDreamApplied = async () => {
     try {
       const response = await axios.get(`${BASE_API_URL}/applicationDreamAplied`, {
-        params: { userId, companyName: company?.companyName }
+        params: { userId, companyName: companyName }
       });
       console.log("Has deam applied --> " + response.data)
       setHasDreamApplied(response.data);
@@ -354,7 +316,7 @@ const CompamyPage = () => {
 
   const handleResumeSelect = async (resume) => {
     const resumeId = resume.target.value
-setSelectedResume(resumeId);
+    setSelectedResume(resumeId);
     if (resumeId) {
       setResumeId(resumeId);
       setShowResumePopup(false);  // Close the resume selection popup
@@ -390,9 +352,7 @@ setSelectedResume(resumeId);
 
   const fetchSocialMediaLinks = async (companyName) => {
     try {
-      const response = await axios.get(`${BASE_API_URL}/getSocialMediaLinks`, {
-        params: { companyName },
-      });
+      const response = await api.getSocialMediaLinks(companyName);
       const { facebookLink, twitterLink, instagramLink, linkedinLink } = response.data;
       setSocialMediaLinks({
         facebookLink,
@@ -408,9 +368,6 @@ setSelectedResume(resumeId);
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
 
-  
-
-  
 
   const customTabHeader = (title, icon) => (
     <div className="d-flex align-items-center">
@@ -421,317 +378,317 @@ setSelectedResume(resumeId);
     </div>
   );
   return (
-   <DashboardLayout>
-        {showResumePopup && (
-          <ResumeSelectionPopup
-            resumes={resumes}
-            onSelectResume={handleResumeSelect}
-            show={true}
-            onClose={() => setShowResumePopup(false)}
-          />
-        )}
-        <div
-          className="small-screen-hr"
-          style={{
-            overflowY: 'auto',
-            paddingBottom: '20px',
-          }}
-        >
-          <Card style={{ width: '100%', height: '60%' }}>
-            <Card.Body style={{ padding: 0, position: 'relative' }}>
-              <div style={{ position: 'relative', height: '55%' }}>
-                <img
-                  src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
-                  alt="Company Banner"
-                  className="banner-image"
-                  onClick={() => ('banner')}
-                  style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
-                />
-              </div>
+    <DashboardLayout>
+      {showResumePopup && (
+        <ResumeSelectionPopup
+          resumes={resumes}
+          onSelectResume={handleResumeSelect}
+          show={true}
+          onClose={() => setShowResumePopup(false)}
+        />
+      )}
+      <div
+        className="small-screen-hr"
+        style={{
+          overflowY: 'auto',
+          paddingBottom: '20px',
+        }}
+      >
+        <Card style={{ width: '100%', height: '60%' }}>
+          <Card.Body style={{ padding: 0, position: 'relative' }}>
+            <div style={{ position: 'relative', height: '55%' }}>
+              <img
+                src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
+                alt="Company Banner"
+                className="banner-image"
+                onClick={() => ('banner')}
+                style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
+              />
+            </div>
 
-              <div style={{ position: 'absolute', top: '90%', left: '50px', transform: 'translateY(-50%)' }}>
-                <img
-                  src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
-                  alt="Company Logo"
-                  className="logo-image"
-                  style={{
-                    width: '200px',
-                    height: '120px',
-                    cursor: 'pointer',
-                    clipPath: 'ellipse(50% 50% at 50% 50%)',
-                    objectFit: 'cover',
-                  }}
-                />
-              </div>
-            </Card.Body>
-          </Card>
+            <div style={{ position: 'absolute', top: '90%', left: '50px', transform: 'translateY(-50%)' }}>
+              <img
+                src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
+                alt="Company Logo"
+                className="logo-image"
+                style={{
+                  width: '200px',
+                  height: '120px',
+                  cursor: 'pointer',
+                  clipPath: 'ellipse(50% 50% at 50% 50%)',
+                  objectFit: 'cover',
+                }}
+              />
+            </div>
+          </Card.Body>
+        </Card>
 
-
-          <Row className="hr-company_page-row2" style={{ marginTop: '50px' }}>
-       
-             <Col md={2}>
+        <Row style={{ marginTop: '50px', alignItems: 'center' }}>
+          <Col md={3} style={{ display: 'flex', alignItems: 'start', justifyContent: 'center', padding: '5px' }}>
+            <h2 style={{ paddingRight: '14px' }}><b>{companyName.toUpperCase()}</b></h2>
+          </Col>
+          <Col md={9} style={{ display: 'flex', alignItems: 'start' }}>
+            {socialMediaLinks.facebookLink && (
+              <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
+                <FaFacebook size={28} style={{ margin: '0 5px', color: '#3b5998' }} />
+              </a>
+            )}
+            {socialMediaLinks.twitterLink && (
+              <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
+                <FaTwitter size={28} style={{ margin: '0 5px', color: '#1da1f2' }} />
+              </a>
+            )}
+            {socialMediaLinks.instagramLink && (
+              <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
+                <FaInstagram size={28} style={{ margin: '0 5px', color: '#e4405f' }} />
+              </a>
+            )}
+            {socialMediaLinks.linkedinLink && (
+              <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
+                <FaLinkedin size={28} style={{ margin: '0 5px', color: '#0077b5' }} />
+              </a>
+            )}
+          </Col>
+        </Row>
+        <hr style={{ border: '1px solid black', margin: '30px 0' }} />
+        <Row className="hr-company_page-row2" style={{ marginTop: '50px' }}>
+          <Col md={2}>
             <Tabs
               defaultActiveKey="overview"
               id="uncontrolled-tab-example"
               onSelect={(key) => setActiveTab(key)} // This is the correct way to handle tab change
             >
               <Tab eventKey="overview" title={customTabHeader("About  ", "i-Atom")}>
-                 
-                </Tab>
-                <Tab eventKey="jobs" title={customTabHeader("Job  ", "i-Shutter")}>
-                 
-                </Tab>
-            </Tabs></Col>
-            <Col className="hr-company_page-row2-col3" style={{ textAlign: 'end', marginRight: '20px' }}>
-              <span style={{ marginLeft: '20px' }}>
-                <h4 style={{ paddingRight: '14px' }}><b>{company?.companyName}</b></h4>
-                {socialMediaLinks.facebookLink && (
-                  <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
-                    <FaFacebook size={24} style={{ margin: '0 5px', color: '#3b5998' }} />
-                  </a>
-                )}
-                {socialMediaLinks.twitterLink && (
-                  <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
-                    <FaTwitter size={24} style={{ margin: '0 5px', color: '#1da1f2' }} />
-                  </a>
-                )}
-                {socialMediaLinks.instagramLink && (
-                  <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
-                    <FaInstagram size={24} style={{ margin: '0 5px', color: '#e4405f' }} />
-                  </a>
-                )}
-                {socialMediaLinks.linkedinLink && (
-                  <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
-                    <FaLinkedin size={24} style={{ margin: '0 5px', color: '#0077b5' }} />
-                  </a>
-                )}
 
-              </span>
-            </Col>
-          </Row>
+              </Tab>
+              <Tab eventKey="jobs" title={customTabHeader("Job  ", "i-Shutter")}>
+              </Tab>
+            </Tabs>
+          </Col>
+        </Row>
 
 
-          <Row>
-            <Col xs={12} md={8}>
-              {activeTab === 'overview' && (
-                <>
-                  <div className='company-overview'>
-                    <Card className="job-details-text" style={{ width: '100%', height: "fit-content" }}>
-                      <Card.Body>
-                        <h3>About {company?.companyName} </h3>
-                        {companyInfo.overView && (
-                          <p><strong>Overview:</strong> {companyInfo.overView}</p>
-                        )}
-                        {companyInfo.websiteLink && (
-                          <p><strong>Website:</strong> <a href={companyInfo.websiteLink} target="_blank" rel="noopener noreferrer">{companyInfo.websiteLink}</a></p>
-                        )}
-                        {companyInfo.industryService && (
-                          <p><strong>Industry Service:</strong> {companyInfo.industryService}</p>
-                        )}
-                        {companyInfo.companySize && companyInfo.companySize !== '0' && (
-                          <p><strong>Company Size:</strong> {companyInfo.companySize}</p>
-                        )}
-                        {companyInfo.headquaters && (
-                          <p><strong>Headquarters:</strong> {companyInfo.headquaters}</p>
-                        )}
-                        {companyInfo.year && companyInfo.year !== '0' && (
-                          <p><strong>Year Founded:</strong> {companyInfo.year}</p>
-                        )}
-                        {companyInfo.specialties && (
-                          <p><strong>Specialties:</strong> {companyInfo.specialties}</p>
-                        )}
-                      </Card.Body>
-                    </Card>
-                  </div>
-                </>
-              )}
-              {activeTab === 'jobs' && (
-                <>
-                  <div className="company-job" style={{ marginTop: '20px', width: '100%', height: "fit-content" }}>
-                    {!selectedJob ? (
-                      <div className="jobs_list">
-                        {jobs.length > 0 && (
-                          <div>
-                            <div className="table-details-list table-wrapper">
-                              <Table hover className='text-center' style={{ marginLeft: '5px', marginRight: '12px' }}>
-                                <thead className="table-light">
-                                  <tr>
-                                    <th scope='col' onClick={() => handleSort('jobTitle')}>
-                                      Job Profile   {sortedColumn === 'jobTitle' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
-                                    </th>
-                                    <th scope='col' onClick={() => handleSort('applicationDeadline')}>
-                                      Application Deadline   {sortedColumn === 'applicationDeadline' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
-                                    </th>
-                                    <th scope='col' onClick={() => handleSort('skills')}>
-                                      Skills   {sortedColumn === 'skills' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
-                                    </th>
-                                    <th scope='col'>Job Summary</th>
-                                    <th scope='col'>Actions</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {jobs.map(job => (
-                                    <tr key={job.id} id='job-table-list'>
-                                      <td
-                                        title={job.jobCategory === "evergreen" && !job.applicationDeadline ?
-                                          "This position is always open for hiring, feel free to apply anytime!" :
-                                          ""
-                                        }
-                                      >
-                                        {job.jobTitle}
-                                      </td>
-                                      <td>
-                                        {job.jobCategory === "evergreen" && !job.applicationDeadline ? (
-                                          <span style={{ color: 'green', fontWeight: 'bold' }} title="This position is always open for hiring, feel free to apply anytime!">
-                                            Evergreen Job - No Due Date
-                                          </span>
-                                        ) : (
-                                          job.applicationDeadline || 'Not Specified'
-                                        )}
-                                      </td>
-
-                                      <td>{job.skills}</td>
-                                      <td>
-                                        <Button variant="secondary" className='description btn-rounded' onClick={() => handleViewSummary(job)}>View</Button>
-                                      </td>                                <td>
-                                        {hasUserApplied[job.jobId] === true || (applyjobs && applyjobs.jobId === job.jobId) ? (
-                                          <p>Applied</p>
-                                        ) : (
-                                          <Button onClick={() => handleApplyButtonClick(job.jobId)}>Apply</Button>
-                                        )}
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </Table>
-                            </div>
-                            <Pagination
-                              page={page}
-                              pageSize={pageSize}
-                              totalPages={totalPages}
-                              handlePageSizeChange={handlePageSizeChange}
-                              isPageSizeDisabled={isPageSizeDisabled}
-                              handlePageClick={handlePageClick}
-                            />
-                          </div>
-                        )}
-                        {jobs.length === 0 && <h1>No jobs found.</h1>}
-                      </div>
-                    ) : (
-                      <div className="selected-job-details">
-                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                          <Button
-                            variant="primary"
-                            onClick={handleBackToList}
-                          >
-                            Back to Jobs
-                          </Button>
-                        </div>
-                        <h3>Job Details</h3>
-                        <p><strong>Title:</strong> {selectedJob.jobTitle}</p>
-                        <p><strong>Type:</strong> {selectedJob.jobType}</p>
-                        <p><strong>Skills:</strong> {selectedJob.skills}</p>
-                        <p><strong>Posting Date:</strong> {selectedJob.postingDate}</p>
-                        <p><strong>Vacancy:</strong> {selectedJob.numberOfPosition}</p>
-                        <p><strong>Salary:</strong> {selectedJob.salary}</p>
-                        <p><strong>Location:</strong> {selectedJob.location}</p>
-                        <strong>Job Summary:</strong>
-                        <pre className="job-details-text">
-                          {selectedJob.jobsummary}
-                        </pre>
-                        <p><strong>Application Deadline:</strong> {selectedJob.applicationDeadline}</p>
-                      </div>
-                    )}
-                  </div>
-                </>
-              )}
-            </Col>
-            <Col xs={12} md={4}>
-              <Card className='key-stats' style={{ width: '80%', height: 'fit-content' }}>
-                <Card.Body>
-                  <Row className="mb-3">
-                    <Col>
-                      {hasDreamApplied === true ? (
-                        <p style={{
-                          color: '#28a745', /* Green color for the text */
-                          fontSize: '18px', /* Larger font size */
-                          fontWeight: 'bold', /* Bold text */
-                          backgroundColor: '#e9f5e9', /* Light green background color */
-                          padding: '10px',
-                          borderRadius: '5px', /* Rounded corners */
-                          textAlign: 'left', /* Center-align the text */
-                          margin: '10px 0', /* Margin above and below the paragraph */
-                          boxShadow: 'rgba(0, 0, 0, 0.1)', /* Subtle shadow effect */
-                          width: '100px'
-                        }}>
-                          Applied
-                        </p>
-                      ) : (
-                        <>
-                          <div className="resume-dropdown-container">
-                            <h5 className="fw-bold">Select Resume</h5>
-                            <select
-                              id="resumeSelect"
-                              value={selectedResume}
-                              onChange={handleResumeSelect}
-                              required
-                              className="form-select"
-                            >
-                              <option value="">Select Resume</option>
-                              {resumes.map((resume) => (
-                                <option key={resume.id} value={resume.id}>
-                                  {resume.message}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                          <Button
-                            variant="success"
-                            onClick={handleApplyCompany}
-                            disabled={!selectedResume} // This disables the button if selectedResume is empty
-                          >
-                            Apply
-                          </Button>
-
-                        </>
+        <Row>
+          <Col xs={12} md={8}>
+            {activeTab === 'overview' && (
+              <>
+                <div className='company-overview'>
+                  <Card className="job-details-text" style={{ width: '100%', height: "fit-content" }}>
+                    <Card.Body>
+                      <h3>About {companyName} </h3>
+                      {companyInfo.overView && (
+                        <p><strong>Overview:</strong> {companyInfo.overView}</p>
                       )}
-                    </Col>
-                  </Row>
-                  <h1>Other Information</h1>
-                  <Row className="mb-2">
-                    <Col>
-                      <h5>Applicants: {countOfApplications}</h5>
-                    </Col>
-                  </Row>
-                  <Row className="mb-2">
-                    <Col>
-                      <h5>Total HR's: {countOfHR}</h5>
-                    </Col>
-                  </Row>
-                  <Row className="mb-2">
-                    <Col>
-                      <h5>Total Jobs:{countOfTotalJobs}</h5>
-                    </Col>
-                  </Row>
-                  <Row className="mb-2">
-                    <Col>
-                      <h5>Key Stats:</h5>
-                      <ul>
-                        <li>Active Job Postings:{countOfJobs}</li> {/* Placeholder values */}
-                        <li>Shortlisted Applications:{countOfshortlistedApplications} </li>
-                        <li>Avg. Time to Fill a Job: 7 days</li>
-                      </ul>
-                    </Col>
-                  </Row>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        </div>
-        <div>
-          <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
-        </div>
-        </DashboardLayout>
+                      {companyInfo.websiteLink && (
+                        <p><strong>Website:</strong> <a href={companyInfo.websiteLink} target="_blank" rel="noopener noreferrer">{companyInfo.websiteLink}</a></p>
+                      )}
+                      {companyInfo.industryService && (
+                        <p><strong>Industry Service:</strong> {companyInfo.industryService}</p>
+                      )}
+                      {companyInfo.companySize && companyInfo.companySize !== '0' && (
+                        <p><strong>Company Size:</strong> {companyInfo.companySize}</p>
+                      )}
+                      {companyInfo.headquaters && (
+                        <p><strong>Headquarters:</strong> {companyInfo.headquaters}</p>
+                      )}
+                      {companyInfo.year && companyInfo.year !== '0' && (
+                        <p><strong>Year Founded:</strong> {companyInfo.year}</p>
+                      )}
+                      {companyInfo.specialties && (
+                        <p><strong>Specialties:</strong> {companyInfo.specialties}</p>
+                      )}
+                    </Card.Body>
+                  </Card>
+                </div>
+              </>
+            )}
+            {activeTab === 'jobs' && (
+              <>
+                <div className="company-job" style={{ marginTop: '20px', width: '100%', height: "fit-content" }}>
+                  {!selectedJob ? (
+                    <div className="jobs_list">
+                      {jobs.length > 0 && (
+                        <div>
+                          <div className="table-details-list table-wrapper">
+                            <Table hover className='text-center' style={{ marginLeft: '5px', marginRight: '12px' }}>
+                              <thead className="table-light">
+                                <tr>
+                                  <th scope='col' onClick={() => handleSort('jobTitle')}>
+                                    Job Profile   {sortedColumn === 'jobTitle' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
+                                  </th>
+                                  <th scope='col' onClick={() => handleSort('applicationDeadline')}>
+                                    Application Deadline   {sortedColumn === 'applicationDeadline' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
+                                  </th>
+                                  <th scope='col' onClick={() => handleSort('skills')}>
+                                    Skills   {sortedColumn === 'skills' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}
+                                  </th>
+                                  <th scope='col'>Job Summary</th>
+                                  <th scope='col'>Actions</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {jobs.map(job => (
+                                  <tr key={job.id} id='job-table-list'>
+                                    <td
+                                      title={job.jobCategory === "evergreen" && !job.applicationDeadline ?
+                                        "This position is always open for hiring, feel free to apply anytime!" :
+                                        ""
+                                      }
+                                    >
+                                      {job.jobTitle}
+                                    </td>
+                                    <td>
+                                      {job.jobCategory === "evergreen" && !job.applicationDeadline ? (
+                                        <span style={{ color: 'green', fontWeight: 'bold' }} title="This position is always open for hiring, feel free to apply anytime!">
+                                          Evergreen Job - No Due Date
+                                        </span>
+                                      ) : (
+                                        job.applicationDeadline || 'Not Specified'
+                                      )}
+                                    </td>
+
+                                    <td>{job.skills}</td>
+                                    <td>
+                                      <Button variant="secondary" className='description btn-rounded' onClick={() => handleViewSummary(job)}>View</Button>
+                                    </td>                                <td>
+                                      {hasUserApplied[job.jobId] === true || (applyjobs && applyjobs.jobId === job.jobId) ? (
+                                        <p>Applied</p>
+                                      ) : (
+                                        <Button onClick={() => handleApplyButtonClick(job.jobId)}>Apply</Button>
+                                      )}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </Table>
+                          </div>
+                          <Pagination
+                            page={page}
+                            pageSize={pageSize}
+                            totalPages={totalPages}
+                            handlePageSizeChange={handlePageSizeChange}
+                            isPageSizeDisabled={isPageSizeDisabled}
+                            handlePageClick={handlePageClick}
+                          />
+                        </div>
+                      )}
+                      {jobs.length === 0 && <h1>No jobs found.</h1>}
+                    </div>
+                  ) : (
+                    <div className="selected-job-details">
+                      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <Button
+                          variant="primary"
+                          onClick={handleBackToList}
+                        >
+                          Back to Jobs
+                        </Button>
+                      </div>
+                      <h3>Job Details</h3>
+                      <p><strong>Title:</strong> {selectedJob.jobTitle}</p>
+                      <p><strong>Type:</strong> {selectedJob.jobType}</p>
+                      <p><strong>Skills:</strong> {selectedJob.skills}</p>
+                      <p><strong>Posting Date:</strong> {selectedJob.postingDate}</p>
+                      <p><strong>Vacancy:</strong> {selectedJob.numberOfPosition}</p>
+                      <p><strong>Salary:</strong> {selectedJob.salary}</p>
+                      <p><strong>Location:</strong> {selectedJob.location}</p>
+                      <strong>Job Summary:</strong>
+                      <pre className="job-details-text">
+                        {selectedJob.jobsummary}
+                      </pre>
+                      <p><strong>Application Deadline:</strong> {selectedJob.applicationDeadline}</p>
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
+          </Col>
+          <Col xs={12} md={4}>
+            <Card className='key-stats' style={{ width: '80%', height: 'fit-content' }}>
+              <Card.Body>
+                <Row className="mb-3">
+                  <Col>
+                    {hasDreamApplied === true ? (
+                      <p style={{
+                        color: '#28a745', /* Green color for the text */
+                        fontSize: '18px', /* Larger font size */
+                        fontWeight: 'bold', /* Bold text */
+                        backgroundColor: '#e9f5e9', /* Light green background color */
+                        padding: '10px',
+                        borderRadius: '5px', /* Rounded corners */
+                        textAlign: 'left', /* Center-align the text */
+                        margin: '10px 0', /* Margin above and below the paragraph */
+                        boxShadow: 'rgba(0, 0, 0, 0.1)', /* Subtle shadow effect */
+                        width: '100px'
+                      }}>
+                        Applied
+                      </p>
+                    ) : (
+                      <>
+                        <div className="resume-dropdown-container">
+                          <h5 className="fw-bold">Select Resume</h5>
+                          <select
+                            id="resumeSelect"
+                            value={selectedResume}
+                            onChange={handleResumeSelect}
+                            required
+                            className="form-select"
+                          >
+                            <option value="">Select Resume</option>
+                            {resumes.map((resume) => (
+                              <option key={resume.id} value={resume.id}>
+                                {resume.message}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <Button
+                          variant="success"
+                          onClick={handleApplyCompany}
+                          disabled={!selectedResume} // This disables the button if selectedResume is empty
+                        >
+                          Apply
+                        </Button>
+
+                      </>
+                    )}
+                  </Col>
+                </Row>
+                <h1>Other Information</h1>
+                <Row className="mb-2">
+                  <Col>
+                    <h5>Applicants: {countOfApplications}</h5>
+                  </Col>
+                </Row>
+                <Row className="mb-2">
+                  <Col>
+                    <h5>Total HR's: {countOfHR}</h5>
+                  </Col>
+                </Row>
+                <Row className="mb-2">
+                  <Col>
+                    <h5>Total Jobs:{countOfTotalJobs}</h5>
+                  </Col>
+                </Row>
+                <Row className="mb-2">
+                  <Col>
+                    <h5>Key Stats:</h5>
+                    <ul>
+                      <li>Active Job Postings:{countOfJobs}</li> {/* Placeholder values */}
+                      <li>Shortlisted Applications:{countOfshortlistedApplications} </li>
+                      <li>Avg. Time to Fill a Job: 7 days</li>
+                    </ul>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </div>
+      <div>
+        <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
+      </div>
+    </DashboardLayout>
   );
 };
 export default CompamyPage;

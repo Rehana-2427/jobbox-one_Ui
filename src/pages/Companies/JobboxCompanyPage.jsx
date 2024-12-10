@@ -89,8 +89,6 @@ const JobboxCompanyPage = () => {
         if (storedPageSize) {
           setPageSize(Number(storedPageSize));
         }
-
-
         const response = await api.fetchCompanies({
           search,
           page: storedPage ? Number(storedPage) : page,
@@ -124,27 +122,29 @@ const JobboxCompanyPage = () => {
 
   const handlePageSizeChange = (e) => {
     const size = parseInt(e.target.value, 10);
-    // localStorage.setItem('currentCompanyPageSize', size);
     setPageSize(size);
     setPage(0);
   };
 
+  // const handleClick = (companyId) => {
+  //   navigate("/companyPage", { state: { companyId } });
+  // };
   const handleClick = (companyId) => {
-    navigate("/jobboxCompanyPage/eachCompanyPage", { state: { companyId } });
+    const company = companies.find((company) => company.companyId === companyId);
+    if (company) {
+      const encodedCompanyName = encodeURIComponent(company.companyName); // Encode the company name
+      navigate(`/companyPage/companyName/${encodedCompanyName}`, { state: { companyId } });
+      // Trigger a page reload after navigating
+      window.location.reload();
+    } else {
+      console.error("Company not found!");
+    }
   };
+
+
 
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
-
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => setScreenWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // const navLinkStyle = screenWidth > 990 ? { marginRight: '40px', marginLeft: '150px' } : {};
 
   return (
     <div className="top-right-content">
@@ -152,9 +152,6 @@ const JobboxCompanyPage = () => {
 
       <div className="companyJob" style={{ marginTop: '100px' }}>
 
-        {/* <div style={{border:'1px solid red'}}> */}
-
-        {/* Filter Options*/}
         <div className="d-flex flex-column justify-content-between" >
           <h3 style={{ paddingTop: '20px' }}>Filter Options</h3>
           <Row
@@ -317,7 +314,6 @@ const JobboxCompanyPage = () => {
             </Col>
           </Row>
 
-
           {/* Company Cards Section */}
           <div className="cards flex-grow-1 d-flex flex-wrap justify-content-start" style={{ minHeight: 'fit-content', width: '100%', marginLeft: '45px' }}>
             {companies.length > 0 ? (
@@ -352,8 +348,6 @@ const JobboxCompanyPage = () => {
             handlePageClick={handlePageClick}
           />
         )}
-
-
       </div>
       <div >
         <HomeFooter />

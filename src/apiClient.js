@@ -53,6 +53,14 @@ const api = {
   //update password
   updatePassword: (userEmail, password) => apiClient.put('/updatePassword', userEmail, password),
 
+  //get companydetails by name
+  getCompanyByCompanyName: (companyName) => {
+    return apiClient.get(`/getCompanyByName/${encodeURIComponent(companyName)}`);
+  },
+
+  checkCompanyByName: (companyName) => {
+    return apiClient.get(`/checkCompanyByName?companyName=${encodeURIComponent(companyName)}`);
+  },
   //get list of company logos
   getCompanyLogos: () => {
     return apiClient.get('/companylogos');
@@ -128,31 +136,31 @@ const api = {
 
 
   //count of applicants in a company
-  getCountOfApplicationsByCompany: (companyId) => {
+  getCountOfApplicationsByCompany: (companyName) => {
     return apiClient.get('/countOfApplicationsByCompany', {
-      params: { companyId }
+      params: { companyName }
     })
   },
 
   //count of hrs  in a company
-  getCountOfHRByCompany: (companyId) => {
-    return apiClient.get('/countOfHRByCompany', {
-      params: { companyId }
+  getCountOfHRByCompany: (companyName) => {
+    return apiClient.get('/countOfHRSInCompany', {
+      params: { companyName }
     })
   },
 
   //count of Jobs active in a company
-  getCountOfActiveJobsByCompany: (companyId) => {
+  getCountOfActiveJobsByCompany: (companyName) => {
     return apiClient.get('/countOfJobsByCompany', {
-      params: { companyId }
+      params: { companyName }
     })
   },
 
 
   //count of Toatl Jobs posted by the company
-  getCountOfTotalJobsByCompany: (companyId) => {
+  getCountOfTotalJobsByCompany: (companyName) => {
     return apiClient.get('/countOfTotalJobsByCompany', {
-      params: { companyId }
+      params: { companyName }
     })
   },
 
@@ -171,9 +179,9 @@ const api = {
   },
 
   // Define the API method for getting jobs posted by a company
-  getJobsPostedByCompany: (companyId, page, pageSize, sortedColumn, sortOrder) => {
+  getJobsPostedByCompany: (companyName, page, pageSize, sortedColumn, sortOrder) => {
     return apiClient.get('/jobsPostedCompany', {
-      params: { companyId, page, pageSize, sortedColumn, sortOrder },
+      params: { companyName, page, pageSize, sortedColumn, sortOrder },
     });
   },
 

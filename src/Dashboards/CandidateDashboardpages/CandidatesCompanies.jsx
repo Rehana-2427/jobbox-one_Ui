@@ -1,13 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-import { Button, Dropdown, Table } from 'react-bootstrap';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Button, Col, Row, Table } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { useAuth } from '../../AuthProvider';
 import Pagination from '../../Pagination';
 import './CandidateDashboard.css';
-import CandidateLeftSide from './CandidateLeftSide';
 import DashboardLayout from './DashboardLayout';
 
 const CandidatesCompanies = () => {
@@ -39,8 +37,6 @@ const CandidatesCompanies = () => {
     const size = parseInt(e.target.value);
     setPageSize(size);
     setPage(0); // Reset page when page size changes
-    // localStorage.setItem('currentCandidateCompanyPage', 0); // Store the page number in localStorage
-
   };
 
   console.log(appliedCompany)
@@ -48,7 +44,6 @@ const CandidatesCompanies = () => {
     if (appliedCompany && !search) {
       fetchDataByAppliedCompanies();
     } else {
-
       fetchData();
     }
   }, [search, page, pageSize, sortOrder, sortedColumn]);
@@ -82,7 +77,6 @@ const CandidatesCompanies = () => {
       const url = search
         ? `${BASE_API_URL}/searchCompany`
         : `${BASE_API_URL}/companiesList`;
-
       const params = {
         search,
         page: page,
@@ -90,7 +84,6 @@ const CandidatesCompanies = () => {
         sortBy: sortedColumn,
         sortOrder: sortOrder,
       };
-
       console.log("Fetching data with params:", params);
       const response = await axios.get(url, { params });
       if (response.data.content.length === 0) {
@@ -118,56 +111,70 @@ const CandidatesCompanies = () => {
       }
     }
   }, [totalPages]); // Make sure to include totalPages dependency to sync the state
+  
+  // const handleClick = (companyId) => {
+  //   navigate("/candidate-dashboard/companyPage", { state: { companyId: companyId, userName: userName, userId: userId } });
+  // };
   const handleClick = (companyId) => {
-    navigate("/candidate-dashboard/companyPage", { state: { companyId: companyId, userName: userName, userId: userId } });
+    const company = companies.find((company) => company.companyId === companyId);
+    if (company) {
+      const encodedCompanyName = encodeURIComponent(company.companyName); // Encode the company name
+      navigate(`/candidate-dashboard/companyPage/companyName/${encodedCompanyName}`, { state: { companyId ,companyId: companyId, userName: userName, userId: userId } });
+      // Trigger a page reload after navigating
+      window.location.reload();
+    } else {
+      console.error("Company not found!");
+    }
   };
 
   const user = {
     userName: userName,
     userId: userId,
   };
-
-
-
-
-
-
-
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
 
-
-
- 
- 
-
   return (
     <DashboardLayout>
-      <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-        <div className="search-bar">
-          <input
-            style={{ borderRadius: '6px', height: '35px' }}
-            type="text"
-            name="search"
-            placeholder="Search"
-            value={search}
-            onChange={handleSearchChange}
-          />
-        </div>
-      </div>
       <div className="main-content">
+        <Row>
+          <Col md={4}>
+            <h2 className='text-start'> Companies For {userName}</h2>
+          </Col>
+          <Col md={3} className="d-flex align-items-left">
+            {/* Search Bar */}
+            <div className="search-bar" style={{ flex: 1 }}>
+              <input
+                style={{ borderRadius: '6px', height: '35px', width: '70%', marginRight: '20px' }}
+                type="text"
+                name="search"
+                placeholder="Search"
+                value={search}
+                onChange={handleSearchChange}
+              />
+            </div>
+          </Col>
+        </Row>
+
         {companies.length > 0 ? (
           <div className='table-details-list table-wrapper'>
-            <h2> Companies For {userName}</h2>
-            <p>
-              Similar to tables and dark tables, use the modifier classes
-              <code>.table-light</code> to make <code>thead</code> appear light
-            </p>
             <Table hover className='text-center'>
               <thead className="table-light">
                 <tr>
-                  <th scope="col" onClick={() => handleSort('companyName')}>Company Name {sortedColumn === 'companyName' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}</th>
-                  <th scope="col" onClick={() => handleSort('industryService')}>Industry {sortedColumn === 'industryService' ? (sortOrder === 'asc' ? '▲' : '▼') : '↑↓'}</th>
+                  <th scope="col" onClick={() => handleSort('companyName')} style={{ cursor: 'pointer' }}>
+                    Company Name{' '}
+                    <span>
+                      <span style={{ color: sortedColumn === 'companyName' && sortOrder === 'asc' ? 'black' : 'gray', }}>↑</span>{' '}
+                      <span style={{ color: sortedColumn === 'companyName' && sortOrder === 'desc' ? 'black' : 'gray', }}>↓</span>
+                    </span>
+                  </th>
+                  <th scope="col" onClick={() => handleSort('industryService')} style={{ cursor: 'pointer' }}>
+                    Industry{' '}
+                    <span>
+                      <span style={{ color: sortedColumn === 'industryService' && sortOrder === 'asc' ? 'black' : 'gray', }}>↑</span>{' '}
+                      <span style={{ color: sortedColumn === 'industryService' && sortOrder === 'desc' ? 'black' : 'gray', }}>↓</span>
+                    </span>
+                  </th>
                   <th>Actions</th>
                 </tr>
               </thead>

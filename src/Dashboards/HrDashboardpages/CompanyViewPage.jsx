@@ -120,7 +120,7 @@ const CompanyViewPage = () => {
 
     return (
         <div className='company-overview'>
-            <Card style={{ marginTop: '20px', width: '100%', height: "fit-content" }}>
+            <Card style={{ marginTop: '0px', width: '100%', height: "fit-content" }}>
                 <Card.Body>
                     {companyInfoEditMode ? (
                         <Form>

@@ -1,7 +1,8 @@
 import { faBuilding, faEnvelope, faFile, faFileLines, faLayerGroup, faMoneyCheckDollar, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box } from '@mui/material';
-import { Nav } from 'react-bootstrap';
+import React, { useEffect, useRef, useState } from 'react';
+import { Nav, Navbar } from 'react-bootstrap';
 import { RxDashboard } from 'react-icons/rx';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState, useRef } from 'react';
@@ -117,26 +118,27 @@ function CandidateLeftSide({ user, isOpen }) {
 
     return (
         <div
-            className={`sidebar-left ${isOpen ? 'open' : 'closed'}`}
-            style={{
-                position: 'fixed',
-                top: '80px',
-                left: isOpen ? '0' : '-150px',
-                width: '150px',
-                height: '100vh',
-                backgroundColor: '#f4f4f4',
-                overflowX: 'hidden',
-                overflowY: 'auto',
-                boxShadow: isOpen ? '2px 0 5px rgba(0,0,0,0.1)' : 'none',
-                transition: 'left 0.3s ease-in-out',
-                padding: '10px',
-            }}
-            ref={scrollContainerRef}
-        >
+        className={`sidebar-left ${isOpen ? 'open' : 'closed'}`}
+        style={{
+            position: 'fixed',
+            top: '80px',
+            left: isOpen ? '0' : '-150px',
+            width: '180px',
+            height: '100vh',
+            backgroundColor: '#f4f4f4',
+            overflowX: 'hidden',
+            overflowY: 'auto',
+            boxShadow: isOpen ? '2px 0 5px rgba(0,0,0,0.1)' : 'none',
+            transition: 'left 0.3s ease-in-out',
+            padding: '10px',
+        }}
+    >
+        <Navbar.Text>
             <Box sx={{ textAlign: 'center', marginBottom: '16px' }}>
                 <Box sx={{ fontSize: '24px', fontWeight: 'bold' }}>{user.userName}</Box>
                 <Box sx={{ borderBottom: '1px solid gray', marginTop: '8px', marginX: 'auto', width: '80%' }} />
             </Box>
+            </Navbar.Text>
             {renderNavLinks()}
         </div>
     );

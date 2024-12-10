@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Pagination from '../../Pagination';
 import api from '../../apiClient';
 
-const CompanyJobs = ({ companyId }) => {
-  const BASE_API_URL = process.env.REACT_APP_API_URL;
+const CompanyJobs = () => {
   const [jobs, setJobs] = useState([]);
   const [sortedColumn, setSortedColumn] = useState(null); // Track the currently sorted column
   const [sortOrder, setSortOrder] = useState(' '); // Track the sort order (asc or desc)
@@ -13,6 +12,8 @@ const CompanyJobs = ({ companyId }) => {
   const [pageSize, setPageSize] = useState(6);
   const [totalPages, setTotalPages] = useState(0);
   const [selectedJob, setSelectedJob] = useState(null);
+  const { companyName } = useParams();  // Get companyName from URL
+  console.log(companyName)
 
   const handlePageSizeChange = (e) => {
     const size = parseInt(e.target.value);
@@ -35,25 +36,27 @@ const CompanyJobs = ({ companyId }) => {
 
   const fetchJobs = useCallback(async () => {
     try {
-      const params = {
-        companyId: companyId,
-        page: page,
-        size: pageSize,
-        sortBy: sortedColumn, // Include sortedColumn and sortOrder in params
-        sortOrder: sortOrder,
-      };
-
-      const response = await api.getJobsPostedByCompany(companyId, page, pageSize, sortedColumn, sortOrder);
+      const response = await api.getJobsPostedByCompany(
+        companyName,
+        page,
+        pageSize,
+        sortedColumn,
+        sortOrder
+      );
+      
+      console.log('Jobs Response: ', response.data); // Check the full response
+  
       setJobs(response.data.content);
       setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error('Error fetching jobs data:', error);
     }
-  }, [companyId, page, pageSize, sortedColumn, sortOrder]);
-
+  }, [companyName, page, pageSize, sortedColumn, sortOrder]);
+  
+  
   useEffect(() => {
     fetchJobs();
-  }, [fetchJobs, page, pageSize, sortedColumn, sortOrder]);
+  }, [companyName, page, pageSize, sortedColumn, sortOrder]);
 
   const handleBackToList = () => {
     setSelectedJob(null); // Reset selectedJob to show the job list again
@@ -110,8 +113,7 @@ const CompanyJobs = ({ companyId }) => {
                         <Link
                           to={`/jobboxCompanyPage/eachCompanyPage/publicJobDetailsPage`}
                           state={{
-                            companyName: job.companyName,
-                            companyId: companyId,
+                            companyName: companyName,
                             jobId: job.jobId,
                           }}
                           className='btn btn-secondary btn-rounded'

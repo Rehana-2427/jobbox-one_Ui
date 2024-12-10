@@ -20,7 +20,7 @@ const pages = [
     { name: "Home", link: "/" },
     { name: "About Jobbox", link: "/about-jobbox" },
     { name: "About Us", link: "/aboutus" },
-    { name: "Companies", link: "/jobdbcompanies" },
+    { name: "Companies", link: "/jobboxcompanies" },
 ];
 
 const DrawerComp = () => {

@@ -143,20 +143,21 @@ const DreamApplication = () => {
   }, [userEmail, page, pageSize, search, filterStatus, fromDate, toDate]);
   const fetchApplications = async () => {
     try {
-      const params = {
-        userEmail: userEmail,
-        page: page,
-        size: pageSize,
+        const params = {
+            userEmail: userEmail,
+            page: page,
+            size: pageSize,
+        };
 
-      };
-
-      const response = await axios.get(`${BASE_API_URL}/getDreamApplicationsByCompany`, { params }); console.log(response.data);
-      setApplications(response.data.content);
-      setTotalPages(response.data.totalPages)
+        const response = await axios.get(`${BASE_API_URL}/getDreamApplicationsByCompany`, { params });
+        console.log(response.data);
+        setApplications(response.data.content);
+        setTotalPages(response.data.totalPages);
     } catch (error) {
-      console.log(error);
+        console.log(error);
     }
-  };
+};
+
   const fetchApplicationBysearch = async (search) => {
     try {
       const params = {
@@ -634,12 +635,12 @@ const DreamApplication = () => {
                     <th>Candidate Name</th>
                     <th>Candidate Email</th>
                     <th>Resume ID</th>
-                    <th scope="col" onClick={() => handleSort('appliedOn')}> Date {sortedColumn === 'appliedOn' && sortOrder === 'asc' && '▲'}
-                      {sortedColumn === 'appliedOn' && sortOrder === 'desc' && '▼'}</th>
+                    <th>Date</th>
                     <th>Action</th>
                     <th scope="col">Chat</th>
                   </tr>
                 </thead>
+
                 <tbody>
                   {applications.map(application => (
                     <tr key={application.id}>

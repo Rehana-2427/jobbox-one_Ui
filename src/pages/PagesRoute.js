@@ -9,6 +9,7 @@ import About from './About';
 import AboutJobbox from './AboutJobbox';
 import BrowseJobs from './BrowseJobs';
 import CompanRoute from './Companies/CompanRoute';
+import CompanyOverView from './Companies/CompanyOverView';
 import EachCompanyPage from './Companies/EachCompanyPage';
 import JobboxCompanyPage from './Companies/JobboxCompanyPage';
 import PublicJobDetailsPage from './Companies/PublicJobDetailsPage';
@@ -29,7 +30,6 @@ import UserRoute from './Session/UserRoute';
 import UserSignin from './Session/UserSignin';
 import Settings from './Settings';
 import TermsAndConditions from './TermsAndConditions';
-import CompanyOverView from './Companies/CompanyOverView';
 
 
 
@@ -59,8 +59,8 @@ const PagesRoute = () => {
           <Route path='/browse-jobs' element={<BrowseJobs />} />
 
           <Route path='/browse-jobs/job-details' element={<Jobdetails />} />
-          <Route path='/jobdbcompanies' element={<JobboxCompanyPage />} />
-          <Route path="/jobboxCompanyPage/eachCompanyPage" element={<EachCompanyPage />} />
+          <Route path='/jobboxcompanies' element={<JobboxCompanyPage />} />
+          <Route path="/companyPage/companyName/:companyName" element={<EachCompanyPage />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/terms-and-conditions' element={<TermsAndConditions />} />
           <Route path='/privacy-and-policy' element={<PrivacyPolicy />} />
