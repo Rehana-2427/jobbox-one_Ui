@@ -26,17 +26,7 @@ function CandidateLeftSide({ user, isOpen }) {
 
     const scrollContainerRef = useRef(null);
 
-    // Handle resizing of the screen to adjust layout accordingly
-    useEffect(() => {
-        const handleResize = () => {
-            setIsSmallScreen(window.innerWidth <= 900);
-        };
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
+    
 // Scroll position persistence
 useEffect(() => {
     // Restore scroll position when component mounts or location changes

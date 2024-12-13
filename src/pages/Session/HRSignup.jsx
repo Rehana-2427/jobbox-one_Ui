@@ -1,5 +1,5 @@
 
-import { Field, Formik } from 'formik'
+import { Field, Form, Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import { Button, Card, Col, Modal, Row } from 'react-bootstrap'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -108,7 +108,8 @@ const HRSignup = () => {
 
     // Function to handle form submission
     const handleSubmit = async (values, { setSubmitting }) => {
-        debugger
+        
+        console.log("values")
         setSubmitting(true);
 
         console.log("Form values before submission:", values);
@@ -276,7 +277,7 @@ const HRSignup = () => {
                                     <div className="auth-logo text-center mt-4">
                                         <img src="/jb_logo.png" alt="jobbox_logo" />
                                     </div>
-{/* 
+                                    {/* 
                                     <h3 style={{ display: 'flex', alignItems: 'center', marginLeft: '20px' }}>Why Join <strong style={{ color: 'purple' }}>Job</strong><strong style={{ color: 'gray' }}>Box.one</strong> as an HR?</h3>
                                     <br></br>
                                     <div className='info-list'>
@@ -312,7 +313,7 @@ const HRSignup = () => {
                                             enableReinitialize
                                         >
                                             {({ values, errors, touched, handleChange, handleBlur, isSubmitting }) => (
-                                                <form >
+                                                <Form >
                                                     {/* Name Field */}
                                                     <TextField
                                                         type="text"
@@ -540,20 +541,15 @@ const HRSignup = () => {
 
                                                     {/* Submit Button */}
                                                     <div className="d-flex justify-content-center">
-                                                        <button
+                                                        <Button
                                                             type="submit"
-                                                            className="btn btn-primary w-100 my-1 btn-rounded mt-3"
-                                                            disabled={
-                                                                !otpVerified ||
-                                                                isSubmitting ||
-                                                                emailExistsError ||
-                                                                agreeToTermsAndConditionByCheck === false
-                                                            }
+                                                            className="btn btn-primary w-50 my-1 btn-rounded mt-3 d-flex justify-content-center align-items-center"
+                                                            disabled={!otpVerified || isSubmitting || emailExistsError || agreeToTermsAndConditionByCheck === false}
                                                         >
                                                             {isSubmitting ? 'Registering...' : 'Register'}
-                                                        </button>
+                                                        </Button>
                                                     </div>
-                                                </form>
+                                                </Form>
                                             )}
                                         </Formik>
                                     </div>

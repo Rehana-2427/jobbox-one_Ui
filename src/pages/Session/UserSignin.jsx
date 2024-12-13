@@ -1,5 +1,5 @@
 import { FacebookAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { Formik } from 'formik';
+import { Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -10,31 +10,25 @@ import { auth } from '../../firebase/firebaseConfig';
 import CustomNavbar from '../CustomNavbar';
 import SocialButtons from './sessions/SocialButtons';
 import TextField from './sessions/TextField';
-
-
 const UserSignin = () => {
     const navigate = useNavigate();
     const validationSchema = yup.object().shape({
         userEmail: yup.string().email("Invalid email").required("Email is required"),
         password: yup.string().min(8, "Password must be 8 characters long").required("Password is required")
     });
-    const BASE_API_URL = process.env.REACT_APP_API_URL;
     const [errorMessage, setErrorMessage] = useState('');
     const initialValues = { userEmail: "", password: "" };
     const location = useLocation();
     const companyId = location.state?.companyId;
     console.log(companyId)
     const handleSubmit = async (values, { setSubmitting }) => {
-
         try {
             const response = await api.userLogin(values.userEmail, values.password);
             const user = response.data.user;
             const token = response.data.token;
-
             // Save user and token in localStorage (or in a global state like context)
             localStorage.setItem('user', JSON.stringify(user));
             localStorage.setItem('token', token);
-
             if (user) {
                 if (user.userRole === 'Candidate') {
                     // Check for redirectAfterLogin preference
@@ -63,16 +57,13 @@ const UserSignin = () => {
             setSubmitting(false);
         }
     };
-
     // Google Sign-In Handler
     const signInWithGoogle = async () => {
         const provider = new GoogleAuthProvider();
-
         // Force account selection prompt
         provider.setCustomParameters({
             prompt: "select_account" // Forces the account selection screen
         });
-
         try {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
@@ -107,12 +98,10 @@ const UserSignin = () => {
                     userRole: 'Candidate',
                     appliedDate: getFormattedDate(),
                 };
-
                 // Save new user to the backend
                 const saveResponse = await api.saveUser(newUser);
                 // Log the entire save response to see what is returned from the backend
                 console.log("Response from saveUser:", saveResponse.data);
-
                 // Check if the user is successfully created
                 if (saveResponse.data) {
                     Swal.fire({
@@ -145,10 +134,6 @@ const UserSignin = () => {
             setErrorMessage("Error signing in with Google.");
         }
     };
-
-
-
-
     function getFormattedDate() {
         const appliedOn = new Date(); // Get current date and time
         const year = appliedOn.getFullYear(); // Get the full year (e.g., 2024)
@@ -156,14 +141,12 @@ const UserSignin = () => {
         const day = String(appliedOn.getDate()).padStart(2, '0'); // Get day of the month
         return `${year}-${month}-${day}`;
     }
-
     // Facebook Sign-In Handler
     // const signInWithFacebook = async () => {
     //     const provider = new FacebookAuthProvider();
     //     try {
     //         const result = await signInWithPopup(auth, provider);
     //         const user = result.user;
-
     //         // You can store user info in localStorage or handle it as needed
     //         localStorage.setItem('user', JSON.stringify(user));
     //         console.log("User signed in with Facebook: ", user);
@@ -173,25 +156,19 @@ const UserSignin = () => {
     //         setErrorMessage("Error signing in with Facebook.");
     //     }
     // };
-
-
     const signInWithFacebook = async () => {
         const provider = new FacebookAuthProvider();
-
         try {
             // Show Facebook login popup
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
             const userEmail = user.email;
-
             // Check if the user already exists in the backend
             const response = await api.checkUser(userEmail)
             const existingUser = response.data;
-
             if (existingUser) {
                 const userId = existingUser.userId;
                 console.log("Existing User ID:", userId);
-
                 // Show SweetAlert for existing user
                 Swal.fire({
                     icon: 'success',
@@ -213,12 +190,10 @@ const UserSignin = () => {
                     userRole: 'Candidate',
                     appliedDate: getFormattedDate(),
                 };
-
                 // Save new user to the backend
                 const saveResponse = await api.saveUser(newUser);
                 // Log the entire save response to see what is returned from the backend
                 console.log("Response from saveUser:", saveResponse.data);
-
                 // Check if the user is successfully created
                 if (saveResponse.data) {
                     Swal.fire({
@@ -240,9 +215,7 @@ const UserSignin = () => {
             setErrorMessage("Error signing in with Facebook. Please try again.");
         }
     };
-
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-
     useEffect(() => {
         const handleResize = () => setScreenWidth(window.innerWidth);
         window.addEventListener('resize', handleResize);
@@ -261,11 +234,10 @@ const UserSignin = () => {
                                     <div className="auth-logo text-center mb-4">
                                         <img src="/jb_logo.png" alt="jobbox_logo" />
                                     </div>
-
                                     <h1 className="mb-3 text-18">Candidate Login</h1>
                                     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                                         {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
-                                            <form onSubmit={handleSubmit}>
+                                            <Form onSubmit={handleSubmit}>
                                                 <TextField
                                                     type="email"
                                                     name="userEmail"
@@ -293,11 +265,10 @@ const UserSignin = () => {
                                                 >
                                                     {isSubmitting ? 'Signing In...' : 'Login'}
                                                 </button>
-                                            </form>
+                                            </Form>
                                         )}
                                     </Formik>
                                     {errorMessage && <div className="text-danger mt-2">{errorMessage}</div>}
-
                                     <div className="mt-3 text-center">
                                         <Link to="/forget-password" className="text-muted">
                                             Forgot Password?
@@ -330,6 +301,8 @@ const UserSignin = () => {
     );
 };
 export default UserSignin;
+
+
 
 
 

@@ -33,7 +33,6 @@ const api = {
     apiClient.get('/login', {
       params: { userEmail, password },
     }),
-
   // Check if the user is already logged in
   checkUser: (userEmail) =>
     apiClient.get('/checkUser', {

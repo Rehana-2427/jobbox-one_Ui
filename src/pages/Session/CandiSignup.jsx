@@ -417,7 +417,7 @@ const CandiSignup = () => {
                           <p>Already have an account? Login</p>
                           <SocialButtons
                             isLogin={true}
-                            routeUrl="/signin"
+                            routeUrl="/1"
                             googleHandler={signInWithGoogle}
                             facebookHandler={signInWithFacebook}
                           />

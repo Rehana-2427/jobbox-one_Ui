@@ -78,11 +78,33 @@ const HrLeftSide = ({ user, isOpen }) => {
         }
     }, [location]);
 
+
+
+    const isLinkActive = (link) => {
+        const currentPath = location.pathname;
+    
+        // Define special cases dynamically
+        const specialCases = {
+            '/hr-dashboard/my-jobs': '/hr-dashboard/my-jobs',
+            '/hr-dashboard/evergreen-jobs': '/hr-dashboard/evergreen-jobs',
+            '/hr-dashboard/hr-applications': '/hr-dashboard/hr-applications',
+        };
+    
+        // Check if the link's `to` value matches any special case
+        for (const [key, basePath] of Object.entries(specialCases)) {
+            if (link.to === key && currentPath.startsWith(basePath)) {
+                return true;
+            }
+        }
+    
+        // Default case: Exact match
+        return currentPath === link.to;
+    };
+    
     const renderNavLinks = () => (
         <Nav className="flex-column full-height align-items-center">
             {navLinks.map((link, index) => (
                 <React.Fragment key={index}>
-                    {/* Case: No subLinks (regular link) */}
                     {!link.subLinks ? (
                         <div style={{ position: 'relative' }}>
                             <Link
@@ -91,12 +113,11 @@ const HrLeftSide = ({ user, isOpen }) => {
                                     e.preventDefault();
                                     handleLinkClick(link.to);
                                 }}
-                                className={`nav-link d-flex align-items-center ${activeLink === link.to ? 'active' : ''}`}
+                                className={`nav-link d-flex align-items-center ${isLinkActive(link) ? 'active' : ''}`}
                                 style={{
                                     fontSize: '1.1rem',
                                     transition: 'color 0.3s',
-                                    color: activeLink === link.to ? '#663399' : '#332e38',
-                                    color: activeLink === link.to ? '#663399' : '#332e38',
+                                    color: isLinkActive(link) ? '#663399' : '#332e38',
                                 }}
                             >
                                 <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', position: 'relative' }}>
@@ -115,7 +136,6 @@ const HrLeftSide = ({ user, isOpen }) => {
                                         {link.icon && <span style={{ marginBottom: '10px' }}>{link.icon}</span>}
                                         {link.label}
                                     </div>
-                                    {/* Conditionally style triangle based on whether the link is active */}
                                     <div
                                         className="triangle"
                                         style={{
@@ -125,17 +145,16 @@ const HrLeftSide = ({ user, isOpen }) => {
                                             borderWidth: '0 0 30px 30px',
                                             borderColor: 'transparent transparent #663399 transparent',
                                             position: 'absolute',
-                                            top: '70%', // Center the triangle vertically
-                                            left: '100%', // Position the triangle next to the label
-                                            marginLeft: '10px', // Adjust horizontal spacing
-                                            display: location.pathname === link.to ? 'block' : 'none',  // Only show triangle when active
+                                            top: '70%',
+                                            left: '100%',
+                                            marginLeft: '10px',
+                                            display: isLinkActive(link) ? 'block' : 'none',
                                         }}
                                     />
                                 </div>
                             </Link>
                         </div>
                     ) : (
-                        // Case: link has subLinks (dropdown)
                         <div
                             onMouseEnter={() => setIsJobsDropdownOpen(true)}
                             onMouseLeave={() => setIsJobsDropdownOpen(false)}
@@ -146,10 +165,8 @@ const HrLeftSide = ({ user, isOpen }) => {
                                 style={{
                                     fontSize: '1.1rem',
                                     transition: 'color 0.3s',
-                                    color: link.subLinks.some((subLink) => activeLink === subLink.to) ? '#663399' : '#332e38',
-                                    color: link.subLinks.some((subLink) => activeLink === subLink.to) ? '#663399' : '#332e38',
+                                    color: link.subLinks.some((subLink) => isLinkActive(subLink)) ? '#663399' : '#332e38',
                                     cursor: 'pointer',
-                                    backgroundColor: 'transparent',
                                 }}
                             >
                                 <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', position: 'relative' }}>
@@ -168,7 +185,6 @@ const HrLeftSide = ({ user, isOpen }) => {
                                         {link.icon && <span style={{ marginRight: '10px' }}>{link.icon}</span>}
                                         {link.label}
                                     </div>
-                                    {/* Conditionally style triangle based on whether the link is active */}
                                     <div
                                         className="triangle"
                                         style={{
@@ -178,10 +194,10 @@ const HrLeftSide = ({ user, isOpen }) => {
                                             borderWidth: '0 0 30px 30px',
                                             borderColor: 'transparent transparent #663399 transparent',
                                             position: 'absolute',
-                                            top: '70%', // Center the triangle vertically
-                                            left: '100%', // Position the triangle next to the label
-                                            marginLeft: '10px', // Adjust horizontal spacing
-                                            display: location.pathname === link.subLinks.some((subLink) => activeLink === subLink.to) ? 'block' : 'none',  // Only show triangle when active
+                                            top: '70%',
+                                            left: '100%',
+                                            marginLeft: '10px',
+                                            display: link.subLinks && link.subLinks.some((subLink) => isLinkActive(subLink)) ? 'block' : 'none',
                                         }}
                                     />
                                 </div>
@@ -193,7 +209,7 @@ const HrLeftSide = ({ user, isOpen }) => {
                                         position: 'absolute',
                                         padding: '5px 0',
                                         overflow: 'hidden',
-                                        zIndex: 1000,  // Ensure dropdown is above other elements
+                                        zIndex: 1000,
                                     }}
                                 >
                                     {link.subLinks.map((subLink, subIndex) => (
@@ -204,7 +220,7 @@ const HrLeftSide = ({ user, isOpen }) => {
                                                 e.preventDefault();
                                                 handleLinkClick(subLink.to);
                                             }}
-                                            className={`dropdown-item ${activeLink === subLink.to ? 'active' : ''}`}
+                                            className={`dropdown-item ${isLinkActive(subLink) ? 'active' : ''}`}
                                             style={{
                                                 textAlign: 'start',
                                             }}
@@ -222,6 +238,7 @@ const HrLeftSide = ({ user, isOpen }) => {
         </Nav>
     );
     
+
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     useEffect(() => {
