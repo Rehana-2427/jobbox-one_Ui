@@ -43,6 +43,7 @@ const CircularImageSlider = () => {
         if (key) {
             navigate(`/jobboxCompanyPage/eachCompanyPage`, { state: { companyId: key } });
         }
+        
     };
 
     return (
