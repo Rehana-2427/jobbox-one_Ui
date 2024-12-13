@@ -18,8 +18,12 @@ const api = {
 
 
   //save user 
-  saveUser: (userData) => apiClient.post('/saveUser', userData),
+    saveUser: async (userData) => {
+      // Assuming you're using axios or fetch to make the API call
+      return apiClient.post('/saveUser', userData);
+    },
 
+  
 
   //valdiate userEmail
   validateUserEmail: (userEmail) =>

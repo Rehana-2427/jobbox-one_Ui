@@ -31,7 +31,7 @@ const HrSignin = () => {
 
             if (user) {
                 if (user.userRole === 'HR' && user.userStatus === 'Approved') {
-                    navigate('/hr-dashboard', { state: { userEmail: user.userEmail } });
+                    navigate('/hr-dashboard', { state: { userEmail: user.userEmail,userName: user.userName, } });
                 } else {
                     setErrorMessage("Invalid login credentials or role. Please try again.");
                 }

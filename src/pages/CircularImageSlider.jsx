@@ -38,12 +38,23 @@ const CircularImageSlider = () => {
         fetchImages();
     }, []);
 
-    const handleImageClick = (imageSrc) => {
+    const handleImageClick =async (imageSrc) => {
         const key = imageKeys[imageSrc];
-        if (key) {
-            navigate(`/jobboxCompanyPage/eachCompanyPage`, { state: { companyId: key } });
-        }
-        
+        // if (key) {
+        //     navigate(`/jobboxCompanyPage/eachCompanyPage`, { state: { companyId: key } });
+        // }
+        const company = await api.getDisplayCompanyDetailsById(key);
+        const encodedCompanyName = encodeURIComponent(company.data.companyName);
+        console.log(encodedCompanyName+"  -------<><" +" key---> "+key + " ||  companyName--> "+company.data.companyName+" companyId -->" +company.data.companyId) ;
+    if (company.data) {
+      const encodedCompanyName = encodeURIComponent(company.data.companyName); // Encode the company name
+      console.log(encodedCompanyName+"  -------<><")
+      navigate(`/companyPage/companyName/${encodedCompanyName}`, { state: { companyId: key } });
+      // Trigger a page reload after navigating
+    //  window.location.reload();
+    } else {
+      console.error("Company not found!");
+    }
     };
 
     return (

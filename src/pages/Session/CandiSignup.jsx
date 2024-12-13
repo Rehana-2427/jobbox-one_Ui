@@ -413,6 +413,9 @@ const CandiSignup = () => {
                     {/* Left Section */}
                     <Col md={6} className="text-center auth-cover" style={{ marginTop: '15px' }}>
                       <div className="ps-3 auth-right">
+                        <div className="auth-logo text-center mt-4">
+                          <img src="/jb_logo.png" alt="jobbox_logo" />
+                        </div>
                         <div className="w-100 h-100 justify-content-center d-flex flex-column">
                           <p>Already have an account? Login</p>
                           <SocialButtons

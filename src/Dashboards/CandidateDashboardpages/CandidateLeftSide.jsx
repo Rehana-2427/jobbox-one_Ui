@@ -26,7 +26,6 @@ function CandidateLeftSide({ user, isOpen }) {
 
     const scrollContainerRef = useRef(null);
 
-    
 // Scroll position persistence
 useEffect(() => {
     // Restore scroll position when component mounts or location changes

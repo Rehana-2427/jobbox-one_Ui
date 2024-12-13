@@ -84,7 +84,7 @@ const UserSignin = () => {
                     confirmButtonText: 'OK',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        navigate('/candidate-dashboard', { state: { userRole: 'Candidate', userId: userId } });
+                        navigate('/candidate-dashboard', { state: { userRole: 'Candidate', userId: userId,userName: user.userName, } });
                     }
                 });
             }
@@ -177,7 +177,7 @@ const UserSignin = () => {
                     confirmButtonText: 'OK',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        navigate('/candidate-dashboard', { state: { userRole: 'Candidate', userId: userId } });
+                        navigate('/candidate-dashboard', { state: { userRole: 'Candidate', userId: userId,userName: user.userName, } });
                     }
                 });
             } else {
