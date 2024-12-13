@@ -10,6 +10,7 @@ const DasboardNavbar = ({ isSidebarOpen, toggleSidebar }) => {
     const location = useLocation();
     const userEmail = location.state?.userEmail || '';
     const [userName, setUserName] = useState(location.state?.userName || '');
+    
     useEffect(() => {
         const storedUserName = localStorage.getItem(`userName_${userEmail}`);
         if (storedUserName) {

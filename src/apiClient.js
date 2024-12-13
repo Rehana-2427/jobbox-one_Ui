@@ -173,7 +173,21 @@ const api = {
   },
 
 
-  //get Job
+  //get policy documents from a company
+  getPolicyDocuments: (companyName) => {
+    return apiClient.get('/getDocumentsByCompany', {
+      params: { companyName }
+    })
+  },
+
+
+    //get policy documents from a company
+    getHiringPolicy: (companyName) => {
+      return apiClient.get('/getHiringPolicy', {
+        params: { companyName }
+      })
+    },
+  
   getJob: (jobId) =>
     apiClient.get('/getJob', {
       params: { jobId },

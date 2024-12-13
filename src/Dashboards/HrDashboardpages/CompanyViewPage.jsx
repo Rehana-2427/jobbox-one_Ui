@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, Form, FormGroup } from 'react-bootstrap';
 import { FaEdit } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
+import api from '../../apiClient';
 import './HrDashboard.css';
 
 const CompanyViewPage = () => {
@@ -88,7 +89,7 @@ const CompanyViewPage = () => {
 
                     const companyName = userResponse.data.companyName;
                     if (companyName) {
-                        const companyResponse = await axios.get(`${BASE_API_URL}/getCompanyByName?companyName=${companyName}`);
+                        const companyResponse = await api.getCompanyByCompanyName(companyName)
                         setCompanyInfo(companyResponse.data);
                     }
                 } catch (error) {

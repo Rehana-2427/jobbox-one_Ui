@@ -1,8 +1,7 @@
 import { FacebookAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Col, Nav, Row } from 'react-bootstrap';
-import { FaCheckCircle } from 'react-icons/fa';
+import { Card, Col, Row } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import * as yup from 'yup';
@@ -253,13 +252,17 @@ const UserSignin = () => {
     return (
         <div>
             <CustomNavbar />
-            <div className="auth-layout-wrap" style={{ maxHeight: '100vh', overflowY: 'auto' }}>
-                <div className="auth-content candidate-login" style={{ position: 'relative', padding: '20px' }}>
-                    <Card className="o-hidden user_regi_signin">
+            <div className="auth-layout-wrap">
+                <div className="auth-content">
+                    <Card className="o-hidden">
                         <Row>
                             <Col md={6}>
                                 <div className="p-4">
-                                    <h1 className="mb-3 text-20"><b>Login</b></h1>
+                                    <div className="auth-logo text-center mb-4">
+                                        <img src="/jb_logo.png" alt="jobbox_logo" />
+                                    </div>
+
+                                    <h1 className="mb-3 text-18">Candidate Login</h1>
                                     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                                         {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
                                             <form onSubmit={handleSubmit}>
@@ -294,37 +297,28 @@ const UserSignin = () => {
                                         )}
                                     </Formik>
                                     {errorMessage && <div className="text-danger mt-2">{errorMessage}</div>}
+
                                     <div className="mt-3 text-center">
-                                        <Link to="/forgetpassword" className="text-muted">Forgot Password?</Link>
+                                        <Link to="/forget-password" className="text-muted">
+                                            Forgot Password?
+                                        </Link>
                                     </div>
+{/*                                     
                                     <div>
                                         <hr />
                                         <Nav.Link as={Link} to="/candidate-signup" className="nav-link-custom">
                                             <Button variant='secondary'>Register For Free</Button>
                                         </Nav.Link>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </Col>
-                            <Col xs={12} md={6} className="text-center auth-cover">
-                                <div className="pe-3 auth-right" style={{ height: '380px' }}>
-                                    <div className="auth-logo text-center mb-4">
-                                        <img src="/jb_logo.png" alt="JobDB" className="user-signin-column2" style={{ height: '50px', width: '120px' }} />
-                                    </div>
-                                    <div className='info-wrapper'>
-                                        <h3 className='hdn'>New to Jobbox?</h3>
-                                        <div className='info-list'>
-                                            <h6><FaCheckCircle style={{ marginRight: '8px', color: 'green' }} /> One-Click Applications</h6>
-                                            <h6><FaCheckCircle style={{ marginRight: '8px', color: 'green' }} /> Custom Job Alerts</h6>
-                                            <h6><FaCheckCircle style={{ marginRight: '8px', color: 'green' }} /> Profile Spotlight</h6>
-                                            <h6><FaCheckCircle style={{ marginRight: '8px', color: 'green' }} /> JobDreamHub</h6>
-                                        </div>
-                                    </div>
+                            <Col md={6} className="text-center auth-cover">
+                                <div className="pe-3 auth-right">
                                     <SocialButtons
                                         isLogin={false}
                                         routeUrl="/candidate-signup"
                                         googleHandler={signInWithGoogle}
                                         facebookHandler={signInWithFacebook}
-                                    // facebookHandler={() => alert("facebook")}
                                     />
                                 </div>
                             </Col>

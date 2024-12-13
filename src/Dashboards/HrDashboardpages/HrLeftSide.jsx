@@ -96,6 +96,7 @@ const HrLeftSide = ({ user, isOpen }) => {
                                     fontSize: '1.1rem',
                                     transition: 'color 0.3s',
                                     color: activeLink === link.to ? '#663399' : '#332e38',
+                                    color: activeLink === link.to ? '#663399' : '#332e38',
                                 }}
                             >
                                 <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', position: 'relative' }}>
@@ -145,6 +146,7 @@ const HrLeftSide = ({ user, isOpen }) => {
                                 style={{
                                     fontSize: '1.1rem',
                                     transition: 'color 0.3s',
+                                    color: link.subLinks.some((subLink) => activeLink === subLink.to) ? '#663399' : '#332e38',
                                     color: link.subLinks.some((subLink) => activeLink === subLink.to) ? '#663399' : '#332e38',
                                     cursor: 'pointer',
                                     backgroundColor: 'transparent',
@@ -219,6 +221,7 @@ const HrLeftSide = ({ user, isOpen }) => {
             ))}
         </Nav>
     );
+    
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     useEffect(() => {

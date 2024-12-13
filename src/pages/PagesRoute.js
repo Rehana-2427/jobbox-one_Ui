@@ -55,7 +55,7 @@ const PagesRoute = () => {
           <Route path="/findcompany/*" element={<CompanRoute />} />
           <Route path="/signin" element={<UserSignin />} />
           <Route path="/hr-sign-in" element={<HrSignin />} />
-          <Route path='/forgetpassword' element={<ForgetPassword />} />
+          <Route path='/forget-password' element={<ForgetPassword />} />
           <Route path='/browse-jobs' element={<BrowseJobs />} />
 
           <Route path='/browse-jobs/job-details' element={<Jobdetails />} />

@@ -1,8 +1,7 @@
 
-import { Field, Form, Formik } from 'formik'
+import { Field, Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
-import { Button, Card, Col, Container, Modal, Row } from 'react-bootstrap'
-import { FaCheckCircle } from 'react-icons/fa'
+import { Button, Card, Col, Modal, Row } from 'react-bootstrap'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import Swal from 'sweetalert2'
@@ -40,7 +39,6 @@ const HRSignup = () => {
     const [otpVerified, setOtpVerified] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const [agreeToTermsAndConditionByCheck, setAgreeToTermsAndConditionByCheck] = useState(false);
-    // Function to get formatted date
     function getFormattedDate() {
         const appliedOn = new Date(); // Get current date and time
         const year = appliedOn.getFullYear(); // Get the full year (e.g., 2024)
@@ -78,12 +76,6 @@ const HRSignup = () => {
     const validationSchema = yup.object().shape({
         userName: yup.string().required('Name is required'),
         userEmail: yup.string().email('Invalid email').required('Email is required'),
-        //  companyName: yup.string().required('Company Name is required'),
-        // companyName: yup.string().when('$isCompanyPage', {
-        //     is: false, // When navigating from a company page
-        //     then: yup.string().required('Company Name is required'),
-        //     otherwise: yup.string(),
-        // }),
         password: yup
             .string()
             .required('Password is required')
@@ -263,7 +255,6 @@ const HRSignup = () => {
         );
     };
 
-
     // Effect to show the toast when the error is true
     React.useEffect(() => {
         if (passwordCriteriaError) {
@@ -275,325 +266,334 @@ const HRSignup = () => {
     return (
         <div>
             <CustomNavbar />
-            <Container component="main" maxWidth="xs" style={{ marginTop: '150px' }} className='employee-register-form'>
-                <div style={{ textAlign: 'center' }}>
-                    <h3 style={{ fontFamily: '"Roboto", sans-serif', color: '#333', fontWeight: '500', marginBottom: '0px', padding: '0px' }}>
-                        Employee Registration Form
-                    </h3>
-                </div>
-                <div className="hr-form" style={{ maxHeight: '90vh', marginTop: '0' }}>
-                    <Formik
-                        initialValues={formValues}
-                        validationSchema={validationSchema}
-                        onSubmit={handleSubmit}
-                        enableReinitialize
-                    >
-                        {({ values, errors, touched, handleChange, handleBlur, isSubmitting }) => (
-                            <Form className="form">
-                                <Card className="hr-form-card o-hidden" style={{ width: '100%', transition: 'width 0.3s ease' }} >
-                                    <Row >
-                                        {/* Left Section */}
-                                        <Col md={6} className="text-center auth-cover">
-                                            <div className="ps-3 auth-right">
-                                                <div className="w-100 h-100 justify-content-center d-flex flex-column">
-                                                    <h3>Why Join <strong style={{ color: 'purple' }}>Job</strong><strong style={{ color: 'gray' }}>Box.one</strong> as an HR?</h3>
-                                                    <div className='info-list'>
-                                                        <h6><FaCheckCircle style={{ marginRight: '8px', color: 'green' }} /> Access to Top Talent</h6>
-                                                        <h6><FaCheckCircle style={{ marginRight: '8px', color: 'green' }} /> Streamlined Hiring Process</h6>
-                                                        <h6><FaCheckCircle style={{ marginRight: '8px', color: 'green' }} /> Advanced Candidate Filtering</h6>
-                                                        <h6><FaCheckCircle style={{ marginRight: '8px', color: 'green' }} /> Customizable Job Postings</h6>
-                                                        <h6><FaCheckCircle style={{ marginRight: '8px', color: 'green' }} /> Detailed Analytics and Reports</h6>
-                                                        <br></br>
-                                                        <p>Already have an account? Login</p>
-                                                        <Button onClick={() => navigate("/hr-sign-in")} style={{ width: '100px', justifyItems: 'center', alignItems: 'center' }}>Login</Button>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </Col>
-                                        <Col md={6}>
-                                            {/* Name Field */}
-                                            <TextField
-                                                type="text"
-                                                name="userName"
-                                                label="Your name"
-                                                required
-                                                placeholder="Enter your name"
-                                                value={values.userName}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                helperText={errors.userName}
-                                                error={errors.userName && touched.userName}
-                                                disabled={disableFormFields}
-                                                fullWidth
-                                                variant="outlined"
-                                                margin="normal"
-                                                style={{ marginBottom: '15px' }}
-                                            />
-
-                                            {/* Email Field */}
-                                            <TextField
-                                                type="email"
-                                                name="userEmail"
-                                                label="Your Official Company Email"
-                                                required
-                                                placeholder="Enter your email"
-                                                value={values.userEmail}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                helperText={errors.userEmail}
-                                                error={touched.userEmail && Boolean(errors.userEmail)}
-                                                disabled={disableFormFields || emailExistsError}
-                                                fullWidth
-                                                variant="outlined"
-                                                margin="normal"
-                                                style={{ marginBottom: '15px' }}
-                                            />
-
-                                            {/* Company Name and Website */}
-                                            {!companyName && (
-                                                <>
+            <div className="auth-layout-wrap">
+                <div className="auth-content">
+                    <Card className="hr-form-card o-hidden" style={{ width: '100%', transition: 'width 0.3s ease' }} >
+                        <Row >
+                            {/* Left Section */}
+                            <Col md={6} className="text-center auth-cover">
+                                <div className="ps-3 auth-right">
+                                    <div className="auth-logo text-center mt-4">
+                                        <img src="/jb_logo.png" alt="jobbox_logo" />
+                                    </div>
+{/* 
+                                    <h3 style={{ display: 'flex', alignItems: 'center', marginLeft: '20px' }}>Why Join <strong style={{ color: 'purple' }}>Job</strong><strong style={{ color: 'gray' }}>Box.one</strong> as an HR?</h3>
+                                    <br></br>
+                                    <div className='info-list'>
+                                        <h6 style={{ display: 'flex', alignItems: 'center', marginLeft: '20px' }}>
+                                            <FaCheckCircle style={{ marginRight: '8px', color: 'green' }} />Access to Top Talent
+                                        </h6>
+                                        <h6 style={{ display: 'flex', alignItems: 'center', marginLeft: '20px' }}>
+                                            <FaCheckCircle style={{ marginRight: '8px', color: 'green' }} />Streamlined Hiring Process
+                                        </h6>
+                                        <h6 style={{ display: 'flex', alignItems: 'center', marginLeft: '20px' }}>
+                                            <FaCheckCircle style={{ marginRight: '8px', color: 'green' }} />Advanced Candidate Filtering
+                                        </h6>
+                                        <h6 style={{ display: 'flex', alignItems: 'center', marginLeft: '20px' }}>
+                                            <FaCheckCircle style={{ marginRight: '8px', color: 'green' }} /> Customizable Job Postings
+                                        </h6>
+                                        <h6 style={{ display: 'flex', alignItems: 'center', marginLeft: '20px' }}>
+                                            <FaCheckCircle style={{ marginRight: '8px', color: 'green' }} /> Detailed Analytics and Reports
+                                        </h6>
+                                        <br></br>
+                                        <p>Already have an account? Login</p>
+                                        <Button onClick={() => navigate("/hr-sign-in")}>Login</Button>
+                                    </div> */}
+                                </div>
+                            </Col>
+                            <Col md={6}>
+                                <div className="p-4">
+                                    <h1 className="mb-3 text-18">Employee registration form</h1>
+                                    <div className="hr-form" style={{ maxHeight: '90vh', marginTop: '0' }}>
+                                        <Formik
+                                            initialValues={formValues}
+                                            validationSchema={validationSchema}
+                                            onSubmit={handleSubmit}
+                                            enableReinitialize
+                                        >
+                                            {({ values, errors, touched, handleChange, handleBlur, isSubmitting }) => (
+                                                <form >
+                                                    {/* Name Field */}
                                                     <TextField
                                                         type="text"
-                                                        name="companyName"
-                                                        label="Company name"
+                                                        name="userName"
+                                                        label="Your name"
                                                         required
-                                                        placeholder="Enter your company name"
-                                                        value={companyName || values.companyName}
+                                                        placeholder="Enter your name"
+                                                        value={values.userName}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
-                                                        helperText={errors.companyName}
-                                                        error={errors.companyName && touched.companyName}
+                                                        helperText={errors.userName}
+                                                        error={errors.userName && touched.userName}
                                                         disabled={disableFormFields}
+                                                        fullWidth
+                                                        variant="outlined"
+                                                        margin="normal"
+
+                                                    />
+
+                                                    {/* Email Field */}
+                                                    <TextField
+                                                        type="email"
+                                                        name="userEmail"
+                                                        label="Your Official Company Email"
+                                                        required
+                                                        placeholder="Enter your email"
+                                                        value={values.userEmail}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        helperText={errors.userEmail}
+                                                        error={touched.userEmail && Boolean(errors.userEmail)}
+                                                        disabled={disableFormFields || emailExistsError}
                                                         fullWidth
                                                         variant="outlined"
                                                         margin="normal"
                                                         style={{ marginBottom: '15px' }}
                                                     />
 
-                                                    <div className="form-group" style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', marginBottom: '5px' }}>
-                                                        <label>{<><span>Company Website</span> <span className="required" style={{ color: 'red' }}>*</span></>}</label>
-                                                        <div className="protocol-tld-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
-                                                            <div className="select-group" style={{ marginRight: '10px' }}>
-                                                                <select
-                                                                    id="protocol"
-                                                                    value={protocol}
-                                                                    onChange={(event) => {
-                                                                        const newProtocol = event.target.value;
-                                                                        setProtocol(newProtocol);
-                                                                    }}
-                                                                    onBlur={handleBlur}
-                                                                    disabled={disableFormFields}
-                                                                    style={{ padding: '5px', borderRadius: '4px', border: '1px solid #ddd' }}
-                                                                >
-                                                                    <option value="http">http://www.</option>
-                                                                    <option value="https">https://www.</option>
-                                                                </select>
-                                                            </div>
+                                                    {/* Company Name and Website */}
+                                                    {!companyName && (
+                                                        <>
                                                             <TextField
                                                                 type="text"
-                                                                name="companyWebsite"
-                                                                placeholder="domain"
-                                                                style={{ marginRight: '10px', flex: '1' }}
+                                                                name="companyName"
+                                                                label="Company name"
+                                                                required
+                                                                placeholder="Enter your company name"
+                                                                value={companyName || values.companyName}
+                                                                onChange={handleChange}
+                                                                onBlur={handleBlur}
+                                                                helperText={errors.companyName}
+                                                                error={errors.companyName && touched.companyName}
                                                                 disabled={disableFormFields}
-                                                                onChange={(e) => {
-                                                                    const value = e.target.value;
-                                                                    setDomain(value);
-                                                                }}
+                                                                fullWidth
+                                                                variant="outlined"
+                                                                margin="normal"
+                                                                style={{ marginBottom: '15px' }}
                                                             />
-                                                            <div className="select-group" style={{ marginRight: '10px' }}>
-                                                                <select
-                                                                    id="tld"
-                                                                    value={tld}
-                                                                    onChange={(event) => {
-                                                                        const newTld = event.target.value;
-                                                                        setTld(newTld);
-                                                                    }}
-                                                                    onBlur={handleBlur}
-                                                                    disabled={disableFormFields}
-                                                                    style={{ padding: '5px', borderRadius: '4px', border: '1px solid #ddd' }}
-                                                                >
-                                                                    <option value=".com">.com</option>
-                                                                    <option value=".org">.org</option>
-                                                                    <option value=".net">.net</option>
-                                                                    <option value=".info">.info</option>
-                                                                    <option value=".in">.in</option>
-                                                                </select>
 
+                                                            <div className="form-group" style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', marginBottom: '5px' }}>
+                                                                <label>{<><span>Company Website</span> <span className="required" style={{ color: 'red' }}>*</span></>}</label>
+                                                                <div className="protocol-tld-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
+                                                                    <div className="select-group" style={{ marginRight: '10px' }}>
+                                                                        <select
+                                                                            id="protocol"
+                                                                            value={protocol}
+                                                                            onChange={(event) => {
+                                                                                const newProtocol = event.target.value;
+                                                                                setProtocol(newProtocol);
+                                                                            }}
+                                                                            onBlur={handleBlur}
+                                                                            disabled={disableFormFields}
+                                                                            style={{ padding: '5px', borderRadius: '4px', border: '1px solid #ddd' }}
+                                                                        >
+                                                                            <option value="http">http://www.</option>
+                                                                            <option value="https">https://www.</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <TextField
+                                                                        type="text"
+                                                                        name="companyWebsite"
+                                                                        placeholder="domain"
+                                                                        style={{ marginRight: '10px', flex: '1' }}
+                                                                        disabled={disableFormFields}
+                                                                        onChange={(e) => {
+                                                                            const value = e.target.value;
+                                                                            setDomain(value);
+                                                                        }}
+                                                                    />
+                                                                    <div className="select-group" style={{ marginRight: '10px' }}>
+                                                                        <select
+                                                                            id="tld"
+                                                                            value={tld}
+                                                                            onChange={(event) => {
+                                                                                const newTld = event.target.value;
+                                                                                setTld(newTld);
+                                                                            }}
+                                                                            onBlur={handleBlur}
+                                                                            disabled={disableFormFields}
+                                                                            style={{ padding: '5px', borderRadius: '4px', border: '1px solid #ddd' }}
+                                                                        >
+                                                                            <option value=".com">.com</option>
+                                                                            <option value=".org">.org</option>
+                                                                            <option value=".net">.net</option>
+                                                                            <option value=".info">.info</option>
+                                                                            <option value=".in">.in</option>
+                                                                        </select>
+
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            )}
+                                                        </>
+                                                    )}
 
-                                            {/* Password and Confirm Password */}
-                                            <TextField
-                                                type="password"
-                                                name="password"
-                                                label="Password"
-                                                required
-                                                placeholder="Enter your password"
-                                                value={values.password}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                helperText={errors.password}
-                                                error={errors.password && touched.password}
-                                                fullWidth
-                                                variant="outlined"
-                                                margin="normal"
-                                                disabled={disableFormFields}
-                                                style={{ marginBottom: '15px' }}
-                                            />
-
-                                            <TextField
-                                                type="password"
-                                                name="confirmPassword"
-                                                label="Confirm Password"
-                                                required
-                                                placeholder="Re-enter your password"
-                                                value={values.confirmPassword}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                helperText={errors.confirmPassword}
-                                                error={errors.confirmPassword && touched.confirmPassword}
-                                                fullWidth
-                                                variant="outlined"
-                                                margin="normal"
-                                                disabled={disableFormFields}
-                                                style={{ marginBottom: '15px' }}
-                                            />
-
-                                            {/* Password Mismatch Error */}
-                                            {passwordMatchError && (
-                                                <p style={{ color: 'red', fontSize: '0.875rem', marginTop: '0.25rem' }}>
-                                                    Passwords did not match, please try again...
-                                                </p>
-                                            )}
-
-                                            {/* OTP Button */}
-                                            {!otpVerified && (
-                                                <div className="d-flex justify-content-center" style={{ marginBottom: '20px' }}>
-                                                    <Button
-                                                        disabled={disableFormFields || otpVerified}
-                                                        className="mt-2"
-                                                        onClick={() => {
-                                                            setDisableFormFields(true);
-                                                            sendOTP(values.userEmail);
-                                                        }}
-                                                        variant="primary"
+                                                    {/* Password and Confirm Password */}
+                                                    <TextField
+                                                        type="password"
+                                                        name="password"
+                                                        label="Password"
+                                                        required
+                                                        placeholder="Enter your password"
+                                                        value={values.password}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        helperText={errors.password}
+                                                        error={errors.password && touched.password}
                                                         fullWidth
-                                                    // style={{ padding: '12px', borderRadius: '30px', backgroundColor:'p' }}
-                                                    // color="primary"
+                                                        variant="outlined"
+                                                        margin="normal"
+                                                        disabled={disableFormFields}
+                                                        style={{ marginBottom: '15px' }}
+                                                    />
 
-                                                    >
-                                                        Validate my email
-                                                    </Button>
+                                                    <TextField
+                                                        type="password"
+                                                        name="confirmPassword"
+                                                        label="Confirm Password"
+                                                        required
+                                                        placeholder="Re-enter your password"
+                                                        value={values.confirmPassword}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        helperText={errors.confirmPassword}
+                                                        error={errors.confirmPassword && touched.confirmPassword}
+                                                        fullWidth
+                                                        variant="outlined"
+                                                        margin="normal"
+                                                        disabled={disableFormFields}
+                                                        style={{ marginBottom: '15px' }}
+                                                    />
 
-                                                </div>
-                                            )}
+                                                    {/* Password Mismatch Error */}
+                                                    {passwordMatchError && (
+                                                        <p style={{ color: 'red', fontSize: '0.875rem', marginTop: '0.25rem' }}>
+                                                            Passwords did not match, please try again...
+                                                        </p>
+                                                    )}
+                                                    {/* OTP Button */}
+                                                    {!otpVerified && (
+                                                        <div className="d-flex justify-content-center" style={{ marginBottom: '20px' }}>
+                                                            <Button
+                                                                disabled={disableFormFields || otpVerified}
+                                                                className="mt-2"
+                                                                onClick={() => {
+                                                                    setDisableFormFields(true);
+                                                                    sendOTP(values.userEmail);
+                                                                }}
+                                                                variant="primary"
+                                                                fullWidth
+                                                            // style={{ padding: '12px', borderRadius: '30px', backgroundColor:'p' }}
+                                                            // color="primary"
 
-                                            {successMessage && <p className="success-message">{successMessage}</p>}
+                                                            >
+                                                                Validate my email
+                                                            </Button>
 
-                                            {/* Terms and Conditions */}
-                                            <div className="d-flex justify-content-start align-items-center" style={{ marginBottom: '15px' }}>
-                                                <Field
-                                                    type="checkbox"
-                                                    name="agreeToTermsAndCondition"
-                                                    id="agreeToTermsAndCondition"
-                                                    checked={values.agreeToTermsAndCondition}
-                                                    onChange={(e) => {
-                                                        handleChange(e);
-                                                        setAgreeToTermsAndConditionByCheck(true);
-                                                    }}
-                                                    style={{ marginRight: '10px', transform: 'scale(1.2)' }}
-                                                />
-                                                <label>
-                                                    I agree to the{' '}
-                                                    <Link to="/terms-and-conditions" target="_blank" style={{ textDecoration: 'underline' }}>
-                                                        Terms and Conditions
-                                                    </Link>
-                                                </label>
-                                                {touched.agreeToTermsAndCondition && errors.agreeToTermsAndCondition && (
-                                                    <div className="invalid-feedback" style={{ color: 'red' }}>
-                                                        {errors.agreeToTermsAndCondition}
+                                                        </div>
+                                                    )}
+
+                                                    {successMessage && <p className="success-message">{successMessage}</p>}
+
+                                                    {/* Terms and Conditions */}
+                                                    <div className="d-flex justify-content-start align-items-center" style={{ marginBottom: '15px' }}>
+                                                        <Field
+                                                            type="checkbox"
+                                                            name="agreeToTermsAndCondition"
+                                                            id="agreeToTermsAndCondition"
+                                                            checked={values.agreeToTermsAndCondition}
+                                                            onChange={(e) => {
+                                                                handleChange(e);
+                                                                setAgreeToTermsAndConditionByCheck(true);
+                                                            }}
+                                                            style={{ marginRight: '10px', transform: 'scale(1.2)' }}
+                                                        />
+                                                        <label>
+                                                            I agree to the{' '}
+                                                            <Link to="/terms-and-conditions" target="_blank" style={{ textDecoration: 'underline' }}>
+                                                                Terms and Conditions
+                                                            </Link>
+                                                        </label>
+                                                        {touched.agreeToTermsAndCondition && errors.agreeToTermsAndCondition && (
+                                                            <div className="invalid-feedback" style={{ color: 'red' }}>
+                                                                {errors.agreeToTermsAndCondition}
+                                                            </div>
+                                                        )}
                                                     </div>
-                                                )}
-                                            </div>
 
-                                            {/* Email Exists Error */}
-                                            {emailExistsError && (
-                                                <div style={{ marginBottom: '20px' }}>
-                                                    <p className="error-message">
-                                                        Email already exists. Please{' '}
-                                                        <Link to="/signin" style={{ color: '#007bff' }}>
-                                                            click here for login
-                                                        </Link>
-                                                    </p>
-                                                    <p>OR</p>
-                                                    <Button onClick={() => updateUserData(values)} variant="outlined" color="secondary">
-                                                        Update Your Data
-                                                    </Button>
-                                                </div>
+                                                    {/* Email Exists Error */}
+                                                    {emailExistsError && (
+                                                        <div style={{ marginBottom: '20px' }}>
+                                                            <p className="error-message">
+                                                                Email already exists. Please{' '}
+                                                                <Link to="/signin" style={{ color: '#007bff' }}>
+                                                                    click here for login
+                                                                </Link>
+                                                            </p>
+                                                            <p>OR</p>
+                                                            <Button onClick={() => updateUserData(values)} variant="outlined" color="secondary">
+                                                                Update Your Data
+                                                            </Button>
+                                                        </div>
+                                                    )}
+
+                                                    {errorMessage && <div className="text-danger" style={{ marginBottom: '20px' }}>{errorMessage}</div>}
+
+                                                    {/* Submit Button */}
+                                                    <div className="d-flex justify-content-center">
+                                                        <button
+                                                            type="submit"
+                                                            className="btn btn-primary w-100 my-1 btn-rounded mt-3"
+                                                            disabled={
+                                                                !otpVerified ||
+                                                                isSubmitting ||
+                                                                emailExistsError ||
+                                                                agreeToTermsAndConditionByCheck === false
+                                                            }
+                                                        >
+                                                            {isSubmitting ? 'Registering...' : 'Register'}
+                                                        </button>
+                                                    </div>
+                                                </form>
                                             )}
+                                        </Formik>
+                                    </div>
+                                </div>
+                            </Col>
+                        </Row>
+                    </Card>
+                    {/* OTP Modal */}
+                    <Modal show={showOTPModal} onHide={() => setShowOTPModal(false)} centered>
+                        <Modal.Header closeButton>
+                            <Modal.Title>OTP Verification</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <p>An OTP has been sent to your email. Please enter it below:</p>
+                            <TextField
+                                type="text"
+                                name="otp"
+                                placeholder="Enter OTP"
+                                value={enterOtpValue}
+                                onChange={(e) => setEnterOtpValue(e.target.value)}
+                                fullWidth
+                                variant="outlined"
+                                style={{ marginBottom: '20px' }}
+                            />
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={() => setShowOTPModal(false)}>
+                                Cancel
+                            </Button>
+                            <Button variant="primary" onClick={handleOTPVerification}>
+                                Verify OTP
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
 
-                                            {errorMessage && <div className="text-danger" style={{ marginBottom: '20px' }}>{errorMessage}</div>}
-
-                                            {/* Submit Button */}
-                                            <div className="d-flex justify-content-center">
-                                                <Button
-                                                    type="submit"
-                                                    className="btn btn-primary w-50 my-1 btn-rounded mt-3"
-                                                    disabled={
-                                                        !otpVerified ||
-                                                        isSubmitting ||
-                                                        emailExistsError ||
-                                                        agreeToTermsAndConditionByCheck === false
-                                                    }
-                                                >
-                                                    {isSubmitting ? 'Registering...' : 'Register'}
-                                                </Button>
-                                            </div>
-                                        </Col>
-
-                                    </Row>
-                                </Card>
-                            </Form>
-                        )}
-                    </Formik>
-                    {/* </div> */}
-                </div>
-
-                {/* OTP Modal */}
-                <Modal show={showOTPModal} onHide={() => setShowOTPModal(false)} centered>
-                    <Modal.Header closeButton>
-                        <Modal.Title>OTP Verification</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <p>An OTP has been sent to your email. Please enter it below:</p>
-                        <TextField
-                            type="text"
-                            name="otp"
-                            placeholder="Enter OTP"
-                            value={enterOtpValue}
-                            onChange={(e) => setEnterOtpValue(e.target.value)}
-                            fullWidth
-                            variant="outlined"
-                            style={{ marginBottom: '20px' }}
-                        />
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={() => setShowOTPModal(false)}>
-                            Cancel
-                        </Button>
-                        <Button variant="primary" onClick={handleOTPVerification}>
-                            Verify OTP
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-
-                {/* Toast */}
-                <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
-            </Container >
+                    {/* Toast */}
+                    <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
+                    {/* </Container > */}
+                </div >
+            </div>
         </div >
     )
 }

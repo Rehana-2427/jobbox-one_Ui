@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
+import api from '../../apiClient';
 
 const CompanyPolicies = () => {
     const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -40,9 +41,7 @@ const CompanyPolicies = () => {
 
     useEffect(() => {
         // Fetch policy data when the component is mounted
-        axios
-            .get(`${BASE_API_URL}/getHiringPolicy?companyName=${companyName}`)
-            .then((response) => {
+      api.getHiringPolicy(companyName).then((response) => {
                 if (response.data) {
                     setPolicy(response.data);
                     setAllowReapply(response.data.allowReapply);
@@ -94,9 +93,7 @@ const CompanyPolicies = () => {
 
     const getDocuments = async () => {
         try {
-            const response = await axios.get(`${BASE_API_URL}/getDocumentsByCompany`, {
-                params: { companyName: userData.companyName },
-            });
+            const response = await api.getPolicyDocuments(companyName)
             setDocuments(response.data); // Update the documents state
         } catch (error) {
             toast.error('Failed to fetch documents', { position: 'top-right' });

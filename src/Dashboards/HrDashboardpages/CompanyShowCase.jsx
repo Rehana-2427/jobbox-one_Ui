@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Card, Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom'
+import api from '../../apiClient'
 import CompanyJobs from './CompanyJobs'
 import CompanyPolicies from './CompanyPolicies'
 import CompanyViewPage from './CompanyViewPage'
@@ -225,26 +226,23 @@ const CompanyShowCase = () => {
     }
   };
 
-  const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
 
-  const toggleLeftSide = () => {
-    setIsLeftSideVisible(!isLeftSideVisible);
-  };
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 767);
+  const [reapplyMonths, setReapplyMonths] = useState(12); // Initialize state at the top level
 
   useEffect(() => {
-    // Update the `isSmallScreen` state based on screen resizing
-    const handleResize = () => setIsSmallScreen(window.innerWidth <= 767);
-
-    window.addEventListener('resize', handleResize);
-
-    // Clean up the event listener on component unmount
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-
-
-
+    if (companyName) { // Use the condition inside the effect
+      api.getHiringPolicy(companyName)
+        .then((response) => {
+          if (response.data) {
+            const months = response.data.allowReapply ? response.data.reapplyMonths : 12;
+            setReapplyMonths(months || 12); // Fallback to default if no value is provided
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching policy data:', error);
+        });
+    }
+  }, [companyName]); // Dependency array ensures this runs only when companyName changes
 
 
   const [documents, setDocuments] = useState([]);
@@ -397,14 +395,14 @@ const CompanyShowCase = () => {
         <Row className="hr-company_page-row2" style={{ marginTop: '5px' }}>
           <Col>
             <Tabs
-              defaultActiveKey="overview"
+              activeKey={activeTab}  // Use activeKey for controlled component
               id="uncontrolled-tab-example"
-              onSelect={(key) => setActiveTab(key)} // This is the correct way to handle tab change
+              onSelect={(key) => setActiveTab(key)} // Correct way to handle tab change
             >
-              <Tab eventKey="overview" title={customTabHeader("About  ", "i-Atom")}></Tab>
-              <Tab eventKey="jobs" title={customTabHeader("Job  ", "i-Shutter")}></Tab>
-              <Tab eventKey="Company-Policy-Form" title={customTabHeader("Add Company Policies ", "i-Atom")}> </Tab>
-              <Tab eventKey="social-media-links" title={customTabHeader(" Add Social Media Links  ", "i-Shutter")}></Tab>
+              <Tab eventKey="overview" title={activeTab === 'overview' ? customTabHeader("About  ", "i-Atom") : "Overview"}></Tab>
+              <Tab eventKey="jobs" title={activeTab === 'jobs' ? customTabHeader("Job  ", "i-Shutter") : "Jobs"}></Tab>
+              <Tab eventKey="Company-Policy-Form" title={activeTab === 'Company-Policy-Form' ? customTabHeader("Add Company Policies ", "i-Atom") : "Company Policies"}></Tab>
+              <Tab eventKey="social-media-links" title={activeTab === 'social-media-links' ? customTabHeader(" Add Social Media Links  ", "i-Shutter") : "Social Media Links"}></Tab>
             </Tabs>
           </Col>
         </Row>
@@ -447,7 +445,11 @@ const CompanyShowCase = () => {
             </Card>
             <Card className="key-stats" style={{ width: '100%', height: 'fit-content' }}>
               <Card.Body>
-                <h3><b>Company Policy Documents</b></h3>
+                <h3><b>Company Policies</b></h3>
+                <h4>Job Reapply Policy</h4>
+                <p>
+                  Candidates can reapply after <strong>{reapplyMonths}</strong> months.
+                </p>
                 {documents.length === 0 ? (
                   <p>No documents available for this company.</p>
                 ) : (
@@ -469,8 +471,6 @@ const CompanyShowCase = () => {
                   </div>
                 )}
               </Card.Body>
-
-
             </Card>
           </Col>
         </Row>

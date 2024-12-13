@@ -10,8 +10,20 @@ function CandidateLeftSide({ user, isOpen }) {
     const { userName, userId } = user;
     const location = useLocation();
     const navigate = useNavigate();
-    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 900);
-    const [isJobsDropdownOpen, setIsJobsDropdownOpen] = useState(false);
+    const [activeLink, setActiveLink] = useState(location.pathname); // Track the active link
+
+    // Define the sidebar navigation links
+    const navLinks = [
+        { to: '/candidate-dashboard', label: 'Dashboard', icon: <RxDashboard size={'30'} /> },
+        { to: '/candidate-dashboard/candidate-jobs', label: 'Jobs', icon: <FontAwesomeIcon icon={faLayerGroup} style={{ fontSize: '1.7rem' }} /> },
+        { to: '/candidate-dashboard/candidate-companies', label: 'Companies', icon: <FontAwesomeIcon icon={faBuilding} style={{ fontSize: '1.7rem' }} /> },
+        { to: '/candidate-dashboard/my-application', label: 'Applications', icon: <FontAwesomeIcon icon={faFileLines} style={{ fontSize: '1.7rem' }} /> },
+        { to: '/candidate-dashboard/resume', label: 'Resumes', icon: <FontAwesomeIcon icon={faFile} style={{ fontSize: '1.7rem' }} /> },
+        { to: '/candidate-dashboard/profile', label: 'Profile', icon: <FontAwesomeIcon icon={faUser} style={{ fontSize: '1.7rem' }} /> },
+        { to: '/candidate-dashboard/payment', label: 'Payment', icon: <FontAwesomeIcon icon={faMoneyCheckDollar} style={{ fontSize: '1.7rem' }} /> },
+        { to: '/contact', label: 'Contact', icon: <FontAwesomeIcon icon={faEnvelope} style={{ fontSize: '1.7rem' }} /> }
+    ];
+
     const scrollContainerRef = useRef(null);
 
     // Handle resizing of the screen to adjust layout accordingly
@@ -54,18 +66,24 @@ useEffect(() => {
     };
 }, [location]);
 
-    // Define the sidebar navigation links
-    const navLinks = [
-        { to: '/candidate-dashboard', label: 'Dashboard', icon: <RxDashboard size={'30'} />, iconColor: '#007bff' },
-        { to: '/candidate-dashboard/candidate-jobs', label: 'Jobs', icon: <FontAwesomeIcon icon={faLayerGroup} style={{ fontSize: '1.7rem' }} />, iconColor: '#007bff' },
-        { to: '/candidate-dashboard/candidate-companies', label: 'Companies', icon: <FontAwesomeIcon icon={faBuilding} style={{ fontSize: '1.7rem' }} />, iconColor: '#007bff' },
-        { to: '/candidate-dashboard/my-application', label: 'Applications', icon: <FontAwesomeIcon icon={faFileLines} style={{ fontSize: '1.7rem' }} />, iconColor: '#007bff' },
-        { to: '/candidate-dashboard/resume', label: 'Resumes', icon: <FontAwesomeIcon icon={faFile} style={{ fontSize: '1.7rem' }} />, iconColor: '#007bff' },
-        { to: '/candidate-dashboard/profile', label: 'Profile', icon: <FontAwesomeIcon icon={faUser} style={{ fontSize: '1.7rem' }} />, iconColor: '#007bff' },
-        { to: '/candidate-dashboard/payment', label: 'Payment', icon: <FontAwesomeIcon icon={faMoneyCheckDollar} style={{ fontSize: '1.7rem' }} />, iconColor: '#007bff' },
-        { to: '/contact', label: 'Contact', icon: <FontAwesomeIcon icon={faEnvelope} style={{ fontSize: '1.7rem' }} /> }
-    ];
 
+
+    const handleLinkClick = (to) => {
+        if (to === activeLink) {
+            // Prevent navigation and maintain the current scroll position
+            return;
+        }
+        setActiveLink(to); // Set the active link
+        sessionStorage.setItem('scrollPosition', scrollContainerRef.current.scrollTop);
+        navigate(to, { state: { userId, userName } });
+    };
+
+    useEffect(() => {
+        const savedScrollPosition = sessionStorage.getItem('scrollPosition');
+        if (savedScrollPosition && scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTop = parseInt(savedScrollPosition, 10);
+        }
+    }, [location]);
     // Render the navigation links
     const renderNavLinks = () => (
         <Nav className="flex-column full-height align-items-center">
@@ -122,6 +140,9 @@ useEffect(() => {
             ))}
         </Nav>
     );
+    
+
+
 
     return (
         <div
