@@ -82,6 +82,7 @@ const HrLeftSide = ({ user, isOpen }) => {
         <Nav className="flex-column full-height align-items-center">
             {navLinks.map((link, index) => (
                 <React.Fragment key={index}>
+                    {/* Case: No subLinks (regular link) */}
                     {!link.subLinks ? (
                         <div style={{ position: 'relative' }}>
                             <Link
@@ -94,16 +95,46 @@ const HrLeftSide = ({ user, isOpen }) => {
                                 style={{
                                     fontSize: '1.1rem',
                                     transition: 'color 0.3s',
-                                    color: activeLink === link.to ? 'purple' : '#332e38',
+                                    color: activeLink === link.to ? '#663399' : '#332e38',
                                 }}
                             >
-                                <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                                    {link.icon && <span style={{ marginRight: '10px' }}>{link.icon}</span>}
-                                    {link.label}
+                                <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', position: 'relative' }}>
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            flexDirection: 'column',
+                                            position: 'relative',
+                                            height: '50px',
+                                            width: 'auto',
+                                            minWidth: '100px',
+                                            justifyContent: 'center',
+                                        }}
+                                    >
+                                        {link.icon && <span style={{ marginBottom: '10px' }}>{link.icon}</span>}
+                                        {link.label}
+                                    </div>
+                                    {/* Conditionally style triangle based on whether the link is active */}
+                                    <div
+                                        className="triangle"
+                                        style={{
+                                            width: '0',
+                                            height: '0',
+                                            borderStyle: 'solid',
+                                            borderWidth: '0 0 30px 30px',
+                                            borderColor: 'transparent transparent #663399 transparent',
+                                            position: 'absolute',
+                                            top: '70%', // Center the triangle vertically
+                                            left: '100%', // Position the triangle next to the label
+                                            marginLeft: '10px', // Adjust horizontal spacing
+                                            display: location.pathname === link.to ? 'block' : 'none',  // Only show triangle when active
+                                        }}
+                                    />
                                 </div>
                             </Link>
                         </div>
                     ) : (
+                        // Case: link has subLinks (dropdown)
                         <div
                             onMouseEnter={() => setIsJobsDropdownOpen(true)}
                             onMouseLeave={() => setIsJobsDropdownOpen(false)}
@@ -114,18 +145,55 @@ const HrLeftSide = ({ user, isOpen }) => {
                                 style={{
                                     fontSize: '1.1rem',
                                     transition: 'color 0.3s',
-                                    color: link.subLinks.some((subLink) => activeLink === subLink.to) ? 'purple' : '#332e38',
+                                    color: link.subLinks.some((subLink) => activeLink === subLink.to) ? '#663399' : '#332e38',
                                     cursor: 'pointer',
                                     backgroundColor: 'transparent',
                                 }}
                             >
-                                <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                                    {link.icon && <span style={{ marginRight: '10px' }}>{link.icon}</span>}
-                                    {link.label}
+                                <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', position: 'relative' }}>
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            flexDirection: 'column',
+                                            position: 'relative',
+                                            height: '50px',
+                                            width: 'auto',
+                                            minWidth: '100px',
+                                            justifyContent: 'center',
+                                        }}
+                                    >
+                                        {link.icon && <span style={{ marginRight: '10px' }}>{link.icon}</span>}
+                                        {link.label}
+                                    </div>
+                                    {/* Conditionally style triangle based on whether the link is active */}
+                                    <div
+                                        className="triangle"
+                                        style={{
+                                            width: '0',
+                                            height: '0',
+                                            borderStyle: 'solid',
+                                            borderWidth: '0 0 30px 30px',
+                                            borderColor: 'transparent transparent #663399 transparent',
+                                            position: 'absolute',
+                                            top: '70%', // Center the triangle vertically
+                                            left: '100%', // Position the triangle next to the label
+                                            marginLeft: '10px', // Adjust horizontal spacing
+                                            display: location.pathname === link.subLinks.some((subLink) => activeLink === subLink.to) ? 'block' : 'none',  // Only show triangle when active
+                                        }}
+                                    />
                                 </div>
                             </div>
                             {isJobsDropdownOpen && (
-                                <div className="dropdown-menu show" style={{ position: 'absolute', padding: '5px 0', overflow: 'hidden' }}>
+                                <div
+                                    className="dropdown-menu show"
+                                    style={{
+                                        position: 'absolute',
+                                        padding: '5px 0',
+                                        overflow: 'hidden',
+                                        zIndex: 1000,  // Ensure dropdown is above other elements
+                                    }}
+                                >
                                     {link.subLinks.map((subLink, subIndex) => (
                                         <Link
                                             key={subIndex}

@@ -47,7 +47,7 @@ const UserSignin = () => {
                         navigate('/candidate-dashboard/companyPage', { state: { userId: user.userId, userName: user.userName, companyId: companyId } });
                     }
                     else {
-                        navigate('/candidate-dashboard', { state: { userId: user.userId } });
+                        navigate('/candidate-dashboard', { state: { userId: user.userId,userName: user.userName, } });
                     }
                     // Clear the redirect target once used
                     localStorage.removeItem('redirectAfterLogin');
@@ -305,7 +305,7 @@ const UserSignin = () => {
                                     </div>
                                 </div>
                             </Col>
-                            <Col md={6} className="text-center auth-cover">
+                            <Col xs={12} md={6} className="text-center auth-cover">
                                 <div className="pe-3 auth-right" style={{ height: '380px' }}>
                                     <div className="auth-logo text-center mb-4">
                                         <img src="/jb_logo.png" alt="JobDB" className="user-signin-column2" style={{ height: '50px', width: '120px' }} />

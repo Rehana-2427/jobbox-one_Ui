@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Card, Modal, Spinner } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { default as swal, default as Swal } from 'sweetalert2';
@@ -7,6 +7,7 @@ import { useAuth } from '../../AuthProvider';
 import './CandidateDashboard.css';
 import CandidateLeftSide from './CandidateLeftSide';
 import DashboardLayout from './DashboardLayout';
+import { FaEye } from 'react-icons/fa';
 
 const Resume = () => {
   const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -16,7 +17,11 @@ const Resume = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [resumes, setResumes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [resumeDetails, setResumeDetails] = useState({}); // State to hold additional resume details (list of applications)
+  const [resumeDetails, setResumeDetails] = useState(null);
+  // const [resumeDetails, setResumeDetails] = useState({}); // State to hold additional resume details (list of applications)
+  const [viewResume, setViewResume] = useState(false);
+  const [viewCount, setViewCount] = useState(false);
+  const [resumeMessage, setresumeMessage] = useState(false);
 
   useEffect(() => {
     // Fetch resumes data from the backend
@@ -31,29 +36,56 @@ const Resume = () => {
       });
   }, [userId]);
 
-  // Fetch additional data (list of applications) based on resumeId
-  useEffect(() => {
-    resumes.forEach(resume => {
-      const resumeId = resume.id;
-      console.log("resumeId" + resumeId)
-      // Check if resumeId is a valid number (not undefined, null, or NaN)
-      if (resumeId && !isNaN(resumeId)) {
-        // Proceed with the API call only if resumeId is valid
-        axios.get(`${BASE_API_URL}/getResumeDetails?resumeId=${resumeId}`)
-          .then(response => {
-            setResumeDetails(prevState => ({
-              ...prevState,
-              [resumeId]: response.data // Store list of applications for each resumeId
-            }));
-          })
-          .catch(error => {
-            console.error(`Error fetching details for resume ${resumeId}:`, error);
-          });
-      } else {
-        console.error(`Invalid resumeId: ${resumeId}. Skipping API call.`);
+  // // Fetch additional data (list of applications) based on resumeId
+  // useEffect(() => {
+  //   resumes.forEach(resume => {
+  //     const resumeId = resume.id;
+  //     console.log("resumeId" + resumeId)
+  //     // Check if resumeId is a valid number (not undefined, null, or NaN)
+  //     if (resumeId && !isNaN(resumeId)) {
+  //       // Proceed with the API call only if resumeId is valid
+  //       axios.get(`${BASE_API_URL}/getResumeDetails?resumeId=${resumeId}`)
+  //         .then(response => {
+  //           setResumeDetails(prevState => ({
+  //             ...prevState,
+  //             [resumeId]: response.data // Store list of applications for each resumeId
+  //           }));
+  //         })
+  //         .catch(error => {
+  //           console.error(`Error fetching details for resume ${resumeId}:`, error);
+  //         });
+  //     } else {
+  //       console.error(`Invalid resumeId: ${resumeId}. Skipping API call.`);
+  //     }
+  //   });
+  // }, [resumes]); // Trigger this when resumes change
+
+  const detailsRef = useRef(null); // Ref for the details section
+  const handleViewResumeDetails = async (resume) => {
+    setViewResume(true); // Assuming this sets a loading state or triggers a view change.
+    const resumeId = resume.id;
+    setViewCount(resume.viewCount); //set viewCount
+    setresumeMessage(resume.message); // set message
+    console.log("resumeId: " + resumeId);
+
+    // Check if resumeId is a valid number (not undefined, null, or NaN)
+    if (resumeId && !isNaN(resumeId)) {
+      // Proceed with the API call only if resumeId is valid
+      try {
+        const response = await axios.get(`${BASE_API_URL}/getResumeDetails?resumeId=${resumeId}`);
+        setResumeDetails(response.data);  // Update resumeDetails state with the fetched data
+
+          // Scroll to the details section
+          if (detailsRef.current) {
+            detailsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+      } catch (error) {
+        console.error(`Error fetching details for resume ${resumeId}:`, error);
       }
-    });
-  }, [resumes]); // Trigger this when resumes change
+    } else {
+      console.error(`Invalid resumeId: ${resumeId}. Skipping API call.`);
+    }
+  };
 
 
   const handleDownload = async (resumeId, fileName) => {
@@ -132,6 +164,7 @@ const Resume = () => {
       )}
 
       <h3 className='text-start'>MY RESUMES</h3>
+      <p>(If you want to view your resume details please click on <strong style={{color:'red'}}>Preview </strong>)</p>
 
       {loading ? (
         <div className="text-center">
@@ -167,6 +200,9 @@ const Resume = () => {
                     <Button variant="danger" size="sm" className='delete' style={{ marginLeft: '10px' }} onClick={() => handleDelete(resume.id, resume.message)}>
                       Delete
                     </Button>
+                    <h5 className="text-muted text-center" style={{marginTop:'10px'}} onClick={() => handleViewResumeDetails(resume)}>
+                     <FaEye /> Preview
+                    </h5>
                   </Card.Body>
                 </Card>
               ))}
@@ -175,47 +211,35 @@ const Resume = () => {
         </>
       )}
 
-      <div className="container mt-5">
-        {resumes.length > 0 && (
-          <div className="row">
-            {resumes.map((resume, index) => (
-              <div key={index} className="col-md-6 mb-4">
-                <div className="p-4 border rounded shadow-sm">
-                  <div className="d-flex justify-content-between align-items-center mb-3">
-                    <h4 className="text-primary">{resume.message}</h4>
-                    <h5 className="text-muted">Views: {resume.viewCount}</h5>
-                  </div>
-                  {/* Optionally, you can use <hr> to separate applications visually */}
-                  <hr style={{ borderTop: '1px solid purple', marginTop: '15px', marginBottom: '15px' }} />
+      <div ref={detailsRef} className="container mt-5">
+        {viewResume && (
+          <>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h4 className="text-primary">{resumeMessage}</h4>
+              <h5 className="text-muted">Total Views: {viewCount}</h5>
+            </div>
 
-                  {resumeDetails[resume.id] && resumeDetails[resume.id].length > 0 && (
-                    <div>
-                      <h5 className="text-muted mb-3">This resume is used as: </h5>
-                      {/* Optionally, you can use <hr> to separate applications visually */}
-                      <hr style={{ borderTop: '1px solid purple', marginTop: '15px', marginBottom: '15px' }} />
-                      {resumeDetails[resume.id].map((application, appIndex) => (
-                        <div key={appIndex} className="application">
-                          <p><strong>Company:</strong> {application.companyName}</p>
-                          <p><strong>Job Title:</strong> {application.jobRole ? application.jobRole : 'Dream application'}</p>
+            {/* Separator line */}
+            <hr style={{ borderTop: '1px solid purple', marginTop: '15px', marginBottom: '15px' }} />
 
-                          {/* Optionally, you can use <hr> to separate applications visually */}
-                          <hr style={{ borderTop: '1px solid purple', marginTop: '10px', marginBottom: '10px' }} />
+            {/* Render resume details if available */}
+            {resumeDetails && resumeDetails.length > 0 ? (
+              resumeDetails.map((application, appIndex) => (
+                <div key={appIndex} className="application">
+                  <p><strong>Company:</strong> {application.companyName}</p>
+                  <p><strong>Job Title:</strong> {application.jobRole ? application.jobRole : 'Dream application'}</p>
 
-                        </div>
-                      ))}
-                    </div>
-
-                  )}
-                  {resumeDetails[resume.id] && resumeDetails[resume.id].length === 0 && (
-                    // <p>No applications found for this resume.</p>
-                    <p>You are not using this resume yet.</p>
-                  )}
+                  {/* Separator line for each application */}
+                  <hr style={{ borderTop: '1px solid purple', marginTop: '10px', marginBottom: '10px' }} />
                 </div>
-              </div>
-            ))}
-          </div>
+              ))
+            ) : (
+              <p>No applications found.</p> // Display message if no applications are found
+            )}
+          </>
         )}
       </div>
+
     </DashboardLayout>
   );
 };

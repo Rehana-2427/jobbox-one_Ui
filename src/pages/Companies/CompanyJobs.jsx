@@ -127,15 +127,15 @@ const CompanyJobs = () => {
               </Table>
 
               {/* Pagination */}
-              <Pagination
-                page={page}
-                pageSize={pageSize}
-                totalPages={totalPages}
-                handlePageSizeChange={handlePageSizeChange}
-                isPageSizeDisabled={isPageSizeDisabled}
-                handlePageClick={handlePageClick}
-              />
-            </>
+            <Pagination
+              page={page}
+              pageSize={pageSize}
+              totalPages={totalPages}
+              handlePageSizeChange={handlePageSizeChange}
+              isPageSizeDisabled={isPageSizeDisabled}
+              handlePageClick={handlePageClick}
+            />
+          </>
           ) : (
             <h1>No jobs found.</h1>
           )}

@@ -50,8 +50,16 @@ const api = {
   // Update user data
   updateUserData: (userData) => apiClient.put('/updateUserData', userData),
 
-  //update password
-  updatePassword: (userEmail, password) => apiClient.put('/updatePassword', userEmail, password),
+  updatePassword: (userEmail, newPassword) => {
+    console.log("userEmail- > " + userEmail + " password --> " + newPassword);
+    return apiClient.put('/updatePassword', null, {
+        params: {
+            userEmail: userEmail,
+            newPassword: newPassword
+        }
+    });
+},
+
 
   //get companydetails by name
   getCompanyByCompanyName: (companyName) => {

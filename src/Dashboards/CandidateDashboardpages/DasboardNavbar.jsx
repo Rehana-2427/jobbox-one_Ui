@@ -35,6 +35,7 @@ const DasboardNavbar = ({ isSidebarOpen, toggleSidebar }) => {
         };
 
         fetchNotifications();
+        
     }, [userId]);
 
     const convertToUpperCase = (str) => {

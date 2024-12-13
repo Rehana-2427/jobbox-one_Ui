@@ -5,7 +5,7 @@ import api from '../../apiClient';
 import SocialButtons from './sessions/SocialButtons';
 
 const ForgetPassword = () => {
-    const [userEmail, setEmail] = useState('');
+    const [userEmail, setEmail] = useState();
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [otp, setOtp] = useState();
@@ -20,7 +20,7 @@ const ForgetPassword = () => {
     const [passwordCriteriaError, setPasswordCriteriaError] = useState(false);
 
     const handleEmailSubmit = async (e) => {
-
+        console.log("userEmail -- > " + userEmail);
         e.preventDefault();
         try {
             const response = await api.otpGenerate(userEmail)
@@ -37,6 +37,7 @@ const ForgetPassword = () => {
 
     };
     const handleOtpSubmit = (e) => {
+        console.log("userEmail -- > " + userEmail);
         e.preventDefault();
         console.log(otp);
         console.log(otpEnter)
@@ -49,16 +50,16 @@ const ForgetPassword = () => {
 
     const handlePasswordReset = async (e) => {
         e.preventDefault();
-
+        console.log("userEmail -- > " + userEmail);
         if (!validatePassword()) {
             return;
         }
         try {
-            const response = await api.updatePassword(userEmail,newPassword)
+            // Pass userEmail and newPassword as separate arguments, not as an object
+            const response = await api.updatePassword(userEmail, newPassword);
             if (response.data) {
                 setSuccessMessage("Password reset successfully! Now You can login with your new password.");
-            }
-            else {
+            } else {
                 setErrorMessage('');
                 setPasswordMatchError(false);
                 setPasswordCriteriaError(false);
@@ -67,12 +68,8 @@ const ForgetPassword = () => {
         catch (error) {
             console.log(error);
         }
-        // Handle the password reset logic here (e.g., send a request to the backend)
-
-
     };
-
-    const validatePassword = () => {
+        const validatePassword = () => {
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,12}$/;
         const isValidPassword = passwordRegex.test(newPassword) && newPassword === confirmPassword;
 

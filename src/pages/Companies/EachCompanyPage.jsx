@@ -405,9 +405,9 @@ const EachCompanyPage = () => {
                 )}
               </Col>
             </Row>
-            <hr style={{ border: '1px solid black', margin: '30px 0' }} />
+            <hr style={{ border: '1px solid black' }} />
 
-            <Row className="hr-company_page-row2" style={{ marginTop: '50px' }}>
+            <Row className="hr-company_page-row2" >
               <Col md={2}>
                 <Tabs
                   defaultActiveKey="overview"
@@ -424,7 +424,7 @@ const EachCompanyPage = () => {
             </Row>
             <Row style={{ marginTop: '10px' }}>
               <Col xs={12} md={8}>
-                <h2>{company ? company.companyName : 'Loading company data...'}</h2>
+                {/* <h2>{company ? company.companyName : 'Loading company data...'}</h2> */}
 
                 {activeTab === 'home' && (
                   <div>
