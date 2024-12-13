@@ -6,7 +6,7 @@ import api from '../apiClient';
 import Pagination from '../Pagination';
 import './BrowseJobs.css';
 import CustomNavbar from './CustomNavbar';
-import HomeFooter from './HomeFooter';
+import Footer from './Footer';
 import JobListings from './JobListings';
 
 const BrowseJobs = () => {
@@ -348,7 +348,7 @@ const BrowseJobs = () => {
             </div>
 
             <div style={{ marginTop: '100px' }}>
-                <HomeFooter />
+                <Footer />
             </div>
 
             <Modal show={showModal} onHide={closeModal}>

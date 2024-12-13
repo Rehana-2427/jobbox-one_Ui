@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import api from "../../apiClient";
 import Pagination from "../../Pagination";
 import CustomNavbar from "../CustomNavbar";
-import HomeFooter from "../HomeFooter";
+import Footer from "../Footer";
 
 const JobboxCompanyPage = () => {
   const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -350,7 +350,7 @@ const JobboxCompanyPage = () => {
         )}
       </div>
       <div >
-        <HomeFooter />
+        <Footer />
       </div>
     </div>
   );

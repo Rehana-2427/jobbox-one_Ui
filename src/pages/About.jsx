@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CustomNavbar from './CustomNavbar';
-import HomeFooter from './HomeFooter';
+import Footer from './Footer';
 
 const About = () => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -23,7 +23,7 @@ const About = () => {
 
       {/* Footer section */}
       <div style={{ marginTop: '400px' }}>
-        <HomeFooter />
+        <Footer />
       </div>
     </div>
 

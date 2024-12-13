@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card } from 'react-bootstrap'
 import CustomNavbar from './CustomNavbar'
-import HomeFooter from './HomeFooter'
+import Footer from './Footer'
 
 const PrivacyPolicy = () => {
     return (
@@ -87,7 +87,7 @@ const PrivacyPolicy = () => {
             </Card>
             </div>
             <div>
-                <HomeFooter />
+                <Footer />
             </div>
         </div>
     )
