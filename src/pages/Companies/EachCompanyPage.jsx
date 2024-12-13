@@ -348,7 +348,7 @@ const EachCompanyPage = () => {
             setDocuments(response.data); // Set documents data to state
           }
         } catch (err) {
-          setError('Failed to fetch documents.');
+          console.error('Error fetching policy data:', err);
           console.error(err);
         } finally {
           setLoading(false);
