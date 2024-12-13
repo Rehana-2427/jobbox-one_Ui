@@ -1,4 +1,4 @@
-import { Formik } from 'formik';
+import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import { Button, Card, Col, Nav, Row } from 'react-bootstrap';
 import { FaCheckCircle } from 'react-icons/fa';
@@ -62,7 +62,7 @@ const HrSignin = () => {
                                     <h1 className="mb-3 text-18">Employee Login</h1>
                                     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                                         {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
-                                            <form onSubmit={handleSubmit} className="w-100">
+                                            <Form onSubmit={handleSubmit} className="w-100">
                                                 <TextField
                                                     type="email"
                                                     name="userEmail"
@@ -93,13 +93,13 @@ const HrSignin = () => {
                                                 >
                                                     {isSubmitting ? 'Signing In...' : 'Login'}
                                                 </button>
-                                            </form>
+                                            </Form>
                                         )}
                                     </Formik>
                                     {errorMessage && <div className="text-danger mt-2">{errorMessage}</div>}
 
                                     <div className="mt-3 text-center">
-                                        <Link to="/sessions/forgot-password" className="text-muted">
+                                        <Link to="/forgot-password" className="text-muted">
                                             Forgot Password?
                                         </Link>
                                       

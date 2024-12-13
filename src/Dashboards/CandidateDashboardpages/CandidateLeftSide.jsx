@@ -29,7 +29,7 @@ function CandidateLeftSide({ user, isOpen }) {
     // Handle resizing of the screen to adjust layout accordingly
     useEffect(() => {
         const handleResize = () => {
-       //     setIsSmallScreen(window.innerWidth <= 900);
+            setIsSmallScreen(window.innerWidth <= 900);
         };
         window.addEventListener('resize', handleResize);
         return () => {
