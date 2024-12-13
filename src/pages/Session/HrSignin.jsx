@@ -21,7 +21,7 @@ const HrSignin = () => {
     const handleSubmit = async (values, { setSubmitting }) => {
         console.log('Form submitted with values:', values); // Log submitted values
         try {
-            const response = await api.userLogin(values.userEmail,values.password)
+            const response = await api.userLogin(values.userEmail, values.password)
             const user = response.data.user;
             const token = response.data.token;
             localStorage.setItem('user', JSON.stringify(user));
@@ -50,13 +50,16 @@ const HrSignin = () => {
     return (
         <div>
             <CustomNavbar />
-            <div className="auth-layout-wrap" style={{ maxHeight: '100vh', overflowY: 'auto' }}>
-                <div className="auth-content candidate-login" style={{ position: 'relative', padding: '20px' }}>
-                    <Card className="o-hidden user_regi_signin">
+            <div className="auth-layout-wrap">
+                <div className="auth-content">
+                    <Card className="o-hidden">
                         <Row>
                             <Col md={6}>
                                 <div className="p-4">
-                                    <h1 className="mb-3 text-20"><b>Employee Login</b></h1>
+                                    <div className="auth-logo text-center mb-4">
+                                        <img src="/jb_logo.png" alt="jobbox_logo" />
+                                    </div>
+                                    <h1 className="mb-3 text-18">Employee Login</h1>
                                     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                                         {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
                                             <form onSubmit={handleSubmit} className="w-100">
@@ -84,7 +87,7 @@ const HrSignin = () => {
                                                 />
                                                 <button
                                                     type="submit"
-                                                    className="btn btn-rounded btn-primary my-1 mt-2"
+                                                   className="btn btn-rounded btn-primary w-100 my-1 mt-2"
                                                     disabled={isSubmitting}
                                                     fullWidth
                                                 >
@@ -94,35 +97,44 @@ const HrSignin = () => {
                                         )}
                                     </Formik>
                                     {errorMessage && <div className="text-danger mt-2">{errorMessage}</div>}
+
                                     <div className="mt-3 text-center">
-                                        <Link to="/forgetpassword" className="text-muted" style={{ color: 'red' }}>
+                                        <Link to="/sessions/forgot-password" className="text-muted">
                                             Forgot Password?
                                         </Link>
-                                    </div>
-                                    <div>
-                                        <hr />
-                                        <Nav.Link as={Link} to="/hr-signup" className="nav-link-custom">
-                                            <Button variant='secondary'>Register For Free</Button>
-                                        </Nav.Link>
+                                      
                                     </div>
                                 </div>
                             </Col>
-                            <Col md={6} className="text-center auth-cover">
-                                <div className="pe-3 auth-right" style={{ height: '380px' }}>
-                                    <div className="auth-logo text-center mb-4">
-                                        <img src="/jb_logo.png" alt="JobDB" className="user-signin-column2" style={{ height: '50px', width: '120px' }} />
-                                    </div>
-                                    <div className='info-wrapper'>
-                                        <h3 className="mt-3">Welcome Back!</h3>
-                                        <div className='info-list'>
-                                            <h6><FaCheckCircle style={{ marginRight: '8px', color: 'green' }} /> Manage Job Postings Seamlessly</h6>
-                                            <h6><FaCheckCircle style={{ marginRight: '8px', color: 'green' }} /> Track Applications in Real-Time</h6>
-                                            <h6><FaCheckCircle style={{ marginRight: '8px', color: 'green' }} /> Access Detailed Candidate Insights</h6>
-                                            <h6><FaCheckCircle style={{ marginRight: '8px', color: 'green' }} /> Simplified Hiring Process</h6>
-                                            <h6><FaCheckCircle style={{ marginRight: '8px', color: 'green' }} /> Enhanced Candidate Screening</h6>
-                                        </div>
-                                    </div>
 
+                            <Col md={6} className="text-center auth-cover">
+                                <div className="pe-3 auth-right">
+                                    <div>
+                                        <h6 style={{ display: 'flex', alignItems: 'center', marginLeft: '20px' }}>
+                                            <FaCheckCircle style={{ marginRight: '8px', color: 'green' }} />
+                                            Manage Job Postings Seamlessly - Post, edit, and archive job openings effortlessly from a centralized platform.
+                                        </h6>
+                                        <h6 style={{ display: 'flex', alignItems: 'center', marginLeft: '20px' }}>
+                                            <FaCheckCircle style={{ marginRight: '8px', color: 'green' }} />
+                                            Track Applications in Real-Time - Stay updated on the status of every application as it progresses.
+                                        </h6>
+                                        <h6 style={{ display: 'flex', alignItems: 'center', marginLeft: '20px' }}>
+                                            <FaCheckCircle style={{ marginRight: '8px', color: 'green' }} />
+                                            Access Detailed Candidate Insights - View in-depth profiles and resumes to make informed hiring decisions.
+                                        </h6>
+                                        <h6 style={{ display: 'flex', alignItems: 'center', marginLeft: '20px' }}>
+                                            <FaCheckCircle style={{ marginRight: '8px', color: 'green' }} />
+                                            Simplified Hiring Process - Streamline hiring workflows with automated tools and customizable templates.
+                                        </h6>
+                                        <h6 style={{ display: 'flex', alignItems: 'center', marginLeft: '20px' }}>
+                                            <FaCheckCircle style={{ marginRight: '8px', color: 'green' }} />
+                                            Enhanced Candidate Screening - Utilize filters and assessments to shortlist the best candidates quickly.
+                                        </h6>
+                                    </div>
+                                    <br></br>
+                                    <Nav.Link as={Link} to="/hr-signup" className="nav-link-custom">
+                                        <Button >Register For Free</Button>
+                                    </Nav.Link>
                                 </div>
                             </Col>
                         </Row>

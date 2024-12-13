@@ -377,6 +377,48 @@ const CompamyPage = () => {
       <span>{title}</span>
     </div>
   );
+
+  const [documents, setDocuments] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  // useEffect should always be called unconditionally
+  useEffect(() => {
+    if (companyName) {
+      const fetchDocuments = async () => {
+        setLoading(true);
+        try {
+          const response = await api.getPolicyDocuments(companyName)
+          if (response.data) {
+            setDocuments(response.data); // Set documents data to state
+          }
+        } catch (err) {
+          setError('Failed to fetch documents.');
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchDocuments();
+    }
+  }, [companyName]); // Effect will run whenever companyName changes
+
+  const [reapplyMonths, setReapplyMonths] = useState(12); // Default to 12 months
+
+  useEffect(() => {
+    if (companyName) {
+      // Fetch policy data when the component is mounted
+        api.getHiringPolicy(companyName).then((response) => {
+          if (response.data) {
+            const months = response.data.allowReapply ? response.data.reapplyMonths : 12;
+            setReapplyMonths(months || 12); // Fallback to default if no value is provided
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching policy data:', error);
+        });
+    }
+  }, [companyName]);
   return (
     <DashboardLayout>
       {showResumePopup && (
@@ -654,7 +696,7 @@ const CompamyPage = () => {
                     )}
                   </Col>
                 </Row>
-                <h1>Other Information</h1>
+                <h3><b>Other Information</b></h3>
                 <Row className="mb-2">
                   <Col>
                     <h5>Applicants: {countOfApplications}</h5>
@@ -680,6 +722,36 @@ const CompamyPage = () => {
                     </ul>
                   </Col>
                 </Row>
+              </Card.Body>
+            </Card>
+            <Card className="key-stats" style={{ width: '100%', height: 'fit-content' }}>
+              <Card.Body>
+
+                <h3><b>Company Policies</b></h3>
+                <h4>Job Reapply Policy</h4>
+                <p>
+                  Candidates can reapply after <strong>{reapplyMonths}</strong> months.
+                </p>
+                {documents.length === 0 ? (
+                  <p>No documents available for this company.</p>
+                ) : (
+                  <div>
+                    {documents.map((document) => (
+                      <div key={document.documentId} style={{ marginBottom: '10px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <strong>{document.documentTitle}:</strong>
+                          <a
+                            href={`data:application/octet-stream;base64,${document.documentFile}`}
+                            download={document.documentTitle}
+                            className="btn btn-primary"
+                            style={{ marginLeft: '10px' }}>
+                            Download
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </Card.Body>
             </Card>
           </Col>

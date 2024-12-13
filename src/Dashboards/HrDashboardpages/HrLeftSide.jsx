@@ -94,12 +94,27 @@ const HrLeftSide = ({ user, isOpen }) => {
                                 style={{
                                     fontSize: '1.1rem',
                                     transition: 'color 0.3s',
-                                    color: activeLink === link.to ? 'purple' : '#332e38',
+                                    color: activeLink === link.to ? '#663399' : '#332e38',
                                 }}
                             >
                                 <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
                                     {link.icon && <span style={{ marginRight: '10px' }}>{link.icon}</span>}
                                     {link.label}
+                                    <div
+                                        className="triangle"
+                                        style={{
+                                            width: '0',
+                                            height: '0',
+                                            borderStyle: 'solid',
+                                            borderWidth: '0 0 30px 30px',
+                                            borderColor: 'transparent transparent #663399 transparent',
+                                            position: 'absolute',
+                                            top: '103%',
+                                            left: '100%',
+                                            marginLeft: '10px',
+                                            display: location.pathname === link.to ? 'block' : 'none',
+                                        }}
+                                    />
                                 </div>
                             </Link>
                         </div>
@@ -114,7 +129,7 @@ const HrLeftSide = ({ user, isOpen }) => {
                                 style={{
                                     fontSize: '1.1rem',
                                     transition: 'color 0.3s',
-                                    color: link.subLinks.some((subLink) => activeLink === subLink.to) ? 'purple' : '#332e38',
+                                    color: link.subLinks.some((subLink) => activeLink === subLink.to) ? '#663399' : '#332e38',
                                     cursor: 'pointer',
                                     backgroundColor: 'transparent',
                                 }}
@@ -122,6 +137,24 @@ const HrLeftSide = ({ user, isOpen }) => {
                                 <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
                                     {link.icon && <span style={{ marginRight: '10px' }}>{link.icon}</span>}
                                     {link.label}
+                                    <div
+                                        className="triangle"
+                                        style={{
+                                            width: '0',
+                                            height: '0',
+                                            borderStyle: 'solid',
+                                            borderWidth: '0 0 30px 30px',
+                                            borderColor: 'transparent transparent #663399 transparent',
+                                            position: 'absolute',
+                                            top: '103%',
+                                            left: '100%',
+                                            marginLeft: '10px',
+                                            display:
+                                                location.pathname === link.to || (link.subLinks && link.subLinks.some(subLink => location.pathname === subLink.to))
+                                                    ? 'block'
+                                                    : 'none',
+                                        }}
+                                    />
                                 </div>
                             </div>
                             {isJobsDropdownOpen && (
@@ -151,6 +184,7 @@ const HrLeftSide = ({ user, isOpen }) => {
             ))}
         </Nav>
     );
+    
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     useEffect(() => {

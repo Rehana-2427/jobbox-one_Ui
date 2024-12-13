@@ -14,8 +14,6 @@
 
 .auth-cover {
   background-size: cover;
-  // background-image: url(../../../../../public/assets/images/photo-long-3.jpg);
-  background-color: rgb(245, 242, 236);
   border-radius: 5px;
 }
 
@@ -30,7 +28,7 @@
 
 .auth-logo {
   img {
-    width: 150px;
+    width: 200px;
     height: 100px;
   }
 }
@@ -38,7 +36,7 @@
 @media (min-width: 1024px) {
   .auth-layout-wrap {
     .auth-content {
-      min-width: 660px;
+      min-width: 80%;
     }
   }
 }
