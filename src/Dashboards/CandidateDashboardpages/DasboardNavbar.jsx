@@ -1,10 +1,10 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useAuth } from '../../AuthProvider';
 import CandidateLeftSide from './CandidateLeftSide';
-import axios from 'axios';
 
 const DasboardNavbar = ({ isSidebarOpen, toggleSidebar }) => {
     const navigate = useNavigate();

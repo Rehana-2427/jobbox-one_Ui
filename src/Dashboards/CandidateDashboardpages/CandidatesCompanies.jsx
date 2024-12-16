@@ -119,7 +119,7 @@ const CandidatesCompanies = () => {
     const company = companies.find((company) => company.companyId === companyId);
     if (company) {
       const encodedCompanyName = encodeURIComponent(company.companyName); // Encode the company name
-      navigate(`/candidate-dashboard/companyPage/companyName/${encodedCompanyName}`, { state: { companyId ,companyId: companyId, userName: userName, userId: userId } });
+      navigate(`/candidate-dashboard/companies/companyPage/companyName/${encodedCompanyName}`, { state: { companyId ,companyId: companyId, userName: userName, userId: userId } });
       // Trigger a page reload after navigating
       window.location.reload();
     } else {

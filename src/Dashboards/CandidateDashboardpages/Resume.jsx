@@ -1,13 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Card, Modal, Spinner } from 'react-bootstrap';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { default as swal, default as Swal } from 'sweetalert2';
-import { useAuth } from '../../AuthProvider';
-import './CandidateDashboard.css';
-import CandidateLeftSide from './CandidateLeftSide';
-import DashboardLayout from './DashboardLayout';
 import { FaEye } from 'react-icons/fa';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { default as swal } from 'sweetalert2';
+import './CandidateDashboard.css';
+import DashboardLayout from './DashboardLayout';
 
 const Resume = () => {
   const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -147,7 +145,7 @@ const Resume = () => {
   return (
     <DashboardLayout>
       <div className='adding-resumes' style={{ position: 'relative', marginTop: '10px' }}>
-        <Link to="/candidate-dashboard/resumeAdd" state={{ userName: userName, userId: userId }}>
+        <Link to="/candidate-dashboard/resume/resumeAdd" state={{ userName: userName, userId: userId }}>
           <Button style={{ position: 'absolute', top: 0, right: 0 }}>ADD NEW RESUME</Button>
         </Link>
       </div>

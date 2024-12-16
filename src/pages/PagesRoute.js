@@ -70,7 +70,7 @@ const PagesRoute = () => {
           <Route path='/candidate-dashboard/*' element={< CandidateDashbaordRoute />} />
           <Route path='/admin-register/*' element={<AdminRegister />} />
           <Route path='/admin-dashboard/*' element={<AdminDashboardRoute />} />
-          <Route path="/candidate-dashboard/job-description" element={<JobDescription />} />
+          <Route path="/candidate-dashboard/candidate-jobs/job-description/" element={<JobDescription />} />
           <Route path='/jobboxCompanyPage/eachCompanyPage/publicJobDetailsPage' element={<PublicJobDetailsPage />} />
           <Route path='/chatComponent' element={<ChatComponent />} />
           <Route path='/companyOverView' element={<CompanyOverView />} />

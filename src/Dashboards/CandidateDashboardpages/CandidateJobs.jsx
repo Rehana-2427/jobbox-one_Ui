@@ -387,11 +387,14 @@ const CandidateJobs = () => {
                       <td>{job.skills}</td>
                       <td>{job.location}</td>
                       <td>
-                        <Button
+                        {/* <Button
                           variant="secondary"
                           className="description btn-rounded"
                           onClick={() => {
-                            const url = new URL('/#/candidate-dashboard/job-description', window.location.origin);
+                            const url = new URL(
+                              '/#/candidate-dashboard/candidate-jobs/job-description/',
+                              window.location.origin
+                            );
                             url.searchParams.append('companyName', encodeURIComponent(job.companyName || ''));
                             url.searchParams.append('jobId', encodeURIComponent(job.jobId || ''));
                             url.searchParams.append('userId', encodeURIComponent(userId || ''));
@@ -400,7 +403,32 @@ const CandidateJobs = () => {
                           }}
                         >
                           View
+                        </Button> */}
+                        <Button
+                          variant="secondary"
+                          className="description btn-rounded"
+                          onClick={() => {
+                            // Log the values to the console
+                            console.log("Navigating to Job Description with the following details:");
+                            console.log("Company Name:", job.companyName || '');
+                            console.log("Job ID:", job.jobId || '');
+                            console.log("User  ID:", userId || '');
+                            console.log("User  Name:", userName || '');
+
+                            // Navigate to the job description page
+                            navigate('/candidate-dashboard/candidate-jobs/job-description', {
+                              state: {
+                                companyName: job.companyName || '',
+                                jobId: job.jobId || '',
+                                userId: userId || '',
+                                userName: userName || '',
+                              },
+                            });
+                          }}
+                        >
+                          View
                         </Button>
+
                       </td>
                       <td>
                         {hasUserApplied[job.jobId] === true || (applyjobs && applyjobs.jobId === job.jobId) ? (
@@ -451,7 +479,7 @@ const CandidateJobs = () => {
               variant="primary"
               onClick={(e) => {
                 e.preventDefault();
-                navigate('/candidate-dashboard/dream-company', { state: { userName, userId } });
+                navigate('/candidate-dashboard/candidate-jobs/dream-company', { state: { userName, userId } });
               }}
               className="w-md-auto"
             >

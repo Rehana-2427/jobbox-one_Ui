@@ -22,16 +22,16 @@ const CandidateDashbaordRoute = () => {
     <Routes>
       <Route path="/" element={<CandidateDashboard />} />
       <Route path='/candidate-jobs' element={<CandidateJobs />} />
-      <Route path='/candidate-companies' element={<CandidatesCompanies />} />
+      <Route path='/companies' element={<CandidatesCompanies />} />
       <Route path='/resume' element={<Resume />} />
       <Route path='/profile' element={<Profile />} />
       <Route path='/payment' element={<Payment />} />
       <Route path='/my-application' element={<MyApplication />} />
-      <Route path='/resumeAdd' element={<ResumeAdd />} />
-      <Route path='/companyPage/companyName/:companyName' element={<CompamyPage />} />
+      <Route path='/resume/resumeAdd' element={<ResumeAdd />} />
+      <Route path='companies/companyPage/companyName/:companyName' element={<CompamyPage />} />
       <Route path='/resumePopUp' element={<ResumeSelectionPopup />} />
-      <Route path='/dream-company' element={<DreamCompany/>}/>
-      <Route path='/dream-job' element={<DreamJob/>}/>
+      <Route path='/candidate-jobs/dream-company' element={<DreamCompany/>}/>
+      <Route path='/candidate-jobs/dream-job' element={<DreamJob/>}/>
       <Route path='/job-description' element={<JobDescription />}/>
       <Route path='/candidate-jobs/job-description/view-more' element={<ViewMoreJobs />}/>
     </Routes>
