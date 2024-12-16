@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import CustomNavbar from './CustomNavbar';
-import HomeFooter from './HomeFooter';
+import Footer from './Footer';
 
 const TermsAndConditions = () => {
   return (
@@ -218,7 +218,7 @@ const TermsAndConditions = () => {
         </Card>
       </div>
       <div>
-        <HomeFooter />
+        <Footer />
       </div>
     </div>
   );
