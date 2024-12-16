@@ -18,7 +18,7 @@ const ViewMoreJobs = () => {
     React.useEffect(() => {
         const queryString = window.location.href.split('#')[0].split('?')[1];
         const params = new URLSearchParams(queryString);
-        const companyName = params.get('companyName');
+        const companyName = decodeURIComponent(params.get('companyName')); // Decoding the company name 
         const jobId = params.get('jobId');
         const userId = params.get('userId');
         const userName = params.get('userName');

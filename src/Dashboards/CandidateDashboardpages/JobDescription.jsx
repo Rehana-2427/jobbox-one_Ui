@@ -3,38 +3,26 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import Footer from '../../pages/Footer';
 import DashboardLayout from './DashboardLayout';
 import ResumeSelectionPopup from './ResumeSelectionPopup';
 
 const JobDescription = () => {
     const BASE_API_URL = process.env.REACT_APP_API_URL;
-    // const [queryParams, setQueryParams] = React.useState({});
+    const location = useLocation();
+    const [queryParams, setQueryParams] = React.useState({});
+    React.useEffect(() => {
+        const queryString = window.location.href.split('#')[0].split('?')[1];
+        const params = new URLSearchParams(queryString);
+        const companyName = decodeURIComponent(params.get('companyName')); // Decoding the company name        
+        const jobId = params.get('jobId');
+        const userId = params.get('userId');
+        const userName = decodeURIComponent(params.get('userName')); // Decoding the user name
+        setQueryParams({ companyName, jobId, userId, userName });
+    }, [location]);
 
-    // React.useEffect(() => {
-    //   const queryString = window.location.search; // Extract query string after '?'
-    //   const params = new URLSearchParams(queryString);
-    
-    //   const companyName = decodeURIComponent(params.get('companyName') || ''); // Decode and provide default value
-    //   const jobId = params.get('jobId') || ''; // Provide default value
-    //   const userId = params.get('userId') || ''; // Provide default value
-    //   const userName = decodeURIComponent(params.get('userName') || ''); // Decode and provide default value
-    
-    //   setQueryParams({ companyName, jobId, userId, userName });
-    // }, []); // No need for `location` dependency unless it dynamically changes.
-    
-    // const { companyName, jobId, userId, userName } = queryParams;
-    
-    // console.log(companyName, jobId, userId, userName); // Debugging log
-    const location = useLocation(); // Get the location object
-    const { companyName, jobId, userId, userName } = location.state || {}; // Destructure state
-
-    // Log the values for debugging
-    console.log("Company Name:", companyName);
-    console.log("Job ID:", jobId);
-    console.log("User  ID:", userId);
-    console.log("User  Name:", userName);
-    
+    const { companyName, jobId, userId, userName } = queryParams;
+    console.log(companyName + jobId + userId + userName);
+    console.log(companyName)
     const [applyjobs, setApplyJobs] = useState();
     const [hasUserApplied, setHasUserApplied] = useState({});
     const [selectedJobId, setSelectedJobId] = useState(null);
@@ -290,15 +278,12 @@ const JobDescription = () => {
                                 <Card key={job.jobId} style={{ width: '250px', height: '150px' }}>
                                     <Card.Body
                                         onClick={() => {
-                                             // Navigate to the job description page
-                            navigate('/candidate-dashboard/candidate-jobs/job-description', {
-                              state: {
-                                companyName: job.companyName || '',
-                                jobId: job.jobId || '',
-                                userId: userId || '',
-                                userName: userName || '',
-                              },
-                            });
+                                            const url = new URL('/#/candidate-dashboard/job-description', window.location.origin);
+                                            url.searchParams.append('companyName', encodeURIComponent(job.companyName || ''));
+                                            url.searchParams.append('jobId', encodeURIComponent(job.jobId || ''));
+                                            url.searchParams.append('userId', encodeURIComponent(userId || ''));
+                                            url.searchParams.append('userName', encodeURIComponent(userName || ''));
+                                            window.open(url.toString(), '_blank', 'noopener,noreferrer');
                                         }}
                                         style={{ padding: '8px' }}
                                         title={job.jobCategory === "evergreen" ? "This position is always open for hiring, feel free to apply anytime!" : ""}
@@ -337,7 +322,7 @@ const JobDescription = () => {
                     </Col>
                 </Row>
             </Container>
-            <Footer />
+            <HomeFooter />
         </DashboardLayout>
     );
 };

@@ -7,9 +7,27 @@ const DashboardLayout = ({ children }) => {
   const [isMobileView, setIsMobileView] = useState(false); // Detect if it's mobile view
   const location = useLocation();
 
-  // Retrieve user email and name from location state or default empty values
-  const userId = location.state?.userId || '';
+  // Initialize userName and userId from location.state or default to empty strings
   const [userName, setUserName] = useState(location.state?.userName || '');
+  const [userId, setUserId] = useState(location.state?.userId || '');
+
+  useEffect(() => {
+    // If userName or userId is empty, try fetching them from URL query parameters
+    if (!userName || !userId) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlUserName = urlParams.get('userName');
+      const urlUserId = urlParams.get('userId');
+
+      if (urlUserName) {
+        setUserName(decodeURIComponent(urlUserName));  // Decode the userName from URL
+      }
+      if (urlUserId) {
+        setUserId(decodeURIComponent(urlUserId));  // Decode the userId from URL
+      }
+    }
+  }, [userName, userId]);  // Only re-run effect if userName or userId changes
+
+  console.log("userName --> " + userName + " and userId --> " + userId);
 
   useEffect(() => {
     const storedUserName = localStorage.getItem(`userName_${userId}`);

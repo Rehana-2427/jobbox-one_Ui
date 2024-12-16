@@ -134,8 +134,9 @@ const JobboxCompanyPage = () => {
     if (company) {
       const encodedCompanyName = encodeURIComponent(company.companyName); // Encode the company name
       navigate(`/companyPage/companyName/${encodedCompanyName}`, { state: { companyId } });
-      // // Trigger a page reload after navigating
-      // window.location.reload();
+      // Trigger a page reload after navigating
+      window.location.reload();
+     // window.open(`/companyPage/companyName/${encodedCompanyName}?companyId=${companyId}`, '_blank');
     } else {
       console.error("Company not found!");
     }

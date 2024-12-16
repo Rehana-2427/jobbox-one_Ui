@@ -391,15 +391,21 @@ const CandidateJobs = () => {
                           variant="secondary"
                           className="description btn-rounded"
                           onClick={() => {
-                            const url = new URL(
-                              '/#/candidate-dashboard/candidate-jobs/job-description/',
-                              window.location.origin
-                            );
-                            url.searchParams.append('companyName', encodeURIComponent(job.companyName || ''));
-                            url.searchParams.append('jobId', encodeURIComponent(job.jobId || ''));
-                            url.searchParams.append('userId', encodeURIComponent(userId || ''));
-                            url.searchParams.append('userName', encodeURIComponent(userName || ''));
-                            window.open(url.toString(), '_blank', 'noopener,noreferrer');
+                            // Base URL for the new page
+                            const baseUrl = '/candidate-dashboard/job-description';
+                            // Construct the query parameters manually
+                            const params = new URLSearchParams({
+                              companyName: encodeURIComponent(job.companyName || ''),
+                              jobId: encodeURIComponent(job.jobId || ''),
+                              userId: encodeURIComponent(userId || ''),
+                              userName: encodeURIComponent(userName || '')
+                            }).toString();
+                            // Construct the final URL with parameters after the hash
+                             const fullUrl = `${window.location.origin}${baseUrl}#/?${params}`;
+                           // const fullUrl = `${window.location.origin}/#/candidate-dashboard/job-description/?${params}`;
+                            console.log("full url --> " + fullUrl);
+                            // Open the new page in a new tab
+                            window.open(fullUrl, '_blank', 'noopener,noreferrer');
                           }}
                         >
                           View
