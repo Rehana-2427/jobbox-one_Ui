@@ -4,6 +4,8 @@ import { Button, Card, Col, Row } from "react-bootstrap";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import api from "../../apiClient";
+import CustomNavbar from "../CustomNavbar";
+import Footer from "../Footer";
 
 const PublicJobDetailsPage = () => {
     const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -182,20 +184,23 @@ const PublicJobDetailsPage = () => {
     };
     return (
         <div>
-            <div className='dashboard-container' style={{ height: '60%' }}>
-                <Col >
-                    <Card style={{ width: '100%' }}>
-                        <Card.Body style={{ padding: 0, position: 'relative' }}>
-                            <div style={{ position: 'relative', height: '55%' }}>
-                                <img
-                                    src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
-                                    alt="Company Banner"
-                                    className="banner-image"
-                                    style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
-                                />
-                            </div>
-                            <div style={{ position: 'absolute', top: '100%', left: '50px', transform: 'translateY(-50%)' }}>
-                                <label htmlFor="logoInput">
+            <div>
+                <CustomNavbar />
+            </div>
+            <div className='dashboard-container-1'>
+                <Row style={{ marginBottom: '20px' }}>
+                    <div>
+                        <Card style={{ width: '100%', height: '60%' }}>
+                            <Card.Body style={{ padding: 0, position: 'relative' }}>
+                                <div style={{ position: 'relative', height: '55%' }}>
+                                    <img
+                                        src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
+                                        alt="Company Banner"
+                                        className="banner-image"
+                                        style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
+                                    />
+                                </div>
+                                <div style={{ position: 'absolute', top: '90%', left: '50px', transform: 'translateY(-50%)' }}>
                                     <img
                                         src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
                                         alt="Company Logo"
@@ -208,34 +213,63 @@ const PublicJobDetailsPage = () => {
                                             objectFit: 'cover', // Ensures the image covers the dimensions without distortion
                                         }}
                                     />
-                                </label>
-                            </div>
-                            <div>
-                                <h1 style={{ position: 'absolute', top: '112%', right: '100px' }}>{companyName}</h1>
-                                <div className='social-icons-company' style={{ position: 'absolute', top: '125%', right: '60px' }}>
-                                    <FaFacebook size={30}
-                                        onClick={() => handleCompanyIconClick('Facebook')}
-                                        style={{ cursor: 'pointer', color: '#4267B2', margin: '5px' }}
-                                    />
-                                    <FaTwitter size={30}
-                                        onClick={() => handleCompanyIconClick('Twitter')}
-                                        style={{ fontSize: 'clamp(24px, 4vw, 30px)', cursor: 'pointer', color: '#1DA1F2', margin: '5px' }}
-                                    />
-                                    <FaInstagram size={30}
-                                        onClick={() => handleCompanyIconClick('Instagram')}
-                                        style={{ fontSize: 'clamp(24px, 4vw, 30px)', cursor: 'pointer', color: '#C13584', margin: '5px' }}
-                                    />
-                                    <FaLinkedin size={30}
-                                        onClick={() => handleCompanyIconClick('LinkedIn')}
-                                        style={{ fontSize: 'clamp(24px, 4vw, 30px)', cursor: 'pointer', color: '#0077B5', margin: '5px' }}
-                                    />
                                 </div>
-                            </div>
-                        </Card.Body>
-                    </Card>
-                </Col>
+                            </Card.Body>
+                        </Card>
+                    </div>
+                </Row>
+                <Row style={{ marginTop: '50px', alignItems: 'center' }}>
+                    <Col md={3} style={{ display: 'flex', alignItems: 'start', justifyContent: 'center', padding: '5px' }}>
+                        <h2 style={{ paddingRight: '14px' }}><b>{companyName.toUpperCase()}</b></h2>
+                    </Col>
+                    {/* <Col md={9} style={{ display: 'flex', alignItems: 'start' }}>
+                        {socialMediaLinks.facebookLink && (
+                            <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
+                                <FaFacebook size={28} style={{ margin: '0 5px', color: '#3b5998' }} />
+                            </a>
+                        )}
+                        {socialMediaLinks.twitterLink && (
+                            <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
+                                <FaTwitter size={28} style={{ margin: '0 5px', color: '#1da1f2' }} />
+                            </a>
+                        )}
+                        {socialMediaLinks.instagramLink && (
+                            <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
+                                <FaInstagram size={28} style={{ margin: '0 5px', color: '#e4405f' }} />
+                            </a>
+                        )}
+                        {socialMediaLinks.linkedinLink && (
+                            <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
+                                <FaLinkedin size={28} style={{ margin: '0 5px', color: '#0077b5' }} />
+                            </a>
+                        )}
+                    </Col> */}
+                    <Col className="social-icons-company">
+                        <FaFacebook
+                            size={30}
+                            onClick={() => handleCompanyIconClick('Facebook')}
+                            style={{ cursor: 'pointer', color: '#4267B2', margin: '5px' }}
+                        />
+                        <FaTwitter
+                            size={30}
+                            onClick={() => handleCompanyIconClick('Twitter')}
+                            style={{ cursor: 'pointer', color: '#1DA1F2', margin: '5px' }}
+                        />
+                        <FaInstagram
+                            size={30}
+                            onClick={() => handleCompanyIconClick('Instagram')}
+                            style={{ cursor: 'pointer', color: '#C13584', margin: '5px' }}
+                        />
+                        <FaLinkedin
+                            size={30}
+                            onClick={() => handleCompanyIconClick('LinkedIn')}
+                            style={{ cursor: 'pointer', color: '#0077B5', margin: '5px' }}
+                        />
+                    </Col>
+                </Row>
+                <hr style={{ border: '1px solid black' }} />
             </div>
-            <Row style={{ position: 'absolute', top: '50%', width: '100%' }}>
+            <Row>
                 <Col lg={9} style={{ height: 'fit-content' }}>
                     <Card style={{ top: '10%', width: '100%', height: "fit-content" }}>
                         <Card.Body>
@@ -287,9 +321,10 @@ const PublicJobDetailsPage = () => {
                     </div>
                     <Button
                         onClick={() =>
-                            navigate('/jobboxCompanyPage/eachCompanyPage', {
-                                state: { companyId: companyId, scrollToJobs: true }
-                            })
+                            // navigate('/jobboxCompanyPage/eachCompanyPage', {
+                            //     state: { companyId: companyId, scrollToJobs: true }
+                            // })
+                            navigate(-1)
                         }
                         style={{ marginTop: '10px' }}
                     >
@@ -298,6 +333,9 @@ const PublicJobDetailsPage = () => {
 
 
                 </Col>
+            </Row>
+            <Row style={{ marginTop: '10px' }} >
+                <Footer />
             </Row>
         </div>
     )

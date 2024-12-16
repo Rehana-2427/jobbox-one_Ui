@@ -6,15 +6,32 @@ import { useAuth } from '../../AuthProvider';
 import CandidateLeftSide from './CandidateLeftSide';
 import axios from 'axios';
 
-const DasboardNavbar = ({ isSidebarOpen, toggleSidebar }) => {
+const DasboardNavbar = ({ user, isSidebarOpen, toggleSidebar }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const BASE_API_URL = process.env.REACT_APP_API_URL;
-    const userId = location.state?.userId || '';
-    const [userName, setUserName] = useState(location.state?.userName || '');
+    // Initialize state with defaults
+  const [userName, setUserName] = useState('');
+  const [userId, setUserId] = useState('');
+
+  useEffect(() => {
+    // If user prop is available, use it, else fallback to location.state
+    if (user) {
+      setUserName(user.userName || '');  // Set userName from user prop
+      setUserId(user.userId || '');      // Set userId from user prop
+    } else if (location.state) {
+      // If user prop is not available, fallback to location.state
+      setUserName(location.state?.userName || ''); 
+      setUserId(location.state?.userId || ''); 
+    }
+    console.log("userName --> " + userName + " and userId --> " + userId);
+  }, [user, location.state]);  // Effect depends on user and location.state
+  
     const [countOfUnreadNotification, setCountOfUnreadNotification] = useState(0);
     const [unreadNotifications, setUnreadNotifications] = useState([]);
-
+    console.log("user --> "+user);
+    console.log("From User --> userName --> " + user.userName + " and userId --> " + user.userId);
+    console.log("userName --> " + userName + " and userId --> " + userId);
     // Fetch user data and notifications on mount or userId change
     useEffect(() => {
         const storedUserName = localStorage.getItem(`userName_${userId}`);
@@ -35,9 +52,10 @@ const DasboardNavbar = ({ isSidebarOpen, toggleSidebar }) => {
         };
 
         fetchNotifications();
-        
+
     }, [userId]);
 
+    console.log("userName --> " + userName + " and userId --> " + userId);
     const convertToUpperCase = (str) => {
         return String(str).toUpperCase();
     };

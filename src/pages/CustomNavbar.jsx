@@ -97,10 +97,10 @@ const CustomNavbar = () => {
 
         // Navigate based on user role and status
         if (user.userRole === 'HR' && user.userStatus === 'Approved') {
-            navigate('/hr-dashboard', { state: { userEmail: user.userEmail, userRole: 'HR' } });
+            navigate('/hr-dashboard', { state: { userEmail: user.userEmail, userName: user.userName, userRole: 'HR' } });
         } else if (user.userRole === 'Candidate') {
             navigate('/candidate-dashboard', {
-                state: { userId: user.userId, userRole: 'candidate' } // Pass userId and userRole
+                state: { userId: user.userId, userName: user.userName, userRole: 'candidate' } // Pass userId and userRole
             });
         }
 
