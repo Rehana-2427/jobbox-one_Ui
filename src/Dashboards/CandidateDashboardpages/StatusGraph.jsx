@@ -7,7 +7,20 @@ import { useLocation } from 'react-router-dom';
 const StatusGraph = () => {
     const BASE_API_URL = process.env.REACT_APP_API_URL;
     const location = useLocation();
-    const userId = location.state?.userId;
+    const [userName, setUserName] = useState('');
+    const [userId, setUserId] = useState(null);
+  
+    useEffect(() => {
+      // Get the userName and userId from location.state if available, otherwise from localStorage
+      const storedUser = JSON.parse(localStorage.getItem('user'));  // Assuming 'user' is stored in localStorage
+  
+      const userNameFromLocation = location.state?.userName || storedUser?.userName || '';
+      const userIdFromLocation = location.state?.userId || storedUser?.userId || null;
+  
+      setUserName(userNameFromLocation);
+      setUserId(userIdFromLocation);
+    }, [location]);  // Re-run the effect when the location changes
+    
     const [applicationsData, setApplicationsData] = useState([]);
 
     useEffect(() => {

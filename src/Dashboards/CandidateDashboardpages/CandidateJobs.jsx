@@ -401,8 +401,8 @@ const CandidateJobs = () => {
                               userName: encodeURIComponent(userName || '')
                             }).toString();
                             // Construct the final URL with parameters after the hash
-                             const fullUrl = `${window.location.origin}${baseUrl}#/?${params}`;
-                           // const fullUrl = `${window.location.origin}/#/candidate-dashboard/job-description/?${params}`;
+                            // const fullUrl = `${window.location.origin}${baseUrl}#/?${params}`;
+                            const fullUrl = `${window.location.origin}/#/candidate-dashboard/job-description/?${params}`;
                             console.log("full url --> " + fullUrl);
                             // Open the new page in a new tab
                             window.open(fullUrl, '_blank', 'noopener,noreferrer');

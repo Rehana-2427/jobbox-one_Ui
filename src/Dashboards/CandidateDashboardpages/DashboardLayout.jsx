@@ -21,8 +21,16 @@ const DashboardLayout = ({ children }) => {
       if (urlUserName) {
         setUserName(decodeURIComponent(urlUserName));  // Decode the userName from URL
       }
+      else{
+        const userFromLocalStorage = JSON.parse(localStorage.getItem('user'));
+        setUserName(userFromLocalStorage ? userFromLocalStorage.userName : null)
+      }
       if (urlUserId) {
-        setUserId(decodeURIComponent(urlUserId));  // Decode the userId from URL
+        setUserId(decodeURIComponent(urlUserId));  // Decode the userId from URL      
+      }
+      else{
+        const userFromLocalStorage = JSON.parse(localStorage.getItem('user'));
+        setUserId(userFromLocalStorage ? userFromLocalStorage.userId : null)
       }
     }
   }, [userName, userId]);  // Only re-run effect if userName or userId changes

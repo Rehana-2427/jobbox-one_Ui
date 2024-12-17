@@ -8,45 +8,55 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 const DashboardBrief = () => {
     const BASE_API_URL = process.env.REACT_APP_API_URL;
     const location = useLocation();
-    const userId = location.state?.userId;
-    console.log(userId);
     const navigate = useNavigate();
-    const [userData, setUserData] = useState();
-    const [userName, setUserName] = useState(location.state?.userName || '');
+    const [userData, setUserData] = useState(); 
     const [countOfResume, setCountOfResumes] = useState(null);
     const [countOfCompanies, setCountOfCompanies] = useState(null);
     const [countOfAppliedCompanies, setCountOfAppliedCompanies] = useState(null);
     const [countOfshortlistedApplications, setCountOfshortlistedApplications] = useState(null);
     const [applicationsData, setApplicationsData] = useState([]);
     const [resumeViewCount, setResumeViewCount] = useState(null);
-
+    const [userName, setUserName] = useState('');
+    const [userId, setUserId] = useState(null);
+  
     useEffect(() => {
-        if (!userName && userId) {
-            fetchUserData(userId);
-        }
-    }, [userId, userName]);
-    useEffect(() => {
-        const storedUserName = localStorage.getItem(`userName_${userId}`);
-        if (storedUserName) {
-            setUserName(storedUserName);
-        }
-    }, [userId]);
+      // Get the userName and userId from location.state if available, otherwise from localStorage
+      const storedUser = JSON.parse(localStorage.getItem('user'));  // Assuming 'user' is stored in localStorage
+  
+      const userNameFromLocation = location.state?.userName || storedUser?.userName || '';
+      const userIdFromLocation = location.state?.userId || storedUser?.userId || null;
+  
+      setUserName(userNameFromLocation);
+      setUserId(userIdFromLocation);
+    }, [location]);  // Re-run the effect when the location changes
 
-    const fetchUserData = async (userId) => {
-        try {
-            const response = await axios.get(`${BASE_API_URL}/getUserName`, {
-                params: {
-                    userId: userId
-                }
-            });
-            console.log(response.data);
-            setUserName(response.data.userName);
-            localStorage.setItem(`userName_${userId}`, response.data.userName); // Store userName with user-specific key
-            setUserData(response.data);
-        } catch (error) {
-            setUserData(null);
-        }
-    };
+    // useEffect(() => {
+    //     if (!userName && userId) {
+    //         fetchUserData(userId);
+    //     }
+    // }, [userId, userName]);
+    // useEffect(() => {
+    //     const storedUserName = localStorage.getItem(`userName_${userId}`);
+    //     if (storedUserName) {
+    //         setUserName(storedUserName);
+    //     }
+    // }, [userId]);
+
+    // const fetchUserData = async (userId) => {
+    //     try {
+    //         const response = await axios.get(`${BASE_API_URL}/getUserName`, {
+    //             params: {
+    //                 userId: userId
+    //             }
+    //         });
+    //         console.log(response.data);
+    //         setUserName(response.data.userName);
+    //         localStorage.setItem(`userName_${userId}`, response.data.userName); // Store userName with user-specific key
+    //         setUserData(response.data);
+    //     } catch (error) {
+    //         setUserData(null);
+    //     }
+    // };
 
     useEffect(() => {
         const fetchData = async (userId) => {
