@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Button, Card, Modal, Row } from 'react-bootstrap';
+import { Button, Card, Col, Modal, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import api from '../apiClient';
 import Pagination from '../Pagination';
@@ -21,7 +21,6 @@ const BrowseJobs = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [sortedColumn, setSortedColumn] = useState(null);
     const [sortOrder, setSortOrder] = useState('asc');
-    // const [isSearching, setIsSearching] = useState(false); // Track if searching is active
     const isLastPage = page === totalPages - 1;
     const isPageSizeDisabled = isLastPage;
     const [showModal, setShowModal] = useState(false); // State to manage modal visibility
@@ -104,22 +103,7 @@ const BrowseJobs = () => {
         const inputValue = event.target.value;
         setSearch(inputValue);
         setPage(0);
-        // if (inputValue.trim() === '') {
-        //     setIsSearching(false); // Reset to latest jobs if input is cleared
-        //     setShowWarning(false); // Hide warning when input changes
-        // } else
-        //   setIsSearching(true); // set to search jobs 
     };
-
-    // // Handle search button click
-    // const handleSearchClick = () => {
-    //     if (search.trim() === '') {
-    //         setShowWarning(true); // Show warning if search is empty
-    //     } else {
-    //         setIsSearching(true); // Trigger search only when input is not empty
-    //         setShowWarning(false); // Hide warning on valid search
-    //     }
-    // };
 
     // Handle page change for pagination
     const handlePageClick = (data) => {
@@ -191,7 +175,7 @@ const BrowseJobs = () => {
     return (
         <div>
             <CustomNavbar />
-            <div className='browse-jobs home-card-one text-wrapper'>
+            <div className="responsive-container">
                 <Row>
                     <h1 className='text-center'>Find Your Dream Job & Apply for it</h1>
                     <p className='text-center' style={{ fontSize: '20px' }}>Jobs for you to explore</p>
@@ -204,29 +188,29 @@ const BrowseJobs = () => {
                                 className='search-input-bar'
                                 onChange={handleInputChange}
                             />
-                            {/* <FaSearch fontSize={20} style={{
-                                position: 'absolute',
-                                top: '12px',
-                                right: '50px', // Adjust as needed to position it correctly
-                            }} /> */}
                         </div>
                     </div>
-                </Row>
 
-                <Row>
                     {jobs.length > 0 && search && (
                         <>
-                            <h2>Search Results</h2>
+                            <h4 className='text-center'>Search Results</h4>
                             <div className="d-flex flex-wrap justify-content-center">
                                 {jobs.map(job => {
                                     const daysAgoText = calculateDaysAgo(job.postingDate);
                                     return (
                                         <Card key={job.id} className='browse-job-card image-wrapper' style={{ maxWidth: '300px', margin: '10px', padding: '10px', position: 'relative' }}
                                             onClick={() => {
-                                                const url = new URL('/#/browse-jobs/job-details', window.location.origin);
-                                                url.searchParams.append('companyName', encodeURIComponent(job.companyName));
-                                                url.searchParams.append('jobId', encodeURIComponent(job.jobId)); // Use job.id
-                                                window.open(url.toString(), '_blank', 'noopener,noreferrer'); // Open in a new tab
+                                                const baseUrl = '/#/browse-jobs/job-details';
+                                                // Construct the query parameters manually
+                                                const params = new URLSearchParams({
+                                                    companyName: encodeURIComponent(job.companyName || ''),
+                                                    jobId: encodeURIComponent(job.jobId || ''),
+                                                }).toString();
+                                                // Construct the final URL with parameters after the hash
+                                                const fullUrl = `${window.location.origin}${baseUrl}?${params}`;
+                                                console.log("full url --> " + fullUrl);
+                                                // Open the new page in a new tab
+                                                window.open(fullUrl, '_blank', 'noopener,noreferrer');
                                             }}
                                         >
                                             <Card.Body style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
@@ -256,31 +240,36 @@ const BrowseJobs = () => {
 
                     {!search && latestjobs.length > 0 && (
                         <>
-                            <h2 style={{ paddingTop: '40px' }}>Newly Posted Jobs</h2>
-                            <div className="image-slider-container">
+                            <h4 className='text-center' style={{ paddingTop: '10px' }}>Newly Posted Jobs</h4>
+                            <div className="browse-jobs-container">
                                 <div className="image-slider">
                                     {latestjobs.map(job => {
                                         const daysAgoText = calculateDaysAgo(job.postingDate);
                                         return (
-                                            <Card
+                                            <Card style={{ width: '250px', marginLeft: '10px', paddingTop: '0px' }}
                                                 key={job.id}
-                                                className=' image-wrapper'
-                                                style={{ maxWidth: '300px', margin: '10px', padding: '10px', position: 'relative' }}
                                                 onClick={() => {
-                                                    const url = new URL('/#/browse-jobs/job-details', window.location.origin);
-                                                    url.searchParams.append('companyName', encodeURIComponent(job.companyName));
-                                                    url.searchParams.append('jobId', encodeURIComponent(job.jobId)); // Use job.id
-                                                    window.open(url.toString(), '_blank', 'noopener,noreferrer'); // Open in a new tab
+                                                    const baseUrl = '/#/browse-jobs/job-details';
+                                                    // Construct the query parameters manually
+                                                    const params = new URLSearchParams({
+                                                        companyName: encodeURIComponent(job.companyName || ''),
+                                                        jobId: encodeURIComponent(job.jobId || ''),
+                                                    }).toString();
+                                                    // Construct the final URL with parameters after the hash
+                                                    const fullUrl = `${window.location.origin}${baseUrl}?${params}`;
+                                                    console.log("full url --> " + fullUrl);
+                                                    // Open the new page in a new tab
+                                                    window.open(fullUrl, '_blank', 'noopener,noreferrer');
                                                 }}
                                             >
-                                                <Card.Body style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+
+                                                <Card.Body>
                                                     <img
                                                         src={companyLogos[job.companyName] || "/path/to/default_logo.png"}
                                                         alt={`${job.companyName} logo`}
-                                                        className='square-image'
                                                         style={{ width: '30%', height: '30%', position: 'absolute', top: '5px', right: '10px' }}
                                                     />
-                                                    <Card.Title style={{ marginTop: '40px' }}>{job.jobTitle}</Card.Title>
+                                                    <Card.Title style={{ marginTop: '40px', fontSize: '12px' }}>{job.jobTitle}</Card.Title>
                                                     <Card.Subtitle className="mb-2 text-muted">{job.companyName}</Card.Subtitle>
                                                     <Card.Text>{daysAgoText}</Card.Text>
                                                 </Card.Body>
@@ -296,53 +285,52 @@ const BrowseJobs = () => {
                 </Row>
             </div>
 
-            <Row>
-                <div className="jobbox-container" style={{ height: 'auto' }}>
-                    <div className="column" style={{ position: 'relative', bottom: '30px' }}>
-                        <img src="dreamJob.jpeg" alt="Image 2" style={{ width: '80%', height: '80%' }} />
-                    </div>
+            <br></br>
+            <Row style={{ height: 'auto' }} className="jobbox-container">
+                <Col xs={6} md={6} >
+                    <img src="dreamJob.jpeg" alt="Image 2" />
+                </Col>
+                <Col xs={6} md={6} style={{ paddingTop: '30px', wordWrap: 'break-word' }} >
+                    <div className="cta-accent2-bg" style={{ height: '650px', paddingTop: '12px' }}>
+                        <div className="cta-accent1-bg" style={{ height: '630px' }}>
+                            <div className="cta-content" style={{ width: '100%', overflowWrap: 'break-word' }}>
+                                <span className="thq-heading-2">
+                                    Need to Apply to Your Dream Company and Dream Job?
+                                </span>
+                                <p className="thq-body-large">
+                                    Don't worry! At JobBox, your job search is easy—explore opportunities with just one click and connect with top employers ready for your talent!
+                                </p>
 
-                    <div className="steps-container column" style={{ height: 'auto' }}>
-                        <div className='cta-accent2-bg'>
-                            <div className='cta-accent1-bg'>
-                                <div className='cta-content'>
-                                    <span className='thq-heading-2'>
-                                        Need to Apply to Your Dream Company and Dream Job?
-                                    </span>
-                                    <p className='thq-body-large'>Don't worry! At JobBox, your job search is easy—explore opportunities with just one click and connect with top employers ready for your talent!</p>
-
-                                    <div className="button-container">
-                                        {isLoggedIn ? (
-                                            user?.userRole === 'Candidate' ? (
-                                                <Button
-                                                    type="button"
-                                                    className="thq-button-filled cta-button"
-                                                    variant="info"
-                                                    style={{ marginRight: '10px' }}
-                                                    onClick={() => navigate('/candidate-dashboard/dream-job', { state: { userId: user.userId, userName: user.userName } })}
-                                                >
-                                                    Apply for Your Dream Job at Your Dream Company
-                                                </Button>
-                                            ) : null // No button for HR or other roles
-                                        ) : (
+                                <div className="button-container">
+                                    {isLoggedIn ? (
+                                        user?.userRole === 'Candidate' ? (
                                             <Button
                                                 type="button"
                                                 className="thq-button-filled cta-button"
                                                 variant="info"
-                                                style={{ marginRight: '10px' }}
-                                                onClick={handleCandidateClick} // If no user is logged in, handle login click
+                                                style={{ marginRight: '10px', wordWrap: 'break-word' }}
+                                                onClick={() => navigate('/candidate-dashboard/jobs/dream-job', { state: { userId: user.userId, userName: user.userName } })}
                                             >
                                                 Apply for Your Dream Job at Your Dream Company
                                             </Button>
-                                        )}
-                                    </div>
+                                        ) : null // No button for HR or other roles
+                                    ) : (
+                                        <Button
+                                            type="button"
+                                            className="thq-button-filled cta-button"
+                                            variant="info"
+                                            style={{ marginRight: '10px', wordWrap: 'break-word' }}
+                                            onClick={handleCandidateClick} // If no user is logged in, handle login click
+                                        >
+                                            Apply for Your Dream Job at Your Dream Company
+                                        </Button>
+                                    )}
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </Col>
             </Row>
-
             <div style={{ marginTop: '100px' }}>
                 <JobListings />
             </div>

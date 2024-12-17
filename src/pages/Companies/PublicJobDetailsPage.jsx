@@ -320,18 +320,14 @@ const PublicJobDetailsPage = () => {
                         ))}
                     </div>
                     <Button
-                        onClick={() =>
-                            // navigate('/jobboxCompanyPage/eachCompanyPage', {
-                            //     state: { companyId: companyId, scrollToJobs: true }
-                            // })
-                            navigate(-1)
-                        }
+                        onClick={() => {
+                            const encodedCompanyName = encodeURIComponent(companyName); // Encode the company name
+                            navigate(`/companyPage/companyName/${encodedCompanyName}?activetab=jobs`, { state: { companyId } });
+                        }}
                         style={{ marginTop: '10px' }}
                     >
                         View More
                     </Button>
-
-
                 </Col>
             </Row>
             <Row style={{ marginTop: '10px' }} >

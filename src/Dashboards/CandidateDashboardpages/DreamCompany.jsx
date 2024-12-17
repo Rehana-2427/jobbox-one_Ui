@@ -1,12 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Container, Form, ListGroup } from 'react-bootstrap';
+import { Button, Container, Form, ListGroup } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 import Swal from 'sweetalert2';
 import './CandidateDashboard.css';
-import CandidateLeftSide from './CandidateLeftSide';
 import DashboardLayout from './DashboardLayout';
-import { toast, ToastContainer } from 'react-toastify';
 
 
 const BASE_API_URL = process.env.REACT_APP_API_URL;

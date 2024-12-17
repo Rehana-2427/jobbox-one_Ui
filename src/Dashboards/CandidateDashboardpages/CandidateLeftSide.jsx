@@ -15,8 +15,8 @@ function CandidateLeftSide({ user, isOpen }) {
     // Define the sidebar navigation links
     const navLinks = [
         { to: '/candidate-dashboard', label: 'Dashboard', icon: <RxDashboard size={'30'} /> },
-        { to: '/candidate-dashboard/candidate-jobs', label: 'Jobs', icon: <FontAwesomeIcon icon={faLayerGroup} style={{ fontSize: '1.7rem' }} /> },
-        { to: '/candidate-dashboard/candidate-companies', label: 'Companies', icon: <FontAwesomeIcon icon={faBuilding} style={{ fontSize: '1.7rem' }} /> },
+        { to: '/candidate-dashboard/jobs', label: 'Jobs', icon: <FontAwesomeIcon icon={faLayerGroup} style={{ fontSize: '1.7rem' }} /> },
+        { to: '/candidate-dashboard/companies', label: 'Companies', icon: <FontAwesomeIcon icon={faBuilding} style={{ fontSize: '1.7rem' }} /> },
         { to: '/candidate-dashboard/my-application', label: 'Applications', icon: <FontAwesomeIcon icon={faFileLines} style={{ fontSize: '1.7rem' }} /> },
         { to: '/candidate-dashboard/resume', label: 'Resumes', icon: <FontAwesomeIcon icon={faFile} style={{ fontSize: '1.7rem' }} /> },
         { to: '/candidate-dashboard/profile', label: 'Profile', icon: <FontAwesomeIcon icon={faUser} style={{ fontSize: '1.7rem' }} /> },
@@ -26,35 +26,55 @@ function CandidateLeftSide({ user, isOpen }) {
 
     const scrollContainerRef = useRef(null);
 
-// Scroll position persistence
-useEffect(() => {
-    // Restore scroll position when component mounts or location changes
-    if (scrollContainerRef.current) {
-        const savedScrollPosition = sessionStorage.getItem('leftSideScrollPosition');
-        if (savedScrollPosition) {
-            scrollContainerRef.current.scrollTop = parseInt(savedScrollPosition, 10);
-        }
-    }
-
-    const handleScroll = () => {
+    // Scroll position persistence
+    useEffect(() => {
+        // Restore scroll position when component mounts or location changes
         if (scrollContainerRef.current) {
-            const scrollPosition = scrollContainerRef.current.scrollTop;
-            sessionStorage.setItem('leftSideScrollPosition', scrollPosition.toString());
+            const savedScrollPosition = sessionStorage.getItem('leftSideScrollPosition');
+            if (savedScrollPosition) {
+                scrollContainerRef.current.scrollTop = parseInt(savedScrollPosition, 10);
+            }
         }
-    };
 
-    const currentRef = scrollContainerRef.current;
-    if (currentRef) {
-        currentRef.addEventListener('scroll', handleScroll);
-    }
+        const handleScroll = () => {
+            if (scrollContainerRef.current) {
+                const scrollPosition = scrollContainerRef.current.scrollTop;
+                sessionStorage.setItem('leftSideScrollPosition', scrollPosition.toString());
+            }
+        };
 
-    return () => {
+        const currentRef = scrollContainerRef.current;
         if (currentRef) {
-            currentRef.removeEventListener('scroll', handleScroll);
+            currentRef.addEventListener('scroll', handleScroll);
         }
-    };
-}, [location]);
 
+        return () => {
+            if (currentRef) {
+                currentRef.removeEventListener('scroll', handleScroll);
+            }
+        };
+    }, [location]);
+
+    const isLinkActive = (link) => {
+        const currentPath = location.pathname;
+
+        // Define special cases dynamically
+        const specialCases = {
+            '/candidate-dashboard/jobs': '/candidate-dashboard/jobs',
+            '/candidate-dashboard/companies': '/candidate-dashboard/companies',
+            '/candidate-dashboard/resume':'/candidate-dashboard/resume',
+        };
+
+        // Check if the link's `to` value matches any special case
+        for (const [key, basePath] of Object.entries(specialCases)) {
+            if (link.to === key && currentPath.startsWith(basePath)) {
+                return true;
+            }
+        }
+
+        // Default case: Exact match
+        return currentPath === link.to;
+    };
 
 
     const handleLinkClick = (to) => {
@@ -83,12 +103,12 @@ useEffect(() => {
                         onClick={(e) => {
                             e.preventDefault();
                             navigate(link.to, { state: { userName, userId } });
+                            handleLinkClick(link.fontSize)
                         }}
-                        className={`nav-link d-flex align-items-center ${location.pathname === link.to ? 'active' : ''}`}
-                        style={{
+                        className={`nav-link d-flex align-items-center ${isLinkActive(link) ? 'active' : ''}`} style={{
                             fontSize: '1.1rem',
                             transition: 'color 0.3s',
-                            color: location.pathname === link.to ? '#663399' : 'black',
+                            color: isLinkActive(link) ? '#663399' : '#332e38',
                         }}
                     >
                         <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', position: 'relative' }}>
@@ -118,7 +138,7 @@ useEffect(() => {
                                     top: '70%', // Center the triangle vertically
                                     left: '100%', // Position the triangle next to the label
                                     marginLeft: '10px', // Adjust horizontal spacing
-                                    display: location.pathname === link.to ? 'block' : 'none',  // Only show triangle when active
+                                    display: isLinkActive(link) ? 'block' : 'none',
                                 }}
                             />
                         </div>
@@ -129,13 +149,13 @@ useEffect(() => {
             ))}
         </Nav>
     );
-    
+
 
 
 
     return (
         <div
-        ref={scrollContainerRef}
+            ref={scrollContainerRef}
             className={`sidebar-left ${isOpen ? 'open' : 'closed'}`}
             style={{
                 position: 'fixed',

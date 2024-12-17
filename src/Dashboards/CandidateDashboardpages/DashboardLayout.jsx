@@ -6,15 +6,13 @@ const DashboardLayout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); // State to manage sidebar visibility
   const [isMobileView, setIsMobileView] = useState(false); // Detect if it's mobile view
   const location = useLocation();
-
-  // Initialize userName and userId from location.state or default to empty strings
   const [userName, setUserName] = useState(location.state?.userName || '');
   const [userId, setUserId] = useState(location.state?.userId || '');
 
   useEffect(() => {
-    // If userName or userId is empty, try fetching them from URL query parameters
-    if (!userName || !userId) {
-      const urlParams = new URLSearchParams(window.location.search);
+    // If userName or userId is empty, fetch from URL query parameters
+    if (!userName.trim() || !userId) {
+      const urlParams = new URLSearchParams(location.search);
       const urlUserName = urlParams.get('userName');
       const urlUserId = urlParams.get('userId');
 
@@ -33,9 +31,10 @@ const DashboardLayout = ({ children }) => {
         setUserId(userFromLocalStorage ? userFromLocalStorage.userId : null)
       }
     }
-  }, [userName, userId]);  // Only re-run effect if userName or userId changes
+  }, [userName, userId, location.search]); // Re-run effect if location.search changes
 
-  console.log("userName --> " + userName + " and userId --> " + userId);
+  console.log("User ID:", userId, "User Name:", userName);
+
 
   useEffect(() => {
     const storedUserName = localStorage.getItem(`userName_${userId}`);

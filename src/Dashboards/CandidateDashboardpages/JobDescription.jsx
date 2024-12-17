@@ -4,18 +4,15 @@ import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Footer from '../../pages/Footer';
-import CandidateLeftSide from './CandidateLeftSide';
-import ResumeSelectionPopup from './ResumeSelectionPopup';
-import HomeFooter from '../../pages/HomeFooter';
 import DashboardLayout from './DashboardLayout';
+import ResumeSelectionPopup from './ResumeSelectionPopup';
 
 const JobDescription = () => {
-    // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
     const BASE_API_URL = process.env.REACT_APP_API_URL;
     const location = useLocation();
     const [queryParams, setQueryParams] = React.useState({});
-    React.useEffect(() => {
-        const queryString = window.location.href.split('#')[0].split('?')[1];
+    useEffect(() => {
+        const queryString = location.search; // Use location.search to get the query string
         const params = new URLSearchParams(queryString);
         const companyName = decodeURIComponent(params.get('companyName')); // Decoding the company name        
         const jobId = params.get('jobId');
@@ -47,6 +44,7 @@ const JobDescription = () => {
         jobsummary: '',
         applicationDeadline: '',
     })
+    console.log(userName)
 
     useEffect(() => {
         if (companyName) {
@@ -208,7 +206,7 @@ const JobDescription = () => {
                 />
             )}
 
-            <div>
+            <div className="main-content">
                 <Card style={{ width: '100%', height: '60%' }}>
                     <Card.Body style={{ padding: 0, position: 'relative' }}>
                         <div style={{ position: 'relative', height: '55%' }}>
@@ -281,12 +279,20 @@ const JobDescription = () => {
                                 <Card key={job.jobId} style={{ width: '250px', height: '150px' }}>
                                     <Card.Body
                                         onClick={() => {
-                                            const url = new URL('/#/candidate-dashboard/job-description', window.location.origin);
-                                            url.searchParams.append('companyName', encodeURIComponent(job.companyName || ''));
-                                            url.searchParams.append('jobId', encodeURIComponent(job.jobId || ''));
-                                            url.searchParams.append('userId', encodeURIComponent(userId || ''));
-                                            url.searchParams.append('userName', encodeURIComponent(userName || ''));
-                                            window.open(url.toString(), '_blank', 'noopener,noreferrer');
+                                            const baseUrl = '/#/candidate-dashboard/jobs/job-description/';
+
+                                            const params = new URLSearchParams({
+                                                companyName: encodeURIComponent(job.companyName || ''),
+                                                jobId: encodeURIComponent(job.jobId || ''),
+                                                userId: encodeURIComponent(userId || ''),
+                                                userName: encodeURIComponent(userName || '')
+                                            }).toString();
+
+                                            // Construct the final URL with parameters after the hash
+                                            const fullUrl = `${window.location.origin}${baseUrl}?${params}`;
+
+                                            // Open the final URL in a new tab
+                                            window.open(fullUrl, '_blank', 'noopener,noreferrer');
                                         }}
                                         style={{ padding: '8px' }}
                                         title={job.jobCategory === "evergreen" ? "This position is always open for hiring, feel free to apply anytime!" : ""}
@@ -313,8 +319,8 @@ const JobDescription = () => {
                         </div>
                         <Button
                             onClick={() =>
-                                navigate('/candidate-dashboard/candidate-jobs/job-description/view-more', {
-                                    state: { companyName: companyName }
+                                navigate('/candidate-dashboard/jobs/job-description/view-more', {
+                                    state: { companyName: companyName,userId:userId,userName:userName }
                                 })
                             }
                             style={{ marginTop: '10px' }}
@@ -325,7 +331,7 @@ const JobDescription = () => {
                     </Col>
                 </Row>
             </Container>
-            <HomeFooter />
+            <Footer />
         </DashboardLayout>
     );
 };

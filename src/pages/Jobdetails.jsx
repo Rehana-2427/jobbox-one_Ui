@@ -7,7 +7,6 @@ import ResumeSelectionPopup from '../Dashboards/CandidateDashboardpages/ResumeSe
 import CustomNavbar from './CustomNavbar';
 
 const Jobdetails = () => {
-    const BASE_API_URL = process.env.REACT_APP_API_URL;
     const navigate = useNavigate();
     const [jobs, setJobs] = useState([]);
     const [showModal, setShowModal] = useState(false); // State to manage modal visibility
@@ -28,8 +27,9 @@ const Jobdetails = () => {
         applicationDeadline: '',
     })
     // Extract query parameters using window.location.search
-    React.useEffect(() => {
-        const queryString = window.location.search; // This gives you only the query string (e.g., ?jobId=57&companyName=WIPRO)
+
+    useEffect(() => {
+        const queryString = location.search; // This gives you only the query string (e.g., ?jobId=57&companyName=WIPRO)
         const params = new URLSearchParams(queryString);
         const companyName = decodeURIComponent(params.get('companyName')); // Decoding the company name
         const jobId = params.get('jobId');
@@ -37,6 +37,7 @@ const Jobdetails = () => {
     }, [location]);
 
     const { companyName, jobId } = queryParams;
+
     const [companyLogo, setCompanyLogo] = useState("");
     const [companyBanner, setCompanyBanner] = useState("");
 
@@ -216,7 +217,7 @@ const Jobdetails = () => {
                 console.error('Error fetching resumes:', error);
             });
     }, [userId]);
-    
+
 
     useEffect(() => {
         checkHasUserApplied();
@@ -226,7 +227,7 @@ const Jobdetails = () => {
         const applications = {};
         try {
             for (const job of jobs) {
-                const response = await api.checkJobAppliedOrNot(job.jobId,userId)
+                const response = await api.checkJobAppliedOrNot(job.jobId, userId)
                 applications[job.jobId] = response.data;
             }
             setHasUserApplied(applications);
@@ -345,10 +346,17 @@ const Jobdetails = () => {
                                 <Card key={jobId} style={{ width: '250px', height: '150px' }}>
                                     <Card.Body
                                         onClick={() => {
-                                            const url = new URL('/#/browse-jobs/job-details', window.location.origin);
-                                            url.searchParams.append('companyName', encodeURIComponent(job.companyName || ''));
-                                            url.searchParams.append('jobId', encodeURIComponent(job.jobId || ''));
-                                            window.open(url.toString(), '_blank', 'noopener,noreferrer');
+                                            const baseUrl = '/#/browse-jobs/job-details';
+                                            // Construct the query parameters manually
+                                            const params = new URLSearchParams({
+                                                companyName: encodeURIComponent(job.companyName || ''),
+                                                jobId: encodeURIComponent(job.jobId || ''),
+                                            }).toString();
+                                            // Construct the final URL with parameters after the hash
+                                            const fullUrl = `${window.location.origin}${baseUrl}?${params}`;
+                                            console.log("full url --> " + fullUrl);
+                                            // Open the new page in a new tab
+                                            window.open(fullUrl, '_blank', 'noopener,noreferrer');
                                         }}
                                         style={{ padding: '8px' }}
                                         title={job.jobCategory === "evergreen" ? "This position is always open for hiring, feel free to apply anytime!" : ""}

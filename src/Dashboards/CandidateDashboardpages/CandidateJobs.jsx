@@ -392,7 +392,7 @@ const CandidateJobs = () => {
                           className="description btn-rounded"
                           onClick={() => {
                             // Base URL for the new page
-                            const baseUrl = '/candidate-dashboard/job-description';
+                            const baseUrl = '/#/candidate-dashboard/jobs/job-description/';
                             // Construct the query parameters manually
                             const params = new URLSearchParams({
                               companyName: encodeURIComponent(job.companyName || ''),
@@ -401,8 +401,7 @@ const CandidateJobs = () => {
                               userName: encodeURIComponent(userName || '')
                             }).toString();
                             // Construct the final URL with parameters after the hash
-                            // const fullUrl = `${window.location.origin}${baseUrl}#/?${params}`;
-                            const fullUrl = `${window.location.origin}/#/candidate-dashboard/job-description/?${params}`;
+                            const fullUrl = `${window.location.origin}${baseUrl}?${params}`;
                             console.log("full url --> " + fullUrl);
                             // Open the new page in a new tab
                             window.open(fullUrl, '_blank', 'noopener,noreferrer');
@@ -410,6 +409,32 @@ const CandidateJobs = () => {
                         >
                           View
                         </Button>
+
+                        {/* <Button
+                          variant="secondary"
+                          className="description btn-rounded"
+                          onClick={() => {
+                            // Log the values to the console
+                            console.log("Navigating to Job Description with the following details:");
+                            console.log("Company Name:", job.companyName || '');
+                            console.log("Job ID:", job.jobId || '');
+                            console.log("User  ID:", userId || '');
+                            console.log("User  Name:", userName || '');
+
+                            // Navigate to the job description page
+                            navigate('/candidate-dashboard/candidate-jobs/job-description', {
+                              state: {
+                                companyName: job.companyName || '',
+                                jobId: job.jobId || '',
+                                userId: userId || '',
+                                userName: userName || '',
+                              },
+                            });
+                          }}
+                        >
+                          View
+                        </Button> */}
+
                       </td>
                       <td>
                         {hasUserApplied[job.jobId] === true || (applyjobs && applyjobs.jobId === job.jobId) ? (
@@ -460,7 +485,7 @@ const CandidateJobs = () => {
               variant="primary"
               onClick={(e) => {
                 e.preventDefault();
-                navigate('/candidate-dashboard/dream-company', { state: { userName, userId } });
+                navigate('/candidate-dashboard/jobs/dream-company', { state: { userName, userId } });
               }}
               className="w-md-auto"
             >
@@ -471,7 +496,7 @@ const CandidateJobs = () => {
               variant="success"
               onClick={(e) => {
                 e.preventDefault();
-                navigate('/candidate-dashboard/dream-job', { state: { userName, userId } });
+                navigate('/candidate-dashboard/jobs/dream-job', { state: { userName, userId } });
               }}
               className="w-md-auto"
             >

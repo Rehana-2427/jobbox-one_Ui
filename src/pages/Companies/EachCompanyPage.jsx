@@ -42,6 +42,14 @@ const EachCompanyPage = () => {
 
   console.log(companyName)
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const activeTabParam = params.get('activetab');
+
+    if (activeTabParam) {
+      setActiveTab(activeTabParam); // Set the active tab based on the URL parameter
+    } else {
+      setActiveTab('overview'); // Default to overview if no parameter is found
+    }
     // Fetch company details using the companyName from URL
     fetchCompany(companyName);
     fetchData()
@@ -49,7 +57,7 @@ const EachCompanyPage = () => {
   }, [companyName]); // Re-fetch if companyName changes
 
   // Check if company exists in the database
-  const checkCompanyExists = async (companyName) => { 
+  const checkCompanyExists = async (companyName) => {
     try {
       const response = await api.checkCompanyByName(companyName); // Check if company exists
       if (response.status === 200) {
@@ -364,12 +372,12 @@ const EachCompanyPage = () => {
   useEffect(() => {
     if (companyName) {
       // Fetch policy data when the component is mounted  
-        api.getHiringPolicy(companyName).then((response) => {
-          if (response.data) {
-            const months = response.data.allowReapply ? response.data.reapplyMonths : 12;
-            setReapplyMonths(months || 12); // Fallback to default if no value is provided
-          }
-        })
+      api.getHiringPolicy(companyName).then((response) => {
+        if (response.data) {
+          const months = response.data.allowReapply ? response.data.reapplyMonths : 12;
+          setReapplyMonths(months || 12); // Fallback to default if no value is provided
+        }
+      })
         .catch((error) => {
           console.error('Error fetching policy data:', error);
         });
@@ -452,16 +460,18 @@ const EachCompanyPage = () => {
             <Row className="hr-company_page-row2" >
               <Col md={2}>
                 <Tabs
-                  defaultActiveKey="overview"
-                  id="uncontrolled-tab-example"
-                  onSelect={(key) => handleTabClick(key)} // This is the correct way to handle tab change
+                  activeKey={activeTab} // Set the active tab based on state
+                  onSelect={(key) => handleTabClick(key)} // Update the active tab on select
                 >
+
                   <Tab eventKey="overview" title={customTabHeader("About  ", "i-Atom")}>
 
                   </Tab>
                   <Tab eventKey="jobs" title={customTabHeader("Job  ", "i-Shutter")}>
                   </Tab>
-                </Tabs></Col>
+                </Tabs>
+
+              </Col>
 
             </Row>
             <Row style={{ marginTop: '10px' }}>
@@ -599,42 +609,42 @@ const EachCompanyPage = () => {
                   </Card.Body>
                 </Card>
                 <Card className="key-stats" style={{ width: '100%', height: 'fit-content' }}>
-              <Card.Body>
+                  <Card.Body>
 
-                <h3><b>Company Policies</b></h3>
-                <h4>Job Reapply Policy</h4>
-                <p>
-                  Candidates can reapply after <strong>{reapplyMonths}</strong> months.
-                </p>
-                {documents.length === 0 ? (
-                  <p>No documents available for this company.</p>
-                ) : (
-                  <div>
-                    {documents.map((document) => (
-                      <div key={document.documentId} style={{ marginBottom: '10px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <strong>{document.documentTitle}:</strong>
-                          <a
-                            href={`data:application/octet-stream;base64,${document.documentFile}`}
-                            download={document.documentTitle}
-                            className="btn btn-primary"
-                            style={{ marginLeft: '10px' }}>
-                            Download
-                          </a>
-                        </div>
+                    <h3><b>Company Policies</b></h3>
+                    <h4>Job Reapply Policy</h4>
+                    <p>
+                      Candidates can reapply after <strong>{reapplyMonths}</strong> months.
+                    </p>
+                    {documents.length === 0 ? (
+                      <p>No documents available for this company.</p>
+                    ) : (
+                      <div>
+                        {documents.map((document) => (
+                          <div key={document.documentId} style={{ marginBottom: '10px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                              <strong>{document.documentTitle}:</strong>
+                              <a
+                                href={`data:application/octet-stream;base64,${document.documentFile}`}
+                                download={document.documentTitle}
+                                className="btn btn-primary"
+                                style={{ marginLeft: '10px' }}>
+                                Download
+                              </a>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                )}
-              </Card.Body>
-            </Card>
+                    )}
+                  </Card.Body>
+                </Card>
               </Col>
             </Row>
             <Row style={{ marginTop: '10px' }} >
               <Footer />
             </Row>
-            </div>
-    )}
+          </div>
+        )}
 
         {showResumePopup && (
           <ResumeSelectionPopup
