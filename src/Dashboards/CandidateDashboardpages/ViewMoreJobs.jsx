@@ -4,28 +4,16 @@ import { Button, Card, Table } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Pagination from '../../Pagination';
-import CandidateLeftSide from './CandidateLeftSide';
-import ResumeSelectionPopup from './ResumeSelectionPopup';
 import DashboardLayout from './DashboardLayout';
+import ResumeSelectionPopup from './ResumeSelectionPopup';
 
 
 const ViewMoreJobs = () => {
-    // const BASE_API_URL = "http://51.79.18.21:8082/api/jobbox";
     const BASE_API_URL = process.env.REACT_APP_API_URL;
     const location = useLocation();
-    const [queryParams, setQueryParams] = React.useState({});
 
-    React.useEffect(() => {
-        const queryString = window.location.href.split('#')[0].split('?')[1];
-        const params = new URLSearchParams(queryString);
-        const companyName = decodeURIComponent(params.get('companyName')); // Decoding the company name 
-        const jobId = params.get('jobId');
-        const userId = params.get('userId');
-        const userName = params.get('userName');
-        setQueryParams({ companyName, jobId, userId, userName });
-    }, [location]);
-
-    const { companyName, userId, userName } = queryParams;
+    const { companyName, userId, userName } = location.state || '';
+    console.log(companyName, " ------", userId, "-------", userName)
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(5); // Default page size
     const [totalPages, setTotalPages] = useState(0);
@@ -345,12 +333,20 @@ const ViewMoreJobs = () => {
                                                 variant="secondary"
                                                 className='description btn-rounded'
                                                 onClick={() => {
-                                                    const url = new URL('/#/candidate-dashboard/job-description', window.location.origin);
-                                                    url.searchParams.append('companyName', encodeURIComponent(job.companyName || ''));
-                                                    url.searchParams.append('jobId', encodeURIComponent(job.jobId || ''));
-                                                    url.searchParams.append('userId', encodeURIComponent(userId || ''));
-                                                    url.searchParams.append('userName', encodeURIComponent(userName || ''));
-                                                    window.open(url.toString(), '_blank', 'noopener,noreferrer');
+                                                    // Base URL for the new page
+                                                    const baseUrl = '/#/candidate-dashboard/jobs/job-description/';
+                                                    // Construct the query parameters manually
+                                                    const params = new URLSearchParams({
+                                                        companyName: encodeURIComponent(job.companyName || ''),
+                                                        jobId: encodeURIComponent(job.jobId || ''),
+                                                        userId: encodeURIComponent(userId || ''),
+                                                        userName: encodeURIComponent(userName || '')
+                                                    }).toString();
+                                                    // Construct the final URL with parameters after the hash
+                                                    const fullUrl = `${window.location.origin}${baseUrl}?${params}`;
+                                                    console.log("full url --> " + fullUrl);
+                                                    // Open the new page in a new tab
+                                                    window.open(fullUrl, '_blank', 'noopener,noreferrer');
                                                 }}
                                             >
                                                 View

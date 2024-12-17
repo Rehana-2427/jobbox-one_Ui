@@ -59,9 +59,6 @@
       align-items: center;
   }
 
-  .cta-accent2-bg, .cta-accent1-bg {
-      width: 90%;
-  }
 }
 
 
@@ -141,13 +138,12 @@
 .button-container {
   margin-top: 20px;
 }
-.cta-accent2-bg {
 
+.cta-accent2-bg {
   padding: 20px;
 }
 
 .cta-accent1-bg {
- 
   padding: 20px;
   border-radius: 10px;
 }
@@ -177,6 +173,12 @@
   transition: all 0.3s ease;
   max-width: 500px;
   width: 100%; /* Make the button responsive */
+
+}
+.cta-button {
+  white-space: normal;
+  word-wrap: break-word;
+  text-align: center;
 }
 
 /* Responsive styles for tablet screens */
@@ -398,6 +400,23 @@ align-items: center;
   }
 }
 
+.browse-jobs-container {
+  display: flex;
+  position: relative;
+  width: 100%; /* Full width of the container */
+  height: 200px; /* Set a fixed height for the container */
+  overflow: hidden;
+  padding-top: 40px;
+  padding-bottom: 12px;
+}
 
 
+.responsive-container {
+  padding-top: 120px; /* Default padding for larger screens */
+}
 
+@media (max-width: 990px) { /* Applies when screen width is <= 900px */
+  .responsive-container {
+      padding-top: 0px !important; /* Override padding for small screens */
+  }
+}

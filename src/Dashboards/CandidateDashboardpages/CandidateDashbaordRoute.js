@@ -21,7 +21,7 @@ const CandidateDashbaordRoute = () => {
 
     <Routes>
       <Route path="/" element={<CandidateDashboard />} />
-      <Route path='/candidate-jobs' element={<CandidateJobs />} />
+      <Route path='/jobs' element={<CandidateJobs />} />
       <Route path='/companies' element={<CandidatesCompanies />} />
       <Route path='/resume' element={<Resume />} />
       <Route path='/profile' element={<Profile />} />
@@ -30,10 +30,10 @@ const CandidateDashbaordRoute = () => {
       <Route path='/resume/resumeAdd' element={<ResumeAdd />} />
       <Route path='companies/companyPage/companyName/:companyName' element={<CompamyPage />} />
       <Route path='/resumePopUp' element={<ResumeSelectionPopup />} />
-      <Route path='/candidate-jobs/dream-company' element={<DreamCompany/>}/>
-      <Route path='/candidate-jobs/dream-job' element={<DreamJob/>}/>
+      <Route path='/jobs/dream-company' element={<DreamCompany/>}/>
+      <Route path='/jobs/dream-job' element={<DreamJob/>}/>
       <Route path='/job-description' element={<JobDescription />}/>
-      <Route path='/candidate-jobs/job-description/view-more' element={<ViewMoreJobs />}/>
+      <Route path='/jobs/job-description/view-more' element={<ViewMoreJobs />}/>
     </Routes>
 
   )

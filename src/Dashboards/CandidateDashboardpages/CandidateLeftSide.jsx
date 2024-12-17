@@ -15,7 +15,7 @@ function CandidateLeftSide({ user, isOpen }) {
     // Define the sidebar navigation links
     const navLinks = [
         { to: '/candidate-dashboard', label: 'Dashboard', icon: <RxDashboard size={'30'} /> },
-        { to: '/candidate-dashboard/candidate-jobs', label: 'Jobs', icon: <FontAwesomeIcon icon={faLayerGroup} style={{ fontSize: '1.7rem' }} /> },
+        { to: '/candidate-dashboard/jobs', label: 'Jobs', icon: <FontAwesomeIcon icon={faLayerGroup} style={{ fontSize: '1.7rem' }} /> },
         { to: '/candidate-dashboard/companies', label: 'Companies', icon: <FontAwesomeIcon icon={faBuilding} style={{ fontSize: '1.7rem' }} /> },
         { to: '/candidate-dashboard/my-application', label: 'Applications', icon: <FontAwesomeIcon icon={faFileLines} style={{ fontSize: '1.7rem' }} /> },
         { to: '/candidate-dashboard/resume', label: 'Resumes', icon: <FontAwesomeIcon icon={faFile} style={{ fontSize: '1.7rem' }} /> },
@@ -60,7 +60,7 @@ function CandidateLeftSide({ user, isOpen }) {
 
         // Define special cases dynamically
         const specialCases = {
-            '/candidate-dashboard/candidate-jobs': '/candidate-dashboard/candidate-jobs',
+            '/candidate-dashboard/jobs': '/candidate-dashboard/jobs',
             '/candidate-dashboard/companies': '/candidate-dashboard/companies',
             '/candidate-dashboard/resume':'/candidate-dashboard/resume',
         };

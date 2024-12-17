@@ -198,7 +198,7 @@ const api = {
 
   //latest 5 jobs in company
   getLatest5JobsByCompany: (companyName) => {
-    apiClient.get('/getLatest5JobsByCompany', {
+    return  apiClient.get('/getLatest5JobsByCompany', {
       params: { companyName }
     })
   },
