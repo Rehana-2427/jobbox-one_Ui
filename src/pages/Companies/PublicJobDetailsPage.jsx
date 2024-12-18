@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { Button, Card, Col, Modal, Row } from "react-bootstrap";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import api from "../../apiClient";
 import CustomNavbar from "../CustomNavbar";
 import Footer from "../Footer";
-import Swal from "sweetalert2";
 
 const PublicJobDetailsPage = () => {
     const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -222,9 +222,10 @@ const PublicJobDetailsPage = () => {
         }
     };
     const handleApplyButtonClick = (jobId) => {
-        setSelectedJobId(jobId);
-        if (selectedJobId && resumeId) {
-            applyJob(selectedJobId, resumeId);
+        // setSelectedJobId(jobId);
+        if (jobId && resumeId) {
+
+            applyJob(jobId, resumeId);
         }
     };
     const handleCandidateClick = () => {
@@ -256,7 +257,7 @@ const PublicJobDetailsPage = () => {
         }
     };
     console.log("response   -->> " + hasUserApplied);
-    const [applyjobs, setApplyJobs] = useState([]);
+    const [applyjobs, setApplyJobs] = useState(false);
     const applyJob = async (jobId, resumeId) => {
         let loadingPopup;
 
@@ -282,8 +283,8 @@ const PublicJobDetailsPage = () => {
             });
 
             if (response.data) {
-                setApplyJobs((prevApplyJobs) => [...prevApplyJobs, { jobId, formattedDate }]);
-                setHasUserApplied((prev) => ({ ...prev, [jobId]: true }));
+                setApplyJobs(true);
+                // setHasUserApplied((prev) => ({ ...prev, [jobId]: true }));
 
                 // Close the loading popup
                 Swal.close();
@@ -422,12 +423,12 @@ const PublicJobDetailsPage = () => {
                 <Col lg={9} style={{ height: 'fit-content' }}>
                     <Card style={{ top: '10%', width: '100%', height: "fit-content" }}>
                         <Card.Body>
-                            <Col style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end'  }}>
+                            <Col style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end',gap:'10px'  }}>
                                 {isLoggedIn ? (
                                     user?.userRole === 'HR' ? (
                                         null // No buttons for HR
                                     ) : user?.userRole === 'Candidate' ? (
-                                        hasUserApplied === true || (applyjobs && applyjobs.jobId === jobDetails.jobId) ? ( // Check if the user has already applied
+                                        hasUserApplied === true || (applyjobs === true) ? ( // Check if the user has already applied
                                             <p
                                                 style={{
                                                     color: '#28a745', // Green color for the text
@@ -472,6 +473,7 @@ const PublicJobDetailsPage = () => {
                                                     variant="success"
                                                     onClick={() => handleApplyButtonClick(jobDetails.jobId)}
                                                     disabled={!selectedResume} // This disables the button if selectedResume is empty
+                                                    style={{position:"relative",bottom:'10px'}}
                                                 >
                                                     Apply
                                                 </Button>
