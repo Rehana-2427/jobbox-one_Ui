@@ -8,9 +8,21 @@ import { Link, useLocation } from 'react-router-dom';
 const CompanyStatusCards = () => {
     const BASE_API_URL = process.env.REACT_APP_API_URL;
     const location = useLocation();
-    const userEmail = location.state?.userEmail || '';
+    const [userName, setUserName] = useState('');
+    const [userEmail, setUserEmail] = useState(null);
+
+    useEffect(() => {
+        // Get the userName and userId from location.state if available, otherwise from localStorage
+        const storedUser = JSON.parse(localStorage.getItem('user'));  // Assuming 'user' is stored in localStorage
+
+        const userNameFromLocation = location.state?.userName || storedUser?.userName || '';
+        const userEmailFromLocation = location.state?.userEmail || storedUser?.userEmail || null;
+
+        setUserName(userNameFromLocation);
+        setUserEmail(userEmailFromLocation);
+    }, [location]);  // Re-run the effect when the location changes
+    
     const [userData, setUserData] = useState(null);
-    const [userName, setUserName] = useState(location.state?.userName || '');
     const [countOfJobs, setCountOfJobs] = useState(0);
     const [countOfApplications, setCountOfApplications] = useState(0);
     // const [countOfShortlistedCandiCompany, setCountOfShortlistedCandiCompany] = useState(0);
@@ -22,24 +34,24 @@ const CompanyStatusCards = () => {
         { icon: faEnvelope, subtitle: "Evergreen Jobs Applications", link: '/hr-dashboard/evergreenjobs-applications' }
     ];
 
-    useEffect(() => {
-        if (!userName && userEmail) {
-            fetchUserData(userEmail);
-        }
-    }, [userEmail, userName]);
+    // useEffect(() => {
+    //     if (!userName && userEmail) {
+    //         fetchUserData(userEmail);
+    //     }
+    // }, [userEmail, userName]);
 
-    const fetchUserData = async (userEmail) => {
-        try {
-            const response = await axios.get(`${BASE_API_URL}/getHRName`, {
-                params: { userEmail: userEmail }
-            });
-            setUserData(response.data);
-            setUserName(response.data.userName);
-            localStorage.setItem(`userName_${userEmail}`, response.data.userName);
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-        }
-    };
+    // const fetchUserData = async (userEmail) => {
+    //     try {
+    //         const response = await axios.get(`${BASE_API_URL}/getHRName`, {
+    //             params: { userEmail: userEmail }
+    //         });
+    //         setUserData(response.data);
+    //         setUserName(response.data.userName);
+    //         localStorage.setItem(`userName_${userEmail}`, response.data.userName);
+    //     } catch (error) {
+    //         console.error('Error fetching user data:', error);
+    //     }
+    // };
 
 
     const fetchCounts = useCallback(async (userEmail) => {
@@ -67,13 +79,13 @@ const CompanyStatusCards = () => {
         }
     }, [userEmail, fetchCounts]);
     return (
-        <Col md={12} style={{paddingTop:'10px',paddingLeft:'10px'}}>
+        <Col md={12} style={{ paddingTop: '10px', paddingLeft: '10px' }}>
             <Row>
                 {DATA.map((card, index) => (
                     <Col lg={3} sm={6} key={index}>
                         <Card
                             className="card-icon-bg gap-3 card-icon-bg-primary o-hidden mb-4"
-                            style={{ maxWidth: '250px' ,height:'100px'}}
+                            style={{ maxWidth: '250px', height: '100px' }}
                         >
                             <Card.Body className="align-items-center gap-4">
                                 <FontAwesomeIcon

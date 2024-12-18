@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Row } from "react-bootstrap";
+import { Button, Card, Col, Modal, Row } from "react-bootstrap";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import api from "../../apiClient";
 import CustomNavbar from "../CustomNavbar";
 import Footer from "../Footer";
+import Swal from "sweetalert2";
 
 const PublicJobDetailsPage = () => {
     const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -17,7 +18,7 @@ const PublicJobDetailsPage = () => {
     const jobId = location.state?.jobId;
     const [unappliedJobs, setUnappliedJobs] = useState([]);
     const [jobs, setJobs] = useState([]);
-    const [hasUserApplied, setHasUserApplied] = useState({});
+    const [hasUserApplied, setHasUserApplied] = useState(false);
     const [selectedJobId, setSelectedJobId] = useState(null);
     const navigate = useNavigate();
     const [jobDetails, setJobDetails] = useState({
@@ -182,6 +183,154 @@ const PublicJobDetailsPage = () => {
             console.error('Error fetching job details:', error);
         }
     };
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
+    const [user, setUser] = useState(null); // Store the user object
+    const [userId, setUserId] = useState(null); // State to store userId
+    useEffect(() => {
+        // Check if user is logged in (you can check localStorage/sessionStorage here)
+        const loggedInUser = JSON.parse(localStorage.getItem('user')); // Assuming user data is saved here after login
+        if (loggedInUser && loggedInUser.userName) {
+            setIsLoggedIn(true);
+            setUser(loggedInUser); // Set user object
+            if (loggedInUser.userRole === 'Candidate') {
+                setUserId(loggedInUser.userId); // Store userId for candidate
+            }
+        }
+    }, []);
+
+
+    const [resumes, setResumes] = useState([]);
+    useEffect(() => {
+        if (userId) { // Only fetch resumes if the user is logged in
+            api.getResume(userId)
+                .then(response => {
+                    setResumes(response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching resumes:', error);
+                });
+        }
+    }, [userId]);
+    const [resumeId, setResumeId] = useState(0);
+    const [selectedResume, setSelectedResume] = useState(null); // Store selected resume details
+    const handleResumeSelect = async (resume) => {
+        const resumeId = resume.target.value
+        setSelectedResume(resumeId);
+        if (resumeId) {
+            setResumeId(resumeId);
+        }
+    };
+    const handleApplyButtonClick = (jobId) => {
+        setSelectedJobId(jobId);
+        if (selectedJobId && resumeId) {
+            applyJob(selectedJobId, resumeId);
+        }
+    };
+    const handleCandidateClick = () => {
+        openModal('candidate'); // Set modal content for candidate
+        localStorage.setItem('redirectAfterLogin', 'dream-company');
+    };
+    const [showModal, setShowModal] = useState(false); // State to manage modal visibility
+    const [modalContent, setModalContent] = useState(''); // State to manage modal content
+    const openModal = (content) => {
+        setModalContent(content); // Set modal content based on button clicked
+        setShowModal(true); // Open modal
+    };
+    useEffect(() => {
+        checkHasUserApplied();
+    }, [jobDetails, userId]);
+
+    const checkHasUserApplied = async () => {
+
+        try {
+
+            const response = await axios.get(`${BASE_API_URL}/isJobApplied`, {
+                params: { jobId: jobDetails.jobId, userId }
+            });
+            console.log("response   -->> " + response.data);
+            // Cast the response to a boolean
+            setHasUserApplied(response.data);
+        } catch (error) {
+            console.error('Error checking application:', error);
+        }
+    };
+    console.log("response   -->> " + hasUserApplied);
+    const [applyjobs, setApplyJobs] = useState([]);
+    const applyJob = async (jobId, resumeId) => {
+        let loadingPopup;
+
+        try {
+            // Show loading message using SweetAlert
+            loadingPopup = Swal.fire({
+                title: 'Applying to the job...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            const appliedOn = new Date(); // Get current date and time
+            const year = appliedOn.getFullYear(); // Get the full year (e.g., 2024)
+            const month = String(appliedOn.getMonth() + 1).padStart(2, '0'); // Get month (January is 0, so we add 1)
+            const day = String(appliedOn.getDate()).padStart(2, '0'); // Get day of the month
+
+            const formattedDate = `${year}-${month}-${day}`;
+
+            const response = await axios.put(`${BASE_API_URL}/applyJob`, null, {
+                params: { jobId, userId, formattedDate, resumeId },
+            });
+
+            if (response.data) {
+                setApplyJobs((prevApplyJobs) => [...prevApplyJobs, { jobId, formattedDate }]);
+                setHasUserApplied((prev) => ({ ...prev, [jobId]: true }));
+
+                // Close the loading popup
+                Swal.close();
+
+                // Show success message
+                await Swal.fire({
+                    icon: "success",
+                    title: "Apply Successful!",
+                    text: "You have successfully applied for this job."
+                });
+            }
+        } catch (error) {
+            console.error('Error applying for job:', error);
+            // Close loading popup on error
+            if (loadingPopup) {
+                Swal.close();
+            }
+            // Show error message
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong! Please try again later.',
+            });
+        } finally {
+            // Ensure loading popup is closed if still open
+            if (loadingPopup) {
+                Swal.close();
+            }
+        }
+    };
+    const handleModalOptionClick = (option) => {
+        closeModal();
+
+        if (option === 'login') {
+            if (modalContent === 'candidate') {
+                navigate('/signin', { state: { userType: 'Candidate', companyId: companyId } });
+            }
+        }
+        else if (option === 'register') {
+            if (modalContent === 'candidate') {
+                navigate('/candidate-signup', { state: { userType: 'Candidate' } });
+            }
+        }
+    };
+    const closeModal = () => {
+        setShowModal(false); // Close modal
+    };
     return (
         <div>
             <div>
@@ -273,6 +422,75 @@ const PublicJobDetailsPage = () => {
                 <Col lg={9} style={{ height: 'fit-content' }}>
                     <Card style={{ top: '10%', width: '100%', height: "fit-content" }}>
                         <Card.Body>
+                            <Col style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end'  }}>
+                                {isLoggedIn ? (
+                                    user?.userRole === 'HR' ? (
+                                        null // No buttons for HR
+                                    ) : user?.userRole === 'Candidate' ? (
+                                        hasUserApplied === true || (applyjobs && applyjobs.jobId === jobDetails.jobId) ? ( // Check if the user has already applied
+                                            <p
+                                                style={{
+                                                    color: '#28a745', // Green color for the text
+                                                    fontSize: '18px', // Larger font size
+                                                    fontWeight: 'bold', // Bold text
+                                                    backgroundColor: '#e9f5e9', // Light green background color
+                                                    padding: '10px',
+                                                    borderRadius: '5px', // Rounded corners
+                                                    textAlign: 'left', // Center-align the text
+                                                    margin: '10px 0', // Margin above and below the paragraph
+                                                    boxShadow: 'rgba(0, 0, 0, 0.1)', // Subtle shadow effect
+                                                    width: '100px',
+                                                }}
+                                            >
+                                                Applied
+                                            </p>
+                                        ) : (
+                                            <>
+                                                <div className="resume-dropdown-container">
+                                                    <h5 className="fw-bold">Select Resume</h5>
+                                                    <select
+                                                        id="resumeSelect"
+                                                        value={selectedResume}
+                                                        onChange={handleResumeSelect}
+                                                        required
+                                                        className="form-select"
+                                                        style={{
+                                                            width: '200px', // Make the dropdown smaller
+                                                            padding: '5px', // Reduce padding
+                                                            fontSize: '14px', // Reduce font size
+                                                        }}
+                                                    >
+                                                        <option value="">Select Resume</option>
+                                                        {resumes.map((resume) => (
+                                                            <option key={resume.id} value={resume.id}>
+                                                                {resume.message}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                                <Button
+                                                    variant="success"
+                                                    onClick={() => handleApplyButtonClick(jobDetails.jobId)}
+                                                    disabled={!selectedResume} // This disables the button if selectedResume is empty
+                                                >
+                                                    Apply
+                                                </Button>
+                                            </>
+                                        )
+                                    ) : null // No content for any other user roles
+                                ) : (
+                                    <Button
+                                        variant="success"
+                                        onClick={handleCandidateClick}
+                                        style={{ marginLeft: '12px' }}
+                                    >
+                                        Login to Apply
+                                    </Button>
+                                )}
+                            </Col>
+                        </Card.Body>
+
+                        <Card.Body>
                             <p><strong>Job Type:</strong> {jobDetails.jobTitle}</p>
                             <p><strong>Job Type:</strong> {jobDetails.jobType}</p>
                             <p><strong>Skills:</strong> {jobDetails.skills}</p>
@@ -290,6 +508,8 @@ const PublicJobDetailsPage = () => {
                             )}</p>
                         </Card.Body>
                     </Card>
+
+
                 </Col>
                 <Col lg={3}>
                     <div style={{ margin: '8px', width: '250px', height: 'fit-content' }}>
@@ -333,6 +553,33 @@ const PublicJobDetailsPage = () => {
             <Row style={{ marginTop: '10px' }} >
                 <Footer />
             </Row>
+            {/* Modal for Apply button */}
+            <Modal show={showModal} onHide={closeModal}>
+                <Modal.Header closeButton style={{ backgroundColor: '#faccc', color: 'white', borderBottom: 'none' }}>
+                    <Modal.Title>Choose an Option</Modal.Title>
+                </Modal.Header>
+                <Modal.Body style={{ padding: '20px', textAlign: 'center' }}>
+
+                    {modalContent === 'candidate' && (
+                        <>
+                            <Button
+                                variant="primary"
+                                onClick={() => handleModalOptionClick('login')}
+                                style={{ width: '100%', marginBottom: '10px', backgroundColor: '#6c5ce7', borderColor: '#6c5ce7' }}
+                            >
+                                Already have an account - Login
+                            </Button>
+                            <Button
+                                variant="success"
+                                onClick={() => handleModalOptionClick('register')}
+                                style={{ width: '100%', backgroundColor: '#00b894', borderColor: '#00b894' }}
+                            >
+                                Don't have an account - Register
+                            </Button>
+                        </>
+                    )}
+                </Modal.Body>
+            </Modal>
         </div>
     )
 }
