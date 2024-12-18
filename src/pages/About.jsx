@@ -14,16 +14,20 @@ const About = () => {
   const navLinkStyle = screenWidth > 990 ? { marginRight: '40px', marginLeft: '150px' } : {};
   return (
     <div className="about-container" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <CustomNavbar />
-
-      {/* Main content */}
-      <div style={{ flex: '1' }}>
-        {/* Your main content goes here */}
+      <div className="custom-navbar-container">
+        <CustomNavbar />
       </div>
 
-      {/* Footer section */}
-      <div style={{ marginTop: '400px' }}>
-        <Footer />
+      {/* Main content */}
+      <div className='welcome-msg'>
+        {/* Your main content goes here */}
+        <h1>About Us</h1>
+
+
+        {/* Footer section */}
+        <div style={{ marginTop: '400px' }}>
+          <Footer />
+        </div>
       </div>
     </div>
 

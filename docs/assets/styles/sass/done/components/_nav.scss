@@ -65,7 +65,6 @@
 // Hide tabbable panes to start, show them when `.active`
 
 .tab-content {
-  padding: 1rem;
   background-color: $tab-content-bg;
   [class^="nav-tabs-"] &,
   [class*=" nav-tabs-"] & {

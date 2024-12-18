@@ -6,9 +6,9 @@ import api from "../../apiClient";
 import Pagination from "../../Pagination";
 import CustomNavbar from "../CustomNavbar";
 import Footer from "../Footer";
+import './Company.css';
 
 const JobboxCompanyPage = () => {
-  const BASE_API_URL = process.env.REACT_APP_API_URL;
   const [companies, setCompanies] = useState([]);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(0);
@@ -136,7 +136,7 @@ const JobboxCompanyPage = () => {
       navigate(`/companyPage/companyName/${encodedCompanyName}`, { state: { companyId } });
       // Trigger a page reload after navigating
       window.location.reload();
-     // window.open(`/companyPage/companyName/${encodedCompanyName}?companyId=${companyId}`, '_blank');
+      // window.open(`/companyPage/companyName/${encodedCompanyName}?companyId=${companyId}`, '_blank');
     } else {
       console.error("Company not found!");
     }
@@ -147,19 +147,22 @@ const JobboxCompanyPage = () => {
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
 
+
   return (
-    <div className="top-right-content">
-      <CustomNavbar />
+    <div >
+      <div className="custom-navbar-container">
+        <CustomNavbar />
+      </div>
 
-      <div className="companyJob" style={{ marginTop: '100px' }}>
-
-        <div className="d-flex flex-column justify-content-between" >
-          <h3 style={{ paddingTop: '20px' }}>Filter Options</h3>
+      <div className='welcome-msg'>
+        <div className="d-flex flex-column justify-content-between" style={{ marginLeft: '12px' }} >
+          <h3 style={{ paddingTop: '20px' ,paddingLeft:'12px'}}>Filter Options:</h3>
           <Row
             className="d-flex flex-wrap gx-2"
             style={{
               maxWidth: '100%',
               backgroundColor: '#f4f4f9',
+              marginLeft:'10px',marginRight:"10px"
             }}
           >
             {/* Filter by Company Type */}
@@ -314,12 +317,11 @@ const JobboxCompanyPage = () => {
               />
             </Col>
           </Row>
-
-          {/* Company Cards Section */}
-          <div className="cards flex-grow-1 d-flex flex-wrap justify-content-start" style={{ minHeight: 'fit-content', width: '100%', marginLeft: '45px' }}>
+           {/* Company Cards Section */}
+          <Row className="cards flex-grow-1 d-flex flex-wrap justify-content-start" style={{ minHeight: 'fit-content', width: '100%', }}>
             {companies.length > 0 ? (
               companies.map((company) => (
-                <Card className="company-card-job" key={company.companyId} style={{ width: '100%', flex: '1 0 400px', margin: '12px' }}>
+                <Card className="company-card-job" key={company.companyId} style={{ width: '100%', flex: '1 0 400px', margin: '24px' }}>
                   <Card.Body>
                     <Card.Title>Company Name: <b>{company.companyName}</b></Card.Title>
                     <Card.Text>Industry: <b>{company.industryService}</b></Card.Text>
@@ -336,7 +338,7 @@ const JobboxCompanyPage = () => {
                 </div>
               </div>
             )}
-          </div>
+          </Row>
         </div>
         {/* </div> */}
         {companies.length > 0 && (

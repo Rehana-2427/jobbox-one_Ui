@@ -67,7 +67,7 @@ const StatusGraph = () => {
     };
 
     return (
-        <Row>
+        <Row >
             <Col lg={6} style={{ paddingLeft: '25px' }}>
                 <Card className="mb-4"> {/* Light purple */}
                     <Card.Header className="bg-light text-center" style={{ height: '30px', width: '100%' }}>

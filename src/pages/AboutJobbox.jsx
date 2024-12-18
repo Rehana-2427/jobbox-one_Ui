@@ -11,20 +11,24 @@ const AboutJobbox = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-   
+
 
     return (
         <div className="about-container" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-            <CustomNavbar />
-
-            {/* Main content */}
-            <div style={{ flex: '1',marginTop:'200px'}}>
-           
+            <div className="custom-navbar-container">
+                <CustomNavbar />
             </div>
 
-            {/* Footer section */}
-            <div style={{ marginTop: '400px' }}>
-<Footer/>            </div>
+            {/* Main content */}
+            <div  className='welcome-msg'>
+
+                <h1>About Jobbox</h1>
+
+                {/* Footer section */}
+                <div style={{ marginTop: '400px' }}>
+                    <Footer />
+                </div>
+            </div>
         </div>
     )
 }

@@ -413,10 +413,13 @@ align-items: center;
 
 .responsive-container {
   padding-top: 120px; /* Default padding for larger screens */
+  border:1px solid black;
+  height: fit-content;
 }
 
 @media (max-width: 990px) { /* Applies when screen width is <= 900px */
   .responsive-container {
       padding-top: 0px !important; /* Override padding for small screens */
+      margin-top: 40px;
   }
 }

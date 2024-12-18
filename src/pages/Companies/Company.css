@@ -16,11 +16,38 @@
     }
   }
   
-.dashboard-container-1 {
+.dashboard-container-1{
   padding-top: 120px;
 }
 @media(max-width: 990px) {
   .dashboard-container-1 {
     padding-top: 0px;
+  }
+}
+
+.custom-navbar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Ensures it stays on top of other content */
+  background-color:white;
+}
+
+.responsive-container {
+  overflow-y: auto; /* Scroll only in the Y direction */
+  overflow-x: hidden;
+  height: calc(100vh - 60px); /* Full viewport height minus navbar height */
+}
+
+@media (max-width: 990px) {
+  .responsive-container {
+    margin-top: 40px; /* Adjust space for smaller screens */
+    height: calc(100vh - 40px); /* Adjust height accordingly */
+  }
+}
+@media (max-width: 990px) {
+  .company-card-job {
+    flex: 1 1 calc(100% - 24px); /* Full-width card for small screens */
   }
 }

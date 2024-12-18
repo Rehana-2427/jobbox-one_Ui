@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Button, Card, Col, Modal, Row } from 'react-bootstrap';
+import { Button, Card, Modal, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import api from '../apiClient';
 import Pagination from '../Pagination';
@@ -17,7 +17,7 @@ const BrowseJobs = () => {
     const [companyLogos, setCompanyLogos] = useState({});
     const [search, setSearch] = useState('');
     const [page, setPage] = useState(0);
-    const [pageSize, setPageSize] = useState(6); // Default page size
+    const [size, setPageSize] = useState(6); // Default page size
     const [totalPages, setTotalPages] = useState(0);
     const [sortedColumn, setSortedColumn] = useState(null);
     const [sortOrder, setSortOrder] = useState('asc');
@@ -25,20 +25,20 @@ const BrowseJobs = () => {
     const isPageSizeDisabled = isLastPage;
     const [showModal, setShowModal] = useState(false); // State to manage modal visibility
     useEffect(() => {
-        // Fetch latest jobs or jobs based on search only when the search button is clicked
         if (search) {
             fetchJobBySearch();
         }
         else {
             fetchData();
+
         }
-    }, [page, pageSize, search, sortOrder, sortedColumn]);
+    }, [page, size, search, sortedColumn, sortOrder]);
 
     // Fetch latest jobs
     const fetchData = useCallback(async () => {
         const params = {
             page: page,
-            size: pageSize,
+            size: size,
         };
         try {
             const response = await api.latestJobs(params); // Added { params } here
@@ -48,7 +48,7 @@ const BrowseJobs = () => {
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-    }, [page, pageSize]);
+    }, [page, size]);
 
     // Fetch company logos
     const fetchImages = async (jobs) => {
@@ -80,21 +80,21 @@ const BrowseJobs = () => {
             return "/path/to/default_logo.png"; // Default logo in case of error
         }
     };
+    // useEffect(() => {
+    //     fetchJobBySearch();
+    // }, [page, size, search, sortedColumn, sortOrder]);
+
+
     const fetchJobBySearch = async () => {
         try {
-            const params = {
-                search: search,
-                page: page,
-                size: pageSize,
-                sortBy: sortedColumn,
-                sortOrder: sortOrder,
-            };
-            const response = await api.searchJobs(search, page, pageSize, sortedColumn, sortOrder);
+            console.log("Fetching jobs with params:", { search, page, size, sortedColumn, sortOrder });
+            const response = await api.searchJobs(search, page, size, sortedColumn, sortOrder);
+            console.log("API Response:", response.data);
             setJobs(response.data.content);
             setTotalPages(response.data.totalPages);
-            await fetchImages(response.data.content); // Add this line to fetch logos for search results
+            await fetchImages(response.data.content);
         } catch (error) {
-            console.log("No data Found" + error);
+            console.log("Error fetching jobs:", error);
         }
     };
 
@@ -104,17 +104,45 @@ const BrowseJobs = () => {
         setSearch(inputValue);
         setPage(0);
     };
+    const handleSort = (column) => {
+        if (sortedColumn === column) {
+            // Toggle sort order if the same column is clicked
+            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+        } else {
+            // Sort by the new column (default to ascending)
+            setSortedColumn(column);
+            setSortOrder('asc');
+        }
+    };
+
+    useEffect(() => {
+        const storedPage = localStorage.getItem('BrowseJobsPage');
+        if (storedPage !== null) {
+            const parsedPage = Number(storedPage);
+            if (parsedPage < totalPages) {
+                setPage(parsedPage);
+                console.log(page);
+            }
+        }
+
+        console.log({ storedPage, totalPages });
+
+    }, [totalPages]);
+
 
     // Handle page change for pagination
     const handlePageClick = (data) => {
-        setPage(data.selected);
+        const selectedPage = Math.max(0, Math.min(data.selected, totalPages - 1)); // Ensure selectedPage is within range
+        setPage(selectedPage);
+        localStorage.setItem('BrowseJobsPage', selectedPage); // Store the page number in localStorage
     };
-
     const handlePageSizeChange = (e) => {
         const size = parseInt(e.target.value);
         setPageSize(size);
+        setPage(0);
     };
 
+    console.log({ page, size, totalPages, jobsLength: jobs.length });
 
     // Calculate days ago for job posting
     const calculateDaysAgo = (postingDate) => {
@@ -173,9 +201,11 @@ const BrowseJobs = () => {
 
 
     return (
-        <div>
-            <CustomNavbar />
-            <div className="responsive-container">
+        <div style={{ overflow: 'hidden' }}> 
+            <div className="custom-navbar-container">
+                <CustomNavbar />
+            </div>
+            <div  style={{ overflowY: 'scroll',}}>
                 <Row>
                     <h1 className='text-center'>Find Your Dream Job & Apply for it</h1>
                     <p className='text-center' style={{ fontSize: '20px' }}>Jobs for you to explore</p>
@@ -229,7 +259,7 @@ const BrowseJobs = () => {
                             </div>
                             <Pagination
                                 page={page}
-                                pageSize={pageSize}
+                                pageSize={size}
                                 totalPages={totalPages}
                                 handlePageSizeChange={handlePageSizeChange}
                                 isPageSizeDisabled={isPageSizeDisabled}
@@ -283,85 +313,86 @@ const BrowseJobs = () => {
 
                     {jobs.length === 0 && search && <h1 className='text-center' style={{ color: 'red' }}>"No jobs found"</h1>}
                 </Row>
-            </div>
 
-            <br></br>
-            <Row style={{ height: 'auto' }} className="jobbox-container">
-                <Col xs={6} md={6} >
-                    <img src="dreamJob.jpeg" alt="Image 2" />
-                </Col>
-                <Col xs={6} md={6} style={{ paddingTop: '30px', wordWrap: 'break-word' }} >
-                    <div className="cta-accent2-bg" style={{ height: '650px', paddingTop: '12px' }}>
-                        <div className="cta-accent1-bg" style={{ height: '630px' }}>
-                            <div className="cta-content" style={{ width: '100%', overflowWrap: 'break-word' }}>
-                                <span className="thq-heading-2">
-                                    Need to Apply to Your Dream Company and Dream Job?
-                                </span>
-                                <p className="thq-body-large">
-                                    Don't worry! At JobBox, your job search is easy—explore opportunities with just one click and connect with top employers ready for your talent!
-                                </p>
 
-                                <div className="button-container">
-                                    {isLoggedIn ? (
-                                        user?.userRole === 'Candidate' ? (
-                                            <Button
-                                                type="button"
-                                                className="thq-button-filled cta-button"
-                                                variant="info"
-                                                style={{ marginRight: '10px', wordWrap: 'break-word' }}
-                                                onClick={() => navigate('/candidate-dashboard/jobs/dream-job', { state: { userId: user.userId, userName: user.userName } })}
-                                            >
-                                                Apply for Your Dream Job at Your Dream Company
-                                            </Button>
-                                        ) : null // No button for HR or other roles
-                                    ) : (
-                                        <Button
-                                            type="button"
-                                            className="thq-button-filled cta-button"
-                                            variant="info"
-                                            style={{ marginRight: '10px', wordWrap: 'break-word' }}
-                                            onClick={handleCandidateClick} // If no user is logged in, handle login click
-                                        >
-                                            Apply for Your Dream Job at Your Dream Company
-                                        </Button>
-                                    )}
+                <br></br>
+                <Row>
+                    <div className="jobbox-container" style={{ height: 'auto' }}>
+                        <div className="column" style={{ position: 'relative', bottom: '30px' }}>
+                            <img src="dreamJob.jpeg" alt="Image 2" />
+                        </div>
+
+                        <div className="steps-container column" style={{ height: 'auto' }}>
+                            <div className='cta-accent2-bg'>
+                                <div className='cta-accent1-bg'>
+                                    <div className='cta-content'>
+                                        <span className='thq-heading-2'>
+                                            Need to Apply to Your Dream Company and Dream Job?
+                                        </span>
+                                        <p className='thq-body-large'>Don't worry! At JobBox, your job search is easy—explore opportunities with just one click and connect with top employers ready for your talent!</p>
+
+                                        <div className="button-container">
+                                            {isLoggedIn ? (
+                                                user?.userRole === 'Candidate' ? (
+                                                    <Button
+                                                        type="button"
+                                                        className="thq-button-filled cta-button"
+                                                        variant="info"
+                                                        style={{ marginRight: '10px' }}
+                                                        onClick={() => navigate('/candidate-dashboard/jobs/dream-job', { state: { userId: user.userId, userName: user.userName } })}
+                                                    >
+                                                        Apply for Your Dream Job at Your Dream Company
+                                                    </Button>
+                                                ) : null // No button for HR or other roles
+                                            ) : (
+                                                <Button
+                                                    type="button"
+                                                    className="thq-button-filled cta-button"
+                                                    variant="info"
+                                                    style={{ marginRight: '10px' }}
+                                                    onClick={handleCandidateClick} // If no user is logged in, handle login click
+                                                >
+                                                    Apply for Your Dream Job at Your Dream Company
+                                                </Button>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </Col>
-            </Row>
-            <div style={{ marginTop: '100px' }}>
-                <JobListings />
-            </div>
+                </Row>
+                <div style={{ marginTop: '100px' }}>
+                    <JobListings />
+                </div>
 
-            <div style={{ marginTop: '100px' }}>
-                <Footer />
-            </div>
+                <div style={{ marginTop: '100px' }}>
+                    <Footer />
+                </div>
 
-            <Modal show={showModal} onHide={closeModal}>
-                <Modal.Header closeButton style={{ backgroundColor: '#faccc', color: 'white', borderBottom: 'none' }}>
-                    <Modal.Title>Choose an Option</Modal.Title>
-                </Modal.Header>
-                <Modal.Body style={{ padding: '20px', textAlign: 'center' }}>
-                    <Button
-                        variant="primary"
-                        onClick={() => handleModalOptionClick('login')}
-                        style={{ width: '100%', marginBottom: '10px', backgroundColor: '#6c5ce7', borderColor: '#6c5ce7' }}
-                    >
-                        Already have an account - Login
-                    </Button>
-                    <Button
-                        variant="success"
-                        onClick={() => handleModalOptionClick('register')}
-                        style={{ width: '100%', backgroundColor: '#00b894', borderColor: '#00b894' }}
-                    >
-                        Don't have an account - Register
-                    </Button>
-                </Modal.Body>
-            </Modal>
+                <Modal show={showModal} onHide={closeModal}>
+                    <Modal.Header closeButton style={{ backgroundColor: '#faccc', color: 'white', borderBottom: 'none' }}>
+                        <Modal.Title>Choose an Option</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body style={{ padding: '20px', textAlign: 'center' }}>
+                        <Button
+                            variant="primary"
+                            onClick={() => handleModalOptionClick('login')}
+                            style={{ width: '100%', marginBottom: '10px', backgroundColor: '#6c5ce7', borderColor: '#6c5ce7' }}
+                        >
+                            Already have an account - Login
+                        </Button>
+                        <Button
+                            variant="success"
+                            onClick={() => handleModalOptionClick('register')}
+                            style={{ width: '100%', backgroundColor: '#00b894', borderColor: '#00b894' }}
+                        >
+                            Don't have an account - Register
+                        </Button>
+                    </Modal.Body>
+                </Modal>
+            </div>
         </div>
-
     );
 };
 

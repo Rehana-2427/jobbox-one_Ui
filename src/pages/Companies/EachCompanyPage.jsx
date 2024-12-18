@@ -386,320 +386,283 @@ const EachCompanyPage = () => {
 
   return (
     <div>
-      <div>
+      <div className="custom-navbar-container">
         <CustomNavbar />
       </div>
+      <div>
+        <div className='dashboard-container-1'>
+          {error ? (
+            <div style={{ textAlign: 'center' }}>
+              <h2>{error}</h2> {/* Display error message if company is not found */}
+            </div>
+          ) : (
+            <div>
+              <Row style={{ marginBottom: '20px' }}>
+                <div>
+                  <Card style={{ width: '100%', height: '60%' }}>
+                    <Card.Body style={{ padding: 0, position: 'relative' }}>
+                      <div style={{ position: 'relative', height: '55%' }}>
+                        <img
+                          src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
+                          alt="Company Banner"
+                          className="banner-image"
+                          style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
+                        />
+                      </div>
+                      <div style={{ position: 'absolute', top: '90%', left: '50px', transform: 'translateY(-50%)' }}>
+                        <img
+                          src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
+                          alt="Company Logo"
+                          className="logo-image"
+                          style={{
+                            width: '200px', // Fixed width
+                            height: '120px', // Fixed height
+                            cursor: 'pointer',
+                            clipPath: 'ellipse(50% 50% at 50% 50%)', // Creates a horizontal oval
+                            objectFit: 'cover', // Ensures the image covers the dimensions without distortion
+                          }}
+                        />
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </div>
+              </Row>
 
-      <div className='dashboard-container-1'>
-        {error ? (
-          <div style={{ textAlign: 'center', marginTop: '50px' }}>
-            <h2>{error}</h2> {/* Display error message if company is not found */}
-          </div>
-        ) : (
-          <div>
-            <Row style={{ marginBottom: '20px' }}>
-              <div>
-                <Card style={{ width: '100%', height: '60%' }}>
-                  <Card.Body style={{ padding: 0, position: 'relative' }}>
-                    <div style={{ position: 'relative', height: '55%' }}>
-                      <img
-                        src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
-                        alt="Company Banner"
-                        className="banner-image"
-                        style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
-                      />
+              <Row style={{ marginTop: '50px', alignItems: 'center', marginLeft: '10px' }}>
+                <Col md={3} style={{ display: 'flex', alignItems: 'start', justifyContent: 'center', padding: '5px' }}>
+                  <h2 style={{ paddingRight: '14px' }}><b>{companyName.toUpperCase()}</b></h2>
+                </Col>
+                <Col md={9} style={{ display: 'flex', alignItems: 'start' }}>
+                  {socialMediaLinks.facebookLink && (
+                    <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
+                      <FaFacebook size={28} style={{ margin: '0 5px', color: '#3b5998' }} />
+                    </a>
+                  )}
+                  {socialMediaLinks.twitterLink && (
+                    <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
+                      <FaTwitter size={28} style={{ margin: '0 5px', color: '#1da1f2' }} />
+                    </a>
+                  )}
+                  {socialMediaLinks.instagramLink && (
+                    <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
+                      <FaInstagram size={28} style={{ margin: '0 5px', color: '#e4405f' }} />
+                    </a>
+                  )}
+                  {socialMediaLinks.linkedinLink && (
+                    <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
+                      <FaLinkedin size={28} style={{ margin: '0 5px', color: '#0077b5' }} />
+                    </a>
+                  )}
+                </Col>
+              </Row>
+              <hr style={{ border: '1px solid black', marginLeft: '10px' }} />
+
+              <Row>
+                <Col md={2} style={{ marginLeft: '10px' }}>
+                  <Tabs activeKey={activeTab} onSelect={(key) => handleTabClick(key)}>
+                    <Tab eventKey="overview" title={customTabHeader("About  ", "i-Atom")}></Tab>
+                    <Tab eventKey="jobs" title={customTabHeader("Jobs  ", "i-Shutter")}></Tab>
+                  </Tabs>
+                </Col>
+              </Row>
+              <Row>
+                {/* Main Content */}
+                <Col xs={12} md={9} style={{  marginBottom: '20px' }}>
+                  {activeTab === 'home' && (
+                    <div>
+                      <Card
+                        onClick={() => handleTabClick('overview')}
+                        style={{ cursor: 'pointer', width: '100%', marginBottom: '20px' }}
+                      >
+                        <Card.Body>
+                          <h3>About {companyName}</h3>
+                          <p>Click to view Overview content...</p>
+                        </Card.Body>
+                      </Card>
+                      <Card
+                        onClick={() => handleTabClick('jobs')}
+                        style={{ cursor: 'pointer', width: '100%' }}
+                      >
+                        <Card.Body>
+                          <h3>Jobs</h3>
+                          <p>Click to view Jobs content...</p>
+                        </Card.Body>
+                      </Card>
                     </div>
-                    <div style={{ position: 'absolute', top: '90%', left: '50px', transform: 'translateY(-50%)' }}>
-                      <img
-                        src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
-                        alt="Company Logo"
-                        className="logo-image"
-                        style={{
-                          width: '200px', // Fixed width
-                          height: '120px', // Fixed height
-                          cursor: 'pointer',
-                          clipPath: 'ellipse(50% 50% at 50% 50%)', // Creates a horizontal oval
-                          objectFit: 'cover', // Ensures the image covers the dimensions without distortion
-                        }}
-                      />
-                    </div>
-                  </Card.Body>
-                </Card>
-              </div>
-            </Row>
+                  )}
+                  {activeTab === 'overview' && <CompanyOverView />}
+                  {activeTab === 'jobs' && <CompanyJobs />}
+                </Col>
 
-            <Row style={{ marginTop: '50px', alignItems: 'center' }}>
-              <Col md={3} style={{ display: 'flex', alignItems: 'start', justifyContent: 'center', padding: '5px' }}>
-                <h2 style={{ paddingRight: '14px' }}><b>{companyName.toUpperCase()}</b></h2>
-              </Col>
-              <Col md={9} style={{ display: 'flex', alignItems: 'start' }}>
-                {socialMediaLinks.facebookLink && (
-                  <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
-                    <FaFacebook size={28} style={{ margin: '0 5px', color: '#3b5998' }} />
-                  </a>
-                )}
-                {socialMediaLinks.twitterLink && (
-                  <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
-                    <FaTwitter size={28} style={{ margin: '0 5px', color: '#1da1f2' }} />
-                  </a>
-                )}
-                {socialMediaLinks.instagramLink && (
-                  <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
-                    <FaInstagram size={28} style={{ margin: '0 5px', color: '#e4405f' }} />
-                  </a>
-                )}
-                {socialMediaLinks.linkedinLink && (
-                  <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
-                    <FaLinkedin size={28} style={{ margin: '0 5px', color: '#0077b5' }} />
-                  </a>
-                )}
-              </Col>
-            </Row>
-            <hr style={{ border: '1px solid black' }} />
-
-            <Row className="hr-company_page-row2" >
-              <Col md={2}>
-                <Tabs
-                  activeKey={activeTab} // Set the active tab based on state
-                  onSelect={(key) => handleTabClick(key)} // Update the active tab on select
-                >
-
-                  <Tab eventKey="overview" title={customTabHeader("About  ", "i-Atom")}>
-
-                  </Tab>
-                  <Tab eventKey="jobs" title={customTabHeader("Job  ", "i-Shutter")}>
-                  </Tab>
-                </Tabs>
-
-              </Col>
-
-            </Row>
-            <Row style={{ marginTop: '10px' }}>
-              <Col xs={12} md={8}>
-                {/* <h2>{company ? company.companyName : 'Loading company data...'}</h2> */}
-
-                {activeTab === 'home' && (
-                  <div>
-                    <Card onClick={() => handleTabClick('overview')} style={{ cursor: 'pointer', marginTop: '20px', width: '100%' }}>
-                      <Card.Body>
-                        <h3>About {companyName}</h3>
-                        <p>Click to view Overview content...</p>
-                      </Card.Body>
-                    </Card>
-                    <Card onClick={() => handleTabClick('jobs')} style={{ cursor: 'pointer', marginTop: '20px', width: '100%' }}>
-                      <Card.Body>
-                        <h3 >Jobs</h3>
-                        <p>Click to view Jobs content...</p>
-                      </Card.Body>
-                    </Card>
-                  </div>
-                )}
-                {activeTab === 'overview' && (
-                  <div style={{ marginTop: '20px' }}>
-                    <CompanyOverView />
-                  </div>
-                )}
-                {activeTab === 'jobs' && (
-                  <div ref={jobsSectionRef} style={{ marginTop: '20px' }}>
-                    <CompanyJobs />
-                  </div>
-                )}
-
-              </Col>
-              <Col xs={12} md={4}>
-                <Card className='key-stats' style={{ width: '80%', height: 'fit-content' }}>
-                  <Card.Body>
-                    <Row className="mb-3">
-
-                      <Col>
-                        {isLoggedIn ? (
-                          user?.userRole === 'HR' ? (
-                            null // No buttons for HR
-                          ) : user?.userRole === 'Candidate' ? (
-                            hasDreamApplied ? ( // Check if the user has already applied
-                              <p style={{
-                                color: '#28a745', // Green color for the text
-                                fontSize: '18px', // Larger font size
-                                fontWeight: 'bold', // Bold text
-                                backgroundColor: '#e9f5e9', // Light green background color
-                                padding: '10px',
-                                borderRadius: '5px', // Rounded corners
-                                textAlign: 'left', // Center-align the text
-                                margin: '10px 0', // Margin above and below the paragraph
-                                boxShadow: 'rgba(0, 0, 0, 0.1)', // Subtle shadow effect
-                                width: '100px'
-                              }}>
-                                Applied
-                              </p>
-                            ) : (
-                              <>
-                                <div className="resume-dropdown-container">
-                                  <h5 className="fw-bold">Select Resume</h5>
-                                  <select
-                                    id="resumeSelect"
-                                    value={selectedResume}
-                                    onChange={handleResumeSelect}
-                                    required
-                                    className="form-select"
-                                  >
-                                    <option value="">Select Resume</option>
-                                    {resumes.map((resume) => (
-                                      <option key={resume.id} value={resume.id}>
-                                        {resume.message}
-                                      </option>
-                                    ))}
-                                  </select>
-                                </div>
-                                <Button
-                                  variant="success"
-                                  onClick={handleApplyCompany}
-                                  disabled={!selectedResume} // This disables the button if selectedResume is empty
-                                >
-                                  Apply
-                                </Button>
-                              </>
-                            )
+                {/* Sidebar */}
+                <Col xs={12} md={3}>
+                  {/* Key Stats Card */}
+                  <Card className="key-stats" style={{ width: '100%', marginBottom: '20px' }}>
+                    <Card.Body>
+                      {isLoggedIn ? (
+                        user?.userRole === 'HR' ? null : user?.userRole === 'Candidate' ? (
+                          hasDreamApplied ? (
+                            <p style={{ color: '#28a745', fontSize: '18px', fontWeight: 'bold', backgroundColor: '#e9f5e9', padding: '10px', borderRadius: '5px', textAlign: 'left', margin: '10px 0', boxShadow: 'rgba(0, 0, 0, 0.1)', width: '100px' }}>
+                              Applied
+                            </p>
                           ) : (
-                            <Button
-                              variant="primary"
-                              style={{ marginRight: '12px' }}
-                              onClick={handleHRClick}
-                            >
-                              Claim/Login
-                            </Button>
+                            <>
+                              <div className="resume-dropdown-container">
+                                <h5 className="fw-bold">Select Resume</h5>
+                                <select
+                                  id="resumeSelect"
+                                  value={selectedResume}
+                                  onChange={handleResumeSelect}
+                                  required
+                                  className="form-select"
+                                >
+                                  <option value="">Select Resume</option>
+                                  {resumes.map((resume) => (
+                                    <option key={resume.id} value={resume.id}>
+                                      {resume.message}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+                              <Button
+                                variant="success"
+                                onClick={handleApplyCompany}
+                                disabled={!selectedResume}
+                              >
+                                Apply
+                              </Button>
+                            </>
                           )
                         ) : (
-                          <>
-                            <Button variant="primary" onClick={handleHRClick}  >
-                              Claim/Login
-                            </Button>
-                            <Button variant="success" onClick={handleCandidateClick} style={{ marginLeft: '12px' }}>
-                              Login to Apply
-                            </Button>
-                          </>
-                        )}
-                      </Col>
-                    </Row>
-                    <Row className="mb-2">
-                      <Col>
+                          <Button variant="primary" style={{ marginRight: '12px' }} onClick={handleHRClick}>
+                            Claim/Login
+                          </Button>
+                        )
+                      ) : (
+                        <>
+                          <Button variant="primary" onClick={handleHRClick}>
+                            Claim/Login
+                          </Button>
+                          <Button variant="success" onClick={handleCandidateClick} style={{ marginLeft: '12px' }}>
+                            Login to Apply
+                          </Button>
+                        </>
+                      )}
+
+                      <div style={{ marginBottom: '16px' }}>
                         <h5>Applicants: {countOfApplications}</h5>
-                      </Col>
-                    </Row>
-                    <Row className="mb-2">
-                      <Col>
+                      </div>
+                      <div style={{ marginBottom: '16px' }}>
                         <h5>HR mapped: {countOfHR > 0 ? 'Yes' : 'No'}</h5>
                         <h5>Total HR's: {countOfHR}</h5>
-                      </Col>
-                    </Row>
-                    <Row className="mb-2">
-                      <Col>
+                      </div>
+                      <div style={{ marginBottom: '16px' }}>
                         <h5>Total Jobs: {countOfTotalJobs}</h5>
-                      </Col>
-                    </Row>
-                    <Row className="mb-2">
-                      <Col>
+                      </div>
+                      <div style={{ marginBottom: '16px' }}>
                         <h5>Key Stats:</h5>
                         <ul>
                           <li>Total Active Jobs: {countOfJobs}</li>
                           <li>Avg. Time to Fill a Job: 7 days</li>
                           <li>Top Searched Job: Software Engineer</li>
                         </ul>
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                </Card>
-                <Card className="key-stats" style={{ width: '100%', height: 'fit-content' }}>
-                  <Card.Body>
-
-                    <h3><b>Company Policies</b></h3>
-                    <h4>Job Reapply Policy</h4>
-                    <p>
-                      Candidates can reapply after <strong>{reapplyMonths}</strong> months.
-                    </p>
-                    {documents.length === 0 ? (
-                      <p>No documents available for this company.</p>
-                    ) : (
-                      <div>
-                        {documents.map((document) => (
-                          <div key={document.documentId} style={{ marginBottom: '10px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                              <strong>{document.documentTitle}:</strong>
-                              <a
-                                href={`data:application/octet-stream;base64,${document.documentFile}`}
-                                download={document.documentTitle}
-                                className="btn btn-primary"
-                                style={{ marginLeft: '10px' }}>
-                                Download
-                              </a>
-                            </div>
-                          </div>
-                        ))}
                       </div>
-                    )}
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-            <Row style={{ marginTop: '10px' }} >
-              <Footer />
-            </Row>
-          </div>
-        )}
+                    </Card.Body>
+                  </Card>
 
-        {showResumePopup && (
-          <ResumeSelectionPopup
-            resumes={resumes}
-            onSelectResume={handleResumeSelect}
-            onClose={() => setShowResumePopup(false)}
-          />
-        )}
-        {/* Modal for Apply button */}
-        <Modal show={showModal} onHide={closeModal}>
-          <Modal.Header closeButton style={{ backgroundColor: '#faccc', color: 'white', borderBottom: 'none' }}>
-            <Modal.Title>Choose an Option</Modal.Title>
-          </Modal.Header>
-          <Modal.Body style={{ padding: '20px', textAlign: 'center' }}>
-            {modalContent === 'hr' && (
-              <>
-                <Button
-                  variant="primary"
-                  onClick={() => handleModalOptionClick('login')}
-                  style={{ width: '100%', marginBottom: '10px', backgroundColor: '#6c5ce7', borderColor: '#6c5ce7' }}
-                >
-                  Already have an account - Login
-                </Button>
-                <Button
-                  variant="success"
-                  onClick={() => handleModalOptionClick('register')}
-                  style={{ width: '100%', backgroundColor: '#00b894', borderColor: '#00b894' }}
-                >
-                  Don't have an account - Register
-                </Button>
-              </>
-            )}
-            {modalContent === 'candidate' && (
-              <>
-                <Button
-                  variant="primary"
-                  onClick={() => handleModalOptionClick('login')}
-                  style={{ width: '100%', marginBottom: '10px', backgroundColor: '#6c5ce7', borderColor: '#6c5ce7' }}
-                >
-                  Already have an account - Login
-                </Button>
-                <Button
-                  variant="success"
-                  onClick={() => handleModalOptionClick('register')}
-                  style={{ width: '100%', backgroundColor: '#00b894', borderColor: '#00b894' }}
-                >
-                  Don't have an account - Register
-                </Button>
-              </>
-            )}
-          </Modal.Body>
-        </Modal>
-      </div>
-      <div>
-        <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
+                  {/* Company Policies Card */}
+                  <Card className="key-stats" style={{ width: '100%' }}>
+                    <Card.Body>
+                      <h3><b>Company Policies</b></h3>
+                      <h4>Job Reapply Policy</h4>
+                      <p>Candidates can reapply after <strong>{reapplyMonths}</strong> months.</p>
+                      {documents.length === 0 ? (
+                        <p>No documents available for this company.</p>
+                      ) : (
+                        <div>
+                          {documents.map((document) => (
+                            <div key={document.documentId} style={{ marginBottom: '10px' }}>
+                              <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <strong>{document.documentTitle}:</strong>
+                                <a
+                                  href={`data:application/octet-stream;base64,${document.documentFile}`}
+                                  download={document.documentTitle}
+                                  className="btn btn-primary"
+                                  style={{ marginLeft: '10px' }}
+                                >
+                                  Download
+                                </a>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+
+              <Row style={{ marginTop: '10px' }} >
+                <Footer />
+              </Row>
+            </div>
+          )}
+
+          {showResumePopup && (
+            <ResumeSelectionPopup
+              resumes={resumes}
+              onSelectResume={handleResumeSelect}
+              onClose={() => setShowResumePopup(false)}
+            />
+          )}
+          {/* Modal for Apply button */}
+          <Modal show={showModal} onHide={closeModal}>
+            <Modal.Header closeButton style={{ backgroundColor: '#faccc', color: 'white', borderBottom: 'none' }}>
+              <Modal.Title>Choose an Option</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ padding: '20px', textAlign: 'center' }}>
+              {modalContent === 'hr' && (
+                <>
+                  <Button
+                    variant="primary"
+                    onClick={() => handleModalOptionClick('login')}
+                    style={{ width: '100%', marginBottom: '10px', backgroundColor: '#6c5ce7', borderColor: '#6c5ce7' }}
+                  >
+                    Already have an account - Login
+                  </Button>
+                  <Button
+                    variant="success"
+                    onClick={() => handleModalOptionClick('register')}
+                    style={{ width: '100%', backgroundColor: '#00b894', borderColor: '#00b894' }}
+                  >
+                    Don't have an account - Register
+                  </Button>
+                </>
+              )}
+              {modalContent === 'candidate' && (
+                <>
+                  <Button
+                    variant="primary"
+                    onClick={() => handleModalOptionClick('login')}
+                    style={{ width: '100%', marginBottom: '10px', backgroundColor: '#6c5ce7', borderColor: '#6c5ce7' }}
+                  >
+                    Already have an account - Login
+                  </Button>
+                  <Button
+                    variant="success"
+                    onClick={() => handleModalOptionClick('register')}
+                    style={{ width: '100%', backgroundColor: '#00b894', borderColor: '#00b894' }}
+                  >
+                    Don't have an account - Register
+                  </Button>
+                </>
+              )}
+            </Modal.Body>
+          </Modal>
+        </div>
+        <div>
+          <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
+        </div>
       </div>
     </div >
   );

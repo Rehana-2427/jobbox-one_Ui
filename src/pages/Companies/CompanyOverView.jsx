@@ -13,7 +13,7 @@ const CompanyOverView = () => {
       fetchCompanyOverview(companyName);
     }
   }, [companyName]);
-  
+
   const fetchCompanyOverview = async (companyName) => {
     try {
       const response = await api.getCompanyByCompanyName(companyName); // Call the new API function
@@ -22,68 +22,66 @@ const CompanyOverView = () => {
       console.error('Error fetching company overview:', error);
     }
   };
-  
+
   if (!overviewData) {
     return <p>Loading company overview...</p>; // Handle loading state
   }
-  
+
   return (
-    <div>
-      <Card style={{ marginTop: '20px', width: '100%', height: "fit-content", marginLeft: '10px' }}>
-        <Card.Body>
-          <>
-            <h3>About {overviewData.companyName}</h3>
-            {overviewData.overView && <p>{overviewData.overView}</p>}
+    <Card style={{ width: '100%', height: "fit-content", marginLeft: '10px' }}>
+      <Card.Body>
+        <>
+          <h3>About {overviewData.companyName}</h3>
+          {overviewData.overView && <p>{overviewData.overView}</p>}
 
-            {overviewData.websiteLink && (
-              <>
-                <h4>Website</h4>
-                <p>
-                  <a href={overviewData.websiteLink} target="_blank" rel="noopener noreferrer">
-                    {overviewData.websiteLink}
-                  </a>
-                </p>
-              </>
-            )}
+          {overviewData.websiteLink && (
+            <>
+              <h4>Website</h4>
+              <p>
+                <a href={overviewData.websiteLink} target="_blank" rel="noopener noreferrer">
+                  {overviewData.websiteLink}
+                </a>
+              </p>
+            </>
+          )}
 
-            {overviewData.industryService && (
-              <>
-                <h4>Industry</h4>
-                <p>{overviewData.industryService}</p>
-              </>
-            )}
+          {overviewData.industryService && (
+            <>
+              <h4>Industry</h4>
+              <p>{overviewData.industryService}</p>
+            </>
+          )}
 
-            {overviewData.companySize && overviewData.companySize !== '0' && (
-              <>
-                <h4>Company Size</h4>
-                <p>{overviewData.companySize}</p>
-              </>
-            )}
+          {overviewData.companySize && overviewData.companySize !== '0' && (
+            <>
+              <h4>Company Size</h4>
+              <p>{overviewData.companySize}</p>
+            </>
+          )}
 
-            {overviewData.headquaters && (
-              <>
-                <h4>Headquarters</h4>
-                <p>{overviewData.headquaters}</p>
-              </>
-            )}
+          {overviewData.headquaters && (
+            <>
+              <h4>Headquarters</h4>
+              <p>{overviewData.headquaters}</p>
+            </>
+          )}
 
-            {overviewData.year && overviewData.year !== '0' && (
-              <>
-                <h4>Founded</h4>
-                <p>{overviewData.year}</p>
-              </>
-            )}
+          {overviewData.year && overviewData.year !== '0' && (
+            <>
+              <h4>Founded</h4>
+              <p>{overviewData.year}</p>
+            </>
+          )}
 
-            {overviewData.specialties && (
-              <>
-                <h4>Specialties</h4>
-                <p>{overviewData.specialties}</p>
-              </>
-            )}
-          </>
-        </Card.Body>
-      </Card>
-    </div>
+          {overviewData.specialties && (
+            <>
+              <h4>Specialties</h4>
+              <p>{overviewData.specialties}</p>
+            </>
+          )}
+        </>
+      </Card.Body>
+    </Card>
   );
 };
 

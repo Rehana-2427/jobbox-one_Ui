@@ -248,11 +248,12 @@ const api = {
 
 
   //search jobs
-  searchJobs: (search, page, pageSize, sortedColumn, sortedOrder) => {
+  searchJobs: (search, page, size, sortedColumn, sortedOrder) => {
     return apiClient.get('/searchJobs', {
-      params: { search, page, pageSize, sortedColumn, sortedOrder }
+      params: { search, page, size, sortedColumn, sortedOrder }
     });
   },
+
 
 
   //latest jobs
