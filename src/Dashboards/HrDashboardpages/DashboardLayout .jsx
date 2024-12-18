@@ -8,8 +8,34 @@ const DashboardLayout = ({ children }) => {
   const location = useLocation();
 
   // Retrieve user email and name from location state or default empty values
-  const userEmail = location.state?.userEmail || '';
   const [userName, setUserName] = useState(location.state?.userName || '');
+  const [userEmail, setUserEmail] = useState(location.state?.userEmail || '');
+
+  useEffect(() => {
+    // If userName or userId is empty, fetch from URL query parameters
+    if (!userName.trim() || !userEmail) {
+      const urlParams = new URLSearchParams(location.search);
+      const urlUserName = urlParams.get('userName');
+      const urlUserEmail = urlParams.get('userEmail');
+
+      if (urlUserName) {
+        setUserName(decodeURIComponent(urlUserName));  // Decode the userName from URL
+      }
+      else{
+        const userFromLocalStorage = JSON.parse(localStorage.getItem('user'));
+        setUserName(userFromLocalStorage ? userFromLocalStorage.userName : null)
+      }
+      if (urlUserEmail) {
+        setUserEmail(decodeURIComponent(urlUserEmail));  // Decode the userId from URL      
+      }
+      else{
+        const userFromLocalStorage = JSON.parse(localStorage.getItem('user'));
+        setUserEmail(userFromLocalStorage ? userFromLocalStorage.userEmail : null)
+      }
+    }
+  }, [userName, userEmail, location.search]); // Re-run effect if location.search changes
+
+  console.log("User Email:", userEmail, "User Name:", userName);
 
   useEffect(() => {
     const storedUserName = localStorage.getItem(`userName_${userEmail}`);

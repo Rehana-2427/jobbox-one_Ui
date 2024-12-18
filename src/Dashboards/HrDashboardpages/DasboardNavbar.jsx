@@ -5,12 +5,25 @@ import Swal from 'sweetalert2';
 import { useAuth } from '../../AuthProvider';
 import HrLeftSide from './HrLeftSide';
 
-const DasboardNavbar = ({ isSidebarOpen, toggleSidebar }) => {
+const DasboardNavbar = ({ user, isSidebarOpen, toggleSidebar }) => {
     const navigate = useNavigate();
     const location = useLocation();
-    const userEmail = location.state?.userEmail || '';
-    const [userName, setUserName] = useState(location.state?.userName || '');
-    
+    // Initialize state with defaults
+    const [userName, setUserName] = useState('');
+    const [userEmail, setUserEmail] = useState('');
+
+    useEffect(() => {
+        // If user prop is available, use it, else fallback to location.state
+        if (user) {
+            setUserName(user.userName || '');  // Set userName from user prop
+            setUserEmail(user.userEmail || '');      // Set userId from user prop
+        } else if (location.state) {
+            // If user prop is not available, fallback to location.state
+            setUserName(location.state?.userName || '');
+            setUserEmail(location.state?.userEmail || '');
+        }
+        console.log("userName --> " + userName + " and userEmail --> " + userEmail);
+    }, [user, location.state]);  // Effect depends on user and location.state 
     useEffect(() => {
         const storedUserName = localStorage.getItem(`userName_${userEmail}`);
         if (storedUserName) {
