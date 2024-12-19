@@ -62,11 +62,17 @@ const PublicJobDetailsPage = () => {
     const fetchJobsByCompany = async (companyName) => {
         try {
             const response = await axios.get(`${BASE_API_URL}/getLatest5JobsByCompany`, { params: { companyName } });
+            
+            // Log the response data to the console
+            console.log('Fetched jobs by company:', response.data);
+    
+            // Assuming 'response.data' contains the array of jobs
             setJobs(response.data);
         } catch (error) {
             console.error('Error fetching jobs by company:', error);
         }
     };
+    console.log(jobs)
     const fetchCompany = async () => {
         try {
             const response = await axios.get(`${BASE_API_URL}/displayCompanyById?companyId=${companyId}`);
