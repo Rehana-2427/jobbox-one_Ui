@@ -423,7 +423,7 @@ const PublicJobDetailsPage = () => {
                 <Col lg={9} style={{ height: 'fit-content' }}>
                     <Card style={{ top: '10%', width: '100%', height: "fit-content" }}>
                         <Card.Body>
-                            <Col style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end',gap:'10px'  }}>
+                            <Col style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', gap: '10px' }}>
                                 {isLoggedIn ? (
                                     user?.userRole === 'HR' ? (
                                         null // No buttons for HR
@@ -473,7 +473,7 @@ const PublicJobDetailsPage = () => {
                                                     variant="success"
                                                     onClick={() => handleApplyButtonClick(jobDetails.jobId)}
                                                     disabled={!selectedResume} // This disables the button if selectedResume is empty
-                                                    style={{position:"relative",bottom:'10px'}}
+                                                    style={{ position: "relative", bottom: '10px' }}
                                                 >
                                                     Apply
                                                 </Button>
@@ -544,7 +544,7 @@ const PublicJobDetailsPage = () => {
                     <Button
                         onClick={() => {
                             const encodedCompanyName = encodeURIComponent(companyName); // Encode the company name
-                            navigate(`/companyPage/companyName/${encodedCompanyName}?activetab=jobs`, { state: { companyId } });
+                            navigate(`/companyPage/companyName/${encodedCompanyName}`, { state: { companyId, scrollToJobs: true } });
                         }}
                         style={{ marginTop: '10px' }}
                     >
