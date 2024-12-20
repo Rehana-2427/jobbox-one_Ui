@@ -45,16 +45,21 @@ const EachCompanyPage = () => {
     const params = new URLSearchParams(location.search);
     const activeTabParam = params.get('activetab');
 
-    if (activeTabParam) {
-      setActiveTab(activeTabParam); // Set the active tab based on the URL parameter
+    if (scrollToJobs) {
+        setActiveTab('jobs'); // Automatically set to 'jobs' if scrollToJobs is true
+        if (jobsSectionRef.current) {
+            jobsSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    } else if (activeTabParam) {
+        setActiveTab(activeTabParam); // Set the active tab based on the URL parameter
     } else {
-      setActiveTab('overview'); // Default to overview if no parameter is found
+        setActiveTab('overview'); // Default to overview if no parameter is found
     }
     // Fetch company details using the companyName from URL
     fetchCompany(companyName);
-    fetchData()
-    checkCompanyExists(companyName)
-  }, [companyName]); // Re-fetch if companyName changes
+    fetchData();
+    checkCompanyExists(companyName);
+}, [companyName, scrollToJobs]); // Re-fetch if companyName or scrollToJobs changes
 
   // Check if company exists in the database
   const checkCompanyExists = async (companyName) => {

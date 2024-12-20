@@ -62,6 +62,11 @@ const PublicJobDetailsPage = () => {
     const fetchJobsByCompany = async (companyName) => {
         try {
             const response = await axios.get(`${BASE_API_URL}/getLatest5JobsByCompany`, { params: { companyName } });
+            
+            // Log the response data to the console
+            console.log('Fetched jobs by company:', response.data);
+    
+            // Assuming 'response.data' contains the array of jobs
             setJobs(response.data);
         } catch (error) {
             console.error('Error fetching jobs by company:', error);
@@ -547,7 +552,7 @@ const PublicJobDetailsPage = () => {
                     <Button
                         onClick={() => {
                             const encodedCompanyName = encodeURIComponent(companyName); // Encode the company name
-                            navigate(`/companyPage/companyName/${encodedCompanyName}?activetab=jobs`, { state: { companyId } });
+                            navigate(`/companyPage/companyName/${encodedCompanyName}`, { state: { companyId, scrollToJobs: true } });
                         }}
                         style={{ marginTop: '10px' }}
                     >

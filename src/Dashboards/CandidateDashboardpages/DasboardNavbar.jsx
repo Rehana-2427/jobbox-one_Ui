@@ -119,7 +119,7 @@ const DasboardNavbar = ({ user, isSidebarOpen, toggleSidebar }) => {
     return (
         <div className="main-header" style={{ position: 'fixed', width: '100%' }}>
             <div className="logo">
-                <img src="/jb_logo.png" alt="Logo" style={{ width: '200px', height: '70px', marginLeft: '30px' }} />
+                <img src="/jb_logo.png" alt="Logo" style={{ width: '399px', height: '60px', marginLeft: '30px' }} />
             </div>
 
             <div className="menu-toggle" style={{ marginLeft: '50px' }} onClick={toggleSidebar}>
