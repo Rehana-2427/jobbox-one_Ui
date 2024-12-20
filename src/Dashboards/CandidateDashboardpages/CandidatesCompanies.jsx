@@ -111,7 +111,7 @@ const CandidatesCompanies = () => {
       }
     }
   }, [totalPages]); // Make sure to include totalPages dependency to sync the state
-  
+
   // const handleClick = (companyId) => {
   //   navigate("/candidate-dashboard/companyPage", { state: { companyId: companyId, userName: userName, userId: userId } });
   // };
@@ -119,7 +119,7 @@ const CandidatesCompanies = () => {
     const company = companies.find((company) => company.companyId === companyId);
     if (company) {
       const encodedCompanyName = encodeURIComponent(company.companyName); // Encode the company name
-      navigate(`/candidate-dashboard/companies/companyPage/companyName/${encodedCompanyName}`, { state: { companyId ,companyId: companyId, userName: userName, userId: userId } });
+      navigate(`/candidate-dashboard/companies/companyPage/companyName/${encodedCompanyName}`, { state: { companyId, companyId: companyId, userName: userName, userId: userId } });
       // Trigger a page reload after navigating
       window.location.reload();
     } else {
@@ -194,10 +194,9 @@ const CandidatesCompanies = () => {
             </Table>
           </div>
         ) : (
-          <div className="d-flex justify-content-center mt-5">
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
+          <div className="d-flex justify-content-center align-items-center">
+            <div className="spinner-bubble spinner-bubble-primary m-5" />
+            <span>Loading...</span>
           </div>
         )}
       </div>

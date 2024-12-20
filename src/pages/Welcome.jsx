@@ -26,7 +26,9 @@ const Welcome = () => {
             navigate('/candidate-dashboard', {
                 state: { userId: user.userId, userRole: 'candidate' } // Pass userId and userRole
             });
-        } else {
+        } else if (isLoggedIn && user && user.userRole === 'HR' && user.userEmail) {
+            navigate('/hr-dashboard', { state: { userEmail: user.userEmail, userName: user.userName, userRole: 'HR' } });      
+        }else{
             navigate('/signin'); // Navigate to signin page if candidate is not logged in
         }
     };

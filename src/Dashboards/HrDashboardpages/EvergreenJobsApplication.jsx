@@ -22,7 +22,7 @@ const EvergreenJobsApplication = () => {
     const [sortOrder, setSortOrder] = useState(' ');
     const [filterApplications, setfilterApplications] = useState([]);
     const [applications, setApplications] = useState([]);
-
+    const [loading, setLoading] = useState(false); // State to manage loading  
     const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
 
     const toggleLeftSide = () => {
@@ -48,7 +48,9 @@ const EvergreenJobsApplication = () => {
         fetchData(selectedRole);
     }, [userEmail, selectedRole, page, pageSize, sortOrder, sortedColumn]);
     const fetchData = async (selectedRole) => {
+
         try {
+            setLoading(true);
             const baseUrl = `${BASE_API_URL}/getEvergreenApplication?email=${userEmail}&page=${page}&pageSize=${pageSize}&sortOrder=${sortOrder}&sortedColumn=${sortedColumn}`;
             const url = selectedRole
                 ? `${baseUrl}&selectedRole=${selectedRole}`
@@ -72,6 +74,9 @@ const EvergreenJobsApplication = () => {
             } else {
                 console.error('Unexpected error:', error);
             }
+        }
+        finally{
+            setLoading(false);
         }
     };
 
@@ -419,7 +424,7 @@ const EvergreenJobsApplication = () => {
 
                     </Col>
                 </Row>
-                {applications.length > 0 && (
+                {!loading && applications.length > 0 && (
                     <div>
                         <div className='table-details-list  table-wrapper '>
                             <Table hover className='text-center'>

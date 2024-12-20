@@ -32,17 +32,23 @@ const PublicJobDetailsPage = () => {
         jobsummary: '',
         applicationDeadline: '',
     })
-
+    useEffect(() => {
+        if (companyName) {
+            fetchCompanyLogo(companyName);
+            fetchCompanyBanner(companyName);
+            fetchJobsByCompany(companyName);
+        }
+    }, [companyName]);
     useEffect(() => {
         if (jobId) {
             fetchJobDetails(jobId);
         }
     }, [jobId]);
-    useEffect(() => {
-        if (companyId) {
-            fetchCompany();
-        }
-    }, [companyId]);
+    // useEffect(() => {
+    //     if (companyId) {
+    //         fetchCompany();
+    //     }
+    // }, [companyId]);
     const fetchJobDetails = async (id) => {
         try {
             const response = await api.getJob(id)
@@ -51,13 +57,7 @@ const PublicJobDetailsPage = () => {
             console.error('Error fetching job details:', error);
         }
     };
-    useEffect(() => {
-        if (companyName) {
-            fetchCompanyLogo(companyName);
-            fetchCompanyBanner(companyName);
-            fetchJobsByCompany(companyName)
-        }
-    }, [companyName]);
+
 
     const fetchJobsByCompany = async (companyName) => {
         try {
@@ -67,23 +67,26 @@ const PublicJobDetailsPage = () => {
             console.error('Error fetching jobs by company:', error);
         }
     };
-    const fetchCompany = async () => {
-        try {
-            const response = await axios.get(`${BASE_API_URL}/displayCompanyById?companyId=${companyId}`);
-            if (companyName) {
-                fetchCompanyLogo();  // No need to pass companyName as a parameter
-                fetchCompanyBanner(); // No need to pass companyName as a parameter
-                fetchSocialMediaLinks(); // Same here
-            }
-        } catch (error) {
-            console.error('Error fetching company details:', error);
-        }
-    };
-    useEffect(() => {
-        const filterUnappliedJobs = jobs.filter(job => !hasUserApplied[job.jobId] && job.jobId !== selectedJobId);
-        setUnappliedJobs(filterUnappliedJobs);
-    }, [jobs, hasUserApplied, selectedJobId]);
-
+    // const fetchCompany = async () => {
+    //     try {
+    //         const response = await axios.get(`${BASE_API_URL}/displayCompanyById?companyId=${companyId}`);
+    //         // if (companyName) {
+    //         //     fetchCompanyLogo();  // No need to pass companyName as a parameter
+    //         //     fetchCompanyBanner(); // No need to pass companyName as a parameter
+    //         //     fetchSocialMediaLinks(); // Same here
+    //         // }
+    //     } catch (error) {
+    //         console.error('Error fetching company details:', error);
+    //     }
+    // };
+    // useEffect(() => {
+    //     const filterUnappliedJobs = jobs.filter(job => !hasUserApplied[job.jobId] && job.jobId !== selectedJobId);
+    //     setUnappliedJobs(filterUnappliedJobs);
+    // }, [jobs, hasUserApplied, selectedJobId]);
+    let job1;
+    for (job1 of jobs) {
+        console.log("GetLatest5JobsByCompany ---> " + JSON.stringify(job1));
+    }
 
     const fetchCompanyLogo = async () => {
         try {
@@ -178,7 +181,7 @@ const PublicJobDetailsPage = () => {
         try {
             const response = await axios.get(`${BASE_API_URL}/getJob`, { params: { jobId: job.jobId } });
             setJobDetails(response.data);
-            setSelectedJobId(job.jobId); // Update the selectedJobId
+            // setSelectedJobId(job.jobId); // Update the selectedJobId
         } catch (error) {
             console.error('Error fetching job details:', error);
         }
@@ -423,7 +426,7 @@ const PublicJobDetailsPage = () => {
                 <Col lg={9} style={{ height: 'fit-content' }}>
                     <Card style={{ top: '10%', width: '100%', height: "fit-content" }}>
                         <Card.Body>
-                            <Col style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end',gap:'10px'  }}>
+                            <Col style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', gap: '10px' }}>
                                 {isLoggedIn ? (
                                     user?.userRole === 'HR' ? (
                                         null // No buttons for HR
@@ -473,7 +476,7 @@ const PublicJobDetailsPage = () => {
                                                     variant="success"
                                                     onClick={() => handleApplyButtonClick(jobDetails.jobId)}
                                                     disabled={!selectedResume} // This disables the button if selectedResume is empty
-                                                    style={{position:"relative",bottom:'10px'}}
+                                                    style={{ position: "relative", bottom: '10px' }}
                                                 >
                                                     Apply
                                                 </Button>
@@ -519,7 +522,7 @@ const PublicJobDetailsPage = () => {
                             Other Jobs
                             {/* <Button style={{ position: 'relative', left: '20%', marginTop: '12px', fontSize: '12px' }}>Apply</Button> */}
                         </h3>
-                        {unappliedJobs.map((job) => (
+                        {jobs.map((job) => (
                             <Card key={job.jobId} style={{ width: '250px', height: '150px' }}>
                                 <Card.Body
                                     onClick={() => handleJobClick(job)}

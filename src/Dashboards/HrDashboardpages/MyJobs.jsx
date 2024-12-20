@@ -161,7 +161,7 @@ const MyJobs = () => {
         <Row>
           <Col md={4}>
             <h2>
-              {jobs.length === 0 ? (
+              {!loading &&  jobs.length === 0 ? (
                 <div style={{ color: 'red', textAlign: 'center' }}>
                   {search
                     ? `There is no job with this "${search}"`

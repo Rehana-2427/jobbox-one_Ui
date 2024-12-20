@@ -23,6 +23,7 @@ const MyApplication = () => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(6); // Default page size
   const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState(false); // State to manage loading
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,6 +64,7 @@ const MyApplication = () => {
 
   const fetchApplications = async () => {
     try {
+      setLoading(true);
       const params = {
         userId: userId,
         page: page,
@@ -83,7 +85,10 @@ const MyApplication = () => {
       setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error('Error fetching applications:', error);
+    } finally {
+      setLoading(false);
     }
+
   };
 
   // const fetchApplicationsByStatus = async (applicationStatus) => {
@@ -110,6 +115,7 @@ const MyApplication = () => {
 
   const fetchApplicationBySearch = async (search) => {
     try {
+      setLoading(true);
       const params = {
         searchStatus: search,
         userId: userId,
@@ -128,6 +134,8 @@ const MyApplication = () => {
       setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error('Error fetching applications by search:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -330,40 +338,137 @@ const MyApplication = () => {
         </Col>
 
         <div>
-          {applications.length > 0 ? (
+          {loading ? (
+            <div className="d-flex justify-content-center align-items-center">
+              <div className="spinner-bubble spinner-bubble-primary m-5" />
+              <span>Loading...</span>
+            </div>
+          ) : applications.length === 0 ? (
+            <div className="d-flex justify-content-center align-items-center">
+              <span>No applications yet</span>
+            </div>
+          ) : (
             <>
-              <div className='table-details-list table-wrapper'>
-                <Table hover className='text-center'>
+              <div className="table-details-list table-wrapper">
+                <Table hover className="text-center">
                   <thead className="table-light">
                     <tr>
-                      <th scope="col" onClick={() => handleSort('companyName')} style={{ cursor: 'pointer' }}>
-                        Company Name{' '}
+                      <th
+                        scope="col"
+                        onClick={() => handleSort("companyName")}
+                        style={{ cursor: "pointer" }}
+                      >
+                        Company Name{" "}
                         <span>
-                          <span style={{ color: sortedColumn === 'companyName' && sortOrder === 'asc' ? 'black' : 'gray' }}>↑</span>{' '}
-                          <span style={{ color: sortedColumn === 'companyName' && sortOrder === 'desc' ? 'black' : 'gray' }}>↓</span>
+                          <span
+                            style={{
+                              color:
+                                sortedColumn === "companyName" && sortOrder === "asc"
+                                  ? "black"
+                                  : "gray",
+                            }}
+                          >
+                            ↑
+                          </span>{" "}
+                          <span
+                            style={{
+                              color:
+                                sortedColumn === "companyName" && sortOrder === "desc"
+                                  ? "black"
+                                  : "gray",
+                            }}
+                          >
+                            ↓
+                          </span>
                         </span>
                       </th>
-                      <th scope="col" onClick={() => handleSort('jobRole')} style={{ cursor: 'pointer' }}>
-                        Job Title{' '}
+                      <th
+                        scope="col"
+                        onClick={() => handleSort("jobRole")}
+                        style={{ cursor: "pointer" }}
+                      >
+                        Job Title{" "}
                         <span>
-                          <span style={{ color: sortedColumn === 'jobRole' && sortOrder === 'asc' ? 'black' : 'gray' }}>↑</span>{' '}
-                          <span style={{ color: sortedColumn === 'jobRole' && sortOrder === 'desc' ? 'black' : 'gray' }}>↓</span>
+                          <span
+                            style={{
+                              color:
+                                sortedColumn === "jobRole" && sortOrder === "asc"
+                                  ? "black"
+                                  : "gray",
+                            }}
+                          >
+                            ↑
+                          </span>{" "}
+                          <span
+                            style={{
+                              color:
+                                sortedColumn === "jobRole" && sortOrder === "desc"
+                                  ? "black"
+                                  : "gray",
+                            }}
+                          >
+                            ↓
+                          </span>
                         </span>
                       </th>
-                      <th scope="col" onClick={() => handleSort('appliedOn')} style={{ cursor: 'pointer' }}>
-                        Applied On{' '}
+                      <th
+                        scope="col"
+                        onClick={() => handleSort("appliedOn")}
+                        style={{ cursor: "pointer" }}
+                      >
+                        Applied On{" "}
                         <span>
-                          <span style={{ color: sortedColumn === 'appliedOn' && sortOrder === 'asc' ? 'black' : 'gray' }}>↑</span>{' '}
-                          <span style={{ color: sortedColumn === 'appliedOn' && sortOrder === 'desc' ? 'black' : 'gray' }}>↓</span>
+                          <span
+                            style={{
+                              color:
+                                sortedColumn === "appliedOn" && sortOrder === "asc"
+                                  ? "black"
+                                  : "gray",
+                            }}
+                          >
+                            ↑
+                          </span>{" "}
+                          <span
+                            style={{
+                              color:
+                                sortedColumn === "appliedOn" && sortOrder === "desc"
+                                  ? "black"
+                                  : "gray",
+                            }}
+                          >
+                            ↓
+                          </span>
                         </span>
                       </th>
                       <th scope="col">Resume Profile</th>
                       <th scope="col">Job Status</th>
-                      <th scope="col" onClick={() => handleSort('applicationStatus')} style={{ cursor: 'pointer' }}>
-                        Action{' '}
+                      <th
+                        scope="col"
+                        onClick={() => handleSort("applicationStatus")}
+                        style={{ cursor: "pointer" }}
+                      >
+                        Action{" "}
                         <span>
-                          <span style={{ color: sortedColumn === 'applicationStatus' && sortOrder === 'asc' ? 'black' : 'gray' }}>↑</span>{' '}
-                          <span style={{ color: sortedColumn === 'applicationStatus' && sortOrder === 'desc' ? 'black' : 'gray' }}>↓</span>
+                          <span
+                            style={{
+                              color:
+                                sortedColumn === "applicationStatus" && sortOrder === "asc"
+                                  ? "black"
+                                  : "gray",
+                            }}
+                          >
+                            ↑
+                          </span>{" "}
+                          <span
+                            style={{
+                              color:
+                                sortedColumn === "applicationStatus" && sortOrder === "desc"
+                                  ? "black"
+                                  : "gray",
+                            }}
+                          >
+                            ↓
+                          </span>
                         </span>
                       </th>
                       <th scope="col">Chat</th>
@@ -375,10 +480,17 @@ const MyApplication = () => {
                     {applications.map((application, index) => (
                       <tr key={index}>
                         <td>{application.companyName}</td>
-                        <td>{application.jobRole || 'Dream application'}</td>
+                        <td>{application.jobRole || "Dream application"}</td>
                         <td>{application.appliedOn}</td>
                         <td>{resumeNames[application.resumeId]}</td>
-                        <td style={{ color: renderJobStatus(application.applicationId) === 'Evergreen' ? 'green' : 'black' }}>
+                        <td
+                          style={{
+                            color:
+                              renderJobStatus(application.applicationId) === "Evergreen"
+                                ? "green"
+                                : "black",
+                          }}
+                        >
                           {renderJobStatus(application.applicationId)}
                         </td>
 
@@ -386,23 +498,23 @@ const MyApplication = () => {
 
                         <td>
                           {chats[index] && chats[index].length > 0 ? (
-                            <div style={{ position: 'relative', display: 'inline-block' }}>
+                            <div style={{ position: "relative", display: "inline-block" }}>
                               {unreadMessages[application.applicationId] > 0 && (
                                 <span
                                   style={{
-                                    position: 'absolute',
-                                    top: '-5px',
-                                    right: '-15px',
-                                    backgroundColor: 'red',
-                                    color: 'white',
-                                    borderRadius: '50%',
-                                    width: '20px',
-                                    height: '20px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    fontSize: '12px',
-                                    fontWeight: 'bold',
+                                    position: "absolute",
+                                    top: "-5px",
+                                    right: "-15px",
+                                    backgroundColor: "red",
+                                    color: "white",
+                                    borderRadius: "50%",
+                                    width: "20px",
+                                    height: "20px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    fontSize: "12px",
+                                    fontWeight: "bold",
                                     zIndex: 1, // Ensure notification badge is above SiImessage icon
                                   }}
                                 >
@@ -413,33 +525,35 @@ const MyApplication = () => {
                               <SiImessage
                                 size={25}
                                 onClick={() => toggleChat(application)}
-                                style={{ color: 'green', cursor: 'pointer' }}
+                                style={{ color: "green", cursor: "pointer" }}
                               />
                             </div>
-
                           ) : (
                             <SiImessage
                               size={25}
-                              style={{ color: 'grey', cursor: 'not-allowed' }}
+                              style={{ color: "grey", cursor: "not-allowed" }}
                             />
                           )}
                         </td>
                         <td>
-                          <span className='delete cursor-pointer text-danger me-2' onClick={() => {
-                            Swal.fire({
-                              title: "Are you sure?",
-                              text: "You won't be able to revert this!",
-                              icon: "warning",
-                              showCancelButton: true,
-                              confirmButtonColor: "#3085d6",
-                              cancelButtonColor: "#d33",
-                              confirmButtonText: "Yes, delete it!"
-                            }).then((result) => {
-                              if (result.isConfirmed) {
-                                handleDelete(application.applicationId);
-                              }
-                            });
-                          }}>
+                          <span
+                            className="delete cursor-pointer text-danger me-2"
+                            onClick={() => {
+                              Swal.fire({
+                                title: "Are you sure?",
+                                text: "You won't be able to revert this!",
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Yes, delete it!",
+                              }).then((result) => {
+                                if (result.isConfirmed) {
+                                  handleDelete(application.applicationId);
+                                }
+                              });
+                            }}
+                          >
                             <MdDelete className="text-danger" size={18} />
                           </span>
                         </td>
@@ -458,10 +572,9 @@ const MyApplication = () => {
                 handlePageClick={handlePageClick}
               />
             </>
-          ) : (
-            <h4 className='text-center'>No Applications Found..!!</h4>
           )}
         </div>
+
 
         {isChatOpen && (
           <ChatComponent

@@ -32,6 +32,7 @@ const DreamApplication = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [pageSize, setPageSize] = useState(currentDreamAppPageSize);
   const [search, setSearch] = useState(dreamAppSearch);
+  const [loading, setLoading] = useState(false); // State to manage loading
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value);
@@ -48,11 +49,14 @@ const DreamApplication = () => {
     const fileNames = {};
     for (const application of applications) {
       try {
+        setLoading(true); // Start loading
         const response = await axios.get(`${BASE_API_URL}/getResumeByApplicationId?resumeId=${application.resumeId}`);
         types[application.resumeId] = response.data.fileType;
         fileNames[application.resumeId] = response.data.fileName;
       } catch (error) {
         console.error('Error fetching resume type:', error);
+      }finally{
+        setLoading(false); // Start loading
       }
     }
     setResumeTypes(types);
@@ -102,8 +106,19 @@ const DreamApplication = () => {
 
   };
 
+  useEffect(() => {
+    if (!search && filterStatus === 'all' && !(fromDate && toDate)) {
+      fetchApplications();
+    } else if (filterStatus || (fromDate && toDate)) {
+      handleSelect(filterStatus, fromDate, toDate);
+    } else if (search) {
+      fetchApplicationBysearch(search);
+    }
+  }, [userEmail, page, pageSize, search, filterStatus, fromDate, toDate]);
+
   const handleSelect = async (filterStatus, fromDate, toDate) => {
     try {
+      setLoading(true); // Start loading
       const jobId = 0;
       const params = {
         jobId: jobId,
@@ -112,7 +127,6 @@ const DreamApplication = () => {
         page: page,
         size: pageSize
       };
-      console.log(filterStatus)
       if (fromDate && toDate) {
         params.fromDate = fromDate;
         params.toDate = toDate;
@@ -129,49 +143,48 @@ const DreamApplication = () => {
       setTotalPages(response.data.totalPages);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
-  useEffect(() => {
-    if (!search && filterStatus === 'all' && !(fromDate && toDate)) {
-      fetchApplications();
-    }
-    else if (filterStatus || (fromDate && toDate)) {
-      handleSelect(filterStatus, fromDate, toDate);
-    } else if (search)
-      fetchApplicationBysearch(search);
-  }, [userEmail, page, pageSize, search, filterStatus, fromDate, toDate]);
   const fetchApplications = async () => {
     try {
-        const params = {
-            userEmail: userEmail,
-            page: page,
-            size: pageSize,
-        };
+      setLoading(true); // Start loading
+      const params = {
+        userEmail: userEmail,
+        page: page,
+        size: pageSize,
+      };
 
-        const response = await axios.get(`${BASE_API_URL}/getDreamApplicationsByCompany`, { params });
-        console.log(response.data);
-        setApplications(response.data.content);
-        setTotalPages(response.data.totalPages);
+      const response = await axios.get(`${BASE_API_URL}/getDreamApplicationsByCompany`, { params });
+      console.log(response.data);
+      setApplications(response.data.content);
+      setTotalPages(response.data.totalPages);
     } catch (error) {
-        console.log(error);
+      console.log(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
-};
+  };
 
   const fetchApplicationBysearch = async (search) => {
     try {
+      setLoading(true); // Start loading
       const params = {
         userEmail: userEmail,
         page,
         size: pageSize,
         search: search,
       };
-      const response = await axios.get(`${BASE_API_URL}/getDreamApplicationsByCompanyBySkills`, { params }); console.log(response.data);
+      const response = await axios.get(`${BASE_API_URL}/getDreamApplicationsByCompanyBySkills`, { params });
+      console.log(response.data);
       setApplications(response.data.content);
       setTotalPages(response.data.totalPages);
-
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -206,24 +219,32 @@ const DreamApplication = () => {
     const candidateEmails = {};
     const hrNames = {};
     const hrEmails = {};
-    for (const application of applications) {
-      const res = await axios.get(`${BASE_API_URL}/getUserName`, {
-        params: {
-          userId: application.candidateId
-        }
-
-      });
-      candidateNames[application.candidateId] = res.data.userName;
-      candidateEmails[application.candidateId] = res.data.userEmail;
-
-      const response = await axios.get(`${BASE_API_URL}/getUserName`, {
-        params: {
-          userId: application.hrId
-        }
-      });
-      hrNames[application.hrId] = response.data.userName;
-      hrEmails[application.hrId] = response.data.userEmail;
+    try{
+      setLoading(true); // Start loading
+      for (const application of applications) {
+        const res = await axios.get(`${BASE_API_URL}/getUserName`, {
+          params: {
+            userId: application.candidateId
+          }
+  
+        });
+        candidateNames[application.candidateId] = res.data.userName;
+        candidateEmails[application.candidateId] = res.data.userEmail;
+  
+        const response = await axios.get(`${BASE_API_URL}/getUserName`, {
+          params: {
+            userId: application.hrId
+          }
+        });
+        hrNames[application.hrId] = response.data.userName;
+        hrEmails[application.hrId] = response.data.userEmail;
+      }
+    }catch(error){
+      console.log(error);
+    }finally {
+      setLoading(false); // Stop loading
     }
+  
     setCandidateName(candidateNames);
     setCandidateEmail(candidateEmails);
     setHrName(hrNames);
@@ -281,6 +302,8 @@ const DreamApplication = () => {
       link.click();
     } catch (error) {
       console.error('Error downloading resume:', error);
+    }finally{
+      setLoading(false); // Stop loading
     }
   };
   const [sortedColumn, setSortedColumn] = useState(null); // Track the currently sorted column
@@ -304,93 +327,11 @@ const DreamApplication = () => {
     setPage(0); // Reset page when page size change
   };
 
-  const [showModal, setShowModal] = useState(false);
-  const [showChat, setShowChat] = useState(false);
+  
+ 
 
-  const [inputValue, setInputValue] = useState('');
-  const [applicationId, setApplicationId] = useState(0);
-  const [chats, setChats] = useState([]);
-  const [chatWith, setChatWith] = useState('');
-  const handleChatClick = async (applicationId, candidate) => {
-    setApplicationId(applicationId);
-    setChatWith(candidate);
-    // const responce= await axios.get(`${BASE_API_URL}/fetchChatByApplicationId?applicationId=${applicationId}`);
-    // setChats(responce.data);
-    console.log('Chat icon clicked for:');
-    // Show the modal
-    setShowModal(true);
-    setShowChat(true);
-    try {
-      await axios.put(`${BASE_API_URL}/markCandidateMessagesAsRead?applicationId=${applicationId}`);
-      const response = await axios.get(`${BASE_API_URL}/fetchChatByApplicationId?applicationId=${applicationId}`);
-      setChats(response.data);
-      console.log("Chats === > " + chats)
-      console.log("Chats === > " + response.data)
-      setShowModal(true); // Show the modal once chats are fetched
-      setShowChat(true); // Optionally manage showChat state separately
-    } catch (error) {
-      console.error("Error fetching chats:", error);
-    }
-  };
+ 
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setShowChat(false); // Optionally reset showChat state
-    setInputValue(''); // Reset input value when closing modal
-  };
-
-  const handleSend = async () => {
-    // Handle send logic here
-    try {
-      await axios.put(`${BASE_API_URL}/markCandidateMessagesAsRead?applicationId=${applicationId}`);
-      const response = await axios.put(`${BASE_API_URL}/saveHRChatByApplicationId?applicationId=${applicationId}&hrchat=${inputValue}`);
-      console.log('Sending message:', inputValue);
-      // Close the modal or perform any other actions
-
-      setShowModal(true);
-      setInputValue('');
-      handleChatClick(applicationId, chatWith)
-      // Reset input value after sending
-    } catch {
-      console.log('error')
-    }
-
-  };
-  // Function to format date with only day
-  function formatDate(timestamp) {
-    const date = new Date(timestamp);
-    const options = { weekday: 'long' }; // Show only the full day name
-    return date.toLocaleDateString('en-US', options);
-  }
-
-  // Function to format time with AM/PM
-  function formatMessageDateTime(timestamp) {
-    const date = new Date(timestamp);
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-    return `${formattedHours}:${minutes} ${ampm}`;
-  }
-
-  // Function to check if two dates are different days
-  function isDifferentDay(date1, date2) {
-    const day1 = new Date(date1).getDate();
-    const day2 = new Date(date2).getDate();
-    return day1 !== day2;
-  }
-
-  const modalBodyRef = useRef(null);
-  useEffect(() => {
-    // Scroll to bottom of modal body when chats change (new message added)
-    if (modalBodyRef.current) {
-      modalBodyRef.current.scrollTop = modalBodyRef.current.scrollHeight;
-    }
-  }, [chats]);
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
   const navigate = useNavigate();
@@ -532,7 +473,11 @@ const DreamApplication = () => {
         <Row>
           <Col md={6}>
             <h2>
-              {applications.length === 0 ? (
+              {loading ? (
+                <div style={{ textAlign: 'center' }}>
+                 <div className="spinner-bubble spinner-bubble-primary m-5" />
+                </div>
+              ) : applications.length === 0 ? (
                 <div style={{ color: 'red', textAlign: 'center' }}>
                   {search
                     ? `There is no Dream job application for "${search}"`
@@ -542,6 +487,7 @@ const DreamApplication = () => {
                 <div className="left-text">Applicants of Dream Company Applications</div>
               )}
             </h2>
+
 
           </Col>
           <Col md={4} className="d-flex align-items-left">
@@ -558,75 +504,10 @@ const DreamApplication = () => {
 
           </Col>
         </Row>
-        {showBriefSettings && (
-          <Modal show={showBriefSettings} onHide={() => setShowBriefSettings(false)}>
-            <Modal.Header closeButton>
-              <Modal.Title>Brief Resume</Modal.Title>
-            </Modal.Header>
-            <Modal.Body style={{ overflowY: 'auto' }}>{showMessage}</Modal.Body>
-          </Modal>
-        )}
+        
 
-        <Modal show={showModal} onHide={handleCloseModal} className="custom-modal">
-          <Modal.Header closeButton>
-            <Modal.Title>Chat with {chatWith}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body ref={modalBodyRef}>
-            <div className="chat-messages">
-              {chats ? (
-                chats.map((chat, index) => (
-                  <div key={chat.id} className="chat-message">
-                    {index === 0 || isDifferentDay(chats[index - 1].createdAt, chat.createdAt) && (
-                      <div className="d-flex justify-content-center align-items-center text-center font-weight-bold my-3">
-                        {formatDate(chat.createdAt)}
-                      </div>
-
-                    )}
-                    {chat.candidateMessage && (
-                      <div className="message-right">
-                        {chat.candidateMessage}
-                        <div className="message-time">
-                          {formatMessageDateTime(chat.createdAt)}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Render HR message if present */}
-                    {chat.hrMessage && (
-                      <div className="message-left">
-                        {chat.hrMessage}
-                        <div className="message-time">
-                          {formatMessageDateTime(chat.createdAt)}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))
-              ) : (
-                <p>Loading...</p>
-              )}
-            </div>
-            {/* Message input section */}
-
-          </Modal.Body>
-          <Modal.Footer>
-            <Form.Group controlId="messageInput" className="mb-3">
-              {/* <Form.Label>Message:</Form.Label> */}
-              <Form.Control
-                as='textarea'
-                type="text"
-                placeholder="Enter your message"
-                value={inputValue}
-                onChange={handleInputChange}
-                style={{ width: '350px' }} // Custom styles to increase size
-              />
-            </Form.Group>
-            <Button variant="primary" onClick={handleSend}>
-              <FontAwesomeIcon icon={faPaperPlane} /> {/* Send icon from Font Awesome */}
-            </Button>
-          </Modal.Footer>
-        </Modal>
-        {applications.length > 0 && (
+      
+        {!loading && applications.length > 0 && (
           <div>
             <div className='table-details-list  table-wrapper '>
               <Table hover className='text-center'>
@@ -740,6 +621,15 @@ const DreamApplication = () => {
             />
           )
         }
+
+{showBriefSettings && (
+          <Modal show={showBriefSettings} onHide={() => setShowBriefSettings(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Brief Resume</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ overflowY: 'auto' }}>{showMessage}</Modal.Body>
+          </Modal>
+        )}
       </div>
     </DashboardLayout >
   );
