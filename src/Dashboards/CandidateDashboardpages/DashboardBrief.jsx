@@ -9,7 +9,7 @@ const DashboardBrief = () => {
     const BASE_API_URL = process.env.REACT_APP_API_URL;
     const location = useLocation();
     const navigate = useNavigate();
-    const [userData, setUserData] = useState(); 
+    const [userData, setUserData] = useState();
     const [countOfResume, setCountOfResumes] = useState(null);
     const [countOfCompanies, setCountOfCompanies] = useState(null);
     const [countOfAppliedCompanies, setCountOfAppliedCompanies] = useState(null);
@@ -18,16 +18,16 @@ const DashboardBrief = () => {
     const [resumeViewCount, setResumeViewCount] = useState(null);
     const [userName, setUserName] = useState('');
     const [userId, setUserId] = useState(null);
-  
+
     useEffect(() => {
-      // Get the userName and userId from location.state if available, otherwise from localStorage
-      const storedUser = JSON.parse(localStorage.getItem('user'));  // Assuming 'user' is stored in localStorage
-  
-      const userNameFromLocation = location.state?.userName || storedUser?.userName || '';
-      const userIdFromLocation = location.state?.userId || storedUser?.userId || null;
-  
-      setUserName(userNameFromLocation);
-      setUserId(userIdFromLocation);
+        // Get the userName and userId from location.state if available, otherwise from localStorage
+        const storedUser = JSON.parse(localStorage.getItem('user'));  // Assuming 'user' is stored in localStorage
+
+        const userNameFromLocation = location.state?.userName || storedUser?.userName || '';
+        const userIdFromLocation = location.state?.userId || storedUser?.userId || null;
+
+        setUserName(userNameFromLocation);
+        setUserId(userIdFromLocation);
     }, [location]);  // Re-run the effect when the location changes
 
     // useEffect(() => {
@@ -133,17 +133,17 @@ const DashboardBrief = () => {
                                             }}
                                             className="nav-link"
                                         >
-                                            <h4 className="text-primary mb-0">
-                                                {item.subtitle}
-                                                <span className="d-block mt-2">{item.title !== null ? item.title : 'Loading...'}</span>
-                                            </h4>
+                                            <p className="text-muted mb-0 text-capitalize title-responsive">
+                                                {item.subtitle}  </p>
+                                            <p className="lead text-primary text-24 mb-0 text-capitalize">{item.title !== null ? item.title : 'Loading...'}</p>
+
                                         </Link>
                                     ) : (
                                         <div>
-                                            <h4 className="text-primary mb-0">
-                                                {item.subtitle}
-                                                <span className="d-block mt-2">{item.title !== null ? item.title : 'Loading...'}</span>
-                                            </h4>
+                                            <p className="text-muted mb-0 text-capitalize title-responsive">
+                                                {item.subtitle}</p>
+                                            <p className="lead text-primary text-24 mb-0 text-capitalize">{item.title !== null ? item.title : 'Loading...'}</p>
+
                                         </div>
                                     )}
                                 </div>

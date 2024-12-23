@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Row, Tab, Table, Tabs } from "react-bootstrap";
-import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaAtom, FaBriefcase, FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { useLocation, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import Swal from "sweetalert2";
@@ -372,9 +372,10 @@ const CompamyPage = () => {
   const customTabHeader = (title, icon) => (
     <div className="d-flex align-items-center">
       <span className="me-2">
-        <i className={icon} />
+        {/* <i className={icon} /> */}
+        {icon}
       </span>
-      <span>{title}</span>
+      <span class="fs-6 fw-bold">{title}</span>
     </div>
   );
 
@@ -500,10 +501,10 @@ const CompamyPage = () => {
               id="uncontrolled-tab-example"
               onSelect={(key) => setActiveTab(key)} // This is the correct way to handle tab change
             >
-              <Tab eventKey="overview" title={customTabHeader("About  ", "i-Atom")}>
+              <Tab eventKey="overview" title={customTabHeader("About  ", <FaAtom />)}>
 
               </Tab>
-              <Tab eventKey="jobs" title={customTabHeader("Job  ", "i-Shutter")}>
+              <Tab eventKey="jobs" title={customTabHeader("Job  ", <FaBriefcase />)}>
               </Tab>
             </Tabs>
           </Col>

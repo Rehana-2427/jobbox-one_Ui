@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Card, Col, Modal, Row, Tab, Tabs } from 'react-bootstrap';
-import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { FaAtom, FaBriefcase, FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import Swal from 'sweetalert2';
@@ -343,7 +343,7 @@ const EachCompanyPage = () => {
       <span className="me-2">
         <i className={icon} />
       </span>
-      <span>{title}</span>
+      <span class="fs-6 fw-bold">{title}</span>
     </div>
   );
 
@@ -465,8 +465,8 @@ const EachCompanyPage = () => {
               <Row>
                 <Col md={2} style={{ marginLeft: '10px' }}>
                   <Tabs activeKey={activeTab} onSelect={(key) => handleTabClick(key)}>
-                    <Tab eventKey="overview" title={customTabHeader("About  ", "i-Atom")}></Tab>
-                    <Tab eventKey="jobs" title={customTabHeader("Jobs  ", "i-Shutter")}></Tab>
+                    <Tab eventKey="overview" title={customTabHeader("About  ", <FaAtom />)}></Tab>
+                    <Tab eventKey="jobs" title={customTabHeader("Jobs  ", <FaBriefcase />)}></Tab>
                   </Tabs>
                 </Col>
               </Row>

@@ -327,10 +327,6 @@ const DreamApplication = () => {
     setPage(0); // Reset page when page size change
   };
 
-  
- 
-
- 
 
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
