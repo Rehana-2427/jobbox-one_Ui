@@ -1199,6 +1199,7 @@ button.com:hover {
   }
   .search-bar{
     margin-left: 12px;
+    width: 60%;
   }
 }
 

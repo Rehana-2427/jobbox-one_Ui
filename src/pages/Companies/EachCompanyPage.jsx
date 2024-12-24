@@ -341,7 +341,8 @@ const EachCompanyPage = () => {
   const customTabHeader = (title, icon) => (
     <div className="d-flex align-items-center">
       <span className="me-2">
-        <i className={icon} />
+        {/* <i className={icon} /> */}
+        {icon}
       </span>
       <span class="fs-6 fw-bold">{title}</span>
     </div>
