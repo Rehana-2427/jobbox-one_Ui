@@ -24,7 +24,7 @@ const CompanyViewPage = () => {
         companyType: '',
         industryService: '',
         companySize: '',
-        headquarters: '',
+        headquaters: '',
         year: '',
         specialties: '',
     });
@@ -194,7 +194,7 @@ const CompanyViewPage = () => {
                                 <Form.Control
                                     type="text"
                                     name="headquarters"
-                                    value={companyInfo.headquarters}
+                                    value={companyInfo.headquaters}
                                     onChange={handleInputChange}
                                 />
                             </FormGroup>
@@ -240,7 +240,7 @@ const CompanyViewPage = () => {
                             <h4 className="company-subheader">Company Size</h4>
                             <p className="company-size">{companyInfo.companySize || ''}</p>
                             <h4 className="company-subheader">Headquarters</h4>
-                            <p className="company-headquarters">{companyInfo.headquarters}</p>
+                            <p className="company-headquarters">{companyInfo.headquaters}</p>
                             <h4 className="company-subheader">Founded</h4>
                             <p className="company-founded">{companyInfo.year || ''}</p>
                             <h4 className="company-subheader">Specialties</h4>

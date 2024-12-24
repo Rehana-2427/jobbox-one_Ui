@@ -29,6 +29,7 @@ const CandidateJobs = () => {
   const [hasUserApplied, setHasUserApplied] = useState({});
   const [selectedJobSummary, setSelectedJobSummary] = useState(null);
   const [filterStatus, setFilterStatus] = useState('all');
+  const [loading, setLoading] = useState(false); // State to manage loading
 
   const handleFilterChange = async (e) => {
     const status = e.target.value
@@ -58,6 +59,7 @@ const CandidateJobs = () => {
 
   async function fetchData() {
     try {
+      setLoading(true);
       const params = {
         page: page,
         size: pageSize,
@@ -69,12 +71,15 @@ const CandidateJobs = () => {
       setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error('Error fetching data:', error);
+    }finally{
+      setLoading(false);
     }
-  }
+  };
 
   async function fetchDataByFilter(filterStatus) {
     console.log(filterStatus)
     try {
+      setLoading(true);
       const params = {
         page: page,
         size: pageSize,
@@ -90,13 +95,16 @@ const CandidateJobs = () => {
       setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error('Error fetching data:', error);
+    }finally{
+      setLoading(false);
     }
-  }
+  };
 
 
   async function searchJobsWithFilter(search, filterStatus) {
     console.log(filterStatus)
     try {
+      setLoading(true);
       const params = {
         search: search,
         page: page,
@@ -113,8 +121,40 @@ const CandidateJobs = () => {
       setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error('Error fetching data:', error);
+    }finally{
+      setLoading(false);
     }
-  }
+  };
+
+  const fetchJobBySearch = async () => {
+    try {
+      setLoading(true);
+      const params = {
+        search: search,
+        page: page,
+        size: pageSize,
+        sortBy: sortedColumn,
+        sortOrder: sortOrder,
+        //  userId: userId, // Example parameter to pass to backend API
+        //  filterStatus: filterStatus
+      };
+      const response = await axios.get(`${BASE_API_URL}/searchJobs`, { params });
+      setJobs(response.data.content);
+      setTotalPages(response.data.totalPages);
+
+      const statuses = await Promise.all(response.data.content.map(job => hasUserApplied(job.jobId, userId)));
+      const statusesMap = {};
+      response.data.content.forEach((job, index) => {
+        statusesMap[job.jobId] = statuses[index];
+      });
+
+    } catch (error) {
+      console.log("No data Found" + error);
+    }finally{
+      setLoading(false);
+    }
+    console.log("Search submitted:", search);
+  };
 
 
   const handleSearchChange = (event) => {
@@ -224,33 +264,7 @@ const CandidateJobs = () => {
     }
   };
 
-  const fetchJobBySearch = async () => {
-    try {
-      const params = {
-        search: search,
-        page: page,
-        size: pageSize,
-        sortBy: sortedColumn,
-        sortOrder: sortOrder,
-        //  userId: userId, // Example parameter to pass to backend API
-        //  filterStatus: filterStatus
-      };
-      const response = await axios.get(`${BASE_API_URL}/searchJobs`, { params });
-      setJobs(response.data.content);
-      setTotalPages(response.data.totalPages);
-
-      const statuses = await Promise.all(response.data.content.map(job => hasUserApplied(job.jobId, userId)));
-      const statusesMap = {};
-      response.data.content.forEach((job, index) => {
-        statusesMap[job.jobId] = statuses[index];
-      });
-
-    } catch (error) {
-      console.log("No data Found" + error);
-    }
-    console.log("Search submitted:", search);
-  };
-
+  
   const handleSort = (column) => {
     if (sortedColumn === column) {
       // Toggle sort order if the same column is clicked
@@ -325,7 +339,12 @@ const CandidateJobs = () => {
         <Col md={4}>
           <h2 className='text-start' style={{paddingLeft:'12px'}}>Jobs For {userName}</h2>
         </Col>
-        {jobs.length > 0 && (
+        {loading ? (
+            <div className="d-flex justify-content-center align-items-center">
+              <div className="spinner-bubble spinner-bubble-primary m-5" />
+              <span>Loading...</span>
+            </div>
+          ) : jobs.length > 0 && (
           <div>
             <div className="table-details-list table-wrapper">
               <Table hover className="text-center">
@@ -474,7 +493,7 @@ const CandidateJobs = () => {
             />
           </div>
         )}
-        {jobs.length === 0 && <h1>No jobs found.</h1>}
+        {!loading && jobs.length === 0 && <h1>No jobs found.</h1>}
         <div className="dream p-3">
           <p className="text-center responsive-text">
             Can't find your dream company or dream job? Don't worry, you can still apply to them.

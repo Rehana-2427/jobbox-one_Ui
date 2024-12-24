@@ -33,7 +33,7 @@ const CandidateDashboard = () => {
       } else {
         // If they don't match, redirect to the login page
         console.log('If they dont match, redirect to the login page.');
-        navigate('/login');
+        navigate('/signin');
       }
     } else {
       // If no userName is present in the URL

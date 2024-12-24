@@ -921,6 +921,21 @@ button.com:hover {
   width: 400px;
 }
 
+/* Media query for smaller screens (e.g., tablets, mobile devices) */
+@media (max-width: 768px) {
+  .chart-card {
+    width: 100%; /* Adjust to 100% of the container for smaller screens */
+  }
+}
+
+/* Optional: Media query for very small screens (e.g., mobile phones) */
+@media (max-width: 480px) {
+  .chart-card {
+    width: 90%; /* Adjust width for even smaller devices */
+  }
+}
+
+
 .resume-card {
   width: 200px;
   margin: 12px;

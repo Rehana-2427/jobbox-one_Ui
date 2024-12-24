@@ -21,9 +21,11 @@ const EvergreenJobs = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState(' ');
+  const [loading, setLoading] = useState(false); // State to manage loading  
 
   const fetchEverGreenJobs = async () => {
     try {
+      setLoading(true);
       const params = {
         userEmail: userEmail,
         page: page,
@@ -37,6 +39,8 @@ const EvergreenJobs = () => {
       setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error('Error fetching jobs data:', error);
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -86,7 +90,7 @@ const EvergreenJobs = () => {
         <Row>
           <Col md={4}>
             <h2>
-              {jobs.length === 0 ? (
+              {!loading && jobs.length === 0 ? (
                 <div style={{ color: 'red', textAlign: 'center' }}>
                   'You have not posted any jobs yet. Post Now'
                 </div>
@@ -117,7 +121,12 @@ const EvergreenJobs = () => {
           </Col>
         </Row>
 
-        {jobs.length > 0 ? (
+        {loading ? (
+          <div className="d-flex justify-content-center align-items-center">
+            <div className="spinner-bubble spinner-bubble-primary m-5" />
+            <span>Loading...</span>
+          </div>
+        ) : jobs.length > 0 ? (
           <div>
             <div className='table-details-list  table-wrapper '>
               <Table hover className='text-center'>

@@ -195,10 +195,9 @@ const CandidatesCompanies = () => {
             </Table>
           </div>
         ) : (
-          <div className="d-flex justify-content-center mt-5">
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
+          <div className="d-flex justify-content-center align-items-center">
+            <div className="spinner-bubble spinner-bubble-primary m-5" />
+            <span>Loading...</span>
           </div>
         )}
       </div>

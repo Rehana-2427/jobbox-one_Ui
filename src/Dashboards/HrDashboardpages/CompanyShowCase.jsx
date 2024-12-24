@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Card, Col, Row, Tab, Tabs } from 'react-bootstrap'
-import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa'
+import { FaAtom, FaBriefcase, FaCameraRetro, FaFacebook, FaFileSignature, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom'
 import api from '../../apiClient'
 import Footer from '../../pages/Footer'
@@ -285,9 +285,10 @@ const CompanyShowCase = () => {
   const customTabHeader = (title, icon) => (
     <div className="d-flex align-items-center">
       <span className="me-2">
-        <i className={icon} />
+        {/* <i className={icon} /> */}
+        {icon}
       </span>
-      <span>{title}</span>
+      <span class="fs-6 fw-bold">{title}</span>
     </div>
   );
 
@@ -400,10 +401,22 @@ const CompanyShowCase = () => {
               id="uncontrolled-tab-example"
               onSelect={(key) => setActiveTab(key)} // Correct way to handle tab change
             >
-              <Tab eventKey="overview" title={activeTab === 'overview' ? customTabHeader("About  ", "i-Atom") : "Overview"}></Tab>
-              <Tab eventKey="jobs" title={activeTab === 'jobs' ? customTabHeader("Job  ", "i-Shutter") : "Jobs"}></Tab>
-              <Tab eventKey="Company-Policy-Form" title={activeTab === 'Company-Policy-Form' ? customTabHeader("Add Company Policies ", "i-Atom") : "Company Policies"}></Tab>
-              <Tab eventKey="social-media-links" title={activeTab === 'social-media-links' ? customTabHeader(" Add Social Media Links  ", "i-Shutter") : "Social Media Links"}></Tab>
+              <Tab
+                eventKey="overview"
+                title={activeTab === 'overview' ? customTabHeader("About ", <FaAtom />) : customTabHeader("About ", <FaAtom />)}
+              />
+              <Tab
+                eventKey="jobs"
+                title={activeTab === 'jobs' ? customTabHeader("Jobs  ", <FaBriefcase />) : customTabHeader("Jobs  ", <FaBriefcase />)}
+              />
+              <Tab
+                eventKey="Company-Policy-Form"
+                title={activeTab === 'Company-Policy-Form' ? customTabHeader("Add Company Policies ", <FaFileSignature />) : customTabHeader("Company Policies ", <FaFileSignature />)}
+              />
+              <Tab
+                eventKey="social-media-links"
+                title={activeTab === 'social-media-links' ? customTabHeader("Add Social Media Links ", <FaTwitter />) : customTabHeader("Social Media Links ", <FaTwitter />)}
+              />
             </Tabs>
           </Col>
         </Row>

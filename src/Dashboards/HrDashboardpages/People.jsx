@@ -19,9 +19,11 @@ const People = () => {
     const isLastPage = page === totalPages - 1;
     const isPageSizeDisabled = isLastPage;
     const [user, setUser] = useState(null); // State to hold user data
+    const [loading, setLoading] = useState(false); // State to manage loading  
     const fetchHRData = useCallback(async () => {
         if (!user) return; // Ensure user is loaded
         try {
+            setLoading(true);
             const params = {
                 userEmail: user.userEmail, // Use the user email from the context
                 page,
@@ -36,6 +38,8 @@ const People = () => {
             console.log("People.length--> " + response.data.content.length);
         } catch (error) {
             console.error('Error fetching HR data:', error);
+        } finally {
+            setLoading(false);
         }
     }, [user, page, pageSize, sortedColumn, sortOrder]);
     useEffect(() => {
@@ -75,7 +79,12 @@ const People = () => {
                         <h2><div className="left-text">HR Details</div></h2>
                     </Col>
                 </Row>
-                {people.length > 0 && (
+                {loading ? (
+                    <div className="d-flex justify-content-center align-items-center">
+                        <div className="spinner-bubble spinner-bubble-primary m-5" />
+                        <span>Loading...</span>
+                    </div>
+                ) : people.length > 0 && (
                     <div>
                         <div className='table-details-list table-wrapper'>
                             <Table hover className='text-center'>

@@ -18,6 +18,7 @@ const DashboardBrief = () => {
     const [userName, setUserName] = useState('');
     const [userId, setUserId] = useState(null);
 
+
     useEffect(() => {
         // Get the userName and userId from location.state if available, otherwise from localStorage
         const storedUser = JSON.parse(localStorage.getItem('user'));  // Assuming 'user' is stored in localStorage
