@@ -128,7 +128,6 @@ const CandidateJobs = () => {
 
   const fetchJobBySearch = async () => {
     try {
-      setLoading(true);
       const params = {
         search: search,
         page: page,
@@ -150,8 +149,6 @@ const CandidateJobs = () => {
 
     } catch (error) {
       console.log("No data Found" + error);
-    }finally{
-      setLoading(false);
     }
     console.log("Search submitted:", search);
   };

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Card, Col, Row, Tab, Tabs } from 'react-bootstrap'
-import { FaAtom, FaBriefcase, FaCameraRetro, FaFacebook, FaFileSignature, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa'
+import { FaAtom, FaBriefcase, FaFacebook, FaFileSignature, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom'
 import api from '../../apiClient'
 import Footer from '../../pages/Footer'
