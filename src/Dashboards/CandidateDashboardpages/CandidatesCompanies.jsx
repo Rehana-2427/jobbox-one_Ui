@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Col, Row, Table } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import Footer from '../../pages/Footer';
 import Pagination from '../../Pagination';
 import './CandidateDashboard.css';
 import DashboardLayout from './DashboardLayout';
@@ -111,7 +112,7 @@ const CandidatesCompanies = () => {
       }
     }
   }, [totalPages]); // Make sure to include totalPages dependency to sync the state
-  
+
   // const handleClick = (companyId) => {
   //   navigate("/candidate-dashboard/companyPage", { state: { companyId: companyId, userName: userName, userId: userId } });
   // };
@@ -119,9 +120,9 @@ const CandidatesCompanies = () => {
     const company = companies.find((company) => company.companyId === companyId);
     if (company) {
       const encodedCompanyName = encodeURIComponent(company.companyName); // Encode the company name
-      navigate(`/candidate-dashboard/companies/companyPage/companyName/${encodedCompanyName}`, { state: { companyId ,companyId: companyId, userName: userName, userId: userId } });
+      navigate(`/candidate-dashboard/companies/companyPage/companyName/${encodedCompanyName}`, { state: { companyId, companyId: companyId, userName: userName, userId: userId } });
       // Trigger a page reload after navigating
-      window.location.reload();
+      // window.location.reload();
     } else {
       console.error("Company not found!");
     }
@@ -155,7 +156,7 @@ const CandidatesCompanies = () => {
             </div>
           </Col>
         </Row>
-
+        <br></br>
         {companies.length > 0 ? (
           <div className='table-details-list table-wrapper'>
             <Table hover className='text-center'>
@@ -212,6 +213,7 @@ const CandidatesCompanies = () => {
           handlePageClick={handlePageClick}
         />
       )}
+      <Footer />
     </DashboardLayout>
   );
 };

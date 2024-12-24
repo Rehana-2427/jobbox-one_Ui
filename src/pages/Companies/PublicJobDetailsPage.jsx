@@ -62,10 +62,10 @@ const PublicJobDetailsPage = () => {
     const fetchJobsByCompany = async (companyName) => {
         try {
             const response = await axios.get(`${BASE_API_URL}/getLatest5JobsByCompany`, { params: { companyName } });
-            
+
             // Log the response data to the console
             console.log('Fetched jobs by company:', response.data);
-    
+
             // Assuming 'response.data' contains the array of jobs
             setJobs(response.data);
         } catch (error) {
@@ -248,10 +248,10 @@ const PublicJobDetailsPage = () => {
         checkHasUserApplied();
     }, [jobDetails, userId]);
 
+    console.log(jobDetails.jobId)
+
     const checkHasUserApplied = async () => {
-
         try {
-
             const response = await axios.get(`${BASE_API_URL}/isJobApplied`, {
                 params: { jobId: jobDetails.jobId, userId }
             });
@@ -427,9 +427,12 @@ const PublicJobDetailsPage = () => {
             </div>
             <Row>
                 <Col lg={9} style={{ height: 'fit-content' }}>
-                    <Card style={{ top: '10%', width: '100%', height: "fit-content" }}>
-                        <Card.Body>
-                            <Col style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', gap: '10px' }}>
+                    <Card style={{ top: '10%', width: '100%', height: "fit-content"}}>
+                        <Card.Body style={{  display: 'flex', justifyContent: 'space-between', alignItems: 'center',height:'70px'}}>
+                            <Col md={6}>
+                                <h4>Job Description:</h4>
+                            </Col>
+                            <Col md={6} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '10px' }}>
                                 {isLoggedIn ? (
                                     user?.userRole === 'HR' ? (
                                         null // No buttons for HR
@@ -453,7 +456,7 @@ const PublicJobDetailsPage = () => {
                                             </p>
                                         ) : (
                                             <>
-                                                <div className="resume-dropdown-container">
+                                                <div className="resume-dropdown-container" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                                     <h5 className="fw-bold">Select Resume</h5>
                                                     <select
                                                         id="resumeSelect"
@@ -479,7 +482,7 @@ const PublicJobDetailsPage = () => {
                                                     variant="success"
                                                     onClick={() => handleApplyButtonClick(jobDetails.jobId)}
                                                     disabled={!selectedResume} // This disables the button if selectedResume is empty
-                                                    style={{ position: "relative", bottom: '10px' }}
+                                                    style={{ marginLeft: '12px' }}
                                                 >
                                                     Apply
                                                 </Button>
@@ -498,7 +501,8 @@ const PublicJobDetailsPage = () => {
                             </Col>
                         </Card.Body>
 
-                        <Card.Body>
+
+                        <Card.Body >
                             <p><strong>Job Type:</strong> {jobDetails.jobTitle}</p>
                             <p><strong>Job Type:</strong> {jobDetails.jobType}</p>
                             <p><strong>Skills:</strong> {jobDetails.skills}</p>
@@ -515,6 +519,8 @@ const PublicJobDetailsPage = () => {
                                 jobDetails.applicationDeadline || 'Not Specified'
                             )}</p>
                         </Card.Body>
+
+
                     </Card>
 
 

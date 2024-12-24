@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Card, Col, Container, Dropdown, Row } from 'react-bootstrap';
-import { Link, useLocation, useNavigate } from 'react-router-dom'; // Import Link from react-router-dom
-import Swal from 'sweetalert2';
-import { useAuth } from '../../AuthProvider';
+import React from 'react';
+import { Button, Card, Col, Row } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom'; // Import Link from react-router-dom
+import Footer from '../../pages/Footer';
 import './CandidateDashboard.css';
-import CandidateLeftSide from './CandidateLeftSide';
 import DashboardLayout from './DashboardLayout';
 
 
@@ -88,6 +86,7 @@ const Payment = () => {
           </Card>
         </Col>
       </Row>
+      <Footer />
     </DashboardLayout>
   );
 };

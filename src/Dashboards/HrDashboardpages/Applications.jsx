@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Col, Row, Table } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
+import Footer from '../../pages/Footer';
 import Pagination from '../../Pagination';
 import DashboardLayout from './DashboardLayout ';
 
@@ -250,6 +251,8 @@ const Applications = () => {
           </section>
         )}
       </div>
+      <Footer />
+
     </DashboardLayout>
   );
 }

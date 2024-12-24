@@ -46,7 +46,7 @@ const DashboardLayout = ({ children }) => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 768) { // 768px is the breakpoint for mobile view
+      if (window.innerWidth <= 1200) { // 768px is the breakpoint for mobile view
         setIsMobileView(true);
         setIsSidebarOpen(false); // Ensure sidebar is closed on mobile by default
       } else {

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Button, Col, Modal, Row, Table } from "react-bootstrap";
 import { SiImessage } from "react-icons/si";
 import { useLocation, useNavigate } from "react-router-dom";
+import Footer from "../../pages/Footer";
 import Pagination from "../../Pagination";
 import ChatComponent from "../ChatComponent";
 import DashboardLayout from "./DashboardLayout ";
@@ -616,6 +617,7 @@ const ViewApplications = () => {
           />
         )}
       </div>
+      <Footer />
     </DashboardLayout>
   );
 };

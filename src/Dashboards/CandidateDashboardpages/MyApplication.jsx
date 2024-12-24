@@ -5,6 +5,7 @@ import { MdDelete } from 'react-icons/md';
 import { SiImessage } from 'react-icons/si';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import Footer from '../../pages/Footer';
 import Pagination from '../../Pagination';
 import ChatComponent from '../ChatComponent';
 import './CandidateDashboard.css';
@@ -299,7 +300,7 @@ const MyApplication = () => {
     <DashboardLayout>
       <div className="main-content">
         <Row>
-          <Col md={4} style={{ paddingTop: '10px' }}>
+          <Col className='filter-action' md={4} style={{ paddingTop: '10px', marginLeft: '12px', marginRight: '12px' }}>
             <label htmlFor="status" className="form-label"
               style={{ color: '#6c5b7b' }}>Filter by Actions:</label>
             <select id="status" className="form-select form-select-sm fs-6" // Adjust the fs-* class as needed
@@ -473,6 +474,7 @@ const MyApplication = () => {
           />
         )}
       </div>
+      <Footer />
     </DashboardLayout>
   );
 };

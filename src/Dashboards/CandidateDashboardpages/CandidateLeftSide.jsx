@@ -62,7 +62,7 @@ function CandidateLeftSide({ user, isOpen }) {
         const specialCases = {
             '/candidate-dashboard/jobs': '/candidate-dashboard/jobs',
             '/candidate-dashboard/companies': '/candidate-dashboard/companies',
-            '/candidate-dashboard/resume':'/candidate-dashboard/resume',
+            '/candidate-dashboard/resume': '/candidate-dashboard/resume',
         };
 
         // Check if the link's `to` value matches any special case
@@ -97,58 +97,117 @@ function CandidateLeftSide({ user, isOpen }) {
     const renderNavLinks = () => (
         <Nav className="flex-column full-height align-items-center">
             {navLinks.map((link, index) => (
-                <React.Fragment key={index}>
-                    <Link
-                        to={{ pathname: link.to, state: { userName, userId } }}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            navigate(link.to, { state: { userName, userId } });
-                            handleLinkClick(link.fontSize)
-                        }}
-                        className={`nav-link d-flex align-items-center ${isLinkActive(link) ? 'active' : ''}`} style={{
-                            fontSize: '1.1rem',
-                            transition: 'color 0.3s',
-                            color: isLinkActive(link) ? '#663399' : '#332e38',
-                        }}
-                    >
-                        <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', position: 'relative' }}>
-                            <div style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                flexDirection: 'column',
-                                position: 'relative',
-                                height: '50px',  // Set the height you want
-                                width: 'auto',  // The width will adjust based on content, or you can specify a fixed width like '200px'
-                                minWidth: '100px',  // Optional: ensure it doesn't shrink too small
-                                justifyContent: 'center'  // Optionally center content vertically within the div
-                            }}>
-                                {link.icon && <span style={{ marginBottom: '10px' }}>{link.icon}</span>}
-                                {link.label}
-                            </div>
-                            {/* Conditionally style triangle based on whether the link is active */}
-                            <div
-                                className="triangle"
-                                style={{
-                                    width: '0',
-                                    height: '0',
-                                    borderStyle: 'solid',
-                                    borderWidth: '0 0 30px 30px',
-                                    borderColor: 'transparent transparent #663399 transparent',
-                                    position: 'absolute',
-                                    top: '70%', // Center the triangle vertically
-                                    left: '100%', // Position the triangle next to the label
-                                    marginLeft: '10px', // Adjust horizontal spacing
-                                    display: isLinkActive(link) ? 'block' : 'none',
-                                }}
-                            />
-                        </div>
-                    </Link>
 
+                <React.Fragment key={index}>
+
+                    <div style={{ position: 'relative' }}>
+                        <Link
+                             to={link.to}
+                             onClick={(e) => {
+                                 e.preventDefault();
+                                 handleLinkClick(link.to);
+                             }}
+                            className={`nav-link d-flex align-items-center ${isLinkActive(link) ? 'active' : ''}`} style={{
+                                fontSize: '1.1rem',
+                                transition: 'color 0.3s',
+                                color: isLinkActive(link) ? '#663399' : '#332e38',
+                            }}
+                        >
+                            <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', position: 'relative' }}>
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    flexDirection: 'column',
+                                    position: 'relative',
+                                    height: '50px',  // Set the height you want
+                                    width: 'auto',  // The width will adjust based on content, or you can specify a fixed width like '200px'
+                                    minWidth: '100px',  // Optional: ensure it doesn't shrink too small
+                                    justifyContent: 'center'  // Optionally center content vertically within the div
+                                }}>
+                                    {link.icon && <span style={{ marginBottom: '10px' }}>{link.icon}</span>}
+                                    {link.label}
+                                </div>
+                                <div
+                                    className="triangle"
+                                    style={{
+                                        width: '0',
+                                        height: '0',
+                                        borderStyle: 'solid',
+                                        borderWidth: '0 0 30px 30px',
+                                        borderColor: 'transparent transparent #663399 transparent',
+                                        position: 'absolute',
+                                        top: '70%', // Center the triangle vertically
+                                        left: '100%', // Position the triangle next to the label
+                                        marginLeft: '10px', // Adjust horizontal spacing
+                                        display: isLinkActive(link) ? 'block' : 'none',
+                                    }}
+                                />
+                            </div>
+                        </Link>
+                    </div>
                     <hr style={{ width: '100%', borderColor: 'black' }} />
                 </React.Fragment>
             ))}
         </Nav>
     );
+
+    // const renderNavLinks = () => (
+    //     <Nav className="flex-column full-height align-items-center">
+    //         {navLinks.map((link, index) => (
+    //             <React.Fragment key={index}>
+    //                 <div style={{ position: 'relative' }}>
+    //                     <Link
+    //                         to={link.to}
+    //                         onClick={(e) => {
+    //                             e.preventDefault();
+    //                             handleLinkClick(link.to);
+    //                         }}
+    //                         className={`nav-link d-flex align-items-center ${isLinkActive(link) ? 'active' : ''}`}
+    //                         style={{
+    //                             fontSize: '1.1rem',
+    //                             transition: 'color 0.3s',
+    //                             color: isLinkActive(link) ? '#663399' : '#332e38',
+    //                         }}
+    //                     >
+    //                         <div
+    //                             style={{
+    //                                 display: 'flex',
+    //                                 alignItems: 'center',
+    //                                 flexDirection: 'column',
+    //                                 position: 'relative',
+    //                                 height: '50px',
+    //                                 width: 'auto',
+    //                                 minWidth: '100px',
+    //                                 justifyContent: 'center',
+    //                             }}
+    //                         >
+    //                             {link.icon && <span style={{ marginBottom: '10px' }}>{link.icon}</span>}
+    //                             {link.label}
+    //                         </div>
+    //                         <div
+    //                             className="triangle"
+    //                             style={{
+    //                                 width: '0',
+    //                                 height: '0',
+    //                                 borderStyle: 'solid',
+    //                                 borderWidth: '0 0 30px 30px', // Adjust the size of the triangle
+    //                                 borderColor: 'transparent transparent #663399 transparent',
+    //                                 position: 'absolute',
+    //                                 top: '70%', // Adjust position as needed
+    //                                 left: '100%',
+    //                                 marginLeft: '10px',
+    //                                 display: isLinkActive(link) ? 'block' : 'none',
+    //                             }}
+    //                         />
+    //                     </Link>
+
+    //                 </div>
+    //                 <hr style={{ width: '100%', borderColor: 'black' }} />
+    //             </React.Fragment>
+    //         ))}
+    //     </Nav>
+    // );
+
 
 
 

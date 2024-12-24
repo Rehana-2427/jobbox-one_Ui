@@ -52,6 +52,7 @@
 @media (max-width: 768px) {
   .home-search-bar {
       width: 90%; /* Make search bar take more space on smaller screens */
+      margin:'10px'
   }
 
   .steps-container {

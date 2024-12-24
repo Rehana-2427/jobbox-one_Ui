@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import Footer from '../../pages/Footer';
 import DashboardLayout from './DashboardLayout ';
 
 const HrProfile = () => {
@@ -28,7 +29,7 @@ const HrProfile = () => {
   return (
     <DashboardLayout>
       <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-     
+
       </div>
       <div>
         <div className="profile-container">
@@ -120,6 +121,8 @@ const HrProfile = () => {
             </Col>
           </Row>
         </Container> */}
+      <Footer />
+
     </DashboardLayout>
   );
 };

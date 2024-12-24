@@ -2,14 +2,12 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Dropdown } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { IoIosArrowDropdown, IoIosArrowDropup } from 'react-icons/io';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
-import Swal from 'sweetalert2';
-import { useAuth } from '../../AuthProvider';
+import Footer from '../../pages/Footer';
 import './CandidateDashboard.css';
-import CandidateLeftSide from './CandidateLeftSide';
 import DashboardLayout from './DashboardLayout';
 
 const Profile = () => {
@@ -349,6 +347,8 @@ const Profile = () => {
       </div>
 
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
+      <br></br>
+      <Footer />
     </DashboardLayout>
   );
 };

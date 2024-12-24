@@ -81,7 +81,7 @@ const CompanyStatusCards = () => {
     return (
         <Col md={12} style={{ paddingTop: '10px', paddingLeft: '10px' }}>
             <Row>
-                {DATA.map((card, index) => (
+                {DATA.map((item, index) => (
                     <Col lg={3} sm={6} key={index}>
                         <Card
                             className="card-icon-bg gap-3 card-icon-bg-primary o-hidden mb-4"
@@ -89,30 +89,30 @@ const CompanyStatusCards = () => {
                         >
                             <Card.Body className="align-items-center gap-4">
                                 <FontAwesomeIcon
-                                    icon={card.icon}
+                                    icon={item.icon}
                                     className="me-2 text-primary mb-0 text-24 fw-semibold"
                                 />
                                 <div className="content gap-1">
-                                    {card.link ? (
+                                    {item.link ? (
                                         <Link
-                                            to={card.link}
+                                            to={item.link}
                                             state={{ userName, userEmail }}
                                             className="nav-link"
                                         >
                                             <p className="text-muted mb-0 text-capitalize title-responsive">
-                                                {card.subtitle}
+                                                {item.subtitle}
                                             </p>
                                             <p className="lead text-primary text-24 mb-0 text-capitalize">
-                                                {card.title}
+                                                {item.title}
                                             </p>
                                         </Link>
                                     ) : (
                                         <>
                                             <p className="text-muted mb-0 text-capitalize subtitle-responsive">
-                                                {card.subtitle}
+                                                {item.subtitle}
                                             </p>
                                             <p className="lead text-primary text-24 mb-0 text-capitalize">
-                                                {card.title}
+                                                {item.title}
                                             </p>
                                         </>
                                     )}

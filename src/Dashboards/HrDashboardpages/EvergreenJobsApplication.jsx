@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, Col, Form, Modal, Row, Table } from 'react-bootstrap';
 import { SiImessage } from 'react-icons/si';
 import { useLocation } from 'react-router-dom';
+import Footer from '../../pages/Footer';
 import Pagination from '../../Pagination';
 import ChatComponent from '../ChatComponent';
 import DashboardLayout from './DashboardLayout ';
@@ -612,6 +613,8 @@ const EvergreenJobsApplication = () => {
                     )
                 }
             </div>
+            <Footer />
+
         </DashboardLayout >
     );
 };

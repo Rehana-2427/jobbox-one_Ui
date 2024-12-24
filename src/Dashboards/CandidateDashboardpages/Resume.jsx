@@ -4,6 +4,7 @@ import { Button, Card, Modal, Spinner } from 'react-bootstrap';
 import { FaEye } from 'react-icons/fa';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { default as swal } from 'sweetalert2';
+import Footer from '../../pages/Footer';
 import './CandidateDashboard.css';
 import DashboardLayout from './DashboardLayout';
 
@@ -237,7 +238,7 @@ const Resume = () => {
           </>
         )}
       </div>
-
+      <Footer />
     </DashboardLayout>
   );
 };

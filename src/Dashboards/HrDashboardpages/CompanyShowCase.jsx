@@ -4,6 +4,7 @@ import { Card, Col, Row, Tab, Tabs } from 'react-bootstrap'
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom'
 import api from '../../apiClient'
+import Footer from '../../pages/Footer'
 import CompanyJobs from './CompanyJobs'
 import CompanyPolicies from './CompanyPolicies'
 import CompanyViewPage from './CompanyViewPage'
@@ -475,6 +476,8 @@ const CompanyShowCase = () => {
           </Col>
         </Row>
       </div>
+      <Footer />
+
     </DashboardLayout>
 
   )

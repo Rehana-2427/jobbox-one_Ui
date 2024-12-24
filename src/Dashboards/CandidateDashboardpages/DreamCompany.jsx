@@ -4,6 +4,7 @@ import { Button, Container, Form, ListGroup } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import Swal from 'sweetalert2';
+import Footer from '../../pages/Footer';
 import './CandidateDashboard.css';
 import DashboardLayout from './DashboardLayout';
 
@@ -260,6 +261,7 @@ const DreamCompany = () => {
       <ToastContainer />
       </div>
     </Container>
+    <Footer />
   </DashboardLayout>
   
 

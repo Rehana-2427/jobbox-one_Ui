@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Row, Table } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
+import Footer from '../../pages/Footer';
 import Pagination from '../../Pagination';
 import DashboardLayout from './DashboardLayout ';
 import './HrDashboard.css';
@@ -314,6 +315,8 @@ const PostedJobs = () => {
           <section> </section>
         )}
       </div>
+      <Footer />
+
     </DashboardLayout>
   );
 }

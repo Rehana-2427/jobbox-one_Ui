@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { FaEdit, FaSave } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Footer from '../../pages/Footer';
 import DashboardLayout from './DashboardLayout ';
 
 const UpdateEvergreenJob = () => {
@@ -204,6 +205,8 @@ const UpdateEvergreenJob = () => {
                     </Form>
                 </Card>
             </div>
+            <Footer />
+
         </DashboardLayout>
     );
 };

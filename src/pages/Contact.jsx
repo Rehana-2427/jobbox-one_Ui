@@ -144,6 +144,10 @@ const Contact = () => {
           </Row>
         </Container>
       </div>
+
+      {/* <div>
+        <Footer />
+      </div> */}
     </div>
   );
 };

@@ -1,9 +1,9 @@
 
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
-import DashboardLayout from './DashboardLayout'; // Assuming you have a layout component
+import Footer from '../../pages/Footer';
 import DashboardBrief from './DashboardBrief'; // Assuming a dashboard brief component
+import DashboardLayout from './DashboardLayout'; // Assuming you have a layout component
 import StatusGraph from './StatusGraph'; // Assuming a status graph component
 
 const CandidateDashboard = () => {
@@ -56,6 +56,7 @@ const CandidateDashboard = () => {
         <DashboardBrief />
         <StatusGraph />
       </div>
+      <Footer />
     </DashboardLayout>
   );
 };

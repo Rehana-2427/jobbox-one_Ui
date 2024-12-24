@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import Footer from '../../pages/Footer';
 import DashboardLayout from './DashboardLayout ';
 
 const EvergreenJobForm = () => {
@@ -209,6 +210,8 @@ const EvergreenJobForm = () => {
                     </Form>
                 </Card>
             </div>
+            <Footer />
+
         </DashboardLayout>
     );
 }

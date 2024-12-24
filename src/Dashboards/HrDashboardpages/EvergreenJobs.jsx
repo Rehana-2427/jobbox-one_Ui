@@ -4,6 +4,7 @@ import { Button, Col, Row, Table } from 'react-bootstrap';
 import { MdEdit } from 'react-icons/md';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
+import Footer from '../../pages/Footer';
 import Pagination from '../../Pagination';
 import DashboardLayout from './DashboardLayout ';
 
@@ -281,6 +282,8 @@ const EvergreenJobs = () => {
           </div>
         )}
       </div>
+      <Footer />
+
     </DashboardLayout>
   );
 };

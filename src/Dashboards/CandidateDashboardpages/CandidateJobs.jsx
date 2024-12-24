@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { Button, Col, Row, Table } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import Footer from '../../pages/Footer';
 import Pagination from '../../Pagination';
+import './CandidateDashboard.css';
 import DashboardLayout from './DashboardLayout';
 import ResumeSelectionPopup from './ResumeSelectionPopup';
 
@@ -289,16 +291,16 @@ const CandidateJobs = () => {
     <DashboardLayout>
       <div className="main-content">
         <Row>
-          <Col md={4} style={{ paddingTop: '10px' }}>
+          <Col className='filter-action' md={4} style={{ paddingTop: '10px',marginLeft:'12px',marginRight:'12px'}}>
             <label htmlFor="status" className="form-label" style={{ color: '#6c5b7b' }}>
               Filter by Actions:
             </label>
             <select
               id="status"
               className="form-select form-select-sm fs-6"
-              style={{ borderColor: '#6c5b7b' }}
+              style={{ borderColor: '#6c5b7b',paddingRight:'20px'}}
               onChange={handleFilterChange}
-              value={filterStatus}
+              value={filterStatus} 
             >
               <option value="all">Show all</option>
               <option value="Apply">Yet to apply</option>
@@ -321,7 +323,7 @@ const CandidateJobs = () => {
 
         </Row>
         <Col md={4}>
-          <h2 className='text-start'>Jobs For {userName}</h2>
+          <h2 className='text-start' style={{paddingLeft:'12px'}}>Jobs For {userName}</h2>
         </Col>
         {jobs.length > 0 && (
           <div>
@@ -513,6 +515,7 @@ const CandidateJobs = () => {
           />
         )}
       </div>
+      <Footer />
     </DashboardLayout>
 
   );

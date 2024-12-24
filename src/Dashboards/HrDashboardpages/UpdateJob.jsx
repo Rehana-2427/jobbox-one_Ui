@@ -4,6 +4,7 @@ import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { FaEdit, FaSave } from "react-icons/fa";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Footer from '../../pages/Footer';
 import DashboardLayout from './DashboardLayout ';
 
 // Retrieve state from location
@@ -273,6 +274,8 @@ const UpdateJob = () => {
           </Form>
         </Card>
       </div>
+      <Footer />
+
     </DashboardLayout>
   );
 };

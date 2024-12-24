@@ -4,6 +4,7 @@ import { Button, Col, Row, Table } from 'react-bootstrap';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { default as swal } from 'sweetalert2';
+import Footer from '../../pages/Footer';
 import Pagination from '../../Pagination';
 import DashboardLayout from './DashboardLayout ';
 import './HrDashboard.css';
@@ -449,6 +450,7 @@ const MyJobs = () => {
           </div>
         )}
       </div>
+      <Footer />
     </DashboardLayout>
   );
 };

@@ -9,10 +9,11 @@ import {
   Title,
   Tooltip
 } from 'chart.js';
+import { useNavigate } from 'react-router-dom';
+import Footer from '../../pages/Footer';
 import CompanyStatusCards from './CompanyStatusCards';
 import DashboardLayout from './DashboardLayout ';
 import StatusGraph from './StatusGraph';
-import { useNavigate } from 'react-router-dom';
 
 // Register the necessary scales and elements with Chart.js
 ChartJS.register(
@@ -73,6 +74,8 @@ const HrDashboard = () => {
         <CompanyStatusCards />
         <StatusGraph />
       </div>
+      <Footer />
+
     </DashboardLayout>
   );
 };

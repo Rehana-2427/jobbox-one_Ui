@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, Table } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import Footer from '../../pages/Footer';
 import Pagination from '../../Pagination';
 import DashboardLayout from './DashboardLayout';
 import ResumeSelectionPopup from './ResumeSelectionPopup';
@@ -388,6 +389,7 @@ const ViewMoreJobs = () => {
             )}
 
             {jobs.length === 0 && <h1>No jobs found.</h1>}
+            <Footer />
         </DashboardLayout>
     )
 }

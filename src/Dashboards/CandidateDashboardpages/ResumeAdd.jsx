@@ -1,11 +1,11 @@
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Footer from '../../pages/Footer';
 import './CandidateDashboard.css';
-import CandidateLeftSide from './CandidateLeftSide';
 import DashboardLayout from './DashboardLayout';
 
 const ResumeAdd = () => {
@@ -271,6 +271,7 @@ const ResumeAdd = () => {
 
         {successMessage && <p>{successMessage}</p>}
       </Col>
+      <Footer />
     </DashboardLayout>
   );
 };

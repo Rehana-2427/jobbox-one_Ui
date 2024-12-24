@@ -6,6 +6,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import Swal from "sweetalert2";
 import api from "../../apiClient";
+import Footer from "../../pages/Footer";
 import Pagination from "../../Pagination";
 import './CandidateDashboard.css';
 import DashboardLayout from "./DashboardLayout";
@@ -820,6 +821,7 @@ const CompamyPage = () => {
       <div>
         <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
       </div>
+      <Footer />
     </DashboardLayout>
   );
 };

@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Footer from '../../pages/Footer';
 import DashboardLayout from './DashboardLayout ';
 
 const ViewCandidateDetails = () => {
@@ -55,6 +56,8 @@ const ViewCandidateDetails = () => {
             ) : (
                 <p>Loading candidate details...</p>
             )}
+            <Footer />
+
         </DashboardLayout>
     );
 };

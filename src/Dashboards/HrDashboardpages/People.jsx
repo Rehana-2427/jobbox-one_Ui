@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row, Table } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
+import Footer from '../../pages/Footer';
 import Pagination from '../../Pagination';
 import DashboardLayout from './DashboardLayout ';
 const People = () => {
@@ -156,6 +157,8 @@ const People = () => {
                     </div>
                 )}
             </div>
+            <Footer />
+
         </DashboardLayout>
     );
 }

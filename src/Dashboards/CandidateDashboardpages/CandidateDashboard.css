@@ -1177,4 +1177,16 @@ button.com:hover {
 .inactive {
   color: gray;
 }
+@media (max-width: 767px) {
+  .filter-action {
+    width: 97% !important;
+    flex: none !important; /* Prevent flexbox sizing */
+  }
+  .search-bar{
+    margin-left: 12px;
+  }
+}
 
+.text-start{
+  padding-left: 12px;
+}

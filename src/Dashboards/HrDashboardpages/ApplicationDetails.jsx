@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
+import Footer from "../../pages/Footer";
 import "./ApplicationDetails.css";
 import DashboardLayout from "./DashboardLayout ";
 
@@ -98,6 +99,8 @@ const ApplicationDetails = () => {
                 )}
 
             </div>
+            <Footer />
+
         </DashboardLayout>
     );
 };
