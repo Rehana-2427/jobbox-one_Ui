@@ -169,7 +169,7 @@ const MyJobs = () => {
                     : 'You have not posted any jobs yet. Post Now'}
                 </div>
               ) : (
-                <div className="left-text">Jobs posted by {userName}</div>
+                <div className='text-start'>Jobs posted by {userName}</div>
               )}
             </h2>
           </Col>
@@ -178,7 +178,7 @@ const MyJobs = () => {
             {/* Search Bar */}
             <div className="search-bar" style={{ flex: 1 }}>
               <input
-                style={{ borderRadius: '6px', height: '35px', width: '100%' }}
+                style={{ borderRadius: '6px', height: '35px', width: '100%',marginBottom:'10px' }}
                 type="text"
                 name="search"
                 placeholder="Search"
@@ -186,7 +186,7 @@ const MyJobs = () => {
                 onChange={handleSearchChange}
               />
             </div>
-            <Button style={{ marginRight: '20px' }}>
+            <Button style={{ marginRight: '20px',marginBottom:'10px' }} className='job-button'>
               <Link
                 to={{ pathname: '/hr-dashboard/my-jobs/addJob', state: { userName, userEmail } }}
                 onClick={(e) => {

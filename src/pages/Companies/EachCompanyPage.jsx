@@ -59,7 +59,7 @@ const EachCompanyPage = () => {
     fetchCompany(companyName);
     fetchData();
     checkCompanyExists(companyName);
-}, [companyName, scrollToJobs]); // Re-fetch if companyName or scrollToJobs changes
+}, [companyName, scrollToJobs]); // Re-fetch if companyName or scrollToJobs changesnpm start
 
   // Check if company exists in the database
   const checkCompanyExists = async (companyName) => {

@@ -76,7 +76,7 @@ const People = () => {
             <div className="main-content">
                 <Row>
                     <Col md={4}>
-                        <h2><div className="left-text">HR Details</div></h2>
+                        <h2><div className="text-start">HR Details</div></h2>
                     </Col>
                 </Row>
                 {loading ? (

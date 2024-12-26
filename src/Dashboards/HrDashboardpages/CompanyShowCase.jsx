@@ -275,9 +275,9 @@ const CompanyShowCase = () => {
     }
   }, [companyName]); // Effect will run whenever companyName changes
 
-  if (loading) {
-    return <div>Loading documents...</div>;
-  }
+  // if (loading) {
+  //   return <div>Loading documents...</div>;
+  // }
 
   if (error) {
     return <div>{error}</div>;
@@ -296,7 +296,7 @@ const CompanyShowCase = () => {
 
   return (
     <DashboardLayout>
-      <div className='main-container'>
+      <div className='main-container main-content '>
         <Card style={{ width: '100%', height: '60%' }}>
           <Card.Body style={{ padding: 0, position: 'relative' }}>
             <div style={{ position: 'relative', height: '55%' }}>
@@ -394,7 +394,7 @@ const CompanyShowCase = () => {
 
         <hr style={{ border: '1px solid black', margin: '30px 0' }} />
 
-        <Row className="hr-company_page-row2" style={{ marginTop: '5px' }}>
+        <Row  style={{ marginTop: '5px'}}>
           <Col>
             <Tabs
               activeKey={activeTab}  // Use activeKey for controlled component

@@ -1,8 +1,6 @@
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
-import { Button, Col, Form, Modal, Row, Table } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Button, Col, Modal, Row, Table } from "react-bootstrap";
 import { SiImessage } from "react-icons/si";
 import { useLocation, useNavigate } from "react-router-dom";
 import Footer from "../../pages/Footer";
@@ -56,7 +54,7 @@ const DreamApplication = () => {
         fileNames[application.resumeId] = response.data.fileName;
       } catch (error) {
         console.error('Error fetching resume type:', error);
-      }finally{
+      } finally {
         setLoading(false); // Start loading
       }
     }
@@ -220,18 +218,18 @@ const DreamApplication = () => {
     const candidateEmails = {};
     const hrNames = {};
     const hrEmails = {};
-    try{
+    try {
       setLoading(true); // Start loading
       for (const application of applications) {
         const res = await axios.get(`${BASE_API_URL}/getUserName`, {
           params: {
             userId: application.candidateId
           }
-  
+
         });
         candidateNames[application.candidateId] = res.data.userName;
         candidateEmails[application.candidateId] = res.data.userEmail;
-  
+
         const response = await axios.get(`${BASE_API_URL}/getUserName`, {
           params: {
             userId: application.hrId
@@ -240,12 +238,12 @@ const DreamApplication = () => {
         hrNames[application.hrId] = response.data.userName;
         hrEmails[application.hrId] = response.data.userEmail;
       }
-    }catch(error){
+    } catch (error) {
       console.log(error);
-    }finally {
+    } finally {
       setLoading(false); // Stop loading
     }
-  
+
     setCandidateName(candidateNames);
     setCandidateEmail(candidateEmails);
     setHrName(hrNames);
@@ -303,7 +301,7 @@ const DreamApplication = () => {
       link.click();
     } catch (error) {
       console.error('Error downloading resume:', error);
-    }finally{
+    } finally {
       setLoading(false); // Stop loading
     }
   };
@@ -376,12 +374,14 @@ const DreamApplication = () => {
     });
     setIsChatOpen(!isChatOpen);
   };
-
+  const handleBack = () => {
+    navigate(-1);
+  };
   return (
     <DashboardLayout>
-      <div className="main-content">
+      <div className="main-content" >
         <Row className="mb-4 m-3">
-          <Col xs={12} md={6} lg={4}>
+          <Col xs={12} md={6} lg={4} className='filter-action' style={{ height: '70px' }}>
             <label
               htmlFor="status"
               className="form-label"
@@ -403,7 +403,7 @@ const DreamApplication = () => {
             </select>
           </Col>
           <Col
-            xs={12} md={6} lg={4} >
+            xs={12} md={6} lg={4} className='filter-action' style={{ border: '1px solid black' }}>
             <label
               htmlFor="date"
               className="form-label"
@@ -456,6 +456,7 @@ const DreamApplication = () => {
               </div>
             </div>
           </Col>
+
           <Col xs={12} md={12} lg={4}>
             <div
               style={{ width: '100%', backgroundColor: '#f4f4f9' }}>
@@ -472,7 +473,7 @@ const DreamApplication = () => {
             <h2>
               {loading ? (
                 <div style={{ textAlign: 'center' }}>
-                 <div className="spinner-bubble spinner-bubble-primary m-5" />
+                  <div className="spinner-bubble spinner-bubble-primary m-5" />
                 </div>
               ) : applications.length === 0 ? (
                 <div style={{ color: 'red', textAlign: 'center' }}>
@@ -481,7 +482,7 @@ const DreamApplication = () => {
                     : 'Sorry, you haven’t received any applications yet.'}
                 </div>
               ) : (
-                <div className="left-text">Applicants of Dream Company Applications</div>
+                <div className="text-start">Applicants of Dream Company Applications</div>
               )}
             </h2>
 
@@ -501,9 +502,7 @@ const DreamApplication = () => {
 
           </Col>
         </Row>
-        
 
-      
         {!loading && applications.length > 0 && (
           <div>
             <div className='table-details-list  table-wrapper '>
@@ -619,7 +618,7 @@ const DreamApplication = () => {
           )
         }
 
-{showBriefSettings && (
+        {showBriefSettings && (
           <Modal show={showBriefSettings} onHide={() => setShowBriefSettings(false)}>
             <Modal.Header closeButton>
               <Modal.Title>Brief Resume</Modal.Title>
@@ -627,6 +626,8 @@ const DreamApplication = () => {
             <Modal.Body style={{ overflowY: 'auto' }}>{showMessage}</Modal.Body>
           </Modal>
         )}
+      <Button variant='primary' onClick={handleBack} style={{width:'100px',marginLeft:'12px'}}>Back</Button>
+
       </div>
       <Footer />
 

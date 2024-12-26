@@ -111,7 +111,7 @@ const PostedJobs = () => {
                     : 'You have not posted any jobs yet. Post Now'}
                 </div>
               ) : (
-                <div className="left-text">All Regular Jobs</div>
+                <div className='text-start'>All Regular Jobs</div>
               )}
             </h2>
           </Col>
@@ -120,7 +120,7 @@ const PostedJobs = () => {
             {/* Search Bar */}
             <div className="search-bar" style={{ flex: 1 }}>
               <input
-                style={{ borderRadius: '6px', height: '35px', width: '70%', marginRight: '20px' }}
+                style={{ borderRadius: '6px', height: '35px', width: '70%', marginRight: '20px',marginBottom:'10px' }}
                 type="text"
                 name="search"
                 placeholder="Search"

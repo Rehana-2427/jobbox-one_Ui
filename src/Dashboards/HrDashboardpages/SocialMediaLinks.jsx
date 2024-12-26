@@ -69,7 +69,6 @@ const SocialMediaLinks = () => {
                 linkedinLink: socialMediaLinks.linkedinLink
             });
             fetchSocialMediaLinks(userData.companyName)
-            window.location.reload(savedTab);
         } catch (error) {
             console.error('Error updating social media links:', error.response ? error.response.data : error.message);
         }

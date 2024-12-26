@@ -3,6 +3,7 @@ import { Dropdown } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useAuth } from '../../AuthProvider';
+import './HrDashboard.css';
 import HrLeftSide from './HrLeftSide';
 
 const DasboardNavbar = ({ user, isSidebarOpen, toggleSidebar }) => {
@@ -77,8 +78,12 @@ const DasboardNavbar = ({ user, isSidebarOpen, toggleSidebar }) => {
 
     return (
         <div className="main-header" style={{ position: 'fixed' }}>
-            <div className="logo">
-                <img src="/jb_logo.png" alt="Logo" style={{ width: '399px', height: '60px', marginLeft: '30px' }} />
+            <div className="dashboard-navbar-logo">
+                {isSidebarOpen ? (
+                    <img src="/jb_logo.png" alt="Logo" style={{ height: '60px', width: '150px' }} />
+                ) : (
+                    <img src="/jb_temp_logo.png" alt="Logo" style={{ height: '70px', width: '70px' }} />
+                )}
             </div>
 
             <div className="menu-toggle" style={{ marginLeft: '50px' }} onClick={toggleSidebar}>

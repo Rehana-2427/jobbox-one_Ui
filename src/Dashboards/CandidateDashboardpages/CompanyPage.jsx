@@ -431,12 +431,11 @@ const CompamyPage = () => {
           onClose={() => setShowResumePopup(false)}
         />
       )}
-      <div
-        className="small-screen-hr"
-        style={{
-          overflowY: 'auto',
-          paddingBottom: '20px',
-        }}
+      <div className="main-content"
+        // style={{
+        //   overflowY: 'auto',
+        //   paddingBottom: '20px',
+        // }}
       >
         <Card style={{ width: '100%', height: '60%' }}>
           <Card.Body style={{ padding: 0, position: 'relative' }}>
@@ -495,7 +494,7 @@ const CompamyPage = () => {
           </Col>
         </Row>
         <hr style={{ border: '1px solid black', margin: '30px 0' }} />
-        <Row className="hr-company_page-row2" style={{ marginTop: '50px' }}>
+        <Row className="hr-company_page-row2">
           <Col md={2}>
             <Tabs
               defaultActiveKey="overview"
@@ -512,7 +511,7 @@ const CompamyPage = () => {
         </Row>
 
 
-        <Row>
+        <Row >
           <Col xs={12} md={8}>
             {activeTab === 'overview' && (
               <>

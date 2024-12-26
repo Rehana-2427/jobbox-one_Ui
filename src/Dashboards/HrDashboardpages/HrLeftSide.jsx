@@ -80,6 +80,28 @@ const HrLeftSide = ({ user, isOpen }) => {
 
 
 
+    // const isLinkActive = (link) => {
+    //     const currentPath = location.pathname;
+    
+    //     // Define special cases dynamically
+    //     const specialCases = {
+    //         '/hr-dashboard/my-jobs': '/hr-dashboard/my-jobs',
+    //         '/hr-dashboard/evergreen-jobs': '/hr-dashboard/evergreen-jobs',
+    //         '/hr-dashboard/hr-applications': '/hr-dashboard/hr-applications',
+    //         '/hr-dashboard/dream-applications': '/hr-dashboard/dream-applications',
+    //         '/hr-dashboard/evergreenjobs-applications': '/hr-dashboard/evergreenjobs-applications',
+    //     };
+    
+    //     // Check if the link's `to` value matches any special case
+    //     for (const [key, basePath] of Object.entries(specialCases)) {
+    //         if (link.to === key && currentPath.startsWith(basePath)) {
+    //             return true;
+    //         }
+    //     }
+    
+    //     // Default case: Exact match
+    //     return currentPath === link.to;
+    // };
     const isLinkActive = (link) => {
         const currentPath = location.pathname;
     
@@ -88,6 +110,8 @@ const HrLeftSide = ({ user, isOpen }) => {
             '/hr-dashboard/my-jobs': '/hr-dashboard/my-jobs',
             '/hr-dashboard/evergreen-jobs': '/hr-dashboard/evergreen-jobs',
             '/hr-dashboard/hr-applications': '/hr-dashboard/hr-applications',
+            '/hr-dashboard/dream-applications': '/hr-dashboard/dream-applications',
+            '/hr-dashboard/evergreenjobs-applications': '/hr-dashboard/evergreenjobs-applications',
         };
     
         // Check if the link's `to` value matches any special case
@@ -97,10 +121,14 @@ const HrLeftSide = ({ user, isOpen }) => {
             }
         }
     
+        // Check if the current path is under /hr-dashboard for the specific links
+        if (currentPath.startsWith('/hr-dashboard/dream-applications') || currentPath.startsWith('/hr-dashboard/evergreenjobs-applications')) {
+            return link.to === '/hr-dashboard'; // Mark /hr-dashboard as active
+        }
+    
         // Default case: Exact match
         return currentPath === link.to;
     };
-    
     const renderNavLinks = () => (
         <Nav className="flex-column full-height align-items-center">
             {navLinks.map((link, index) => (

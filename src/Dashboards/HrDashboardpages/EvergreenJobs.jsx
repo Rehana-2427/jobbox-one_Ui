@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Col, Row, Table } from 'react-bootstrap';
 import { MdEdit } from 'react-icons/md';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import './HrDashboard.css';
 
 import Footer from '../../pages/Footer';
 import Pagination from '../../Pagination';
@@ -39,7 +40,7 @@ const EvergreenJobs = () => {
       setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error('Error fetching jobs data:', error);
-    }finally{
+    } finally {
       setLoading(false);
     }
   };
@@ -88,39 +89,33 @@ const EvergreenJobs = () => {
     <DashboardLayout>
       <div className="main-content">
         <Row>
-          <Col md={4}>
-            <h2>
+          <Col md={12} className="d-flex justify-content-between align-items-center">
+            <h2 className="text-start">
               {!loading && jobs.length === 0 ? (
-                <div style={{ color: 'red', textAlign: 'center' }}>
-                  'You have not posted any jobs yet. Post Now'
+                <div style={{ color: 'red' }}>
+                  You have not posted any jobs yet. Post Now
                 </div>
               ) : (
-                <div className="left-text">Evergreen Jobs</div>
+                <div>Evergreen Jobs</div>
               )}
             </h2>
-          </Col>
-
-          <Col md={3} className="d-flex align-items-left">
-            <div style={{ flex: 1 }}>
-              <Button style={{ marginLeft: '115px' }}>
-                <Link
-                  to={{
-                    pathname: '/hr-dashboard/evergreen-jobs/job-form',
-                    state: { userName, userEmail, jobCategory: 'evergreen' }
-                  }}
-                  style={{ textDecoration: 'none', color: 'inherit' }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate('/hr-dashboard/evergreen-jobs/job-form', { state: { userName, userEmail, jobCategory: 'evergreen' } });
-                  }}
-                >
-                  Add Evergreen Job
-                </Link>
-              </Button>
-            </div>
+            <Button style={{  marginBottom: '10px',marginRight:'20px' }} className='evergreen-job-button'>
+              <Link
+                to={{
+                  pathname: '/hr-dashboard/evergreen-jobs/job-form',
+                  state: { userName, userEmail, jobCategory: 'evergreen' }
+                }}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate('/hr-dashboard/evergreen-jobs/job-form', { state: { userName, userEmail, jobCategory: 'evergreen' } });
+                }}
+              >
+                Add Evergreen Job
+              </Link>
+            </Button>
           </Col>
         </Row>
-
         {loading ? (
           <div className="d-flex justify-content-center align-items-center">
             <div className="spinner-bubble spinner-bubble-primary m-5" />

@@ -200,18 +200,19 @@ const CandidatesCompanies = () => {
             <span>Loading...</span>
           </div>
         )}
+
+        {/* Conditional Rendering for Pagination */}
+        {companies.length > 0 && (
+          <Pagination
+            page={page}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            handlePageSizeChange={handlePageSizeChange}
+            isPageSizeDisabled={isPageSizeDisabled}
+            handlePageClick={handlePageClick}
+          />
+        )}
       </div>
-      {/* Conditional Rendering for Pagination */}
-      {companies.length > 0 && (
-        <Pagination
-          page={page}
-          pageSize={pageSize}
-          totalPages={totalPages}
-          handlePageSizeChange={handlePageSizeChange}
-          isPageSizeDisabled={isPageSizeDisabled}
-          handlePageClick={handlePageClick}
-        />
-      )}
       <Footer />
     </DashboardLayout>
   );

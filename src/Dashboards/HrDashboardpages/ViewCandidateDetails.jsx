@@ -36,7 +36,6 @@ const ViewCandidateDetails = () => {
 
     return (
         <DashboardLayout>
-            <Button variant='primary' onClick={handleBack}>Back</Button>
             {candidateDetails ? (
                 <div className='candidate-details'>
                     <h2>Candidate Details</h2>
@@ -56,6 +55,8 @@ const ViewCandidateDetails = () => {
             ) : (
                 <p>Loading candidate details...</p>
             )}
+            <Button variant='primary' onClick={handleBack}>Back</Button>
+
             <Footer />
 
         </DashboardLayout>
