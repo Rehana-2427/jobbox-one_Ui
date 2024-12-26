@@ -115,13 +115,32 @@ const DasboardNavbar = ({ user, isSidebarOpen, toggleSidebar }) => {
             console.error('Error marking notification as read:', error);
         }
     };
+     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1200);
+    
+        // Update the state on screen resize
+        useEffect(() => {
+            const handleResize = () => setIsSmallScreen(window.innerWidth < 1200);
+            window.addEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
+        }, []);
 
     return (
         <div className="main-header" style={{ position: 'fixed', width: '100%' }}>
-            <div className="logo">
-                <img src="/jb_logo.png" alt="Logo" style={{ width: '399px', height: '60px', marginLeft: '30px' }} />
+              <div className="dashboard-navbar-logo">
+                {isSmallScreen ? (
+                    <img
+                        src="/jb_temp_logo.png"
+                        alt="Temporary Logo"
+                        style={{ height: '70px', width: '70px' }}
+                    />
+                ) : (
+                    <img
+                        src="/jb_logo.png"
+                        alt="Logo"
+                        style={{ height: '60px', width: '150px' }}
+                    />
+                )}
             </div>
-
             <div className="menu-toggle" style={{ marginLeft: '50px' }} onClick={toggleSidebar}>
                 <div />
                 <div />

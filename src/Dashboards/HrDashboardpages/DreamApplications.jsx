@@ -55,7 +55,6 @@ const DreamApplication = () => {
       } catch (error) {
         console.error('Error fetching resume type:', error);
       } finally {
-      } finally {
         setLoading(false); // Start loading
       }
     }
