@@ -135,7 +135,7 @@ const JobboxCompanyPage = () => {
       const encodedCompanyName = encodeURIComponent(company.companyName); // Encode the company name
       navigate(`/companyPage/companyName/${encodedCompanyName}`, { state: { companyId } });
       // Trigger a page reload after navigating
-      window.location.reload();
+      // window.location.reload();
       // window.open(`/companyPage/companyName/${encodedCompanyName}?companyId=${companyId}`, '_blank');
     } else {
       console.error("Company not found!");
@@ -156,13 +156,13 @@ const JobboxCompanyPage = () => {
 
       <div className='welcome-msg'>
         <div className="d-flex flex-column justify-content-between" style={{ marginLeft: '12px' }} >
-          <h3 style={{ paddingTop: '20px' ,paddingLeft:'12px'}}>Filter Options:</h3>
+          <h3 style={{ paddingTop: '20px', paddingLeft: '12px' }}>Filter Options:</h3>
           <Row
             className="d-flex flex-wrap gx-2"
             style={{
               maxWidth: '100%',
               backgroundColor: '#f4f4f9',
-              marginLeft:'10px',marginRight:"10px"
+              marginLeft: '10px', marginRight: "10px"
             }}
           >
             {/* Filter by Company Type */}
@@ -317,7 +317,7 @@ const JobboxCompanyPage = () => {
               />
             </Col>
           </Row>
-           {/* Company Cards Section */}
+          {/* Company Cards Section */}
           <Row className="cards flex-grow-1 d-flex flex-wrap justify-content-start" style={{ minHeight: 'fit-content', width: '100%', }}>
             {companies.length > 0 ? (
               companies.map((company) => (
@@ -333,9 +333,9 @@ const JobboxCompanyPage = () => {
               ))
             ) : (
               <div className="d-flex justify-content-center align-items-center">
-              <div className="spinner-bubble spinner-bubble-primary m-5" />
-              <span>Loading...</span>
-            </div>
+                <div className="spinner-bubble spinner-bubble-primary m-5" />
+                <span>Loading...</span>
+              </div>
             )}
           </Row>
         </div>

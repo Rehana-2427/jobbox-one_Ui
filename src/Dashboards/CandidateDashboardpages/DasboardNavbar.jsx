@@ -167,7 +167,7 @@ const DasboardNavbar = ({ user, isSidebarOpen, toggleSidebar }) => {
                             </span>
                             <i className="i-Bell text-muted header-icon" />
                         </Dropdown.Toggle>
-                        {countOfUnreadNotification > 0 && (
+                        {countOfUnreadNotification >= 0 && (
                             <Dropdown.Menu>
                                 {unreadNotifications.length === 0 ? (
                                     <Dropdown.Item>No new notifications</Dropdown.Item>

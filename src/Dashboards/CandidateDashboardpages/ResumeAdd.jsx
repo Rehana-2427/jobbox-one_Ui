@@ -124,7 +124,7 @@ const ResumeAdd = () => {
   const handleOk = () => {
     setSuccessMessage('');
     setShowModal(false);
-    window.location.reload(); // Refresh the page
+   // window.location.reload(); // Refresh the page
   };
   const user = {
     userName: userName,

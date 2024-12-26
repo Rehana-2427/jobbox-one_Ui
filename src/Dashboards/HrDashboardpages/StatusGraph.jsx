@@ -9,18 +9,18 @@ const StatusGraph = () => {
     const location = useLocation();
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState(null);
-  
+
     useEffect(() => {
-      // Get the userName and userId from location.state if available, otherwise from localStorage
-      const storedUser = JSON.parse(localStorage.getItem('user'));  // Assuming 'user' is stored in localStorage
-  
-      const userNameFromLocation = location.state?.userName || storedUser?.userName || '';
-      const userEmailFromLocation = location.state?.userEmail || storedUser?.userEmail || null;
-  
-      setUserName(userNameFromLocation);
-      setUserEmail(userEmailFromLocation);
+        // Get the userName and userId from location.state if available, otherwise from localStorage
+        const storedUser = JSON.parse(localStorage.getItem('user'));  // Assuming 'user' is stored in localStorage
+
+        const userNameFromLocation = location.state?.userName || storedUser?.userName || '';
+        const userEmailFromLocation = location.state?.userEmail || storedUser?.userEmail || null;
+
+        setUserName(userNameFromLocation);
+        setUserEmail(userEmailFromLocation);
     }, [location]);  // Re-run the effect when the location changes
-    
+
     const [monthlyJobData, setMonthlyJobData] = useState({
         labels: [],
         datasets: [{
@@ -62,14 +62,14 @@ const StatusGraph = () => {
         if (userEmail) {
             fetchMonthlyJobData();
         }
-    }, [userEmail,fetchMonthlyJobData]);
+    }, [userEmail, fetchMonthlyJobData]);
     return (
         <Row >
-          <Col lg={6} style={{paddingLeft:'25px'}}> {/* Increased width */}
+            <Col lg={6} style={{ paddingLeft: '25px' }}> {/* Increased width */}
                 <Card className="mb-4"> {/* Light purple */}
                     <Card.Header className="bg-light text-center" style={{ height: '30px', width: '100%' }}>
                         <Card.Title as="h4" className="mb-3">Monthly Job Percentages</Card.Title>
-                    </Card.Header>
+                    </Card.Header>                    
                     <Card.Body className="pb-0">
                         <Bar
                             data={monthlyJobData}

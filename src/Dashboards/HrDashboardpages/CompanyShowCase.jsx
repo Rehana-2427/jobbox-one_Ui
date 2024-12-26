@@ -275,9 +275,9 @@ const CompanyShowCase = () => {
     }
   }, [companyName]); // Effect will run whenever companyName changes
 
-  if (loading) {
-    return <div>Loading documents...</div>;
-  }
+  // if (loading) {
+  //   return <div>Loading documents...</div>;
+  // }
 
   if (error) {
     return <div>{error}</div>;

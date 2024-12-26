@@ -41,13 +41,13 @@ const CompanyPolicies = () => {
 
     useEffect(() => {
         // Fetch policy data when the component is mounted
-      api.getHiringPolicy(companyName).then((response) => {
-                if (response.data) {
-                    setPolicy(response.data);
-                    setAllowReapply(response.data.allowReapply);
-                    setReapplyMonths(response.data.allowReapply ? response.data.reapplyMonths : 12);
-                }
-            })
+        api.getHiringPolicy(companyName).then((response) => {
+            if (response.data) {
+                setPolicy(response.data);
+                setAllowReapply(response.data.allowReapply);
+                setReapplyMonths(response.data.allowReapply ? response.data.reapplyMonths : 12);
+            }
+        })
             .catch((error) => {
                 console.error('Error fetching policy data:', error);
             });
@@ -137,7 +137,7 @@ const CompanyPolicies = () => {
             }
             // Refresh the document list
             // Refresh the page
-            window.location.reload();
+            //  window.location.reload();
         } catch (error) {
             toast.error(error.response?.data || 'An error occurred.', {
                 position: 'top-right',

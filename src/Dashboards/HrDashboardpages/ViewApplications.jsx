@@ -368,8 +368,9 @@ const ViewApplications = () => {
   return (
     <DashboardLayout>
       <div className="main-content">
-        <Row >
-          <Col>
+        <Row className="mb-4 m-3">
+          {/* Filter by Status */}
+          <Col xs={12} md={6} lg={4}>
             <label
               htmlFor="status"
               className="form-label"
@@ -381,7 +382,7 @@ const ViewApplications = () => {
               id="status"
               onChange={handleFilterChange}
               value={filterStatus}
-              className="form-select form-select-sm fs-5" // Adjust the fs-* class as needed
+              className="form-select form-select-sm fs-5"
               style={{ borderColor: '#6c5b7b' }} // Purple border color
             >
               <option value="all">All</option>
@@ -390,7 +391,9 @@ const ViewApplications = () => {
               <option value="Not Shortlisted">Not Shortlisted</option>
             </select>
           </Col>
-          <Col>
+
+          {/* Filter by Date */}
+          <Col xs={12} md={6} lg={4}>
             <label
               htmlFor="date"
               className="form-label"
@@ -398,56 +401,64 @@ const ViewApplications = () => {
             >
               Filter by Date:
             </label>
-            <div className="d-flex align-items-center gap-3">
-              <div className="d-flex flex-row ">
-                <label
-                  htmlFor="fromDate"
-                  className="form-label mb-1"
-                  style={{ color: '#6c5b7b' }} // Purple color for the label
-                >
-                  From:
-                </label>
-                <input
-                  type="date"
-                  id="fromDate"
-                  value={fromDate}
-                  onChange={(e) => handleFromDateChange(e.target.value)}
-                  className="form-control form-control-sm fs-7"
-                  style={{
-                    maxWidth: '150px',
-                    borderColor: '#6c5b7b', // Purple border color
-                    boxShadow: 'none'
-                  }}
-                />
-              </div>
-              <div className="d-flex flex-row ">
-                <label
-                  htmlFor="toDate"
-                  className="form-label mb-1"
-                  style={{ color: '#6c5b7b' }} // Purple color for the label
-                >
-                  To:
-                </label>
-                <input
-                  type="date"
-                  id="toDate"
-                  value={toDate}
-                  onChange={(e) => handleToDateChange(e.target.value)}
-                  className="form-control form-control-sm fs-7"
-                  style={{
-                    maxWidth: '150px',
-                    borderColor: '#6c5b7b', // Purple border color
-                    boxShadow: 'none'
-                  }}
-                />
+            <div className="date-filter d-flex flex-column flex-md-row gap-3">
+              <div className="date-input-group d-flex flex-row gap-2">
+                <div className="d-flex flex-column flex-md-row">
+                  <label
+                    htmlFor="fromDate"
+                    className="form-label mb-1"
+                    style={{ color: '#6c5b7b' }} // Purple color for the label
+                  >
+                    From:
+                  </label>
+                  <input
+                    type="date"
+                    id="fromDate"
+                    value={fromDate}
+                    onChange={(e) => handleFromDateChange(e.target.value)}
+                    className="form-control form-control-sm fs-7"
+                    style={{
+                      maxWidth: '150px',
+                      borderColor: '#6c5b7b',
+                      boxShadow: 'none',
+                      width: '100%', // Full width on mobile
+                    }}
+                  />
+                </div>
+                <div className="d-flex flex-column flex-md-row">
+                  <label
+                    htmlFor="toDate"
+                    className="form-label mb-1"
+                    style={{ color: '#6c5b7b' }} // Purple color for the label
+                  >
+                    To:
+                  </label>
+                  <input
+                    type="date"
+                    id="toDate"
+                    value={toDate}
+                    onChange={(e) => handleToDateChange(e.target.value)}
+                    className="form-control form-control-sm fs-7"
+                    style={{
+                      maxWidth: '150px',
+                      borderColor: '#6c5b7b',
+                      boxShadow: 'none',
+                      width: '100%', // Full width on mobile
+                    }}
+                  />
+                </div>
               </div>
             </div>
-          </Col >
-          <Col className="align-items-left">
-            <h4>Action:</h4>
-            <p><b><span class="circle gray"></span> By default - Not Seen</b></p>
-            <p><b><span class="circle red"></span> Slide Left - Not Shortlisted</b></p>
-            <p><b><span class="circle green"></span> Slide Right - Shortlisted</b></p>
+          </Col>
+
+          {/* Action Section */}
+          <Col xs={12} md={12} lg={4}>
+            <div style={{ width: '100%', backgroundColor: '#f4f4f9', padding: '15px' }}>
+              <h4>Action:</h4>
+              <p><b><span className="circle gray"></span> By default - Not Seen</b></p>
+              <p><b><span className="circle red"></span> Slide Left Side - Not Shortlisted</b></p>
+              <p><b><span className="circle green"></span> Slide Right Side - Shortlisted</b></p>
+            </div>
           </Col>
         </Row>
 

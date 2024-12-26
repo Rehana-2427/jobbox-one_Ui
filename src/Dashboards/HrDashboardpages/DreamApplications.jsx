@@ -50,13 +50,13 @@ const DreamApplication = () => {
     const fileNames = {};
     for (const application of applications) {
       try {
-        setLoading(true); // Start loading
+       // setLoading(true); // Start loading
         const response = await axios.get(`${BASE_API_URL}/getResumeByApplicationId?resumeId=${application.resumeId}`);
         types[application.resumeId] = response.data.fileType;
         fileNames[application.resumeId] = response.data.fileName;
       } catch (error) {
         console.error('Error fetching resume type:', error);
-      }finally{
+      } finally {
         setLoading(false); // Start loading
       }
     }
@@ -171,7 +171,7 @@ const DreamApplication = () => {
 
   const fetchApplicationBysearch = async (search) => {
     try {
-      setLoading(true); // Start loading
+      // setLoading(true); // Start loading
       const params = {
         userEmail: userEmail,
         page,
@@ -220,18 +220,18 @@ const DreamApplication = () => {
     const candidateEmails = {};
     const hrNames = {};
     const hrEmails = {};
-    try{
-      setLoading(true); // Start loading
+    try {
+     // setLoading(true); // Start loading
       for (const application of applications) {
         const res = await axios.get(`${BASE_API_URL}/getUserName`, {
           params: {
             userId: application.candidateId
           }
-  
+
         });
         candidateNames[application.candidateId] = res.data.userName;
         candidateEmails[application.candidateId] = res.data.userEmail;
-  
+
         const response = await axios.get(`${BASE_API_URL}/getUserName`, {
           params: {
             userId: application.hrId
@@ -240,12 +240,12 @@ const DreamApplication = () => {
         hrNames[application.hrId] = response.data.userName;
         hrEmails[application.hrId] = response.data.userEmail;
       }
-    }catch(error){
+    } catch (error) {
       console.log(error);
-    }finally {
+    } finally {
       setLoading(false); // Stop loading
     }
-  
+
     setCandidateName(candidateNames);
     setCandidateEmail(candidateEmails);
     setHrName(hrNames);
@@ -303,7 +303,7 @@ const DreamApplication = () => {
       link.click();
     } catch (error) {
       console.error('Error downloading resume:', error);
-    }finally{
+    } finally {
       setLoading(false); // Stop loading
     }
   };
@@ -381,6 +381,7 @@ const DreamApplication = () => {
     <DashboardLayout>
       <div className="main-content">
         <Row className="mb-4 m-3">
+          {/* Filter by Status */}
           <Col xs={12} md={6} lg={4}>
             <label
               htmlFor="status"
@@ -393,7 +394,7 @@ const DreamApplication = () => {
               id="status"
               onChange={handleFilterChange}
               value={filterStatus}
-              className="form-select form-select-sm fs-5" // Adjust the fs-* class as needed
+              className="form-select form-select-sm fs-5"
               style={{ borderColor: '#6c5b7b' }} // Purple border color
             >
               <option value="all">All</option>
@@ -402,8 +403,9 @@ const DreamApplication = () => {
               <option value="Not Shortlisted">Not Shortlisted</option>
             </select>
           </Col>
-          <Col
-            xs={12} md={6} lg={4} >
+
+          {/* Filter by Date */}
+          <Col xs={12} md={6} lg={4}>
             <label
               htmlFor="date"
               className="form-label"
@@ -411,68 +413,76 @@ const DreamApplication = () => {
             >
               Filter by Date:
             </label>
-            <div className="date-filter d-flex align-items-center gap-3">
-              <div className="date-input-group d-flex flex-row align-items-center">
-                <label
-                  htmlFor="fromDate"
-                  className="form-label mb-1"
-                  style={{ color: '#6c5b7b' }} // Purple color for the label
-                >
-                  From:
-                </label>
-                <input
-                  type="date"
-                  id="fromDate"
-                  value={fromDate}
-                  onChange={(e) => handleFromDateChange(e.target.value)}
-                  className="form-control form-control-sm fs-7"
-                  style={{
-                    maxWidth: '150px',
-                    borderColor: '#6c5b7b', // Purple border color
-                    boxShadow: 'none',
-                  }}
-                />
-              </div>
-              <div className="date-input-group d-flex flex-row">
-                <label
-                  htmlFor="toDate"
-                  className="form-label mb-1"
-                  style={{ color: '#6c5b7b' }} // Purple color for the label
-                >
-                  To:
-                </label>
-                <input
-                  type="date"
-                  id="toDate"
-                  value={toDate}
-                  onChange={(e) => handleToDateChange(e.target.value)}
-                  className="form-control form-control-sm fs-7"
-                  style={{
-                    maxWidth: '150px',
-                    borderColor: '#6c5b7b', // Purple border color
-                    boxShadow: 'none',
-                  }}
-                />
+            <div className="date-filter d-flex flex-column flex-md-row gap-3">
+              <div className="date-input-group d-flex flex-row gap-2">
+                <div className="d-flex flex-column flex-md-row">
+                  <label
+                    htmlFor="fromDate"
+                    className="form-label mb-1"
+                    style={{ color: '#6c5b7b' }} // Purple color for the label
+                  >
+                    From:
+                  </label>
+                  <input
+                    type="date"
+                    id="fromDate"
+                    value={fromDate}
+                    onChange={(e) => handleFromDateChange(e.target.value)}
+                    className="form-control form-control-sm fs-7"
+                    style={{
+                      maxWidth: '150px',
+                      borderColor: '#6c5b7b',
+                      boxShadow: 'none',
+                      width: '100%', // Full width on mobile
+                    }}
+                  />
+                </div>
+                <div className="d-flex flex-column flex-md-row">
+                  <label
+                    htmlFor="toDate"
+                    className="form-label mb-1"
+                    style={{ color: '#6c5b7b' }} // Purple color for the label
+                  >
+                    To:
+                  </label>
+                  <input
+                    type="date"
+                    id="toDate"
+                    value={toDate}
+                    onChange={(e) => handleToDateChange(e.target.value)}
+                    className="form-control form-control-sm fs-7"
+                    style={{
+                      maxWidth: '150px',
+                      borderColor: '#6c5b7b',
+                      boxShadow: 'none',
+                      width: '100%', // Full width on mobile
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </Col>
+
+          {/* Action Section */}
           <Col xs={12} md={12} lg={4}>
-            <div
-              style={{ width: '100%', backgroundColor: '#f4f4f9' }}>
+            <div style={{ width: '100%', backgroundColor: '#f4f4f9', padding: '15px' }}>
               <h4>Action:</h4>
-              <p><b><span class="circle gray"></span> By default - Not Seen</b></p>
-              <p><b><span class="circle red"></span> Slide Left Side - Not Shortlisted</b></p>
-              <p><b><span class="circle green"></span> Slide Right Side - Shortlisted</b></p>
+              <p><b><span className="circle gray"></span> By default - Not Seen</b></p>
+              <p><b><span className="circle red"></span> Slide Left Side - Not Shortlisted</b></p>
+              <p><b><span className="circle green"></span> Slide Right Side - Shortlisted</b></p>
             </div>
           </Col>
         </Row>
 
-        <Row>
-          <Col md={6}>
-            <h2>
+
+
+        <Row className="mb-4 m-3">
+          {/* Header Section */}
+          <Col xs={12} md={6}>
+            <h2 style={{ textAlign: 'center' }}>
               {loading ? (
-                <div style={{ textAlign: 'center' }}>
-                 <div className="spinner-bubble spinner-bubble-primary m-5" />
+                <div className="d-flex justify-content-center">
+                  <div className="spinner-bubble spinner-bubble-primary m-5" />
                 </div>
               ) : applications.length === 0 ? (
                 <div style={{ color: 'red', textAlign: 'center' }}>
@@ -481,16 +491,24 @@ const DreamApplication = () => {
                     : 'Sorry, you haven’t received any applications yet.'}
                 </div>
               ) : (
-                <div className="left-text">Applicants of Dream Company Applications</div>
+                <div className="left-text" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
+                  Applicants of Dream Company Applications
+                </div>
               )}
             </h2>
-
-
           </Col>
-          <Col md={4} className="d-flex align-items-left">
-            <div className="search-bar" style={{ flex: 1 }}>
+
+          {/* Search Bar Section */}
+          <Col xs={12} md={6} className="d-flex justify-content-center">
+            <div className="search-bar" style={{ width: '100%', maxWidth: '400px' }}>
               <input
-                style={{ borderRadius: '6px', height: '35px', width: '70%', marginRight: '20px' }}
+                style={{
+                  borderRadius: '6px',
+                  height: '35px',
+                  width: '100%', // Full width on mobile
+                  padding: '0 15px', // Added padding for better input space
+                  fontSize: '1rem', // Increased font size for better readability
+                }}
                 type="text"
                 name="search"
                 placeholder="Search Candidate By Skills"
@@ -498,12 +516,12 @@ const DreamApplication = () => {
                 onChange={handleSearchChange}
               />
             </div>
-
           </Col>
         </Row>
-        
 
-      
+
+
+
         {!loading && applications.length > 0 && (
           <div>
             <div className='table-details-list  table-wrapper '>
@@ -619,7 +637,7 @@ const DreamApplication = () => {
           )
         }
 
-{showBriefSettings && (
+        {showBriefSettings && (
           <Modal show={showBriefSettings} onHide={() => setShowBriefSettings(false)}>
             <Modal.Header closeButton>
               <Modal.Title>Brief Resume</Modal.Title>

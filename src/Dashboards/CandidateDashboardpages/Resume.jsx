@@ -74,10 +74,10 @@ const Resume = () => {
         const response = await axios.get(`${BASE_API_URL}/getResumeDetails?resumeId=${resumeId}`);
         setResumeDetails(response.data);  // Update resumeDetails state with the fetched data
 
-          // Scroll to the details section
-          if (detailsRef.current) {
-            detailsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
+        // Scroll to the details section
+        if (detailsRef.current) {
+          detailsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       } catch (error) {
         console.error(`Error fetching details for resume ${resumeId}:`, error);
       }
@@ -163,13 +163,13 @@ const Resume = () => {
       )}
 
       <h3 className='text-start'>MY RESUMES</h3>
-      <p>(If you want to view your resume details please click on <strong style={{color:'red'}}>Preview </strong>)</p>
+      <p>(If you want to view your resume details please click on <strong style={{ color: 'red' }}>Preview </strong>)</p>
 
       {loading ? (
         <div className="text-center">
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
+          <div className="d-flex justify-content-center">
+            <div className="spinner-bubble spinner-bubble-primary m-5" />
+          </div>
           <h4>Please wait... Fetching your resumes...</h4>
         </div>
       ) : (
@@ -199,8 +199,8 @@ const Resume = () => {
                     <Button variant="danger" size="sm" className='delete' style={{ marginLeft: '10px' }} onClick={() => handleDelete(resume.id, resume.message)}>
                       Delete
                     </Button>
-                    <h5 className="text-muted text-center" style={{marginTop:'10px'}} onClick={() => handleViewResumeDetails(resume)}>
-                     <FaEye /> Preview
+                    <h5 className="text-muted text-center" style={{ marginTop: '10px' }} onClick={() => handleViewResumeDetails(resume)}>
+                      <FaEye /> Preview
                     </h5>
                   </Card.Body>
                 </Card>
