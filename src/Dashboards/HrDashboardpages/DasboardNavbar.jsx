@@ -75,14 +75,29 @@ const DasboardNavbar = ({ user, isSidebarOpen, toggleSidebar }) => {
             }
         });
     };
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1200);
 
+    // Update the state on screen resize
+    useEffect(() => {
+        const handleResize = () => setIsSmallScreen(window.innerWidth < 1200);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
     return (
         <div className="main-header" style={{ position: 'fixed' }}>
             <div className="dashboard-navbar-logo">
-                {isSidebarOpen ? (
-                    <img src="/jb_logo.png" alt="Logo" style={{ height: '60px', width: '150px' }} />
+                {isSmallScreen ? (
+                    <img
+                        src="/jb_temp_logo.png"
+                        alt="Temporary Logo"
+                        style={{ height: '70px', width: '70px' }}
+                    />
                 ) : (
-                    <img src="/jb_temp_logo.png" alt="Logo" style={{ height: '70px', width: '70px' }} />
+                    <img
+                        src="/jb_logo.png"
+                        alt="Logo"
+                        style={{ height: '60px', width: '150px' }}
+                    />
                 )}
             </div>
 

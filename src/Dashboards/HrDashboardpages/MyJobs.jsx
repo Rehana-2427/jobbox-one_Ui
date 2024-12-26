@@ -186,7 +186,7 @@ const MyJobs = () => {
                 onChange={handleSearchChange}
               />
             </div>
-            <Button style={{ marginRight: '20px',marginBottom:'10px' }} className='job-button'>
+            <Button style={{ marginRight: '25px',marginBottom:'15px' }} className='job-button'>
               <Link
                 to={{ pathname: '/hr-dashboard/my-jobs/addJob', state: { userName, userEmail } }}
                 onClick={(e) => {
