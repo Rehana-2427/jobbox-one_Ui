@@ -34,10 +34,11 @@ label {
 
 
 
-#logo img {
-  height: 100px;
-  width: 200px;
-  border-radius: 60px;
+.dashboard-navbar-logo img {
+  height: 70px;
+  width: 70px;
+  /* border-radius: 60px; */
+  /* border: 1px solid black; */
 }
 
 section {
@@ -340,7 +341,7 @@ section {
   box-sizing: border-box;
 }
 
-
+/* 
 .add-job-button {
   padding: 10px 20px;
   margin-top: 50px;
@@ -352,49 +353,49 @@ section {
   cursor: pointer;
   transition: background-color 0.3s ease;
   text-decoration: none;
-  /* Remove underline */
-}
+} */
 
-.add-job-button:hover {
+/* .add-job-button:hover {
   background-color: #0056b3;
 }
 
 .add-job-button>a {
   color: #fff;
-  /* Set link text color */
   text-decoration: none;
-  /* Remove underline */
-}
-@media screen and (max-width: 768px) {
-  .add-job-button{
+} */
+
+/* @media screen and (max-width: 768px) {
+  .add-job-button {
     padding: 8px 15px;
     margin-top: 50px;
     margin-left: 300px;
   }
-}
+} */
 
-@media screen and (max-width: 630px) {
-  .add-job-button{
+/* @media screen and (max-width: 630px) {
+  .add-job-button {
     padding: 8px 15px;
     margin-top: 50px;
     margin-left: 200px;
   }
 }
+
 @media screen and (max-width: 510px) {
-  .add-job-button{
+  .add-job-button {
     padding: 8px 15px;
     margin-top: 50px;
     margin-left: 100px;
   }
-}
+} */
 
-@media screen and (max-width: 410px) {
-  .add-job-button{
+/* @media screen and (max-width: 410px) {
+  .add-job-button {
     padding: 5px 10px;
     margin-top: 50px;
     margin-left: 50px;
   }
-}
+} */
+
 .job-posting-form,
 .job-details-row {
   display: flex;
@@ -715,42 +716,55 @@ section {
   /* Adjust the value as needed */
 }
 
-.custom-modal  {
-  max-height: 600px; /* Set a max height for scrolling */
-  overflow-y: auto; /* Enable vertical scrolling */
+.custom-modal {
+  max-height: 600px;
+  /* Set a max height for scrolling */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
 }
+
 .chat-messages {
-  max-height: 100%; /* Set a max height for scrolling */
-  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 100%;
+  /* Set a max height for scrolling */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
 }
+
 .chat-message {
-  margin-bottom: 10px; /* Space between messages */
+  margin-bottom: 10px;
+  /* Space between messages */
 }
 
 
 
 .message-time {
-  font-size: 0.8em; /* Smaller font for timestamps */
-  color: gray; /* Grey color for timestamps */
+  font-size: 0.8em;
+  /* Smaller font for timestamps */
+  color: gray;
+  /* Grey color for timestamps */
 }
 
 /* Media queries for responsiveness */
 @media (max-width: 576px) {
   .custom-modal {
-    width: 90%; /* Adjust modal width on small screens */
+    width: 90%;
+    /* Adjust modal width on small screens */
   }
 
   .chat-messages {
-    max-height: 300px; /* Adjust max height on small screens */
+    max-height: 300px;
+    /* Adjust max height on small screens */
   }
 
   .message-right,
   .message-left {
-    font-size: 0.9em; /* Slightly smaller font size */
+    font-size: 0.9em;
+    /* Slightly smaller font size */
   }
 
   .message-time {
-    font-size: 0.7em; /* Even smaller timestamps */
+    font-size: 0.7em;
+    /* Even smaller timestamps */
   }
 }
 
@@ -1013,7 +1027,8 @@ section {
   }
 
   .job-details-text strong {
-    font-size: 1.3em; /* Slightly smaller for medium screens */
+    font-size: 1.3em;
+    /* Slightly smaller for medium screens */
   }
 }
 
@@ -1217,7 +1232,8 @@ section {
 @media (max-width: 480px) {
   .date-filter {
     flex-direction: column;
-    gap: 8px; /* Smaller gap for very small screens */
+    gap: 8px;
+    /* Smaller gap for very small screens */
   }
 
   .date-input-group {
@@ -1228,40 +1244,50 @@ section {
     width: 80%;
   }
 }
+
 @media (max-width: 767px) {
   .filter {
-    max-width: 100% !important; /* Full width on small screens */
-    margin-bottom: 15px; /* Add spacing between stacked columns */
+    max-width: 100% !important;
+    /* Full width on small screens */
+    margin-bottom: 15px;
+    /* Add spacing between stacked columns */
   }
 
   .date-filter .date-input-group {
-    flex-direction: column; /* Stack date inputs vertically on small screens */
+    flex-direction: column;
+    /* Stack date inputs vertically on small screens */
     gap: 0.5rem;
   }
 
   .date-filter {
-    gap: 1rem; /* Add space between From and To inputs */
+    gap: 1rem;
+    /* Add space between From and To inputs */
   }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
   .filter {
-    max-width: 48% !important; /* 48% width on medium screens to allow spacing */
-    margin-bottom: 10px; /* Smaller spacing */
+    max-width: 48% !important;
+    /* 48% width on medium screens to allow spacing */
+    margin-bottom: 10px;
+    /* Smaller spacing */
   }
 
   .ms-md-3 {
-    margin-left: 2% !important; /* Adjust the spacing between columns */
+    margin-left: 2% !important;
+    /* Adjust the spacing between columns */
   }
 }
 
 @media (min-width: 992px) {
   .filter {
-    max-width: 30% !important; /* 30% width on large screens */
+    max-width: 30% !important;
+    /* 30% width on large screens */
   }
 
   .ms-lg-3 {
-    margin-left: 1% !important; /* Adjust the spacing between columns */
+    margin-left: 1% !important;
+    /* Adjust the spacing between columns */
   }
 }
 
@@ -1290,50 +1316,59 @@ section {
 /* Media query for smaller devices (e.g., tablets, phones) */
 @media (max-width: 768px) {
   .subtitle-responsive {
-    font-size: 11px; /* Increase for smaller screens */
+    font-size: 11px;
+    /* Increase for smaller screens */
   }
-  
+
   .title-responsive {
-    font-size: 12px; /* Adjust larger titles for smaller screens */
+    font-size: 12px;
+    /* Adjust larger titles for smaller screens */
   }
 }
 
 /* Media query for very small screens (e.g., phones) */
 @media (max-width: 576px) {
   .subtitle-responsive {
-    font-size: 11px; /* Further increase for small screens */
+    font-size: 11px;
+    /* Further increase for small screens */
   }
 
   .title-responsive {
-    font-size: 12px; /* Adjust as per need for title text */
+    font-size: 12px;
+    /* Adjust as per need for title text */
   }
 }
 
 
 
-.hr-company-page-name{
+.hr-company-page-name {
   font-size: 20px;
   margin-bottom: 10px;
   position: absolute;
   top: 70%;
   right: 100px;
 }
-.hr-company-page-icons{
+
+.hr-company-page-icons {
   position: absolute;
   top: 80%;
   right: 60px;
   z-index: 10;
 }
+
 @media (max-width: 470px) {
-  .hr-company-page-name{
+  .hr-company-page-name {
     font-size: 14px;
     position: absolute;
     top: 70%;
     right: 50px;
   }
+
   .hr-company-page-icons button {
-    font-size: 0.8rem; /* Adjust the button size */
-    padding: 5px 10px; /* Optional: adjust padding */
+    font-size: 0.8rem;
+    /* Adjust the button size */
+    padding: 5px 10px;
+    /* Optional: adjust padding */
     position: absolute;
     left: 40px;
     bottom: 25px;
@@ -1341,38 +1376,47 @@ section {
   }
 
   .hr-company-page-icons a {
-    margin: 0 3px; /* Adjust icon margin */
+    margin: 0 3px;
+    /* Adjust icon margin */
   }
 
   .hr-company-page-icons a svg {
-    width: 20px; /* Smaller icon size */
-    height: 20px; /* Maintain aspect ratio */
- 
+    width: 20px;
+    /* Smaller icon size */
+    height: 20px;
+    /* Maintain aspect ratio */
+
   }
 
 
   /* Make the button smaller on medium screens (like tablets) */
-@media (max-width: 992px) {
-  .btn-responsive {
-    font-size: 14px; /* Smaller font size on medium screens */
-    padding: 8px 16px; /* Reduced padding */
+  @media (max-width: 992px) {
+    .btn-responsive {
+      font-size: 14px;
+      /* Smaller font size on medium screens */
+      padding: 8px 16px;
+      /* Reduced padding */
+    }
   }
-}
 
-/* Further reduce the button size on small screens (like mobile phones) */
-@media (max-width: 576px) {
-  .btn-responsive {
-    font-size: 12px;  /* Even smaller font size */
-    padding: 6px 12px; /* Further reduced padding */
+  /* Further reduce the button size on small screens (like mobile phones) */
+  @media (max-width: 576px) {
+    .btn-responsive {
+      font-size: 12px;
+      /* Even smaller font size */
+      padding: 6px 12px;
+      /* Further reduced padding */
+    }
   }
-}
 
-@media (max-width:400px) {
-  .btn-responsive {
-    font-size: 8px;  /* Even smaller font size */
-    padding: 6px 12px; /* Further reduced padding */
+  @media (max-width:400px) {
+    .btn-responsive {
+      font-size: 8px;
+      /* Even smaller font size */
+      padding: 6px 12px;
+      /* Further reduced padding */
+    }
   }
-}
 }
 
 
@@ -1382,21 +1426,19 @@ section {
     position: relative;
     bottom: 60px;
   }
-  .hr-company_page-row2{
-    height: 125px;
-    position: relative;
-    bottom: 50px;
+
+  .hr-company_page-row2 {
+    height: 70px;
   }
-  .hr-company_page-row3{
+
+  .hr-company_page-row3 {
     position: relative;
     bottom: 55px;
   }
 }
+
 @media (max-width: 900px) {
-  .hr-company_page-row2 {
-    position: relative;
-    bottom:20px;
-  }
+
 
   .hr-company_page-row3 {
     position: relative;
@@ -1405,31 +1447,32 @@ section {
 }
 
 
-@media (max-width: 750px){
-.logo-edit-icon{
-  width: 100px;
-  height: 70px;
+@media (max-width: 750px) {
+  .logo-edit-icon {
+    width: 100px;
+    height: 70px;
+  }
 }
-}
-@media (max-width: 710px){
-  .banner-edit-icon{
+
+@media (max-width: 710px) {
+  .banner-edit-icon {
     position: absolute;
     top: 120px;
   }
-  }
+}
 
 
-  .MuiDrawer-paper {
-    box-shadow: none !important;
-    border: none !important;
-    max-height: 100%;
+.MuiDrawer-paper {
+  box-shadow: none !important;
+  border: none !important;
+  max-height: 100%;
 }
 
 
 /* In your CSS file or within a <style> tag */
 @media (max-width: 900px) {
   .small-screen-hr {
-      max-height: 600px;
+    max-height: 600px;
   }
 }
 
@@ -1438,19 +1481,41 @@ section {
   margin-bottom: 20px;
   color: #555;
   word-break: break-all;
-  word-wrap: break-word; /* Ensures that long words will break and wrap to the next line */
-  overflow-wrap: break-word; /* Ensures compatibility with other browsers */
+  word-wrap: break-word;
+  /* Ensures that long words will break and wrap to the next line */
+  overflow-wrap: break-word;
+  /* Ensures compatibility with other browsers */
   max-width: 100%;
 }
 
 
 .main-header {
-  position: fixed; /* Ensure Navbar stays at the top */
+  position: fixed;
+  /* Ensure Navbar stays at the top */
   top: 0;
   width: 100%;
-  z-index: 1050; /* Higher than HrLeftSide */
-  background-color: white; /* Ensure background doesn't overlap */
+  z-index: 1050;
+  /* Higher than HrLeftSide */
+  background-color: white;
+  /* Ensure background doesn't overlap */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 411px) {
+  .main-header {
+    /* border: 1px solid black; */
+    height: 100px !important;
+  }
+
+  .main-content {
+    margin-top: 30px;
+  }
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 
@@ -1459,20 +1524,61 @@ section {
   position: fixed;
   top: 80px;
   left: 0;
-  width: 150px; /* Width when open */
+  width: 150px;
+  /* Width when open */
   height: 100vh;
   overflow-x: hidden;
-  transition: transform 0.3s ease-in-out; /* Add transition for sliding effect */
-  transform: translateX(-100%); /* Initially hidden */
+  transition: transform 0.3s ease-in-out;
+  /* Add transition for sliding effect */
+  transform: translateX(-100%);
+  /* Initially hidden */
 }
 
 .sidebar-left.open {
-  transform: translateX(0); /* Slide in */
+  transform: translateX(0);
+  /* Slide in */
 }
 
 .sidebar-left.closed {
-  transform: translateX(-100%); /* Slide out */
+  transform: translateX(-100%);
+  /* Slide out */
 }
 
+@media (max-width: 411px) {
+  .left-text {
+    margin-top: 20px;
+  }
+}
 
+@media (max-width: 767px) {
+  .filter-action {
+    width: 97% !important;
+    flex: none !important;
+  }
 
+  .search-bar {
+    margin-left: 12px;
+    width: 60%;
+    margin-bottom: 20px;
+  }
+}
+
+@media(max-width: 909px) {
+  .job-button {
+    width: 50%;
+    margin-top: 12px;
+    height: 40px;
+  }
+}
+
+@media(max-width: 767px) {
+  .job-button {
+    margin-bottom: 30px;
+  }
+}
+
+@media(max-width: 850px) {
+  .evergreen-job-button {
+    margin-left: 0px;
+  }
+}

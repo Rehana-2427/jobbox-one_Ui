@@ -138,6 +138,7 @@ const CompanyPolicies = () => {
             // Refresh the document list
             // Refresh the page
             //  window.location.reload();
+
         } catch (error) {
             toast.error(error.response?.data || 'An error occurred.', {
                 position: 'top-right',

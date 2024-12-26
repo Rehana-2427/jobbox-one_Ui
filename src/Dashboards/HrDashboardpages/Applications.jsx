@@ -124,17 +124,17 @@ const Applications = () => {
 
   return (
     <DashboardLayout>
-      <div className="main-content">
+      <div className="main-content" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <Row>
           <Col md={4}>
             <h2>
-              <div className="left-text">Applications </div>
+              <div className="text-start">Applications </div>
             </h2>
           </Col>
-          <Col md={3} className="d-flex align-items-left">
+          <Col md={4} className="d-flex align-items-left">
             <div className="search-bar" style={{ flex: 1 }}>
               <input
-                style={{ borderRadius: '6px', height: '35px', width: '70%', marginRight: '20px' }}
+                style={{ borderRadius: '6px', height: '35px', width: '70%', marginRight: '20px',marginBottom:'10px' }}
                 type="text"
                 name="search"
                 placeholder="Search"
@@ -252,7 +252,6 @@ const Applications = () => {
         )}
       </div>
       <Footer />
-
     </DashboardLayout>
   );
 }

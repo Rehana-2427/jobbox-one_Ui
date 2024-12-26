@@ -28,10 +28,7 @@ const HrProfile = () => {
 
   return (
     <DashboardLayout>
-      <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
-
-      </div>
-      <div>
+      <div className="main-content">
         <div className="profile-container">
           {userData && (
             <>
@@ -48,8 +45,7 @@ const HrProfile = () => {
           )}
         </div>
 
-      </div>
-      {/* 
+        {/* 
         <Container>
           <Row>
             <div className='text-center'>
@@ -121,7 +117,9 @@ const HrProfile = () => {
             </Col>
           </Row>
         </Container> */}
+      </div>
       <Footer />
+
 
     </DashboardLayout>
   );

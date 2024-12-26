@@ -248,7 +248,6 @@ const ViewMoreJobs = () => {
 
 
     return (
-
         <DashboardLayout>
             {showResumePopup && (
                 <ResumeSelectionPopup
@@ -287,7 +286,8 @@ const ViewMoreJobs = () => {
                 </Card>
             </div><br></br><br></br>
 
-            <div className="d-flex justify-content-end align-items-center mb-3 mt-12">
+            <br></br>
+            <div className="d-flex justify-content-end align-items-center mb-3 mt-12" >
                 <div className="search-bar" >
                     <input style={{ borderRadius: '6px', height: '35px' }}
                         type="text"

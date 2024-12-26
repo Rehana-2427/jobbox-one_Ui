@@ -1,8 +1,6 @@
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
-import { Button, Col, Form, Modal, Row, Table } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Button, Col, Modal, Row, Table } from "react-bootstrap";
 import { SiImessage } from "react-icons/si";
 import { useLocation, useNavigate } from "react-router-dom";
 import Footer from "../../pages/Footer";
@@ -56,6 +54,7 @@ const DreamApplication = () => {
         fileNames[application.resumeId] = response.data.fileName;
       } catch (error) {
         console.error('Error fetching resume type:', error);
+      } finally {
       } finally {
         setLoading(false); // Start loading
       }
@@ -228,9 +227,11 @@ const DreamApplication = () => {
             userId: application.candidateId
           }
 
+
         });
         candidateNames[application.candidateId] = res.data.userName;
         candidateEmails[application.candidateId] = res.data.userEmail;
+
 
         const response = await axios.get(`${BASE_API_URL}/getUserName`, {
           params: {
@@ -241,10 +242,11 @@ const DreamApplication = () => {
         hrEmails[application.hrId] = response.data.userEmail;
       }
     } catch (error) {
-      console.log(error);
+      console.log(error);  
     } finally {
       setLoading(false); // Stop loading
     }
+
 
     setCandidateName(candidateNames);
     setCandidateEmail(candidateEmails);
@@ -376,10 +378,12 @@ const DreamApplication = () => {
     });
     setIsChatOpen(!isChatOpen);
   };
-
+  const handleBack = () => {
+    navigate(-1);
+  };
   return (
     <DashboardLayout>
-      <div className="main-content">
+      <div className="main-content" >
         <Row className="mb-4 m-3">
           {/* Filter by Status */}
           <Col xs={12} md={6} lg={4}>
@@ -645,6 +649,8 @@ const DreamApplication = () => {
             <Modal.Body style={{ overflowY: 'auto' }}>{showMessage}</Modal.Body>
           </Modal>
         )}
+      <Button variant='primary' onClick={handleBack} style={{width:'100px',marginLeft:'12px'}}>Back</Button>
+
       </div>
       <Footer />
 

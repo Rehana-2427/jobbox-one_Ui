@@ -1206,3 +1206,8 @@ button.com:hover {
 .text-start{
   padding-left: 12px;
 }
+.main-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}

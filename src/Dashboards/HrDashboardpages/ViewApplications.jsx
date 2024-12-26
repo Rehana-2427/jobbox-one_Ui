@@ -468,7 +468,7 @@ const ViewApplications = () => {
               {applications.length === 0 ? (
                 <div style={{ textAlign: 'center' }}>There are no applicants for this job application</div>
               ) : (
-                <div className="left-text">Applicants of applications</div>
+                <div className="text-start">Applicants of applications</div>
               )}
             </h2>
 

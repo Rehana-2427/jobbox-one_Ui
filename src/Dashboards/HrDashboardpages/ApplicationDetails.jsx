@@ -70,7 +70,8 @@ const ApplicationDetails = () => {
     return (
         <DashboardLayout>
             <Button variant='primary' onClick={handleBack}>Back</Button>
-            <div className="application-details-container" style={{ overflowY: 'scroll' }}>
+
+            <div className="main-content" style={{ overflowY: 'scroll' }}>
                 {job && (
                     <div className="jobdetails">
                         <h2>Job Details</h2>
@@ -99,8 +100,8 @@ const ApplicationDetails = () => {
                 )}
 
             </div>
-            <Footer />
 
+            <Footer />
         </DashboardLayout>
     );
 };

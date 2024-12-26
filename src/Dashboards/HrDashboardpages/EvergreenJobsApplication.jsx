@@ -4,7 +4,7 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Col, Form, Modal, Row, Table } from 'react-bootstrap';
 import { SiImessage } from 'react-icons/si';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Footer from '../../pages/Footer';
 import Pagination from '../../Pagination';
 import ChatComponent from '../ChatComponent';
@@ -76,7 +76,7 @@ const EvergreenJobsApplication = () => {
                 console.error('Unexpected error:', error);
             }
         }
-        finally{
+        finally {
             setLoading(false);
         }
     };
@@ -380,6 +380,11 @@ const EvergreenJobsApplication = () => {
         // Toggle the visibility of the ChatComponent
         setIsChatOpen(!isChatOpen);
     };
+    const navigate = useNavigate();
+
+    const handleBack = () => {
+        navigate(-1);
+    };
     return (
         <DashboardLayout>
             <div className="main-content">
@@ -419,7 +424,7 @@ const EvergreenJobsApplication = () => {
                             {applications.length === 0 ? (
                                 <div style={{ textAlign: 'center' }}>There are no applicants for evergreen job application</div>
                             ) : (
-                                <div className="left-text">Applicants of evergreen job applications</div>
+                                <div className="text-start">Applicants of evergreen job applications</div>
                             )}
                         </h2>
 
@@ -532,7 +537,10 @@ const EvergreenJobsApplication = () => {
                             handlePageClick={handlePageClick}
                         />
                     </div>
+
                 )}
+                <Button variant='primary' onClick={handleBack} style={{ width: '100px',marginLeft:'12px' }}>Back</Button>
+
                 {
                     showBriefSettings && (
                         <Modal show={showBriefSettings} onHide={() => setShowBriefSettings(false)}>
@@ -618,6 +626,7 @@ const EvergreenJobsApplication = () => {
                     )
                 }
             </div>
+
             <Footer />
 
         </DashboardLayout >
