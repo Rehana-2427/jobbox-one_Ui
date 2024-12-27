@@ -1211,6 +1211,35 @@ button.com:hover {
   flex-direction: column;
   min-height: 100vh;
 }
+
+@media (max-width: 1200px) {
+  .main-content {
+    margin-left: 10px;
+  }
+}
+
+/* company title and social media */
+
+.responsive-title {
+  text-align: end;
+  padding-right: 30px !important;
+  margin-top: 10px !important;
+}
+
+.responsive-socials {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding-right: 30px !important;
+}
+
+@media (max-width: 480px) {
+  .responsive-title {
+    font-size: 5vw; /* Even larger font size on very small screens */
+  }
+
+
+}
 @media (max-width: 673px) {
   .resume-card {
     width: 100% !important;

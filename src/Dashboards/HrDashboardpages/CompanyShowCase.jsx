@@ -297,78 +297,109 @@ const CompanyShowCase = () => {
   return (
     <DashboardLayout>
       <div className='main-container main-content '>
-        <Card style={{ width: '100%', height: '60%' }}>
-          <Card.Body style={{ padding: 0, position: 'relative' }}>
-            <div style={{ position: 'relative', height: '55%' }}>
-              <img
-                src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
-                alt="Company Banner"
-                className="banner-image"
-                onClick={() => handleCameraIconClick('banner')}
-                style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
-              />
-              <img
-                src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain"
-                alt="Edit Banner"
-                className="banner-edit-icon"
-                style={{
-                  position: 'absolute',
-                  top: '185px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
-                  opacity: 0.7,
-                }}
-                onClick={() => handleCameraIconClick('banner')}
-              />
-              <input
-                id="bannerInput"
-                type="file"
-                style={{ display: 'none' }}
-                onChange={(e) => handleFileChange('banner', e.target.files[0])}
-                accept="image/*"
-              />
-            </div>
+      <Row style={{ marginBottom: '20px' }}>
+          <Card style={{ width: '100%', height: '60%' }}>
+            <Card.Body style={{ padding: 0, position: 'relative' }}>
+              <div style={{ position: 'relative', height: 'auto', maxHeight: '55%' }}>
+                <img
+                  src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
+                  alt="Company Banner"
+                  className="banner-image"
+                  onClick={() => handleCameraIconClick('banner')}
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    maxHeight: '200px',
+                    objectFit: 'cover',
+                    cursor: 'pointer',
+                  }}
+                />
+                <img
+                  src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain"
+                  alt="Edit Logo"
+                  className="logo-edit-icon"
+                  style={{
+                    position: 'absolute',
+                    bottom: '10px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
+                    opacity: 0.7,
+                  }}
+                  onClick={() => handleCameraIconClick('banner')}
+                />
+                <input
+                  id="bannerInput"
+                  type="file"
+                  style={{
+                    display: 'none',
+                    position: 'absolute',
+                    top: '80%',
+                    right: '10px',
+                    width: '20vw', // Responsive width for the input field
+                    cursor: 'pointer',
+                  }}
+                  onChange={(e) => handleFileChange('banner', e.target.files[0])}
+                  accept="image/*"
+                />
+              </div>
 
-            <div style={{ position: 'absolute', top: '95%', left: '50px', transform: 'translateY(-50%)' }}>
-              <img
-                src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
-                alt="Company Logo"
-                className="logo-image"
-                style={{
-                  width: '200px',
-                  height: '120px',
-                  cursor: 'pointer',
-                  clipPath: 'ellipse(50% 50% at 50% 50%)',
-                  objectFit: 'cover',
-                }}
-                onClick={() => handleCameraIconClick('logo')}
-              />
-              <img
-                src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain"
-                alt="Edit Logo"
-                className="logo-edit-icon"
-                style={{
-                  position: 'absolute',
-                  bottom: '10px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
-                  opacity: 0.7,
-                }}
-                onClick={() => handleCameraIconClick('logo')}
-              />
-              <input
-                id="logoInput"
-                type="file"
-                style={{ display: 'none' }}
-                onChange={(e) => handleFileChange('logo', e.target.files[0])}
-                accept="image/*"
-              />
-            </div>
-          </Card.Body>
-        </Card>
+              <div style={{ position: 'absolute', top: '95%', left: '50px', transform: 'translateY(-50%)' }}>
+                <img
+                  src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
+                  alt="Company Logo"
+                  className="logo-image"
+                  style={{
+                    width: '20vw',
+                    height: '20vw',
+                    maxWidth: '150px',
+                    maxHeight: '150px',
+                    cursor: 'pointer',
+                    objectFit: 'cover',
+                    clipPath: 'none',
+                    border: '5px solid #f0f0f0', // Adds a black border around the image
+                    borderRadius: '10px', // Optional: adds rounded corners to the border
+                  }}
+                  onClick={() => handleCameraIconClick('logo')}
+                />
+                <img
+                  src="https://th.bing.com/th/id/OIP.FpOpgDyazC3r8o3wowXpmwAAAA?rs=1&pid=ImgDetMain"
+                  alt="Edit Logo"
+                  className="logo-edit-icon"
+                  style={{
+                    position: 'absolute',
+                    bottom: '10px', right: '10px', width: '30px', height: '30px', cursor: 'pointer',
+                    opacity: 0.7,
+                  }}
+                  onClick={() => handleCameraIconClick('logo')}
+                />
+                <input
+                  id="logoInput"
+                  type="file"
+                  style={{
+                    display: 'none',
+                    position: 'absolute',
+                    bottom: '20px',
+                    right: '10px',
+                    width: '20vw', // Responsive width for the input field
+                    cursor: 'pointer',
+                  }}
+                  onChange={(e) => handleFileChange('logo', e.target.files[0])}
+                  accept="image/*"
+                />
+              </div>
+            </Card.Body>
+          </Card>
 
 
-        <Row style={{ marginTop: '50px', alignItems: 'center' }}>
-          <Col md={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <h2 style={{ margin: 0 }}><b>{userData.companyName}</b></h2>
-          </Col>
-          <Col md={10} style={{ display: 'flex', alignItems: 'center' }}>
+
+          {/* </Row>
+
+              <Row style={{ marginTop: '5%', alignItems: 'center', marginLeft: '1%' }}> */}
+          {/* <Col md={3} style={{ display: 'flex', alignItems: 'end', justifyContent: 'center'}}> */}
+          <h2 className="responsive-title">
+            <b>{companyName.toUpperCase()}</b>
+          </h2>
+          {/* </Col> */}
+          {/* <Col md={9} style={{ display: 'flex', alignItems: 'end' }}> */}
+          <span className="responsive-socials">
             {socialMediaLinks.facebookLink && (
               <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
                 <FaFacebook size={30} style={{ margin: '0 5px', color: '#3b5998' }} />
@@ -389,12 +420,13 @@ const CompanyShowCase = () => {
                 <FaLinkedin size={30} style={{ margin: '0 5px', color: '#0077b5' }} />
               </a>
             )}
-          </Col>
+            {/* </Col> */}
+          </span>
         </Row>
 
-        <hr style={{ border: '1px solid black', margin: '30px 0' }} />
+        <hr style={{ border: '1px solid black', marginTop: '0rem' }} />
 
-        <Row  style={{ marginTop: '5px'}}>
+        <Row style={{ marginTop: '5px' }}>
           <Col>
             <Tabs
               activeKey={activeTab}  // Use activeKey for controlled component

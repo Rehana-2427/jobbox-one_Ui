@@ -93,6 +93,7 @@ const DashboardLayout = ({ children }) => {
           position: isMobileView ? "absolute" : "relative", // Sidebar should overlay content on mobile
           zIndex: isMobileView ? "1000" : "auto", // Ensure sidebar appears above content on mobile
           transition: "width 0.3s ease-in-out", // Smooth transition for larger screens
+      //    marginLeft: isSidebarOpen ? "0" : "10px", // Add margin-left when sidebar is closed
         }}
       >
         <DasboardNavbar user={user} isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
