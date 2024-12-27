@@ -46,20 +46,20 @@ const EachCompanyPage = () => {
     const activeTabParam = params.get('activetab');
 
     if (scrollToJobs) {
-        setActiveTab('jobs'); // Automatically set to 'jobs' if scrollToJobs is true
-        if (jobsSectionRef.current) {
-            jobsSectionRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
+      setActiveTab('jobs'); // Automatically set to 'jobs' if scrollToJobs is true
+      if (jobsSectionRef.current) {
+        jobsSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
     } else if (activeTabParam) {
-        setActiveTab(activeTabParam); // Set the active tab based on the URL parameter
+      setActiveTab(activeTabParam); // Set the active tab based on the URL parameter
     } else {
-        setActiveTab('overview'); // Default to overview if no parameter is found
+      setActiveTab('overview'); // Default to overview if no parameter is found
     }
     // Fetch company details using the companyName from URL
     fetchCompany(companyName);
     fetchData();
     checkCompanyExists(companyName);
-}, [companyName, scrollToJobs]); // Re-fetch if companyName or scrollToJobs changesnpm start
+  }, [companyName, scrollToJobs]); // Re-fetch if companyName or scrollToJobs changesnpm start
 
   // Check if company exists in the database
   const checkCompanyExists = async (companyName) => {
@@ -398,47 +398,63 @@ const EachCompanyPage = () => {
       <div>
         <div className='dashboard-container-1'>
           {error ? (
-            <div style={{ textAlign: 'center' }}>
+            <div style={{ textAlign: 'center', margin: '20px 0' }}>
               <h2>{error}</h2> {/* Display error message if company is not found */}
             </div>
           ) : (
-            <div>
+            <div style={{ overflowX: 'hidden' }}>
               <Row style={{ marginBottom: '20px' }}>
                 <div>
-                  <Card style={{ width: '100%', height: '60%' }}>
+                  <Card style={{ width: '100%', height: '60%', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
                     <Card.Body style={{ padding: 0, position: 'relative' }}>
-                      <div style={{ position: 'relative', height: '55%' }}>
+                      <div style={{ position: 'relative', height: 'auto', maxHeight: '55%' }}>
                         <img
                           src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
                           alt="Company Banner"
                           className="banner-image"
-                          style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
+                          style={{
+                            width: '100%',
+                            height: 'auto',
+                            maxHeight: '200px',
+                            objectFit: 'cover',
+                            cursor: 'pointer',
+                            borderTopLeftRadius: '10px',
+                            borderTopRightRadius: '10px',
+                          }}
                         />
                       </div>
-                      <div style={{ position: 'absolute', top: '90%', left: '50px', transform: 'translateY(-50%)' }}>
+
+                      <div style={{ position: 'absolute', top: '95%', left: '50px', transform: 'translateY(-50%)' }}>
                         <img
                           src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
                           alt="Company Logo"
                           className="logo-image"
                           style={{
-                            width: '200px', // Fixed width
-                            height: '120px', // Fixed height
+                            width: '20vw',
+                            height: '20vw',
+                            maxWidth: '150px',
+                            maxHeight: '150px',
                             cursor: 'pointer',
-                            clipPath: 'ellipse(50% 50% at 50% 50%)', // Creates a horizontal oval
-                            objectFit: 'cover', // Ensures the image covers the dimensions without distortion
+                            objectFit: 'cover',
+                            clipPath: 'none',
+                            border: '5px solid #f0f0f0', // Adds a black border around the image
+                            borderRadius: '10px', // Optional: adds rounded corners to the border
                           }}
                         />
                       </div>
                     </Card.Body>
                   </Card>
                 </div>
-              </Row>
+                {/* </Row>
 
-              <Row style={{ marginTop: '50px', alignItems: 'center', marginLeft: '10px' }}>
-                <Col md={3} style={{ display: 'flex', alignItems: 'start', justifyContent: 'center', padding: '5px' }}>
-                  <h2 style={{ paddingRight: '14px' }}><b>{companyName.toUpperCase()}</b></h2>
-                </Col>
-                <Col md={9} style={{ display: 'flex', alignItems: 'start' }}>
+              <Row style={{ marginTop: '5%', alignItems: 'center', marginLeft: '1%' }}> */}
+                {/* <Col md={3} style={{ display: 'flex', alignItems: 'end', justifyContent: 'center'}}> */}
+                <h2 className="responsive-title">
+                  <b>{companyName.toUpperCase()}</b>
+                </h2>
+                {/* </Col> */}
+                {/* <Col md={9} style={{ display: 'flex', alignItems: 'end' }}> */}
+                <span className="responsive-socials">
                   {socialMediaLinks.facebookLink && (
                     <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
                       <FaFacebook size={28} style={{ margin: '0 5px', color: '#3b5998' }} />
@@ -457,28 +473,28 @@ const EachCompanyPage = () => {
                   {socialMediaLinks.linkedinLink && (
                     <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
                       <FaLinkedin size={28} style={{ margin: '0 5px', color: '#0077b5' }} />
-                    </a>
+                    </ a>
                   )}
-                </Col>
+                </span>
+                {/* </Col> */}
               </Row>
-              <hr style={{ border: '1px solid black', marginLeft: '10px' }} />
-
-              <Row>
+              <hr style={{ border: '1px solid black', marginTop: '0rem' }} />
+              <Row style={{ marginBottom: '0', paddingBottom: '0' }}>
                 <Col md={2} style={{ marginLeft: '10px' }}>
-                  <Tabs activeKey={activeTab} onSelect={(key) => handleTabClick(key)}>
+                  <Tabs activeKey={activeTab} onSelect={(key) => handleTabClick(key)} style={{ marginBottom: '20px' }}>
                     <Tab eventKey="overview" title={customTabHeader("About  ", <FaAtom />)}></Tab>
                     <Tab eventKey="jobs" title={customTabHeader("Jobs  ", <FaBriefcase />)}></Tab>
                   </Tabs>
                 </Col>
               </Row>
-              <Row>
+              <Row style={{ marginBottom: '0', paddingBottom: '0' }}>
                 {/* Main Content */}
-                <Col xs={12} md={9} style={{  marginBottom: '20px' }}>
+                <Col xs={12} md={9} style={{ marginBottom: '20px' }}>
                   {activeTab === 'home' && (
                     <div>
                       <Card
                         onClick={() => handleTabClick('overview')}
-                        style={{ cursor: 'pointer', width: '100%', marginBottom: '20px' }}
+                        style={{ cursor: 'pointer', width: '100%', marginBottom: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}
                       >
                         <Card.Body>
                           <h3>About {companyName}</h3>
@@ -487,7 +503,7 @@ const EachCompanyPage = () => {
                       </Card>
                       <Card
                         onClick={() => handleTabClick('jobs')}
-                        style={{ cursor: 'pointer', width: '100%' }}
+                        style={{ cursor: 'pointer', width: '100%', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}
                       >
                         <Card.Body>
                           <h3>Jobs</h3>
@@ -503,7 +519,7 @@ const EachCompanyPage = () => {
                 {/* Sidebar */}
                 <Col xs={12} md={3}>
                   {/* Key Stats Card */}
-                  <Card className="key-stats" style={{ width: '100%', marginBottom: '20px' }}>
+                  <Card className="key-stats" style={{ width: '100%', marginBottom: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
                     <Card.Body>
                       {isLoggedIn ? (
                         user?.userRole === 'HR' ? null : user?.userRole === 'Candidate' ? (
@@ -534,6 +550,7 @@ const EachCompanyPage = () => {
                                 variant="success"
                                 onClick={handleApplyCompany}
                                 disabled={!selectedResume}
+                                style={{ marginTop: '10px' }}
                               >
                                 Apply
                               </Button>
@@ -560,7 +577,7 @@ const EachCompanyPage = () => {
                       </div>
                       <div style={{ marginBottom: '16px' }}>
                         <h5>HR mapped: {countOfHR > 0 ? 'Yes' : 'No'}</h5>
-                        <h5>Total HR's: {countOfHR}</h5>
+                        <h5>Total HR 's: {countOfHR}</h5>
                       </div>
                       <div style={{ marginBottom: '16px' }}>
                         <h5>Total Jobs: {countOfTotalJobs}</h5>
@@ -577,7 +594,7 @@ const EachCompanyPage = () => {
                   </Card>
 
                   {/* Company Policies Card */}
-                  <Card className="key-stats" style={{ width: '100%' }}>
+                  <Card className="key-stats" style={{ width: '100%', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
                     <Card.Body>
                       <h3><b>Company Policies</b></h3>
                       <h4>Job Reapply Policy</h4>
@@ -608,7 +625,7 @@ const EachCompanyPage = () => {
                 </Col>
               </Row>
 
-              <Row style={{ marginTop: '10px' }} >
+              <Row style={{ marginTop: '10px' }}>
                 <Footer />
               </Row>
             </div>
@@ -670,7 +687,7 @@ const EachCompanyPage = () => {
           <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 

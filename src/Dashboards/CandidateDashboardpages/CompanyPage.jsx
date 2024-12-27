@@ -431,46 +431,57 @@ const CompamyPage = () => {
           onClose={() => setShowResumePopup(false)}
         />
       )}
-      <div className="main-content"
-        // style={{
-        //   overflowY: 'auto',
-        //   paddingBottom: '20px',
-        // }}
-      >
-        <Card style={{ width: '100%', height: '60%' }}>
-          <Card.Body style={{ padding: 0, position: 'relative' }}>
-            <div style={{ position: 'relative', height: '55%' }}>
-              <img
-                src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
-                alt="Company Banner"
-                className="banner-image"
-                onClick={() => ('banner')}
-                style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
-              />
-            </div>
+      <div className="main-content" >
+      <Row style={{ marginBottom: '20px' }}>
+          <Card style={{ width: '100%', height: '60%' }}>
+            <Card.Body style={{ padding: 0, position: 'relative' }}>
+              <div style={{ position: 'relative', height: 'auto', maxHeight: '55%' }}>
+                <img
+                  src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
+                  alt="Company Banner"
+                  className="banner-image"
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    maxHeight: '200px',
+                    objectFit: 'cover',
+                    cursor: 'pointer',
+                  }}
+                />
+              </div>
 
-            <div style={{ position: 'absolute', top: '90%', left: '50px', transform: 'translateY(-50%)' }}>
-              <img
-                src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
-                alt="Company Logo"
-                className="logo-image"
-                style={{
-                  width: '200px',
-                  height: '120px',
-                  cursor: 'pointer',
-                  clipPath: 'ellipse(50% 50% at 50% 50%)',
-                  objectFit: 'cover',
-                }}
-              />
-            </div>
-          </Card.Body>
-        </Card>
+              <div style={{ position: 'absolute', top: '95%', left: '50px', transform: 'translateY(-50%)' }}>
+                <img
+                  src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
+                  alt="Company Logo"
+                  className="logo-image"
+                  style={{
+                    width: '20vw',
+                    height: '20vw',
+                    maxWidth: '150px',
+                    maxHeight: '150px',
+                    cursor: 'pointer',
+                    objectFit: 'cover',
+                    clipPath: 'none',
+                    border: '5px solid #f0f0f0', // Adds a black border around the image
+                    borderRadius: '10px', // Optional: adds rounded corners to the border
+                  }}
+                />
+              </div>
+            </Card.Body>
+          </Card>
 
-        <Row style={{ marginTop: '50px', alignItems: 'center' }}>
-          <Col md={3} style={{ display: 'flex', alignItems: 'start', justifyContent: 'center', padding: '5px' }}>
-            <h2 style={{ paddingRight: '14px' }}><b>{companyName.toUpperCase()}</b></h2>
-          </Col>
-          <Col md={9} style={{ display: 'flex', alignItems: 'start' }}>
+          {/* </Row>
+
+              <Row style={{ marginTop: '5%', alignItems: 'center', marginLeft: '1%' }}> */}
+          {/* <Col md={3} style={{ display: 'flex', alignItems: 'end', justifyContent: 'center'}}> */}
+          <h2 className="responsive-title">
+            <b>{companyName.toUpperCase()}</b>
+          </h2>
+
+          {/* </Col> */}
+          {/* <Col md={9} style={{ display: 'flex', alignItems: 'end' }}> */}
+          <span className="responsive-socials">
             {socialMediaLinks.facebookLink && (
               <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
                 <FaFacebook size={28} style={{ margin: '0 5px', color: '#3b5998' }} />
@@ -491,9 +502,10 @@ const CompamyPage = () => {
                 <FaLinkedin size={28} style={{ margin: '0 5px', color: '#0077b5' }} />
               </a>
             )}
-          </Col>
+          </span>
+          {/* </Col> */}
         </Row>
-        <hr style={{ border: '1px solid black', margin: '30px 0' }} />
+        <hr style={{ border: '1px solid black', marginTop: '0rem' }} />
         <Row className="hr-company_page-row2">
           <Col md={2}>
             <Tabs
@@ -707,7 +719,7 @@ const CompamyPage = () => {
             )}
           </Col>
           <Col xs={12} md={4}>
-            <Card className='key-stats' style={{ width: '80%', height: 'fit-content' }}>
+            <Card className='key-stats' style={{ width: '100%', height: 'fit-content' }}>
               <Card.Body>
                 <Row className="mb-3">
                   <Col>
@@ -818,10 +830,11 @@ const CompamyPage = () => {
           </Col>
         </Row>
       </div>
+      <Footer />
       <div>
         <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
       </div>
-      <Footer />
+
     </DashboardLayout>
   );
 };
