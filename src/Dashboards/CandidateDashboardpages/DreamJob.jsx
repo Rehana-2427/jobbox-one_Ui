@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Container, Form, FormControl, InputGroup } from 'react-bootstrap';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Footer from '../../pages/Footer';
 import DashboardLayout from './DashboardLayout';
@@ -18,6 +18,7 @@ const DreamJob = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [companyInput, setCompanyInput] = useState('');
   const [companies, setCompanies] = useState(new Set());
+  const navigate = useNavigate();
 
   const [showResumePopup, setShowResumePopup] = useState(false);
   const [resumes, setResumes] = useState([]);
@@ -137,8 +138,6 @@ const DreamJob = () => {
             return; // Abort the operation
           }
         }
-
-
       }
 
 
@@ -184,130 +183,134 @@ const DreamJob = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
   };
-
+  const handleBack = () => {
+    navigate(-1);
+  };
 
   return (
     <DashboardLayout>
-      <Container className="d-flex justify-content-center py-5">
-        <div className="content-wrapper w-100" style={{ maxWidth: '600px' }}>
-          {/* Header Section */}
-          <div className="header-section text-center mb-4">
-            <h2 className="display-6 display-sm-5 display-md-4 display-lg-3">Dream Company Application</h2>
-            <p className="lead text-wrap">Where you can apply to your dream position by selecting your resume only.</p>
-          </div>
+      <div className="main-content">
+        <Button variant='primary' onClick={handleBack} style={{ width: '100px', marginLeft: '12px' }}>Back</Button>
+        <Container className="d-flex justify-content-center py-5">
+          <div className="content-wrapper w-100" style={{ maxWidth: '600px' }}>
+            {/* Header Section */}
+            <div className="header-section text-center mb-4">
+              <h2 className="display-6 display-sm-5 display-md-4 display-lg-3">Dream Company Application</h2>
+              <p className="lead text-wrap">Where you can apply to your dream position by selecting your resume only.</p>
+            </div>
 
 
-          {/* Responsive Form Section */}
-          <Form onSubmit={handleSubmit} className="center-form-card p-4 shadow-sm rounded">
-            <Form.Group>
-              <Form.Label htmlFor="jobRole">Job Title:</Form.Label>
-              <Form.Control
-                type="text"
-                id="jobRole"
-                name="jobRole"
-                value={jobRole}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="companies">Companies:</Form.Label>
-              <InputGroup>
-                <FormControl
+            {/* Responsive Form Section */}
+            <Form onSubmit={handleSubmit} className="center-form-card p-4 shadow-sm rounded">
+              <Form.Group>
+                <Form.Label htmlFor="jobRole">Job Title:</Form.Label>
+                <Form.Control
                   type="text"
-                  placeholder="Enter company name one by one"
-                  value={companyInput}
-                  onChange={handleCompanyInputChange}
+                  id="jobRole"
+                  name="jobRole"
+                  value={jobRole}
+                  onChange={handleChange}
+                  required
                 />
-                <Button
-                  variant="primary"
-                  onClick={handleAddCompany}
-                  disabled={!companyInput.trim()}
-                >
-                  Add
-                </Button>
-              </InputGroup>
-              <Form.Text className="text-muted text-wrap">
-                Enter company names one by one. <br /> Click "Add" to include each company in the list.
-              </Form.Text>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label htmlFor="companies">Companies:</Form.Label>
+                <InputGroup>
+                  <FormControl
+                    type="text"
+                    placeholder="Enter company name one by one"
+                    value={companyInput}
+                    onChange={handleCompanyInputChange}
+                  />
+                  <Button
+                    variant="primary"
+                    onClick={handleAddCompany}
+                    disabled={!companyInput.trim()}
+                  >
+                    Add
+                  </Button>
+                </InputGroup>
+                <Form.Text className="text-muted text-wrap">
+                  Enter company names one by one. <br /> Click "Add" to include each company in the list.
+                </Form.Text>
 
-            </Form.Group>
+              </Form.Group>
 
-            <br />
+              <br />
 
-            <div className='mb-3 d-flex flex-wrap'>
-              {Array.from(companies).map((company, index) => (
-                <span
-                  key={index}
-                  className="badge bg-light text-dark me-2 mb-2 position-relative d-inline-flex align-items-center"
-                  style={{
-                    fontSize: '1.25rem',
-                    padding: '0.5rem 1rem',
-                    borderRadius: '0.25rem',
-                    position: 'relative',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  {company}
-                  <i
-                    className="fas fa-times ms-2"
-                    onClick={() => handleRemoveCompany(company)}
+              <div className='mb-3 d-flex flex-wrap'>
+                {Array.from(companies).map((company, index) => (
+                  <span
+                    key={index}
+                    className="badge bg-light text-dark me-2 mb-2 position-relative d-inline-flex align-items-center"
                     style={{
-                      cursor: 'pointer',
-                      color: '#dc3545',
-                      fontSize: '1.2rem',
-                      position: 'absolute',
-                      right: '3px',
-                      top: '12%',
-                      transform: 'translateY(-50%)',
+                      fontSize: '1.25rem',
+                      padding: '0.5rem 1rem',
+                      borderRadius: '0.25rem',
+                      position: 'relative',
+                      display: 'inline-flex',
+                      alignItems: 'center',
                     }}
                   >
-                    <FontAwesomeIcon icon={faClose} />
-                  </i>
-                </span>
-              ))}
-            </div>
-            <br />
-            <Form.Group>
-              {/* <Form.Label htmlFor="resume">Resume:</Form.Label> */}
-              {/* <Button onClick={handleApplyButtonClick}>Select Resume</Button> */}
-
-              <div className="resume-dropdown-container">
-                <h5 className="fw-bold">Select Resume</h5>
-                <select
-                  id="resumeSelect"
-                  value={selectedResume}
-                  onChange={handleResumeSelect}
-                  required
-                  className="form-select"
-                >
-                  <option value="">Select Resume</option>
-                  {resumes.map((resume) => (
-                    <option key={resume.id} value={resume.id}>
-                      {resume.message}
-                    </option>
-                  ))}
-                </select>
+                    {company}
+                    <i
+                      className="fas fa-times ms-2"
+                      onClick={() => handleRemoveCompany(company)}
+                      style={{
+                        cursor: 'pointer',
+                        color: '#dc3545',
+                        fontSize: '1.2rem',
+                        position: 'absolute',
+                        right: '3px',
+                        top: '12%',
+                        transform: 'translateY(-50%)',
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faClose} />
+                    </i>
+                  </span>
+                ))}
               </div>
-            </Form.Group>
-            <Button
-              variant="primary"
-              onClick={handleApplyButtonClick}
-              className="w-50 py-1 mt-3 fw-bold fs-6"
-            >
-              Apply
-            </Button>
-          </Form>
+              <br />
+              <Form.Group>
+                {/* <Form.Label htmlFor="resume">Resume:</Form.Label> */}
+                {/* <Button onClick={handleApplyButtonClick}>Select Resume</Button> */}
+
+                <div className="resume-dropdown-container">
+                  <h5 className="fw-bold">Select Resume</h5>
+                  <select
+                    id="resumeSelect"
+                    value={selectedResume}
+                    onChange={handleResumeSelect}
+                    required
+                    className="form-select"
+                  >
+                    <option value="">Select Resume</option>
+                    {resumes.map((resume) => (
+                      <option key={resume.id} value={resume.id}>
+                        {resume.message}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </Form.Group>
+              <Button
+                variant="primary"
+                onClick={handleApplyButtonClick}
+                className="w-50 py-1 mt-3 fw-bold fs-6"
+              >
+                Apply
+              </Button>
+            </Form>
 
 
-          {errorMessage &&
-            <p className="error-message" style={{ maxWidth: '350px', textWrap: 'auto' }}>
-              {errorMessage}
-            </p>
-          }
+            {errorMessage &&
+              <p className="error-message" style={{ maxWidth: '350px', textWrap: 'auto' }}>
+                {errorMessage}
+              </p>
+            }
 
-          {/* {showResumePopup && (
+            {/* {showResumePopup && (
               <ResumeSelectionPopup
                 resumes={resumes}
                 onSelectResume={handleResumeSelect}
@@ -315,12 +318,12 @@ const DreamJob = () => {
               />
             )} */}
 
-        </div>
-      </Container>
+          </div>
+        </Container>
+
+      </div>
       <Footer />
     </DashboardLayout>
-
-
 
   );
 };

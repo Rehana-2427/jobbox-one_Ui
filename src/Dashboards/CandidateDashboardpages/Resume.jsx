@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Card, Modal, Spinner } from 'react-bootstrap';
+import { Button, Card, Modal } from 'react-bootstrap';
 import { FaEye } from 'react-icons/fa';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { default as swal } from 'sweetalert2';
@@ -35,31 +35,9 @@ const Resume = () => {
       });
   }, [userId]);
 
-  // // Fetch additional data (list of applications) based on resumeId
-  // useEffect(() => {
-  //   resumes.forEach(resume => {
-  //     const resumeId = resume.id;
-  //     console.log("resumeId" + resumeId)
-  //     // Check if resumeId is a valid number (not undefined, null, or NaN)
-  //     if (resumeId && !isNaN(resumeId)) {
-  //       // Proceed with the API call only if resumeId is valid
-  //       axios.get(`${BASE_API_URL}/getResumeDetails?resumeId=${resumeId}`)
-  //         .then(response => {
-  //           setResumeDetails(prevState => ({
-  //             ...prevState,
-  //             [resumeId]: response.data // Store list of applications for each resumeId
-  //           }));
-  //         })
-  //         .catch(error => {
-  //           console.error(`Error fetching details for resume ${resumeId}:`, error);
-  //         });
-  //     } else {
-  //       console.error(`Invalid resumeId: ${resumeId}. Skipping API call.`);
-  //     }
-  //   });
-  // }, [resumes]); // Trigger this when resumes change
-
   const detailsRef = useRef(null); // Ref for the details section
+  const resumesRef = useRef(null); // Ref for the resumes cards section
+
   const handleViewResumeDetails = async (resume) => {
     setViewResume(true); // Assuming this sets a loading state or triggers a view change.
     const resumeId = resume.id;
@@ -142,10 +120,18 @@ const Resume = () => {
       swal.fire('Cancelled', 'Your resume is safe', 'error');
     }
   };
+  const handleClose = () => {
+    setViewResume(false); // Hide the resume details
+    setResumeDetails([]); // Clear the resume details
 
+    if (resumesRef.current) {
+      resumesRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
   return (
     <DashboardLayout>
-      <div className='adding-resumes' style={{ position: 'relative', marginTop: '10px' }}>
+      <div className="main-content">
+      <div className='adding-resumes' style={{ position: 'relative', marginTop: '10px',marginRight:'15px' }}>
         <Link to="/candidate-dashboard/resume/resumeAdd" state={{ userName: userName, userId: userId }}>
           <Button style={{ position: 'absolute', top: 0, right: 0 }}>ADD NEW RESUME</Button>
         </Link>
@@ -163,7 +149,7 @@ const Resume = () => {
       )}
 
       <h3 className='text-start'>MY RESUMES</h3>
-      <p>(If you want to view your resume details please click on <strong style={{ color: 'red' }}>Preview </strong>)</p>
+      <p className='text-start'>(If you want to view your resume details please click on <strong style={{ color: 'red' }}>Preview </strong>)</p>
 
       {loading ? (
         <div className="text-center">
@@ -177,35 +163,36 @@ const Resume = () => {
           {resumes.length === 0 ? (
             <div className="text-center">No resumes found</div>
           ) : (
-            <div className="cards d-flex flex-wrap justify-content-start" style={{ minHeight: 'fit-content' }}>
-              {resumes.map((resume, index) => (
-                <Card className='resume-card' style={{ width: '200px', margin: '12px' }} key={resume.id}>
-                  <Card.Body>
-                    <Card.Title>Resume : {index + 1}</Card.Title>
-                    <Card.Text>{resume.message}</Card.Text>
-                    {resume.fileType === 'file' && (
-                      <Button size="sm" className='download' variant="primary" onClick={() => handleDownload(resume.id, resume.fileName)}>
-                        Download
-                      </Button>
-                    )}
-                    {resume.fileType === 'link' && (
-                      <Card.Link href={resume.fileName} target="_blank">Open Link</Card.Link>
-                    )}
-                    {resume.fileType === 'brief' && (
-                      <Button variant="secondary" size="sm" className='open-brief-modal' onClick={() => handleBrief(resume.id, resume.fileType)}>
-                        Open Brief
-                      </Button>
-                    )}
-                    <Button variant="danger" size="sm" className='delete' style={{ marginLeft: '10px' }} onClick={() => handleDelete(resume.id, resume.message)}>
-                      Delete
+            <div ref={resumesRef} className="cards d-flex flex-wrap justify-content-start" style={{ minHeight: 'fit-content'}}>
+            {resumes.map((resume, index) => (
+              <Card className='resume-card' style={{ width: '200px', margin: '12px' }} key={resume.id}>
+                <Card.Body>
+                  <Card.Title>Resume : {index + 1}</Card.Title>
+                  <Card.Text>{resume.message}</Card.Text>
+                  {resume.fileType === 'file' && (
+                    <Button size="sm" className="download" variant="primary" onClick={() => handleDownload(resume.id, resume.fileName)}>
+                      Download
                     </Button>
-                    <h5 className="text-muted text-center" style={{ marginTop: '10px' }} onClick={() => handleViewResumeDetails(resume)}>
-                      <FaEye /> Preview
-                    </h5>
-                  </Card.Body>
-                </Card>
-              ))}
-            </div>
+                  )}
+                  {resume.fileType === 'link' && (
+                    <Card.Link href={resume.fileName} target="_blank">Open Link</Card.Link>
+                  )}
+                  {resume.fileType === 'brief' && (
+                    <Button variant="secondary" size="sm" className="open-brief-modal" onClick={() => handleBrief(resume.id, resume.fileType)}>
+                      Open Brief
+                    </Button>
+                  )}
+                  <Button variant="danger" size="sm" className="delete" style={{ marginLeft: '10px' }} onClick={() => handleDelete(resume.id, resume.message)}>
+                    Delete
+                  </Button>
+                  <h5 className="text-muted text-center" style={{ marginTop: '10px' }} onClick={() => handleViewResumeDetails(resume)}>
+                    <FaEye /> Preview
+                  </h5>
+                </Card.Body>
+              </Card>
+            ))}
+          </div>
+          
           )}
         </>
       )}
@@ -216,7 +203,8 @@ const Resume = () => {
             <div className="d-flex justify-content-between align-items-center mb-3">
               <h4 className="text-primary">{resumeMessage}</h4>
               <h5 className="text-muted">Total Views: {viewCount}</h5>
-            </div>
+              <Button onClick={handleClose}>Close</Button>
+              </div>
 
             {/* Separator line */}
             <hr style={{ borderTop: '1px solid purple', marginTop: '15px', marginBottom: '15px' }} />
@@ -237,6 +225,7 @@ const Resume = () => {
             )}
           </>
         )}
+      </div>
       </div>
       <Footer />
     </DashboardLayout>

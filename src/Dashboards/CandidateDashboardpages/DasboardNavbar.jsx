@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
+import { IoMdCheckmark } from 'react-icons/io';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useAuth } from '../../AuthProvider';
@@ -11,25 +12,25 @@ const DasboardNavbar = ({ user, isSidebarOpen, toggleSidebar }) => {
     const location = useLocation();
     const BASE_API_URL = process.env.REACT_APP_API_URL;
     // Initialize state with defaults
-  const [userName, setUserName] = useState('');
-  const [userId, setUserId] = useState('');
+    const [userName, setUserName] = useState('');
+    const [userId, setUserId] = useState('');
 
-  useEffect(() => {
-    // If user prop is available, use it, else fallback to location.state
-    if (user) {
-      setUserName(user.userName || '');  // Set userName from user prop
-      setUserId(user.userId || '');      // Set userId from user prop
-    } else if (location.state) {
-      // If user prop is not available, fallback to location.state
-      setUserName(location.state?.userName || ''); 
-      setUserId(location.state?.userId || ''); 
-    }
-    console.log("userName --> " + userName + " and userId --> " + userId);
-  }, [user, location.state]);  // Effect depends on user and location.state
-  
+    useEffect(() => {
+        // If user prop is available, use it, else fallback to location.state
+        if (user) {
+            setUserName(user.userName || '');  // Set userName from user prop
+            setUserId(user.userId || '');      // Set userId from user prop
+        } else if (location.state) {
+            // If user prop is not available, fallback to location.state
+            setUserName(location.state?.userName || '');
+            setUserId(location.state?.userId || '');
+        }
+        console.log("userName --> " + userName + " and userId --> " + userId);
+    }, [user, location.state]);  // Effect depends on user and location.state
+
     const [countOfUnreadNotification, setCountOfUnreadNotification] = useState(0);
     const [unreadNotifications, setUnreadNotifications] = useState([]);
-    console.log("user --> "+user);
+    console.log("user --> " + user);
     console.log("From User --> userName --> " + user.userName + " and userId --> " + user.userId);
     console.log("userName --> " + userName + " and userId --> " + userId);
     // Fetch user data and notifications on mount or userId change
@@ -77,6 +78,7 @@ const DasboardNavbar = ({ user, isSidebarOpen, toggleSidebar }) => {
             else document.exitFullscreen();
         }
     };
+    const [isClicked, setIsClicked] = useState(false);
 
     const { logout } = useAuth(); // Get logout function from context
 
@@ -100,33 +102,50 @@ const DasboardNavbar = ({ user, isSidebarOpen, toggleSidebar }) => {
         });
     };
 
-    const markNotificationAsRead = async (notificationId) => {
+    // const markNotificationAsRead = async (notificationId) => {
+    //     try {
+    //         await axios.post(`${BASE_API_URL}/markNotificationsAsRead`, null, {
+    //             params: { userId, notificationId }
+    //         });
+    //         // Update state to reflect the notification as read
+    //         const updatedNotifications = unreadNotifications.map(notification =>
+    //             notification.id === notificationId ? { ...notification, read: true } : notification
+    //         );
+    //         setUnreadNotifications(updatedNotifications);
+    //         // setCountOfUnreadNotification(prevCount => prevCount - 1); // Decrease unread count
+    //         setCountOfUnreadNotification(0)
+    //     } catch (error) {
+    //         console.error('Error marking notification as read:', error);
+    //     }
+    // };
+    const markNotificationAsRead = async () => {
         try {
+            // Make API call to mark all notifications as read
             await axios.post(`${BASE_API_URL}/markNotificationsAsRead`, null, {
-                params: { userId, notificationId }
+                params: { userId }
             });
-            // Update state to reflect the notification as read
-            const updatedNotifications = unreadNotifications.map(notification =>
-                notification.id === notificationId ? { ...notification, read: true } : notification
-            );
-            setUnreadNotifications(updatedNotifications);
-            setCountOfUnreadNotification(prevCount => prevCount - 1); // Decrease unread count
+            // Update state to reflect all notifications as read
+            setUnreadNotifications([]); // Empty the list of unread notifications
+            setCountOfUnreadNotification(0); // Set the unread notification count to zero
+            setIsClicked(true);
+
         } catch (error) {
-            console.error('Error marking notification as read:', error);
+            console.error('Error marking notifications as read:', error);
         }
     };
-     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1200);
-    
-        // Update the state on screen resize
-        useEffect(() => {
-            const handleResize = () => setIsSmallScreen(window.innerWidth < 1200);
-            window.addEventListener('resize', handleResize);
-            return () => window.removeEventListener('resize', handleResize);
-        }, []);
+
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1200);
+
+    // Update the state on screen resize
+    useEffect(() => {
+        const handleResize = () => setIsSmallScreen(window.innerWidth < 1200);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     return (
         <div className="main-header" style={{ position: 'fixed', width: '100%' }}>
-              <div className="dashboard-navbar-logo">
+            <div className="dashboard-navbar-logo">
                 {isSmallScreen ? (
                     <img
                         src="/jb_temp_logo.png"
@@ -174,7 +193,7 @@ const DasboardNavbar = ({ user, isSidebarOpen, toggleSidebar }) => {
                 </div>
 
                 {/* NOTIFICATION MENU BAR (Only Icon) */}
-                <div className="notification-icon-container">
+                {/* <div className="notification-icon-container">
                     <Dropdown className="ml-2">
                         <Dropdown.Toggle
                             as="div"
@@ -204,7 +223,62 @@ const DasboardNavbar = ({ user, isSidebarOpen, toggleSidebar }) => {
                             </Dropdown.Menu>
                         )}
                     </Dropdown>
+                </div> */}
+                <div className="notification-icon-container">
+                    <Dropdown className="ml-2">
+                        <Dropdown.Toggle
+                            as="div"
+                            id="dropdownNotification"
+                            className="badge-top-container toggle-hidden ml-2"
+                        >
+                            <span className="badge bg-primary cursor-pointer">
+                                {countOfUnreadNotification}
+                            </span>
+                            <i className="i-Bell text-muted header-icon" />
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu
+                            className="notification-dropdown-menu"
+                            style={{
+                                width: '300px', // Fixed width for the suggestions list
+                                maxHeight: '200px', // Max height of the suggestions list
+                                overflowY: 'scroll', // Always show scrollbar
+                                scrollbarWidth: 'thin', // For Firefox: thinner scrollbar
+                                scrollbarColor: '#888 #e0e0e0', // For Firefox: customize scrollbar colors (thumb and track)
+                            }}
+                        >
+                            {/* Check if notification count is 0 */}
+                            {countOfUnreadNotification === 0 ? (
+                                <Dropdown.Item>No new notifications</Dropdown.Item>
+                            ) : (
+                                <>
+                                    <Dropdown.Item
+                                        onClick={markNotificationAsRead}
+                                        className="text-end"
+                                        style={{
+                                            color: isClicked ? 'white' : 'purple',
+                                            backgroundColor: isClicked ? 'purple' : 'white',
+                                            cursor: 'pointer',
+                                        }}
+                                    >
+                                        Mark all as read <IoMdCheckmark />
+                                    </Dropdown.Item>
+                                    {unreadNotifications.map((notification, index) => (
+                                        <Dropdown.Item
+                                            key={index}
+                                            onClick={markNotificationAsRead} // This will mark the notification as read
+                                            className={notification.read ? 'read-notification' : 'unread-notification'}
+                                        >
+                                            {notification.message}
+                                        </Dropdown.Item>
+                                    ))}
+                                </>
+                            )}
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </div>
+
+
 
                 {/* USER PROFILE MENU BAR (Only Icon) */}
                 <div className="user col px-3">

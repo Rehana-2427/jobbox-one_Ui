@@ -1211,3 +1211,20 @@ button.com:hover {
   flex-direction: column;
   min-height: 100vh;
 }
+@media (max-width: 673px) {
+  .resume-card {
+    width: 100% !important;
+    text-align: center;
+  }
+}
+
+.notification-dropdown-menu {
+  max-height: 50px; /* Adjust max height for the dropdown */
+  overflow-y: scroll;  /* Add scrollbar for overflowing content */
+  white-space: normal; /* Allow text to wrap inside the dropdown */
+}
+
+.notification-dropdown-menu .dropdown-item {
+  word-wrap: break-word; /* Ensures that notification text wraps properly */
+}
+

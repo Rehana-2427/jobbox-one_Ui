@@ -178,101 +178,106 @@ const DreamCompany = () => {
     return variants[index % variants.length]; // Cycle through the variants
   };
 
-
+  const handleBack = () => {
+    navigate(-1);
+  };
   return (
     <DashboardLayout>
-      <Container className="d-flex justify-content-center py-5">
-        <div className="content-wrapper w-100" style={{ maxWidth: '600px' }}>
-          {/* Header Section */}
-          <div className="header-section text-center mb-4">
-            <h2 className="display-6 display-sm-5 display-md-4 display-lg-3 text-primary">Dream Company Application</h2>
-            <p className="lead text-muted">Where you can apply to your dream company by selecting your resume only.</p>
-          </div>
+      <div className="main-content">
+      <Button variant='primary' onClick={handleBack} style={{ width: '100px', marginLeft: '12px' }}>Back</Button>
+        <Container className="d-flex justify-content-center py-5">
+          <div className="content-wrapper w-100" style={{ maxWidth: '600px' }}>
+            {/* Header Section */}
+            <div className="header-section text-center mb-4">
+              <h2 className="display-6 display-sm-5 display-md-4 display-lg-3 text-primary">Dream Company Application</h2>
+              <p className="lead text-muted">Where you can apply to your dream company by selecting your resume only.</p>
+            </div>
 
-          {/* Responsive Form Section */}
-          <Form onSubmit={handleSubmit} className="center-form-card p-4 shadow-sm rounded bg-white position-relative">
+            {/* Responsive Form Section */}
+            <Form onSubmit={handleSubmit} className="center-form-card p-4 shadow-sm rounded bg-white position-relative">
 
-            {/* Company Name Input */}
-            <Form.Group className="mb-3 position-relative">
-              <Form.Label htmlFor="companyName"><h5 className="fw-bold">Company Name:</h5></Form.Label>
-              <Form.Control
-                type="text"
-                id="companyName"
-                name="companyName"
-                value={companyName}
-                onChange={handleCompanySearch}
-                required
-                className="form-control"
-                placeholder="Enter your company name"
-              />
-
-              {/* Display company suggestions */}
-              {companySuggestions.length > 0 && (
-                <ListGroup
-                  className="suggestions-list bg-white border rounded p-2 position-absolute w-100"
-                  style={{
-                    top: '100%',
-                    left: '0',
-                    zIndex: '10',
-                    width: '300px', // Fixed width for the suggestions list
-                    maxHeight: '200px', // Max height of the suggestions list
-                    overflowY: 'scroll', // Always show scrollbar
-                    scrollbarWidth: 'thin', // For Firefox: thinner scrollbar
-                    scrollbarColor: '#888 #e0e0e0', // For Firefox: customize scrollbar colors (thumb and track)
-                  }}
-                >
-                  {companySuggestions.map((company, index) => (
-                    <ListGroup.Item
-                      key={company.id}
-                      as="div"
-                      action
-                      onClick={() => handleSelectCompany(company)} // Select company when clicked
-                      variant={getRandomVariant(index)} // Apply different colors for each item
-                      className="cursor-pointer"
-                    >
-                      {company.companyName}
-                    </ListGroup.Item>
-                  ))}
-                </ListGroup>
-              )}
-            </Form.Group>
-
-            {/* Resume Selection */}
-            <Form.Group className="mb-3">
-              <div className="resume-dropdown-container">
-                <h5 className="fw-bold">Select Resume</h5>
-                <select
-                  id="resumeSelect"
-                  value={selectedResume}
-                  onChange={handleResumeSelect}
+              {/* Company Name Input */}
+              <Form.Group className="mb-3 position-relative">
+                <Form.Label htmlFor="companyName"><h5 className="fw-bold">Company Name:</h5></Form.Label>
+                <Form.Control
+                  type="text"
+                  id="companyName"
+                  name="companyName"
+                  value={companyName}
+                  onChange={handleCompanySearch}
                   required
-                  className="form-select"
-                >
-                  <option value="">Select Resume</option>
-                  {resumes.map((resume) => (
-                    <option key={resume.id} value={resume.id}>
-                      {resume.message}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </Form.Group>
+                  className="form-control"
+                  placeholder="Enter your company name"
+                />
 
-            {/* Apply Button */}
-            <Button
-              variant="primary"
-              onClick={handleApplyButtonClick}
-              className="w-50 py-2 mt-4 fw-bold fs-6 d-block mx-auto"
-            >
-              Apply
-            </Button>
-          </Form>
+                {/* Display company suggestions */}
+                {companySuggestions.length > 0 && (
+                  <ListGroup
+                    className="suggestions-list bg-white border rounded p-2 position-absolute w-100"
+                    style={{
+                      top: '100%',
+                      left: '0',
+                      zIndex: '10',
+                      width: '300px', // Fixed width for the suggestions list
+                      maxHeight: '200px', // Max height of the suggestions list
+                      overflowY: 'scroll', // Always show scrollbar
+                      scrollbarWidth: 'thin', // For Firefox: thinner scrollbar
+                      scrollbarColor: '#888 #e0e0e0', // For Firefox: customize scrollbar colors (thumb and track)
+                    }}
+                  >
+                    {companySuggestions.map((company, index) => (
+                      <ListGroup.Item
+                        key={company.id}
+                        as="div"
+                        action
+                        onClick={() => handleSelectCompany(company)} // Select company when clicked
+                        variant={getRandomVariant(index)} // Apply different colors for each item
+                        className="cursor-pointer"
+                      >
+                        {company.companyName}
+                      </ListGroup.Item>
+                    ))}
+                  </ListGroup>
+                )}
+              </Form.Group>
 
-          {/* Error Message Display */}
-          {/* Toast */}
-          <ToastContainer />
-        </div>
-      </Container>
+              {/* Resume Selection */}
+              <Form.Group className="mb-3">
+                <div className="resume-dropdown-container">
+                  <h5 className="fw-bold">Select Resume</h5>
+                  <select
+                    id="resumeSelect"
+                    value={selectedResume}
+                    onChange={handleResumeSelect}
+                    required
+                    className="form-select"
+                  >
+                    <option value="">Select Resume</option>
+                    {resumes.map((resume) => (
+                      <option key={resume.id} value={resume.id}>
+                        {resume.message}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </Form.Group>
+
+              {/* Apply Button */}
+              <Button
+                variant="primary"
+                onClick={handleApplyButtonClick}
+                className="w-50 py-2 mt-4 fw-bold fs-6 d-block mx-auto"
+              >
+                Apply
+              </Button>
+            </Form>
+
+            {/* Error Message Display */}
+            {/* Toast */}
+            <ToastContainer />
+          </div>
+        </Container>
+      </div>
       <Footer />
     </DashboardLayout>
 
