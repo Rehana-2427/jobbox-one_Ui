@@ -1196,13 +1196,24 @@ button.com:hover {
   .filter-action {
     width: 97% !important;
     flex: none !important; /* Prevent flexbox sizing */
+    margin-left: 10px !important;
   }
   .search-bar{
     margin-left: 12px;
     width: 60%;
   }
 }
-
+@media (max-width: 4) {
+  .filter-action {
+    width: 97% !important;
+    flex: none !important; /* Prevent flexbox sizing */
+    margin-left: 10px !important;
+  }
+  .search-bar{
+    margin-left: 12px;
+    width: 60%;
+  }
+}
 .text-start{
   padding-left: 12px;
 }
@@ -1210,6 +1221,8 @@ button.com:hover {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow-x: hidden !important;
+
 }
 
 @media (max-width: 1200px) {

@@ -264,7 +264,7 @@ const CompanyShowCase = () => {
             setDocuments(response.data); // Set documents data to state
           }
         } catch (err) {
-          setError('Failed to fetch documents.');
+          // setError('Failed to fetch documents.');
           console.error(err);
         } finally {
           setLoading(false);
@@ -279,9 +279,9 @@ const CompanyShowCase = () => {
   //   return <div>Loading documents...</div>;
   // }
 
-  if (error) {
-    return <div>{error}</div>;
-  }
+  // if (error) {
+  //   return <div>{error}</div>;
+  // }
   const customTabHeader = (title, icon) => (
     <div className="d-flex align-items-center">
       <span className="me-2">

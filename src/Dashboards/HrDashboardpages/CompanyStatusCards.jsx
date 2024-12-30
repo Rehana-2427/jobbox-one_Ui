@@ -22,7 +22,6 @@ const CompanyStatusCards = () => {
         setUserEmail(userEmailFromLocation);
     }, [location]);  // Re-run the effect when the location changes
     
-    const [userData, setUserData] = useState(null);
     const [countOfJobs, setCountOfJobs] = useState(0);
     const [countOfApplications, setCountOfApplications] = useState(0);
     // const [countOfShortlistedCandiCompany, setCountOfShortlistedCandiCompany] = useState(0);
@@ -79,15 +78,15 @@ const CompanyStatusCards = () => {
         }
     }, [userEmail, fetchCounts]);
     return (
-        <Col md={12} style={{ paddingTop: '10px', paddingLeft: '10px' }}>
+        <Col md={12} style={{ paddingLeft: '15px',paddingRight:'15px' }}>
             <Row>
                 {DATA.map((item, index) => (
                     <Col lg={3} sm={6} key={index}>
                         <Card
-                            className="card-icon-bg gap-3 card-icon-bg-primary o-hidden mb-4"
-                            style={{ maxWidth: '250px', height: '100px' }}
+                            className="card card-icon-bg card-icon-bg-primary o-hidden mb-4"
+                            style={{ height: '100px',paddingLeft:'10px' }}
                         >
-                            <Card.Body className="align-items-center gap-4">
+                            <Card.Body>
                                 <FontAwesomeIcon
                                     icon={item.icon}
                                     className="me-2 text-primary mb-0 text-24 fw-semibold"

@@ -205,7 +205,7 @@ const BrowseJobs = () => {
             <div className="custom-navbar-container">
                 <CustomNavbar />
             </div>
-            <div  style={{ overflowY: 'scroll',}}>
+            <div className='welcome-msg' style={{ overflowY: 'scroll',overflowX:'hidden'}}>
                 <Row>
                     <h1 className='text-center'>Find Your Dream Job & Apply for it</h1>
                     <p className='text-center' style={{ fontSize: '20px' }}>Jobs for you to explore</p>
@@ -362,7 +362,7 @@ const BrowseJobs = () => {
                         </div>
                     </div>
                 </Row>
-                <div style={{ marginTop: '100px' }}>
+                <div>
                     <JobListings />
                 </div>
 

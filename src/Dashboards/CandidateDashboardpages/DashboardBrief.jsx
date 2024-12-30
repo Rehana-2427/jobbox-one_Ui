@@ -3,13 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const DashboardBrief = () => {
     const BASE_API_URL = process.env.REACT_APP_API_URL;
     const location = useLocation();
-    const navigate = useNavigate();
-    const [userData, setUserData] = useState();
     const [countOfResume, setCountOfResumes] = useState(null);
     const [countOfCompanies, setCountOfCompanies] = useState(null);
     const [countOfAppliedCompanies, setCountOfAppliedCompanies] = useState(null);
@@ -58,6 +56,8 @@ const DashboardBrief = () => {
     //     }
     // };
 
+
+    console.log(userId)
     useEffect(() => {
         const fetchData = async (userId) => {
             try {

@@ -149,7 +149,7 @@ const JobboxCompanyPage = () => {
 
 
   return (
-    <div >
+    <div style={{overflowX:'hidden'}}>
       <div className="custom-navbar-container">
         <CustomNavbar />
       </div>

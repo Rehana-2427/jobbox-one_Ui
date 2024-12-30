@@ -24,7 +24,7 @@ const cardData = [
 ];
 const Testimonials = () => {
     return (
-        <Container style={{paddingTop:'50px'}}>
+        <Container>
             <Row className='text-center mb-4'>
                 <div style={{ textAlign: 'center' }}>
                     <h1 style={{ borderBottom: '2px solid purple', display: 'inline-block' }}>
@@ -36,13 +36,13 @@ const Testimonials = () => {
             <Row>
                 {cardData.map((card, index) => (
                     <Col md={4} key={index} className='mb-4'>
-                        <Card className='services-card-column hover-effect' style={{ width: '350px', height: 'auto' }}>
+                        <Card className='card-profile-1 text-center mb-4 hover-effect'>
                             <Card.Img
                                 variant="top"
                                 src={card.imgSrc}
                                 alt={card.title}
                                 className='rounded-circle mx-auto d-block'
-                                style={{ width: '140px', height: '140px', marginTop: '20px' }}
+                                style={{ width: '140px', height: '140px' }}
                             />
                             <Card.Body>
                                 <Card.Text>{card.text}</Card.Text>
