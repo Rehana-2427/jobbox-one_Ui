@@ -124,7 +124,7 @@ const ResumeAdd = () => {
   const handleOk = () => {
     setSuccessMessage('');
     setShowModal(false);
-   // window.location.reload(); // Refresh the page
+    // window.location.reload(); // Refresh the page
   };
   const user = {
     userName: userName,
@@ -144,7 +144,7 @@ const ResumeAdd = () => {
   return (
 
     <DashboardLayout>
-      <Col xs={6}>
+      <Col xs={6} style={{ marginTop: '20px', marginLeft: '20px' }}>
         <Button onClick={handleBack} variant="secondary">
           <FontAwesomeIcon icon={faArrowLeft} />
         </Button>

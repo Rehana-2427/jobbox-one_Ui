@@ -306,7 +306,8 @@ const ChatComponent = ({ applicationId, hrId, candidateId, userType, setIsChatOp
                   style={{ position: 'relative' }}
                 >
                   <div className="message-content">
-                    <strong>{msg.hrMessage && userType === 'HR' ? 'You' : msg.candidateMessage && userType === 'Candidate' ? 'You' : userName}: </strong>                    <span>{msg.hrMessage || msg.candidateMessage}</span>
+                    <strong>{msg.hrMessage && userType === 'HR' ? 'You' : msg.candidateMessage && userType === 'Candidate' ? 'You' : userName}: </strong>
+                    <span>{msg.hrMessage || msg.candidateMessage}</span>
                     <div className="message-time">
                       <span>{formatMessageDateTime(msg.createdAt)}</span>
                     </div>

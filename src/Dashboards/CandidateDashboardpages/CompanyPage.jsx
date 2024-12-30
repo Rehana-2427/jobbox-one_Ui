@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Row, Tab, Table, Tabs } from "react-bootstrap";
 import { FaAtom, FaBriefcase, FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import Swal from "sweetalert2";
 import api from "../../apiClient";
@@ -11,6 +11,8 @@ import Pagination from "../../Pagination";
 import './CandidateDashboard.css';
 import DashboardLayout from "./DashboardLayout";
 import ResumeSelectionPopup from "./ResumeSelectionPopup";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const CompamyPage = () => {
   const BASE_API_URL = process.env.REACT_APP_API_URL;
@@ -51,6 +53,7 @@ const CompamyPage = () => {
   const { companyName } = useParams();  // Get companyName from URL
 
   const [selectedJob, setSelectedJob] = useState(null);
+  const navigate = useNavigate();
   console.log(companyId)
 
   const fetchCompany = async (companyName) => {
@@ -432,7 +435,12 @@ const CompamyPage = () => {
         />
       )}
       <div className="main-content" >
-      <Row style={{ marginBottom: '20px' }}>
+        {/* <Col xs={6} style={{ marginTop: '20px', marginLeft: '20px' }}>
+          <Button onClick={() => navigate(-1)} variant="secondary">
+            <FontAwesomeIcon icon={faArrowLeft} />
+          </Button>
+        </Col> */}
+        <Row style={{ marginBottom: '20px' }}>
           <Card style={{ width: '100%', height: '60%' }}>
             <Card.Body style={{ padding: 0, position: 'relative' }}>
               <div style={{ position: 'relative', height: 'auto', maxHeight: '55%' }}>

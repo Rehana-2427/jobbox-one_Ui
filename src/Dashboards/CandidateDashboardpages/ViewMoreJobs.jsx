@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Table } from 'react-bootstrap';
+import { Button, Card, Row, Table } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Footer from '../../pages/Footer';
@@ -257,36 +257,83 @@ const ViewMoreJobs = () => {
                 />
             )}
             <div>
-                <Card style={{ width: '100%', height: '60%' }}>
-                    <Card.Body style={{ padding: 0, position: 'relative' }}>
-                        <div style={{ position: 'relative', height: '55%' }}>
-                            <img
-                                src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
-                                alt="Company Banner"
-                                className="banner-image"
-                                style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
-                            />
-                        </div>
-                        <div style={{ position: 'absolute', top: '100%', left: '50px', transform: 'translateY(-50%)' }}>
-                            <img
-                                src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
-                                alt="Company Logo"
-                                className="logo-image"
-                                style={{
-                                    width: '200px', // Fixed width
-                                    height: '120px', // Fixed height
-                                    cursor: 'pointer',
-                                    // border: '5px solid white',
-                                    clipPath: 'ellipse(50% 50% at 50% 50%)', // Creates a horizontal oval
-                                    objectFit: 'cover', // Ensures the image covers the dimensions without distortion
-                                }}
-                            />
-                        </div>
-                    </Card.Body>
-                </Card>
-            </div><br></br><br></br>
+                <Row style={{ marginBottom: '20px' }}>
+                    <Card style={{ width: '100%', height: '60%' }}>
+                        <Card.Body style={{ padding: 0, position: 'relative' }}>
+                            <div style={{ position: 'relative', height: 'auto', maxHeight: '55%' }}>
+                                <img
+                                    src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
+                                    alt="Company Banner"
+                                    className="banner-image"
+                                    style={{
+                                        width: '100%',
+                                        height: 'auto',
+                                        maxHeight: '200px',
+                                        objectFit: 'cover',
+                                        cursor: 'pointer',
+                                    }}
+                                />
+                            </div>
 
-            <br></br>
+                            <div style={{ position: 'absolute', top: '95%', left: '50px', transform: 'translateY(-50%)' }}>
+                                <img
+                                    src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
+                                    alt="Company Logo"
+                                    className="logo-image"
+                                    style={{
+                                        width: '20vw',
+                                        height: '20vw',
+                                        maxWidth: '150px',
+                                        maxHeight: '150px',
+                                        cursor: 'pointer',
+                                        objectFit: 'cover',
+                                        clipPath: 'none',
+                                        border: '5px solid #f0f0f0', // Adds a black border around the image
+                                        borderRadius: '10px', // Optional: adds rounded corners to the border
+                                    }}
+                                />
+                            </div>
+                        </Card.Body>
+                    </Card>
+
+                    {/* </Row>
+
+              <Row style={{ marginTop: '5%', alignItems: 'center', marginLeft: '1%' }}> */}
+                    {/* <Col md={3} style={{ display: 'flex', alignItems: 'end', justifyContent: 'center'}}> */}
+                    <h2 className="responsive-title">
+                        <b>{companyName.toUpperCase()}</b>
+                    </h2>
+
+                    {/* </Col> */}
+                    {/* <Col md={9} style={{ display: 'flex', alignItems: 'end' }}> */}
+                    {/* <span className="responsive-socials">
+            {socialMediaLinks.facebookLink && (
+              <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
+                <FaFacebook size={28} style={{ margin: '0 5px', color: '#3b5998' }} />
+              </a>
+            )}
+            {socialMediaLinks.twitterLink && (
+              <a href={socialMediaLinks.twitterLink} target="_blank" rel="noopener noreferrer">
+                <FaTwitter size={28} style={{ margin: '0 5px', color: '#1da1f2' }} />
+              </a>
+            )}
+            {socialMediaLinks.instagramLink && (
+              <a href={socialMediaLinks.instagramLink} target="_blank" rel="noopener noreferrer">
+                <FaInstagram size={28} style={{ margin: '0 5px', color: '#e4405f' }} />
+              </a>
+            )}
+            {socialMediaLinks.linkedinLink && (
+              <a href={socialMediaLinks.linkedinLink} target="_blank" rel="noopener noreferrer">
+                <FaLinkedin size={28} style={{ margin: '0 5px', color: '#0077b5' }} />
+              </a>
+            )}
+          </span> */}
+                    {/* </Col> */}
+                </Row>
+                <hr style={{ border: '1px solid black', marginTop: '0rem' }} />
+            </div>
+
+
             <div className="d-flex justify-content-end align-items-center mb-3 mt-12" >
                 <div className="search-bar" >
                     <input style={{ borderRadius: '6px', height: '35px' }}

@@ -37,6 +37,7 @@ const PublicJobDetailsPage = () => {
             fetchCompanyLogo(companyName);
             fetchCompanyBanner(companyName);
             fetchJobsByCompany(companyName);
+            fetchSocialMediaLinks(companyName);
         }
     }, [companyName]);
     useEffect(() => {
@@ -342,45 +343,58 @@ const PublicJobDetailsPage = () => {
     };
     return (
         <div>
-            <div>
+            <div className="custom-navbar-container">
                 <CustomNavbar />
             </div>
-            <div className='dashboard-container-1'>
+            <div className="dashboard-container-1">
                 <Row style={{ marginBottom: '20px' }}>
                     <div>
-                        <Card style={{ width: '100%', height: '60%' }}>
+                        <Card style={{ width: '100%', height: '60%', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
                             <Card.Body style={{ padding: 0, position: 'relative' }}>
-                                <div style={{ position: 'relative', height: '55%' }}>
+                                <div style={{ position: 'relative', height: 'auto', maxHeight: '55%' }}>
                                     <img
                                         src={companyBanner || "https://cdn.pixabay.com/photo/2016/04/20/07/16/logo-1340516_1280.png"}
                                         alt="Company Banner"
                                         className="banner-image"
-                                        style={{ width: '100%', height: '200px', objectFit: 'cover', cursor: 'pointer' }}
+                                        style={{
+                                            width: '100%',
+                                            height: 'auto',
+                                            maxHeight: '200px',
+                                            objectFit: 'cover',
+                                            cursor: 'pointer',
+                                            borderTopLeftRadius: '10px',
+                                            borderTopRightRadius: '10px',
+                                        }}
                                     />
                                 </div>
-                                <div style={{ position: 'absolute', top: '90%', left: '50px', transform: 'translateY(-50%)' }}>
+
+                                <div style={{ position: 'absolute', top: '95%', left: '50px', transform: 'translateY(-50%)' }}>
                                     <img
                                         src={companyLogo || "https://static.vecteezy.com/system/resources/previews/013/899/376/original/cityscape-design-corporation-of-buildings-logo-for-real-estate-business-company-vector.jpg"}
                                         alt="Company Logo"
                                         className="logo-image"
                                         style={{
-                                            width: '200px', // Fixed width
-                                            height: '120px', // Fixed height
+                                            width: '20vw',
+                                            height: '20vw',
+                                            maxWidth: '150px',
+                                            maxHeight: '150px',
                                             cursor: 'pointer',
-                                            clipPath: 'ellipse(50% 50% at 50% 50%)', // Creates a horizontal oval
-                                            objectFit: 'cover', // Ensures the image covers the dimensions without distortion
+                                            objectFit: 'cover',
+                                            clipPath: 'none',
+                                            border: '5px solid #f0f0f0',
+                                            borderRadius: '10px',
                                         }}
                                     />
                                 </div>
                             </Card.Body>
                         </Card>
                     </div>
-                </Row>
-                <Row style={{ marginTop: '50px', alignItems: 'center' }}>
-                    <Col md={3} style={{ display: 'flex', alignItems: 'start', justifyContent: 'center', padding: '5px' }}>
-                        <h2 style={{ paddingRight: '14px' }}><b>{companyName.toUpperCase()}</b></h2>
-                    </Col>
-                    {/* <Col md={9} style={{ display: 'flex', alignItems: 'start' }}>
+
+                    <h2 className="responsive-title">
+                        <b>{companyName.toUpperCase()}</b>
+                    </h2>
+
+                    <span className="responsive-socials">
                         {socialMediaLinks.facebookLink && (
                             <a href={socialMediaLinks.facebookLink} target="_blank" rel="noopener noreferrer">
                                 <FaFacebook size={28} style={{ margin: '0 5px', color: '#3b5998' }} />
@@ -401,201 +415,174 @@ const PublicJobDetailsPage = () => {
                                 <FaLinkedin size={28} style={{ margin: '0 5px', color: '#0077b5' }} />
                             </a>
                         )}
-                    </Col> */}
-                    <Col className="social-icons-company">
-                        <FaFacebook
-                            size={30}
-                            onClick={() => handleCompanyIconClick('Facebook')}
-                            style={{ cursor: 'pointer', color: '#4267B2', margin: '5px' }}
-                        />
-                        <FaTwitter
-                            size={30}
-                            onClick={() => handleCompanyIconClick('Twitter')}
-                            style={{ cursor: 'pointer', color: '#1DA1F2', margin: '5px' }}
-                        />
-                        <FaInstagram
-                            size={30}
-                            onClick={() => handleCompanyIconClick('Instagram')}
-                            style={{ cursor: 'pointer', color: '#C13584', margin: '5px' }}
-                        />
-                        <FaLinkedin
-                            size={30}
-                            onClick={() => handleCompanyIconClick('LinkedIn')}
-                            style={{ cursor: 'pointer', color: '#0077B5', margin: '5px' }}
-                        />
+                    </span>
+                </Row>
+                <hr style={{ border: '1px solid black', marginTop: '0rem' }} />
+                <Row>
+                    <Col lg={9} style={{ height: 'fit-content' }}>
+                        <Card style={{ top: '10%', width: '100%', height: "fit-content" }}>
+                            <Card.Body style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '70px' }}>
+                                <Col md={6}>
+                                    <h4>Job Description:</h4>
+                                </Col>
+                                <Col md={6} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '10px' }}>
+                                    {isLoggedIn ? (
+                                        user?.userRole === 'HR' ? (
+                                            null
+                                        ) : user?.userRole === 'Candidate' ? (
+                                            hasUserApplied === true || applyjobs === true ? (
+                                                <p style={{
+                                                    color: '#28a745',
+                                                    fontSize: '18px',
+                                                    fontWeight: 'bold',
+                                                    backgroundColor: '#e9f5e9',
+                                                    padding: '10px',
+                                                    borderRadius: '5px',
+                                                    textAlign: 'left',
+                                                    margin: '10px 0',
+                                                    boxShadow: 'rgba(0, 0, 0, 0.1)',
+                                                    width: '100px',
+                                                }}>
+                                                    Applied
+                                                </p>
+                                            ) : (
+                                                <>
+                                                    <div className="resume-dropdown-container" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                        <h5 className="fw-bold">Select Resume</h5>
+                                                        <select
+                                                            id="resumeSelect"
+                                                            value={selectedResume}
+                                                            onChange={handleResumeSelect}
+                                                            required
+                                                            className="form-select"
+                                                            style={{
+                                                                width: '200px',
+                                                                padding: '5px',
+                                                                fontSize: '14px',
+                                                            }}
+                                                        >
+                                                            <option value="">Select Resume</option>
+                                                            {resumes.map((resume) => (
+                                                                <option key={resume.id} value={resume.id}>
+                                                                    {resume.message}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                    <Button
+                                                        variant="success"
+                                                        onClick={() => handleApplyButtonClick(jobDetails.jobId)}
+                                                        disabled={!selectedResume}
+                                                        style={{ marginLeft: '12px' }}
+                                                    >
+                                                        Apply
+                                                    </Button>
+                                                </>
+                                            )
+                                        ) : null
+                                    ) : (
+                                        <Button
+                                            variant="success"
+                                            onClick={handleCandidateClick}
+                                            style={{ marginLeft: '12px' }}
+                                        >
+                                            Login to Apply
+                                        </Button>
+                                    )}
+                                </Col>
+                            </Card.Body>
+
+                            <Card.Body>
+                                <p><strong>Job Type:</strong> {jobDetails.jobTitle}</p>
+                                <p><strong>Job Type:</strong> {jobDetails.jobType}</p>
+                                <p><strong>Skills:</strong> {jobDetails.skills}</p>
+                                <p><strong>Posting Date:</strong> {jobDetails.postingDate}</p>
+                                <p><strong>Number of Positions:</strong> {jobDetails.numberOfPosition}</p>
+                                <p><strong>Salary:</strong> {jobDetails.salary}</p>
+                                <p><strong>Location:</strong> {jobDetails.location}</p>
+                                <strong>Job Summary:</strong> <pre className="job-details-text">{jobDetails.jobsummary}</pre>
+                                <p><strong>Application Deadline:</strong> {jobDetails.jobCategory === "evergreen" && !jobDetails.applicationDeadline ? (
+                                    <span style={{ color: 'green', fontWeight: 'bold' }}>
+                                        Evergreen Job-No Due Date
+                                    </span>
+                                ) : (
+                                    jobDetails.applicationDeadline || 'Not Specified'
+                                )}</p>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+
+                    <Col lg={3}>
+                        <div style={{ margin: '8px', width: '250px', height: 'fit-content' }}>
+                            <h3 style={{ marginTop: '20px', marginLeft: '12px', fontSize: '18px' }}>
+                                Other Jobs
+                            </h3>
+                            {jobs.map((job) => (
+                                <Card key={job.jobId} style={{ width: '250px', height: '150px' }}>
+                                    <Card.Body
+                                        onClick={() => handleJobClick(job)}
+                                        style={{ padding: '8px' }}
+                                    >
+                                        <Card.Title style={{ fontSize: '14px' }}>
+                                            {job.jobTitle} ({job.jobType})
+                                        </Card.Title>
+                                        <Card.Text style={{ fontSize: '10px' }}>
+                                            <strong>Application Deadline:</strong> {job.jobCategory === "evergreen" && !job.applicationDeadline ? (
+                                                <span style={{ color: 'green', fontWeight: 'bold' }}>
+                                                    Evergreen Job-No Due Date
+                                                </span>
+                                            ) : (
+                                                job.applicationDeadline || 'Not Specified'
+                                            )}<br />
+                                        </Card.Text>
+                                        <hr style={{ backgroundColor: 'black' }} />
+                                    </Card.Body>
+                                </Card>
+                            ))}
+                        </div>
+                        <Button
+                            onClick={() => {
+                                const encodedCompanyName = encodeURIComponent(companyName);
+                                navigate(`/companyPage/companyName/${encodedCompanyName}`, { state: { companyId, scrollToJobs: true } });
+                            }}
+                            style={{ marginTop: '10px' }}
+                        >
+                            View More
+                        </Button>
                     </Col>
                 </Row>
-                <hr style={{ border: '1px solid black' }} />
-            </div>
-            <Row>
-                <Col lg={9} style={{ height: 'fit-content' }}>
-                    <Card style={{ top: '10%', width: '100%', height: "fit-content"}}>
-                        <Card.Body style={{  display: 'flex', justifyContent: 'space-between', alignItems: 'center',height:'70px'}}>
-                            <Col md={6}>
-                                <h4>Job Description:</h4>
-                            </Col>
-                            <Col md={6} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '10px' }}>
-                                {isLoggedIn ? (
-                                    user?.userRole === 'HR' ? (
-                                        null // No buttons for HR
-                                    ) : user?.userRole === 'Candidate' ? (
-                                        hasUserApplied === true || (applyjobs === true) ? ( // Check if the user has already applied
-                                            <p
-                                                style={{
-                                                    color: '#28a745', // Green color for the text
-                                                    fontSize: '18px', // Larger font size
-                                                    fontWeight: 'bold', // Bold text
-                                                    backgroundColor: '#e9f5e9', // Light green background color
-                                                    padding: '10px',
-                                                    borderRadius: '5px', // Rounded corners
-                                                    textAlign: 'left', // Center-align the text
-                                                    margin: '10px 0', // Margin above and below the paragraph
-                                                    boxShadow: 'rgba(0, 0, 0, 0.1)', // Subtle shadow effect
-                                                    width: '100px',
-                                                }}
-                                            >
-                                                Applied
-                                            </p>
-                                        ) : (
-                                            <>
-                                                <div className="resume-dropdown-container" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                                    <h5 className="fw-bold">Select Resume</h5>
-                                                    <select
-                                                        id="resumeSelect"
-                                                        value={selectedResume}
-                                                        onChange={handleResumeSelect}
-                                                        required
-                                                        className="form-select"
-                                                        style={{
-                                                            width: '200px', // Make the dropdown smaller
-                                                            padding: '5px', // Reduce padding
-                                                            fontSize: '14px', // Reduce font size
-                                                        }}
-                                                    >
-                                                        <option value="">Select Resume</option>
-                                                        {resumes.map((resume) => (
-                                                            <option key={resume.id} value={resume.id}>
-                                                                {resume.message}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                                <Button
-                                                    variant="success"
-                                                    onClick={() => handleApplyButtonClick(jobDetails.jobId)}
-                                                    disabled={!selectedResume} // This disables the button if selectedResume is empty
-                                                    style={{ marginLeft: '12px' }}
-                                                >
-                                                    Apply
-                                                </Button>
-                                            </>
-                                        )
-                                    ) : null // No content for any other user roles
-                                ) : (
-                                    <Button
-                                        variant="success"
-                                        onClick={handleCandidateClick}
-                                        style={{ marginLeft: '12px' }}
-                                    >
-                                        Login to Apply
-                                    </Button>
-                                )}
-                            </Col>
-                        </Card.Body>
 
+                <Row style={{ marginTop: '10px' }}>
+                    <Footer />
+                </Row>
 
-                        <Card.Body >
-                            <p><strong>Job Type:</strong> {jobDetails.jobTitle}</p>
-                            <p><strong>Job Type:</strong> {jobDetails.jobType}</p>
-                            <p><strong>Skills:</strong> {jobDetails.skills}</p>
-                            <p><strong>Posting Date:</strong> {jobDetails.postingDate}</p>
-                            <p><strong>Number of Positions:</strong> {jobDetails.numberOfPosition}</p>
-                            <p><strong>Salary:</strong> {jobDetails.salary}</p>
-                            <p><strong>Location:</strong> {jobDetails.location}</p>
-                            <strong>Job Summary:</strong> <pre className="job-details-text">{jobDetails.jobsummary}</pre>
-                            <p><strong>Application Deadline:</strong>  {jobDetails.jobCategory === "evergreen" && !jobDetails.applicationDeadline ? (
-                                <span style={{ color: 'green', fontWeight: 'bold' }}>
-                                    Evergreen Job-No Due Date
-                                </span>
-                            ) : (
-                                jobDetails.applicationDeadline || 'Not Specified'
-                            )}</p>
-                        </Card.Body>
-
-
-                    </Card>
-
-
-                </Col>
-                <Col lg={3}>
-                    <div style={{ margin: '8px', width: '250px', height: 'fit-content' }}>
-                        <h3 style={{ marginTop: '20px', marginLeft: '12px', fontSize: '18px' }}>
-                            Other Jobs
-                            {/* <Button style={{ position: 'relative', left: '20%', marginTop: '12px', fontSize: '12px' }}>Apply</Button> */}
-                        </h3>
-                        {jobs.map((job) => (
-                            <Card key={job.jobId} style={{ width: '250px', height: '150px' }}>
-                                <Card.Body
-                                    onClick={() => handleJobClick(job)}
-                                    style={{ padding: '8px' }}
+                {/* Modal for Apply button */}
+                <Modal show={showModal} onHide={closeModal}>
+                    <Modal.Header closeButton style={{ backgroundColor: '#faccc', color: 'white', borderBottom: 'none' }}>
+                        <Modal.Title>Choose an Option</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body style={{ padding: '20px', textAlign: 'center' }}>
+                        {modalContent === 'candidate' && (
+                            <>
+                                <Button
+                                    variant="primary"
+                                    onClick={() => handleModalOptionClick('login')}
+                                    style={{ width: '100%', marginBottom: '10px', backgroundColor: '#6c5ce7', borderColor: '#6c5ce7' }}
                                 >
-                                    <Card.Title style={{ fontSize: '14px' }}>{job.jobTitle} ({job.jobType})</Card.Title>
-                                    <Card.Text style={{ fontSize: '10px' }}>
-                                        <strong>Application Deadline:</strong>  {job.jobCategory === "evergreen" && !job.applicationDeadline ? (
-                                            <span style={{ color: 'green', fontWeight: 'bold' }}>
-                                                Evergreen Job-No Due Date
-                                            </span>
-                                        ) : (
-                                            job.applicationDeadline || 'Not Specified'
-                                        )}<br />
-                                    </Card.Text>
-                                    <hr style={{ backgroundColor: 'black' }} />
-                                </Card.Body>
-
-                            </Card>
-                        ))}
-                    </div>
-                    <Button
-                        onClick={() => {
-                            const encodedCompanyName = encodeURIComponent(companyName); // Encode the company name
-                            navigate(`/companyPage/companyName/${encodedCompanyName}`, { state: { companyId, scrollToJobs: true } });
-                        }}
-                        style={{ marginTop: '10px' }}
-                    >
-                        View More
-                    </Button>
-                </Col>
-            </Row>
-            <Row style={{ marginTop: '10px' }} >
-                <Footer />
-            </Row>
-            {/* Modal for Apply button */}
-            <Modal show={showModal} onHide={closeModal}>
-                <Modal.Header closeButton style={{ backgroundColor: '#faccc', color: 'white', borderBottom: 'none' }}>
-                    <Modal.Title>Choose an Option</Modal.Title>
-                </Modal.Header>
-                <Modal.Body style={{ padding: '20px', textAlign: 'center' }}>
-
-                    {modalContent === 'candidate' && (
-                        <>
-                            <Button
-                                variant="primary"
-                                onClick={() => handleModalOptionClick('login')}
-                                style={{ width: '100%', marginBottom: '10px', backgroundColor: '#6c5ce7', borderColor: '#6c5ce7' }}
-                            >
-                                Already have an account - Login
-                            </Button>
-                            <Button
-                                variant="success"
-                                onClick={() => handleModalOptionClick('register')}
-                                style={{ width: '100%', backgroundColor: '#00b894', borderColor: '#00b894' }}
-                            >
-                                Don't have an account - Register
-                            </Button>
-                        </>
-                    )}
-                </Modal.Body>
-            </Modal>
+                                    Already have an account - Login
+                                </Button>
+                                <Button
+                                    variant="success"
+                                    onClick={() => handleModalOptionClick('register')}
+                                    style={{ width: '100%', backgroundColor: '#00b894', borderColor: '#00b894' }}
+                                >
+                                    Don't have an account - Register
+                                </Button>
+                            </>
+                        )}
+                    </Modal.Body>
+                </Modal>
+            </div>
         </div>
     )
 }

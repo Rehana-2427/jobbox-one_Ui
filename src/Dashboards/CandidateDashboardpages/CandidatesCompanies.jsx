@@ -14,7 +14,7 @@ const CandidatesCompanies = () => {
   const location = useLocation();
   const userName = location.state?.userName;
   const userId = location.state?.userId;
-  const appliedCompany = location.state?.appliedCompany || false;
+  const [appliedCompany, setAppliedCompany] = useState(location.state?.appliedCompany || false);
   const navigate = useNavigate();
   const [companies, setCompanies] = useState([]);
   const [search, setSearch] = useState('');
@@ -97,6 +97,7 @@ const CandidatesCompanies = () => {
       }
       setCompanies(response.data.content);
       setTotalPages(response.data.totalPages);
+      setAppliedCompany(false);
     } catch (error) {
       console.log("Error fetching data: " + error);
     }
@@ -140,7 +141,20 @@ const CandidatesCompanies = () => {
       <div className="main-content">
         <Row>
           <Col md={4}>
-            <h2 className='text-start'> Companies For {userName}</h2>
+            {appliedCompany ? (
+              <>
+                <h2 className='text-start'>
+                 Applied Companies
+                </h2>
+                <button className='btn btn-primary' onClick={fetchData}>
+                  Fetch All Companies
+                </button>
+              </>
+            ) : (
+              <h2 className='text-start'>
+                Companies For {userName}
+              </h2>
+            )}
           </Col>
           <Col md={3} className="d-flex align-items-left">
             {/* Search Bar */}

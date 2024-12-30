@@ -399,8 +399,14 @@ const EachCompanyPage = () => {
         <div className='dashboard-container-1'>
           {error ? (
             <div style={{ textAlign: 'center', margin: '20px 0' }}>
-              <h2>{error}</h2> {/* Display error message if company is not found */}
+              <img
+                src="https://media.giphy.com/media/4Zo41lhzKt6iZ8xff9/giphy.gif"
+                alt="Not Found"
+                style={{ width: '150px', height: 'auto', marginBottom: '20px' }}
+              />
+              <h2>{error}</h2>
             </div>
+
           ) : (
             <div style={{ overflowX: 'hidden' }}>
               <Row style={{ marginBottom: '20px' }}>
