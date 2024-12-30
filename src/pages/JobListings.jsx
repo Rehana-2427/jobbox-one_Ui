@@ -1,12 +1,12 @@
 import React from 'react';
-import { Button, Card, Col, Container, Row } from 'react-bootstrap';
+import { Button, Card, Col, Row } from 'react-bootstrap';
 import { FaLightbulb, FaLocationArrow, FaMailBulk } from 'react-icons/fa';
 import { MdSettings } from "react-icons/md";
 
 
 const JobListings = () => {
     return (
-        <Container>
+        <div>
             <Row>
                 <Col md={3} >
                     <h1 style={{ borderBottom: '2px solid purple', display: 'inline-block' }}>Job Listings</h1>
@@ -57,7 +57,7 @@ const JobListings = () => {
                     </Card>
                 </Col>
             </Row>
-        </Container>
+        </div>
     )
 }
 

@@ -41,16 +41,17 @@ const ServicesCard = () => {
                 </div>
 
             </Row>
-            <Row>
+            <Row style={{paddingTop:'10px'}}>
                 {cardData.map((card, index) => (
                     <Col md={3} key={index} className='mb-4'>
-                        <Card className='services-card-column hover-effect' style={{ width: '250px', height: 'auto' }}>
+
+                        <Card className="card-profile-1 text-center mb-4 hover-effect" >
                             <Card.Img
                                 variant="top"
                                 src={card.imgSrc}
                                 alt={card.title}
                                 className='rounded-circle mx-auto d-block'
-                                style={{ width: '120px', height: '120px', marginTop: '20px' }}
+                                style={{ width: '120px', height: '120px' }}
                             />
                             <Card.Body>
                                 <Card.Title><b>{card.title}</b></Card.Title>
@@ -58,6 +59,7 @@ const ServicesCard = () => {
                                 <Button variant="primary" href={card.link}>Learn More</Button>
                             </Card.Body>
                         </Card>
+
                     </Col>
                 ))}
             </Row>

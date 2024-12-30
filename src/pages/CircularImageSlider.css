@@ -1,7 +1,7 @@
 
-.company-images-home{
+/* .company-images-home{
     padding-top: 40px;
-}
+} */
 .image-slider-container {
     display: flex;
     position: relative;
@@ -49,17 +49,17 @@
         transform: translateX(0); /* Move left */
     }
 }
-@media(max-width: 767px){ 
+/* @media(max-width: 767px){ 
     .image-slider-container {
         display: flex;
         position: relative;
         bottom: 80px;
     }
-}
-@media(max-width: 575px){ 
+} */
+/* @media(max-width: 575px){ 
     .image-slider-container {
         display: flex;
         position: relative;
         top: 5px;
     }
-}
+} */

@@ -53,6 +53,14 @@
 }
 
 
+@media (max-width: 423px) {
+  .company-card-job {
+    margin-left: 10px !important;
+    margin-top: 10px !important;
+  }
+}
+
+
 
 /* company title and social media */
 
