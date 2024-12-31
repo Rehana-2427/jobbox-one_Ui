@@ -409,13 +409,14 @@ const Jobdetails = () => {
                     </Row>
                 </div>
 
-                {showResumePopup && (
-                    <ResumeSelectionPopup
-                        resumes={resumes}
-                        onSelectResume={handleResumeSelect}
-                        onClose={() => setShowResumePopup(false)}
-                    />
-                )}
+            {showResumePopup && (
+                <ResumeSelectionPopup
+                    resumes={resumes}
+                    onSelectResume={handleResumeSelect}
+                    show={true}
+                    onClose={() => setShowResumePopup(false)}
+                />
+            )}
 
                 <Modal show={showModal} onHide={closeModal}>
                     <Modal.Header closeButton style={{ backgroundColor: '#faccc', color: 'white', borderBottom: 'none' }}>

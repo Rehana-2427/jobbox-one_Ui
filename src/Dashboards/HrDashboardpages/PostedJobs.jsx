@@ -20,8 +20,10 @@ const PostedJobs = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState(' ');
+  const [loading, setLoading] = useState(true);
 
   const fetchJobs = async () => {
+    setLoading(true);
     try {
       const params = {
         userEmail: userEmail,
@@ -34,6 +36,7 @@ const PostedJobs = () => {
       const response = await axios.get(`${BASE_API_URL}/getRegularJobsByAllHrsInCompany`, { params });
       setJobs(response.data.content);
       setTotalPages(response.data.totalPages);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching jobs data:', error);
     }
@@ -49,6 +52,7 @@ const PostedJobs = () => {
   };
 
   const fetchJobBysearch = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(`${BASE_API_URL}/searchJobsByCompany`, {
         params: { search, userEmail, page, pageSize }
@@ -56,6 +60,7 @@ const PostedJobs = () => {
       setJobs(response.data.content);
       setTotalPages(response.data.totalPages);
       console.log(response.data);
+      setLoading(false);
     } catch (error) {
       console.log("Error searching:", error);
       alert("Error searching for jobs. Please try again later.");
@@ -104,7 +109,7 @@ const PostedJobs = () => {
         <Row>
           <Col md={4}>
             <h2>
-              {jobs.length === 0 ? (
+              {!loading && jobs.length === 0 ? (
                 <div style={{ color: 'red', textAlign: 'center' }}>
                   {search
                     ? `There is no job with this ""`
@@ -131,7 +136,12 @@ const PostedJobs = () => {
           </Col>
         </Row>
 
-        {jobs.length > 0 ? (
+        {loading ? (
+          <div className="d-flex justify-content-center align-items-center">
+            <div className="spinner-bubble spinner-bubble-primary m-5" />
+            <span>Loading...</span>
+          </div>
+        ) : jobs.length > 0 ? (
           <div>
             <div className='table-details-list  table-wrapper '>
               <Table hover className='text-center'>

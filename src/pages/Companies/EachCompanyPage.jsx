@@ -406,7 +406,6 @@ const EachCompanyPage = () => {
               />
               <h2>{error}</h2>
             </div>
-
           ) : (
             <div style={{ overflowX: 'hidden' }}>
               <Row style={{ marginBottom: '20px' }}>
