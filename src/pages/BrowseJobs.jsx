@@ -11,7 +11,6 @@ import JobListings from './JobListings';
 
 const BrowseJobs = () => {
     const navigate = useNavigate();
-    const BASE_API_URL = process.env.REACT_APP_API_URL;
     const [latestjobs, setLatestJobs] = useState([]);
     const [jobs, setJobs] = useState([]);
     const [companyLogos, setCompanyLogos] = useState({});

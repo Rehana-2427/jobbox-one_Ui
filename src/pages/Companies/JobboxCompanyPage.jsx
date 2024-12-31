@@ -318,10 +318,10 @@ const JobboxCompanyPage = () => {
             </Col>
           </Row>
           {/* Company Cards Section */}
-          <Row className="cards flex-grow-1 d-flex flex-wrap justify-content-start" style={{ minHeight: 'fit-content', width: '100%', }}>
+          <Row className="cards flex-grow-1 d-flex flex-wrap justify-content-start" style={{ minHeight: 'fit-content', width: '100%',marginLeft:'0px'}}>
             {companies.length > 0 ? (
               companies.map((company) => (
-                <Card className="company-card-job" key={company.companyId} style={{ width: '100%', flex: '1 0 400px', margin: '24px' }}>
+                <Card className="company-card-job" key={company.companyId} style={{ width: '100%', flex: '1 0 400px', margin: '24px',maxWidth:'380px' }}>
                   <Card.Body>
                     <Card.Title>Company Name: <b>{company.companyName}</b></Card.Title>
                     <Card.Text>Industry: <b>{company.industryService}</b></Card.Text>

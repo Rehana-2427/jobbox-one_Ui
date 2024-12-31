@@ -1310,3 +1310,11 @@
   z-index: 1000; /* Ensures it stays on top of other content */
   background-color: white;
 }
+
+
+
+@media (max-width: 767px) {
+  .job-listings-cols {
+    margin-left: 20px;
+  }
+}

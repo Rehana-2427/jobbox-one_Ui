@@ -1,4 +1,4 @@
-  import MenuIcon from "@mui/icons-material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
 import {
     Avatar,
     Box,
@@ -69,6 +69,7 @@ const DrawerComp = () => {
 
     // Logout function to remove user from localStorage and reset state
     const handleLogout = () => {
+        setOpenDrawer(false); // Close the drawer immediately
         Swal.fire({
             title: 'Are you sure?',
             text: "You will be logged out!",
@@ -82,6 +83,7 @@ const DrawerComp = () => {
             if (result.isConfirmed) {
                 localStorage.removeItem('user'); // Remove user from localStorage
                 setIsLoggedIn(false);
+
                 navigate('/'); // Redirect to home page
                 handleMenuClose(); // Close the dropdown
             }
@@ -133,7 +135,7 @@ const DrawerComp = () => {
                             </div>
                             <Box sx={{
                                 fontSize: '24px',
-                                fontWeight: 'bold' 
+                                fontWeight: 'bold'
                             }}>{user.userName}</Box>
                         </Box>
                     )}
@@ -201,7 +203,7 @@ const DrawerComp = () => {
                             width: '100%',  // Make it full width if needed
                             maxWidth: '400px',  // Optional: limit width
                             padding: '10px',// Optional: add padding
-                            overflow:'hidden'
+                            overflow: 'hidden'
 
                         }}
                     >

@@ -81,6 +81,15 @@
   .responsive-title {
     font-size: 5vw; /* Even larger font size on very small screens */
   }
+}
 
+.other-jobs {
+  width: 250px !important;
+  height: 150px;
+}
 
+@media (max-width: 990px) {
+  .other-jobs {
+      width: 100% !important;
+  }
 }
