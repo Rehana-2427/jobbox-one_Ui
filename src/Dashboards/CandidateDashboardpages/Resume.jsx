@@ -62,6 +62,10 @@ const Resume = () => {
     setresumeMessage(resume.message);
     setResumeId(resumeId); // Store the resumeId in a state variable
     setPage(0); // Reset to the first page
+      // Scroll to the resume details section
+  if (detailsRef.current) {
+    detailsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
   };
   
   useEffect(() => {
@@ -147,13 +151,14 @@ const Resume = () => {
     setViewResume(false); // Hide the resume details
     setResumeDetails([]); // Clear the resume details
 
-    if (resumesRef.current) {
-      resumesRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+   // Scroll to the top of the page
+   if (resumesRef.current) {
+    resumesRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
   };
   return (
-    <DashboardLayout>
-      <div className="main-content">
+    <DashboardLayout >
+      <div ref={resumesRef}  className="main-content">
         <div className='adding-resumes' style={{ position: 'relative', marginTop: '10px', marginRight: '15px' }}>
           <Link to="/candidate-dashboard/resume/resumeAdd" state={{ userName: userName, userId: userId }}>
             <Button style={{ position: 'absolute', top: 0, right: 0 }}>ADD NEW RESUME</Button>
@@ -186,7 +191,7 @@ const Resume = () => {
             {resumes.length === 0 ? (
               <div className="text-center">No resumes found</div>
             ) : (
-              <div ref={resumesRef} className="cards d-flex flex-wrap justify-content-start" style={{ minHeight: 'fit-content' }}>
+              <div  className="cards d-flex flex-wrap justify-content-start" style={{ minHeight: 'fit-content' }}>
                 {resumes.map((resume, index) => (
                   <Card className='resume-card' style={{ width: '200px', margin: '12px' }} key={resume.id}>
                     <Card.Body>
