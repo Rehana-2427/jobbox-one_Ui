@@ -94,7 +94,7 @@ const SocialMediaLinks = () => {
         setActiveTab(tab);
     };
     return (
-        <div style={{ padding: '10px' }}>
+        <div style={{ padding: '10px' ,marginTop: '20px'}}>
             <Form>
                 <Form.Group controlId="facebookLink">
                     <Form.Label>Facebook</Form.Label>

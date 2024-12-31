@@ -56,29 +56,29 @@ const CompanyViewPage = () => {
         // Check if custom type input should be used
         if (showCustomTypeInput && companyType) {
             console.log("Custom Company Type:", companyType);
-            
+
             // Set the custom company type in companyInfo
             // setCompanyInfo((prev) => ({ ...prev, companyType })); 
-            companyInfo.companyType=companyType;
+            companyInfo.companyType = companyType;
         }
-    
+
         // Log the companyInfo to check the current state before saving
         console.log("Company Info before saving:", companyInfo);
-    
+
         try {
             const response = await axios.put(
-                `${BASE_API_URL}/updateCompanyDetailsByHR?companyName=${companyName}`, 
+                `${BASE_API_URL}/updateCompanyDetailsByHR?companyName=${companyName}`,
                 companyInfo
             );
-            
+
             console.log("Response from API:", response.data);
-            setCompanyInfo({...companyInfo})
+            setCompanyInfo({ ...companyInfo })
             setCompanyInfoEditMode(false);
         } catch (error) {
             console.error('Error updating company details:', error);
         }
     };
-    
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -121,7 +121,7 @@ const CompanyViewPage = () => {
 
     return (
         <div className='company-overview'>
-            <Card style={{ marginTop: '0px', width: '100%', height: "fit-content" }}>
+            <Card style={{ marginTop: '10px', width: '100%', height: "fit-content" }}>
                 <Card.Body>
                     {companyInfoEditMode ? (
                         <Form>
@@ -221,12 +221,12 @@ const CompanyViewPage = () => {
                             </Button>
                         </Form>
                     ) : (
-                        
+
                         <div className='job-details-text'>
                             <h4 className="company-header">
-                                About {companyName} <FaEdit onClick={() => setCompanyInfoEditMode(true)}/>
+                                About {companyName} <FaEdit onClick={() => setCompanyInfoEditMode(true)} />
                             </h4>
-                            <p className="company-overview">{companyInfo.overView}</p>
+                            <p className="company-Overview">{companyInfo.overView}</p>
                             <h4 className="company-subheader">Website</h4>
                             <p className="company-website">
                                 <a href={companyInfo.websiteLink} target="_blank" rel="noopener noreferrer">

@@ -32,51 +32,56 @@ const CompanyOverView = () => {
       <Card.Body>
         <>
           <h3>About {overviewData.companyName}</h3>
-          {overviewData.overView && <p>{overviewData.overView}</p>}
+          {overviewData.overView && <p className="company-Overview">{overviewData.overView}</p>}
 
           {overviewData.websiteLink && (
             <>
               <h4>Website</h4>
-              <p>
+              <p className="company-website">
                 <a href={overviewData.websiteLink} target="_blank" rel="noopener noreferrer">
                   {overviewData.websiteLink}
                 </a>
               </p>
             </>
           )}
-
+          {overviewData.companyType && (
+            <>
+              <h4 className="company-subheader">Company Type</h4>
+              <p className="company-industry">{overviewData.companyType}</p>
+            </>
+          )}
           {overviewData.industryService && (
             <>
               <h4>Industry</h4>
-              <p>{overviewData.industryService}</p>
+              <p className="company-industry">{overviewData.industryService}</p>
             </>
           )}
 
           {overviewData.companySize && overviewData.companySize !== '0' && (
             <>
               <h4>Company Size</h4>
-              <p>{overviewData.companySize}</p>
+              <p className="company-industry">{overviewData.companySize}</p>
             </>
           )}
 
           {overviewData.headquaters && (
             <>
               <h4>Headquarters</h4>
-              <p>{overviewData.headquaters}</p>
+              <p className="company-headquarters">{overviewData.headquaters}</p>
             </>
           )}
 
           {overviewData.year && overviewData.year !== '0' && (
             <>
               <h4>Founded</h4>
-              <p>{overviewData.year}</p>
+              <p className="company-founded">{overviewData.year || ''}</p>
             </>
           )}
 
           {overviewData.specialties && (
             <>
               <h4>Specialties</h4>
-              <p>{overviewData.specialties}</p>
+              <p className="company-specialties">{overviewData.specialties}</p>
             </>
           )}
         </>

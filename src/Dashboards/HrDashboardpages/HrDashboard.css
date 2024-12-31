@@ -1608,3 +1608,69 @@ section {
 
 
 }
+
+/* Default styles for larger screens */
+.company-Overview,
+.company-website,
+.company-industry,
+.company-size,
+.company-headquarters,
+.company-founded,
+.company-specialties {
+  font-weight: 500; /* Slightly bold */
+  font-size: 16px; /* Base font size for larger screens */
+}
+
+/* Add an arrow before every <p> element */
+.company-Overview::before,
+.company-website::before,
+.company-industry::before,
+.company-size::before,
+.company-headquarters::before,
+.company-founded::before,
+.company-specialties::before {
+  content: "➔ "; /* Unicode arrow */
+  font-weight: bold;
+  margin-right: 8px; /* Adds spacing between the arrow and text */
+}
+
+/* Optional additional styling for other elements */
+.company-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.company-subheader {
+  font-size: 1.3rem;
+  color: #333;
+}
+
+.company-website a {
+  color: #1a73e8;
+  text-decoration: none;
+}
+
+.company-website a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .company-Overview,
+  .company-website,
+  .company-industry,
+  .company-size,
+  .company-headquarters,
+  .company-founded,
+  .company-specialties {
+    font-size: 20px; /* Larger font size for mobile devices */
+  }
+
+  .company-header {
+    font-size: 1.8rem; /* Adjust company header size for mobile */
+  }
+
+  .company-subheader {
+    font-size: 1.4rem; /* Adjust subheader size for mobile */
+  }
+}

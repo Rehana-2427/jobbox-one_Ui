@@ -538,28 +538,61 @@ const CompamyPage = () => {
                 <div className='company-overview'>
                   <Card className="job-details-text" style={{ width: '100%', height: "fit-content" }}>
                     <Card.Body>
-                      <h3>About {companyName} </h3>
-                      {companyInfo.overView && (
-                        <p><strong>Overview:</strong> {companyInfo.overView}</p>
-                      )}
-                      {companyInfo.websiteLink && (
-                        <p><strong>Website:</strong> <a href={companyInfo.websiteLink} target="_blank" rel="noopener noreferrer">{companyInfo.websiteLink}</a></p>
-                      )}
-                      {companyInfo.industryService && (
-                        <p><strong>Industry Service:</strong> {companyInfo.industryService}</p>
-                      )}
-                      {companyInfo.companySize && companyInfo.companySize !== '0' && (
-                        <p><strong>Company Size:</strong> {companyInfo.companySize}</p>
-                      )}
-                      {companyInfo.headquaters && (
-                        <p><strong>Headquarters:</strong> {companyInfo.headquaters}</p>
-                      )}
-                      {companyInfo.year && companyInfo.year !== '0' && (
-                        <p><strong>Year Founded:</strong> {companyInfo.year}</p>
-                      )}
-                      {companyInfo.specialties && (
-                        <p><strong>Specialties:</strong> {companyInfo.specialties}</p>
-                      )}
+                      <>
+                        <h3>About {companyInfo.companyName}</h3>
+                        {companyInfo.overView && <p className="company-Overview">{companyInfo.overView}</p>}
+
+                        {companyInfo.websiteLink && (
+                          <>
+                            <h4>Website</h4>
+                            <p className="company-website">
+                              <a href={companyInfo.websiteLink} target="_blank" rel="noopener noreferrer">
+                                {companyInfo.websiteLink}
+                              </a>
+                            </p>
+                          </>
+                        )}
+                        {companyInfo.companyType && (
+                          <>
+                            <h4 className="company-subheader">Company Type</h4>
+                            <p className="company-industry">{companyInfo.companyType}</p>
+                          </>
+                        )}
+                        {companyInfo.industryService && (
+                          <>
+                            <h4>Industry</h4>
+                            <p className="company-industry">{companyInfo.industryService}</p>
+                          </>
+                        )}
+
+                        {companyInfo.companySize && companyInfo.companySize !== '0' && (
+                          <>
+                            <h4>Company Size</h4>
+                            <p className="company-industry">{companyInfo.companySize}</p>
+                          </>
+                        )}
+
+                        {companyInfo.headquaters && (
+                          <>
+                            <h4>Headquarters</h4>
+                            <p className="company-headquarters">{companyInfo.headquaters}</p>
+                          </>
+                        )}
+
+                        {companyInfo.year && companyInfo.year !== '0' && (
+                          <>
+                            <h4>Founded</h4>
+                            <p className="company-founded">{companyInfo.year || ''}</p>
+                          </>
+                        )}
+
+                        {companyInfo.specialties && (
+                          <>
+                            <h4>Specialties</h4>
+                            <p className="company-specialties">{companyInfo.specialties}</p>
+                          </>
+                        )}
+                      </>
                     </Card.Body>
                   </Card>
                 </div>

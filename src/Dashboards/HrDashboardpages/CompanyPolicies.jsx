@@ -149,7 +149,7 @@ const CompanyPolicies = () => {
     return (
         <div style={{ width: '100%' }}>
             <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
-            <Card style={{ padding: '20px', marginBottom: '20px', width: '100%' }}>
+            <Card style={{ padding: '20px', marginBottom: '20px', width: '100%',marginTop: '20px' }}>
                 <h3>Hiring Policy</h3>
                 <p>Policy: "Once applied, candidates can reapply again in {reapplyMonths || '12'} months."</p>
                 <Form>

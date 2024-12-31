@@ -84,6 +84,7 @@ const MyApplication = () => {
 
       setApplications(response.data.content);
       setTotalPages(response.data.totalPages);
+      setApplicationStatus('');
     } catch (error) {
       console.error('Error fetching applications:', error);
     } finally {
@@ -334,8 +335,24 @@ const MyApplication = () => {
           </Col>
 
         </Row>
-        <Col md={4}>
+        {/* <Col md={4}>
           <h2 className='text-start'> My Applications</h2>
+        </Col> */}
+        <Col md={4}>
+          {applicationStatus ? (
+            <>
+              <h2 className='text-start'>
+              {applicationStatus} application
+              </h2>
+              <button className='btn btn-primary' onClick={fetchApplications}>
+                Fetch All Application
+              </button>
+            </>
+          ) : (
+            <h2 className='text-start'>
+             My Applications
+            </h2>
+          )}
         </Col>
 
         <div>
