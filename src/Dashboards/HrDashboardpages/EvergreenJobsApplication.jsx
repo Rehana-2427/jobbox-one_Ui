@@ -25,6 +25,8 @@ const EvergreenJobsApplication = () => {
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(false); // State to manage loading  
     const [isLeftSideVisible, setIsLeftSideVisible] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isGetUserData, setGetUserData] = useState(true);
 
     const toggleLeftSide = () => {
         console.log("Toggling left side visibility");
@@ -86,6 +88,7 @@ const EvergreenJobsApplication = () => {
     const [hrName, setHrName] = useState();
     const [hrEmail, setHrEmail] = useState();
     const fetchCandidateDetails = async () => {
+        setGetUserData(true);
         const candidateNames = {};
         const candidateEmails = {};
         const hrNames = {};
@@ -112,6 +115,7 @@ const EvergreenJobsApplication = () => {
         setCandidateEmail(candidateEmails);
         setHrName(hrNames);
         setHrEmail(hrEmails);
+        setGetUserData(false);
     }
     useEffect(() => {
         fetchCandidateDetails();
@@ -121,6 +125,7 @@ const EvergreenJobsApplication = () => {
     const [resumeTypes, setResumeTypes] = useState({});
     const [fileNames, setfileNames] = useState({});
     const fetchResumeTypes = async (applications) => {
+        setIsLoading(true);
         const types = {};
         const fileNames = {};
         for (const application of applications) {
@@ -134,6 +139,7 @@ const EvergreenJobsApplication = () => {
         }
         setResumeTypes(types);
         setfileNames(fileNames);
+        setIsLoading(false);
     };
 
     const renderResumeComponent = (resumeId) => {
@@ -449,7 +455,7 @@ const EvergreenJobsApplication = () => {
                                     {filterApplications.map((application) => (
                                         <tr key={application.id}>
                                             <td>{application.jobRole}</td>
-                                            <td>{candidateName[application.candidateId]}</td>
+                                            <td> {isGetUserData ? 'Loading...' : candidateName[application.candidateId]}</td>
                                             <td
                                                 onClick={() => handleClick(application.candidateId)}
                                                 style={{
@@ -460,10 +466,12 @@ const EvergreenJobsApplication = () => {
                                                     textDecoration: 'underline'
                                                 }}
                                             >
-                                                {candidateEmail[application.candidateId]}
+                                               {isGetUserData ? 'Loading...' : candidateEmail[application.candidateId]}
                                             </td>
 
-                                            <td>{renderResumeComponent(application.resumeId)}</td>
+                                            <td>
+                                                {isLoading ? 'Loading...' : renderResumeComponent(application.resumeId)}
+                                            </td>
                                             <td>{application.appliedOn}</td>
                                             <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                                 {application.applicationStatus === "Shortlisted" && hrEmail[application.hrId] !== userEmail ? (
@@ -539,7 +547,7 @@ const EvergreenJobsApplication = () => {
                     </div>
 
                 )}
-                <Button variant='primary' onClick={handleBack} style={{ width: '100px',marginLeft:'12px' }}>Back</Button>
+                <Button variant='primary' onClick={handleBack} style={{ width: '100px', marginLeft: '12px' }}>Back</Button>
 
                 {
                     showBriefSettings && (

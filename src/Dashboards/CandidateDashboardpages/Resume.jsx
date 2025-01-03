@@ -14,6 +14,7 @@ const Resume = () => {
   const location = useLocation();
   const userName = location.state?.userName;
   const userId = location.state?.userId;
+
   const [showMessage, setShowMessage] = useState(false);
   const [resumes, setResumes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,6 +37,7 @@ const Resume = () => {
     setPageSize(size);
     setPage(0);
   };
+
   useEffect(() => {
     // Fetch resumes data from the backend
     axios.get(`${BASE_API_URL}/getResume?userId=${userId}`)
@@ -50,20 +52,28 @@ const Resume = () => {
   }, [userId]);
 
   const detailsRef = useRef(null); // Ref for the details section
-  const resumesRef = useRef(null); // Ref for the resumes cards section
-
+  const resumeRefs = useRef([]); // Ref for the resumes cards section (array of refs)
+  const [activeResumeRef, setActiveResumeRef] = useState(null); // Store active resume card reference
 
   const [resumeId, setResumeId] = useState(null);
 
-  const handleViewResumeDetailsWithPagination = async (resume) => {
+  const handleViewResumeDetailsWithPagination = async (resume, resumeIndex) => {
     setViewResume(true);
     const resumeId = resume.id;
     setViewCount(resume.viewCount);
     setresumeMessage(resume.message);
     setResumeId(resumeId); // Store the resumeId in a state variable
     setPage(0); // Reset to the first page
+    
+    // Store the reference to the clicked resume card for scrolling back
+    setActiveResumeRef(resumeRefs.current[resumeIndex]);
+
+    // Scroll to resume details section
+    if (detailsRef.current) {
+      detailsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
-  
+
   useEffect(() => {
     const fetchResumeDetails = async () => {
       if (resumeId && !isNaN(resumeId)) {
@@ -75,7 +85,7 @@ const Resume = () => {
               pageSize: pageSize,
             },
           });
-  
+
           const { content, totalPages } = response.data;
           setResumeDetails(content);
           setTotalPages(totalPages);
@@ -84,7 +94,7 @@ const Resume = () => {
         }
       }
     };
-  
+
     fetchResumeDetails();
   }, [page, pageSize, resumeId]); // Add page and pageSize as dependencies
 
@@ -143,14 +153,17 @@ const Resume = () => {
       swal.fire('Cancelled', 'Your resume is safe', 'error');
     }
   };
+
   const handleClose = () => {
     setViewResume(false); // Hide the resume details
-    setResumeDetails([]); // Clear the resume details
+    // setResumeDetails([]); // Clear the resume details
 
-    if (resumesRef.current) {
-      resumesRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Scroll back to the resume card that was clicked for preview
+    if (activeResumeRef) {
+      activeResumeRef.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
+
   return (
     <DashboardLayout>
       <div className="main-content">
@@ -186,9 +199,9 @@ const Resume = () => {
             {resumes.length === 0 ? (
               <div className="text-center">No resumes found</div>
             ) : (
-              <div ref={resumesRef} className="cards d-flex flex-wrap justify-content-start" style={{ minHeight: 'fit-content' }}>
+              <div className="cards d-flex flex-wrap justify-content-start" style={{ minHeight: 'fit-content' }}>
                 {resumes.map((resume, index) => (
-                  <Card className='resume-card' style={{ width: '200px', margin: '12px' }} key={resume.id}>
+                  <Card className='resume-card' style={{ width: '200px', margin: '12px' }} key={resume.id} ref={el => resumeRefs.current[index] = el}>
                     <Card.Body>
                       <Card.Title>Resume : {index + 1}</Card.Title>
                       <Card.Text>{resume.message}</Card.Text>
@@ -208,17 +221,13 @@ const Resume = () => {
                       <Button variant="danger" size="sm" className="delete" style={{ marginLeft: '10px' }} onClick={() => handleDelete(resume.id, resume.message)}>
                         Delete
                       </Button>
-                      {/* <h5 className="text-muted text-center" style={{ marginTop: '10px' }} onClick={() => handleViewResumeDetails(resume)}>
-                    <FaEye /> Preview
-                  </h5> */}
-                      <h5 className="text-muted text-center" style={{ marginTop: '10px' }} onClick={() => handleViewResumeDetailsWithPagination(resume)}>
+                      <h5 className="text-muted text-center" style={{ marginTop: '10px' }} onClick={() => handleViewResumeDetailsWithPagination(resume, index)}>
                         <FaEye /> Preview
                       </h5>
                     </Card.Body>
                   </Card>
                 ))}
               </div>
-
             )}
           </>
         )}
@@ -231,24 +240,18 @@ const Resume = () => {
                 <h5 className="text-muted">Total Views: {viewCount}</h5>
                 <Button onClick={handleClose}>Close</Button>
               </div>
-
-              {/* Separator line */}
               <hr style={{ borderTop: '1px solid purple', marginTop: '15px', marginBottom: '15px' }} />
 
-              {/* Render resume details if available */}
               {resumeDetails && resumeDetails.length > 0 ? (
                 <>
                   {resumeDetails.map((application, appIndex) => (
                     <div key={appIndex} className="application">
                       <p><strong>Company:</strong> {application.companyName}</p>
                       <p><strong>Job Title:</strong> {application.jobRole ? application.jobRole : 'Dream application'}</p>
-
-                      {/* Separator line for each application */}
                       <hr style={{ borderTop: '1px solid purple', marginTop: '10px', marginBottom: '10px' }} />
                     </div>
                   ))}
 
-                  {/* Pagination component */}
                   <Pagination
                     page={page}
                     pageSize={pageSize}
@@ -259,12 +262,11 @@ const Resume = () => {
                   />
                 </>
               ) : (
-                <p>No applications found.</p> // Display message if no applications are found
+                <p>No applications found.</p>
               )}
             </>
           )}
         </div>
-
       </div>
       <Footer />
     </DashboardLayout>

@@ -29,6 +29,7 @@ const ViewApplications = () => {
   const [page, setPage] = useState(currentApplicationPage);
   const currentApplicationPageSize = location.state?.currentApplicationPageSize || 6;
   const [pageSize, setPageSize] = useState(currentApplicationPageSize);
+  const [isLoading, setIsLoading] = useState(true);
   const isLastPage = page === totalPages - 1;
   const isPageSizeDisabled = isLastPage;
 
@@ -196,6 +197,7 @@ const ViewApplications = () => {
   }, [applications]);
 
   const fetchResumeTypes = async (applications) => {
+    setIsLoading(true);
     const types = {};
     const fileNames = {};
     for (const application of applications) {
@@ -212,7 +214,7 @@ const ViewApplications = () => {
 
     setResumeTypes(types);
     setfileNames(fileNames);
-
+    setIsLoading(false);
   };
 
   const fetchCountUnreadMessage = async (applicationId) => {
@@ -223,6 +225,7 @@ const ViewApplications = () => {
       console.error("Error fetching chats:", error);
     }
   }
+
   const renderResumeComponent = (resumeId) => {
     const fileType = resumeTypes[resumeId];
     const fileName = fileNames[resumeId];
@@ -526,7 +529,9 @@ const ViewApplications = () => {
                           <td>{application.jobRole}</td>
                           <td>{candidateName[application.candidateId]}</td>
                           <td>{candidateEmail[application.candidateId]}</td>
-                          <td>{renderResumeComponent(application.resumeId)}</td>
+                          <td>
+                            {isLoading ? 'Loading...' : renderResumeComponent(application.resumeId)}
+                          </td>
                           <td>{application.appliedOn}</td>
                           <td>
                             <FontAwesomeIcon onClick={(e) => {

@@ -55,7 +55,10 @@ const PostedJobs = () => {
     setLoading(true);
     try {
       const response = await axios.get(`${BASE_API_URL}/searchJobsByCompany`, {
-        params: { search, userEmail, page, pageSize }
+        params: {
+          search, userEmail, page, pageSize, sortBy: sortedColumn,
+          sortOrder: sortOrder,
+        }
       });
       setJobs(response.data.content);
       setTotalPages(response.data.totalPages);
@@ -125,7 +128,7 @@ const PostedJobs = () => {
             {/* Search Bar */}
             <div className="search-bar" style={{ flex: 1 }}>
               <input
-                style={{ borderRadius: '6px', height: '35px', width: '70%', marginRight: '20px',marginBottom:'10px' }}
+                style={{ borderRadius: '6px', height: '35px', width: '70%', marginRight: '20px', marginBottom: '10px' }}
                 type="text"
                 name="search"
                 placeholder="Search"

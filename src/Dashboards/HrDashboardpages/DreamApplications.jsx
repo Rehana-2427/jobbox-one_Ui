@@ -32,7 +32,8 @@ const DreamApplication = () => {
   const [pageSize, setPageSize] = useState(currentDreamAppPageSize);
   const [search, setSearch] = useState(dreamAppSearch);
   const [loading, setLoading] = useState(false); // State to manage loading
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [isGetUserData, setGetUserData] = useState(true);
   const handleSearchChange = (event) => {
     setSearch(event.target.value);
   };
@@ -44,11 +45,12 @@ const DreamApplication = () => {
   };
   console.log("search  -----> " + search)
   const fetchResumeTypes = async (applications) => {
+    setIsLoading(true);
     const types = {};
     const fileNames = {};
     for (const application of applications) {
       try {
-       // setLoading(true); // Start loading
+        // setLoading(true); // Start loading
         const response = await axios.get(`${BASE_API_URL}/getResumeByApplicationId?resumeId=${application.resumeId}`);
         types[application.resumeId] = response.data.fileType;
         fileNames[application.resumeId] = response.data.fileName;
@@ -60,6 +62,7 @@ const DreamApplication = () => {
     }
     setResumeTypes(types);
     setfileNames(fileNames);
+    setIsLoading(false);
   };
 
   const renderResumeComponent = (resumeId) => {
@@ -214,12 +217,13 @@ const DreamApplication = () => {
   const [hrName, setHrName] = useState();
   const [hrEmail, setHrEmail] = useState();
   const fetchCandidateDetails = async () => {
+    setGetUserData(true);
     const candidateNames = {};
     const candidateEmails = {};
     const hrNames = {};
     const hrEmails = {};
     try {
-     // setLoading(true); // Start loading
+      // setLoading(true); // Start loading
       for (const application of applications) {
         const res = await axios.get(`${BASE_API_URL}/getUserName`, {
           params: {
@@ -241,7 +245,7 @@ const DreamApplication = () => {
         hrEmails[application.hrId] = response.data.userEmail;
       }
     } catch (error) {
-      console.log(error);  
+      console.log(error);
     } finally {
       setLoading(false); // Stop loading
     }
@@ -251,6 +255,7 @@ const DreamApplication = () => {
     setCandidateEmail(candidateEmails);
     setHrName(hrNames);
     setHrEmail(hrEmails);
+    setGetUserData(false);
   }
   useEffect(() => {
     fetchCandidateDetails();
@@ -543,7 +548,7 @@ const DreamApplication = () => {
                 <tbody>
                   {applications.map(application => (
                     <tr key={application.id}>
-                      <td>{candidateName[application.candidateId]}</td>
+                      <td> {isGetUserData ? 'Loading...' : candidateName[application.candidateId]}</td>
                       <td
                         onClick={() => handleClick(application.candidateId)}
                         style={{
@@ -554,10 +559,12 @@ const DreamApplication = () => {
                           textDecoration: 'underline'
                         }}
                       >
-                        {candidateEmail[application.candidateId]}
+                        {isGetUserData ? 'Loading...' : candidateEmail[application.candidateId]}
                       </td>
 
-                      <td>{renderResumeComponent(application.resumeId)}</td>
+                      <td>
+                        {isLoading ? 'Loading...' : renderResumeComponent(application.resumeId)}
+                      </td>
                       <td>{application.appliedOn}</td>
                       <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                         {application.applicationStatus === "Shortlisted" && hrEmail[application.hrId] !== userEmail ? (
@@ -648,7 +655,7 @@ const DreamApplication = () => {
             <Modal.Body style={{ overflowY: 'auto' }}>{showMessage}</Modal.Body>
           </Modal>
         )}
-      <Button variant='primary' onClick={handleBack} style={{width:'100px',marginLeft:'12px'}}>Back</Button>
+        <Button variant='primary' onClick={handleBack} style={{ width: '100px', marginLeft: '12px' }}>Back</Button>
 
       </div>
       <Footer />

@@ -115,7 +115,10 @@ const MyJobs = () => {
     setLoading(true);
     try {
       const response = await axios.get(`${BASE_API_URL}/searchJobsByHR`, {
-        params: { search, userEmail, page, pageSize }
+        params: {
+          search, userEmail, page, pageSize, sortBy: sortedColumn,
+          sortOrder: sortOrder,
+        }
       });
       setJobs(response.data.content);
       setTotalPages(response.data.totalPages);
@@ -124,7 +127,7 @@ const MyJobs = () => {
       console.error('Error searching:', error);
       alert('Error searching for jobs. Please try again later.');
     }
-  }, [search, userEmail, page, pageSize]);
+  }, [search, userEmail, page, pageSize, sortedColumn, sortOrder]);
 
   useEffect(() => {
     if (search) {
@@ -162,7 +165,7 @@ const MyJobs = () => {
         <Row>
           <Col md={4}>
             <h2>
-              {!loading &&  jobs.length === 0 ? (
+              {!loading && jobs.length === 0 ? (
                 <div style={{ color: 'red', textAlign: 'center' }}>
                   {search
                     ? `There is no job with this "${search}"`
@@ -178,7 +181,7 @@ const MyJobs = () => {
             {/* Search Bar */}
             <div className="search-bar" style={{ flex: 1 }}>
               <input
-                style={{ borderRadius: '6px', height: '35px', width: '100%',marginBottom:'10px' }}
+                style={{ borderRadius: '6px', height: '35px', width: '100%', marginBottom: '10px' }}
                 type="text"
                 name="search"
                 placeholder="Search"
@@ -186,7 +189,7 @@ const MyJobs = () => {
                 onChange={handleSearchChange}
               />
             </div>
-            <Button style={{ marginRight: '25px',marginBottom:'15px' }} className='job-button'>
+            <Button style={{ marginRight: '25px', marginBottom: '15px' }} className='job-button'>
               <Link
                 to={{ pathname: '/hr-dashboard/my-jobs/addJob', state: { userName, userEmail } }}
                 onClick={(e) => {
