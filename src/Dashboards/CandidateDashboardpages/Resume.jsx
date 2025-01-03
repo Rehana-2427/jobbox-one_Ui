@@ -165,8 +165,8 @@ const Resume = () => {
   };
 
   return (
-    <DashboardLayout>
-      <div className="main-content">
+    <DashboardLayout >
+      <div ref={resumesRef}  className="main-content">
         <div className='adding-resumes' style={{ position: 'relative', marginTop: '10px', marginRight: '15px' }}>
           <Link to="/candidate-dashboard/resume/resumeAdd" state={{ userName: userName, userId: userId }}>
             <Button style={{ position: 'absolute', top: 0, right: 0 }}>ADD NEW RESUME</Button>

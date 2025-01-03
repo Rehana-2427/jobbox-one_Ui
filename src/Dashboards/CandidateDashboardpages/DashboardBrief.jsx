@@ -113,13 +113,16 @@ const DashboardBrief = () => {
         { icon: faStar, title: countOfshortlistedApplications, subtitle: "Shortlist", link: '/candidate-dashboard/my-application', state: { userName, userId, applicationStatus: "Shortlisted" } },
     ];
     return (
-        <Col md={12} style={{ paddingTop: '10px', paddingLeft: '10px' }}>
+        <Col md={12} style={{ paddingLeft: '15px', paddingRight: '15px' }}>
             <Row>
                 {DATA.map((item, index) => (
                     <Col lg={3} sm={6} key={index}>
-                        <Card className="card-icon-bg gap-3 card-icon-bg-primary o-hidden mb-4" style={{ maxWidth: '250px', height: '100px' }}>
-                            <Card.Body className="d-flex align-items-center gap-4">
-                                <FontAwesomeIcon icon={item.icon} className="me-2 text-primary mb-0 text-24 fw-semibold" />
+                        <Card
+                            className="card card-icon-bg card-icon-bg-primary o-hidden mb-4"
+                            style={{ height: '100px', paddingLeft: '10px' }}
+                        >
+                            <Card.Body>
+                                <FontAwesomeIcon icon={item.icon}   className="me-2 text-primary mb-0 text-24 fw-semibold" />
                                 <div className="content gap-1">
                                     {item.link ? (
                                         <Link
